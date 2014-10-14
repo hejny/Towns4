@@ -5,7 +5,8 @@ ini_set('memory_limit','10000M');
 <h3>Export</h3>
 Tato funkce provede Mysql Dump...<br/>
 <b>Upozornění: </b>Tento proces může trvat i několik minut.<br/>
-<a href="?export=1">Vygenerovat</a>
+<a href="?export=1">Vygenerovat</a><br/>
+<a href="?export=2">Vygenerovat Vše</a>
 <!--<a  href="javascript:void(0);" onclick="document.execCommand('SaveAs',true,'files/expor.xml');">Stáhnout</a>-->
 <hr/>
 <?php

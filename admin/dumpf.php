@@ -114,7 +114,7 @@ $GLOBALS['file_dump']=Fopen($file_name,"w");
 for ($i=0;$i<$num_tables;$i++){
 	$table=mysql_tablename($tables,$i);
 	
-	//if(strpos($table,mpx)!==false){
+	if(strpos($table,mpx)!==false or $_GET['export']==2){
 	//if(strpos($table,'memory')===false){
 	//if($table!=mpx.'log'){
 
@@ -122,19 +122,18 @@ for ($i=0;$i<$num_tables;$i++){
 		$dump_buffer.=GetTableDef($table,"$crlf");
 		$dump_buffer.="$crlf#DATA$crlf";
 		//$dump_buffer.=GetTableContent($table,"$crlf");
-		GetTableContent($table,"$crlf");
 		$dump_buffer.="$crlf$crlf";
-		
-		
 		FPutS($GLOBALS['file_dump'],$dump_buffer);
-		
-		
+
+		GetTableContent($table,"$crlf");
+				
 		if ($show_echo==1){
  			 echo nl2br($dump_buffer);
 		}
 		$dump_buffer='';
 		//echo nl2br($dump_buffer);
 	//}}}
+	}
 
 }
 
