@@ -16,8 +16,14 @@ if($_GET['filename']){
 	if(file_exists($tmp)){
 
 		if(substr($tmp,-4)=='.zip'){
-			extract_zip($tmp,adminfile.'files/backup/');
-			$tmp=substr($tmp,0,strlen($tmp)-3).'sql';
+			
+			$tmpsql=substr($tmp,0,strlen($tmp)-3).'sql';
+
+			if(!file_exists($tmpsql)){
+				extract_zip($tmp,adminfile.'files/backup/');
+			}
+			
+			$tmp=$tmpsql;
 			//e($tmp);
 			if(file_exists($tmp)){
 				chmod($tmp,0777);
@@ -99,7 +105,7 @@ if(!$pos){
 }
 
 $file1=$_SESSION['filename'];//'world1.sql';
-$limit=200;
+$limit=200;//200;
 
 //echo('aaa');
 $h=fopen($file1, 'r');
@@ -119,6 +125,7 @@ $html='';
 $ii=1;
 while(!feof($h) and ($ii<=$limit or $_SESSION['sql'])){$ii++;
 	$line=fgets($h);
+	//if(strpos($line,w)!==false){
 	//if(strpos($line,'INSERT INTO world1_memory')===false and strpos($line,'INSERT INTO world1_log ')===false){//why not??
 		if(strpos($line,';')){
 			$_SESSION['sql'].=$line;
@@ -131,6 +138,7 @@ while(!feof($h) and ($ii<=$limit or $_SESSION['sql'])){$ii++;
 			$_SESSION['sql'].=$line;
 		}
 	//}why not??
+	//}
 }
 
 $pos=ftell($h);
