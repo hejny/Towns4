@@ -42,10 +42,10 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 
 
     if(logged()){
-        $xc=$GLOBALS['ss']["use_object"]->set->ifnot("map_xc",1);
-        $yc=$GLOBALS['ss']["use_object"]->set->ifnot("map_yc",1);
-        $xx=$GLOBALS['ss']["use_object"]->set->ifnot("map_xx",0);
-        $yy=$GLOBALS['ss']["use_object"]->set->ifnot("map_yy",0);    
+        $xc=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",1);
+        $yc=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",1);
+        $xx=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",0);
+        $yy=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",0);    
     }else{
         //$xc=1;
         //$yc=1;
@@ -135,18 +135,18 @@ if(!defined("func_map"))require(root.core."/func_map.php");
     $GLOBALS['yy']=$yy;
     //------------------------------
     if(logged() and $set==1){
-        $GLOBALS['ss']["use_object"]->set->add("map_xc",$xc);
-        $GLOBALS['ss']["use_object"]->set->add("map_yc",$yc);
-        $GLOBALS['ss']["use_object"]->set->add("map_xx",$xx);
-        $GLOBALS['ss']["use_object"]->set->add("map_yy",$yy);
+        $GLOBALS['ss']["log_object"]->set->add("map_xc",$xc);
+        $GLOBALS['ss']["log_object"]->set->add("map_yc",$yc);
+        $GLOBALS['ss']["log_object"]->set->add("map_xx",$xx);
+        $GLOBALS['ss']["log_object"]->set->add("map_yy",$yy);
     }
     
     
     if(logged()){
-	$xc_=$GLOBALS['ss']["use_object"]->set->ifnot("map_xc",false);
-	$yc_=$GLOBALS['ss']["use_object"]->set->ifnot("map_yc",false);
-	$xx_=$GLOBALS['ss']["use_object"]->set->ifnot("map_xx",false);
-	$yy_=$GLOBALS['ss']["use_object"]->set->ifnot("map_yy",false);
+	$xc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",false);
+	$yc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",false);
+	$xx_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",false);
+	$yy_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",false);
 	//e("$xc_,$yc_,$xx_,$yy_");
 	if($xc_===false or $yc_===false or $xx_===false or $yy_===false){//e('888');
 		//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww']);
@@ -703,11 +703,13 @@ e('<div style="position:absolute;width:0px;height:0px;"><div style="position:rel
 
 if(/*logged() and */true){
     subexec('map_units');
-    e('<div id="expandarea" style="display:none;">'.$GLOBALS['area_stream'].'</div>');
+    e('<div id="expandarea" style="display:none;z-index:210;">'.$GLOBALS['area_stream'].'</div>');
+    e('<div id="attackarea" style="display:none;z-index:220;">'.$GLOBALS['attack_stream'].'</div>');
 }else{
     e('<span id="map_units">'.nbsp.'</span>');
     /*subref('map_units');*/
     $GLOBALS['units_stream']='&nbsp;';
+    $GLOBALS['attack_stream']='&nbsp;';
 }
 
 /*if(logged()){

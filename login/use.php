@@ -24,10 +24,20 @@ if(!$usenotclose){
 	//click('e=towns');
 }
 
-if($_GET['e']=='-html_fullscreen'){
-    $centerurl=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);
-    click($centerurl,-1);
+if($_GET['e']=='-html_fullscreen'/**/ or 1/**/){
+    $centerurl=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
     
+    //click($centerurl,-1);
+    //js('alert("'.$GLOBALS['ss']["log_object"]->set->val('map_xc').'")');
+	if(!$GLOBALS['ss']["log_object"]->set->val('map_xc')){
+		
+		$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);
+		//js('alert("'.$url.'")');
+		//e('click');	
+		click($url,-1);
+	}
+
+
     $delay=4000;
 }else{
     
@@ -50,7 +60,7 @@ if($_GET['e']=='-html_fullscreen'){
         });
     }, '.$delay.');
     
-    '.subjsr('towns');
+    '.subjsr('towns').subjsr('dockbuttons');
     
     
     js($js);

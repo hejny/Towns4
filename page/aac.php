@@ -9,7 +9,8 @@
 */
 //==============================
 
-
+/*$tmp=urlr($url);
+echo($tmp);br(2);*/
 
 
     //$GLOBALS['js']=true;
@@ -35,6 +36,13 @@
 ?>
 logged=true;
 
+if(apptime!=<?php e(filemtime(core.'/page/aac.php')); ?>){
+	$('#window_topinfo').css('display','block');	
+}
+
+
+apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
+
 <?php if(chat){
     subjs('chat_text'); ?>
     $('#form_chat').submit(document.chatsubmit);
@@ -43,6 +51,8 @@ logged=true;
 
 
 <?php
+
+//subjs('dockbuttons',false,false,true);
 //-------------------obnovení mapy
 
     $xc_=$GLOBALS['ss']["use_object"]->set->ifnot("map_xc",false);
@@ -78,7 +88,10 @@ logged=true;
 			subexec('map_units');		
 			subjs('units_stream',$GLOBALS['units_stream']);
 			subjs('expandarea',$GLOBALS['area_stream']);
+			subjs('attackarea',$GLOBALS['attack_stream']);
 			echo('$(\'#units_new\').html("");');
+			subjs('dockbuttons');
+			
 			
     }
 

@@ -344,7 +344,8 @@ if(logged() and $nwindows){
 //r('set2'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
 $nsets=$_GET["set"];
 if(logged() and $nsets){
-    //r($nwindows);
+	//e("alert('$nsets');");
+    	//r($nwindows);
 	$nsets=explode(";",$nsets);
 	foreach($nsets as $nset){if($nset){
 		list($s_key,$s_value)=explode(",",$nset);

@@ -90,8 +90,8 @@ $ry=round($y);
 			$nextid=nextid();
 			define('object_id',$nextid);
 			$GLOBALS['object_ids']=array($nextid);
-			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `own`, `in`, `ww`, `x`, `y`, `t`) 
-SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time()." FROM `".mpx."objects` WHERE id='$id'");
+			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `collapse`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`) 
+SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `collapse`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time()." FROM `".mpx."objects` WHERE id='$id'");
 		}
 
 		$GLOBALS['ss']["query_output"]->add("1",1);

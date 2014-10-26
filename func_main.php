@@ -365,10 +365,25 @@ foreach(array(1,2) as $tmp){
 }
 if($error){
     //mailx($GLOBALS['inc']['log_mail'],'SERVER!','SERVER!');
-    header('Refresh: 1');
+    header('Refresh: 5');
     echo('Omlouv&aacute;me se, ale na serveru pr&aacute;v&#283; prob&#283;hla &uacute;dr&#382;ba.
-Server bude fungovat do p&aacute;r vte&#345;in. Str&aacute;nka se automaticky obnov&iacute;...');
-    file_get_contents('https://api.digitalocean.com/droplets/2655391/reboot?client_id=48e241a825673f8a3a765af6fbdb9a29&api_key=772bad5a245c2afecb679ace70e58bd6');
+Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&iacute;... ');
+
+
+	$restarturl='https://api.digitalocean.com/droplets/2655391/power_cycle?client_id=48e241a825673f8a3a765af6fbdb9a29&api_key=772bad5a245c2afecb679ace70e58bd6';
+
+	$file=root.cache.'/reboot.txt';
+	//echo($file);
+	$time=file_get_contents($file)-0;
+
+	if($time+180<time()){
+		echo('0');
+    	file_get_contents($restarturl);
+		file_put_contents($file,time());
+		chmod($file,0777);
+	}else{
+		echo(time()-$time);
+	}
     
     die();
 }

@@ -228,6 +228,7 @@ $GLOBALS['ss']['ref']=$_GET['ref'];
 
 <script type="text/javascript">
 //------------------------------------------------------------------------------------------------------------------
+apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 nacitacihtml=$('#html_fullscreen').html();
 logged=false;
 first=true;

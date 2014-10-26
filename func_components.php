@@ -169,34 +169,72 @@ setTimeout(function(){
 }
 }
 //======================================================================================dockbutton
-function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false){
-    ob_start();
-    
+function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=false,$background='rgba(10,10,10,0.9)',$border='#222222'){
+    $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
+    $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
+
+    if(!is_array($text)){$text=array($text);}
+    if(!is_array($href)){$href=array($href);}
+    if(!is_array($id)){$id=array($id);}
+    if(!is_array($width)){$width=array($width);}
+    if(!is_array($background)){$background=array($background);}
+    if(!is_array($border)){$border=array($border);}
+
+    $count=count($text);
+
+    if(!$posuv){
+	    if($count==1){
+		$posuv=array(0);
+	    }else{
+		$posuv=80;
+		$posuv=array(-$posuv,$posuv);
+	    }
+    }
+
     //if($x<0){$x=$GLOBALS['screenwidth']+$x;}
-    if($x==='%'){$x=($GLOBALS['screenwidth']/2)-(140/2);}
+    if($x==='%'){$x=($GLOBALS['screenwidth']/2)-((array_sum($width)/count($width))/2);}
     //if($y<0){$y=$GLOBALS['screenheight']+$y;}
   
     ?>
     
 	<div style="position:absolute;left:<?php e(($x<0)?100:0); ?>%;top:<?php e(($y<0)?100:0); ?>%px;z-index:<?php e($z); ?>;">
 
-    <div <?php e($id?'id="'.$id.'"':''); ?> style="position:absolute;left:<?php e($x); ?>px;top:<?php e($y); ?>px;background: rgba(10,10,10,0.9);border: 2px solid #222222;border-radius: 4px;<?php e($size<0?'height:140px':'width:140px'); ?>;z-index:<?php e($z); ?>;">
-    <table border="0" cellpadding="0" cellscpacing="0" width="100%" height="100%">
-    <tr><td valign="midle" align="center">
-    <?php
-    
-    tee($text,$size);
-    
+    <?php 
+    $i=0;
+    while($text[$i]){
+	    ob_start();
     ?>
-    </td></tr>
-    </table>
-    </div>
+
+	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="position:absolute;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($size<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;">
+	    <table border="0" cellpadding="0" cellscpacing="0" width="100%" height="100%">
+	    <tr><td valign="midle" align="center" <?php e($count==1?'':'height="'.(abs($y)-9).'"'); ?>>
+	    <?php
+	    
+
+
+	    tee($text[$i],$size);
+	    
+	    ?>
+	    </td></tr>
+	    </table>
+	    </div>
+
+	<?php 
+
+	    $buffer = ob_get_contents();
+	    ob_end_clean();   
+
+	    ahref($buffer,$href[$i]);
+	 $i++;
+    }
+
+?>
+
     </div>
     <?php
-    $buffer = ob_get_contents();
-    ob_end_clean();    
 
-    ahref($buffer,$href);
+
+    
     
 }
 //======================================================================================
@@ -506,6 +544,7 @@ function inteligentparse($text){
 //--------------------------------------------
 function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$splitspace=true){
     $stream='';
+    //$tracetext=$
     $text=str_replace('[15]',' ',$text);
     if(!$tracetext)$tracetext='X1PavelHejný';
     if(is_array($size)){
@@ -552,13 +591,14 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
     if($splitspace){$text=explode(' ',$text);}else{$text=array($text);}
     //error_reporting(E_ALL);
     foreach($text as $word){
-	$ttfbox=imagettfbbox($size ,0, $fontfile, $word);
-        $width=$ttfbox[2]-$ttfbox[0];	
+	$ttfbox=imagettfbbox($size ,0, $fontfile, 'X'.$word);
+	$ttfboxX=imagettfbbox($size ,0, $fontfile, 'X');
+        $width=($ttfbox[2]-$ttfbox[0])-($ttfboxX[2]-$ttfboxX[0]);	
  	$height=$hh;//$ttfbox[1]-$ttfbox[5];
 	//$word=contentlang($word);
 	//r($word);r();
 	$file=tmpfile2($word.$fn,'png','word');
-	if(!file_exists($file)/*antishit*/){
+	if(!file_exists($file)/** or 1 /**/){
 	   //r($ttfbox);	
 	   $img=imagecreate/*truecolor*/($width,$height);
 	   $img2=imagecreate/*truecolor*/($width,$height);
@@ -577,7 +617,7 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
 	   imagefill($img,0,0,$fill);
 	   imagefill($img2,0,0,$fill2);
 
-
+	   //$word='X'.$word;
 	   imagettftext($img2, $size ,0, 0, -$ttfbox[5], $color2,$fontfile, $word);
 		 
 		 for($y = 1; $y!=imagesy($img2); $y++){
@@ -649,7 +689,110 @@ e(buttonr($text,$size));
 }
 
 
-//--------------------------------------------
+//===========================================================================================================================rvscgo
+
+/*function rvscgo($text){
+//$=$_GET["text"];
+$sizex=44;
+$size=60;
+$bold=5;
+//------
+$text=strtolower($text);
+$text=str_replace("ě","e",$text);
+$text=str_replace("š","s",$text);
+$text=str_replace("č","c",$text);
+$text=str_replace("ř","r",$text);
+$text=str_replace("ž","z",$text);
+$text=str_replace("ý","y",$text);
+$text=str_replace("á","a",$text);
+$text=str_replace("í","i",$text);
+$text=str_replace("é","e",$text);
+$text=str_replace("ú","u",$text);
+$text=str_replace("ů","u",$text);
+$text=str_replace("ť","t",$text);
+$text=str_replace(array("b","d","f","p","q","z"),"",$text);
+$text=str_replace(array("0","1","2","3","4","5","6","7","8","9"),"",$text);
+if($text){
+$text=str_replace("scg","ss",$text);
+//if(strlen($text)/2!=intval(strlen($text)/2))$text=$text."x";
+$text=str_replace(array("k","l"),"i",$text);
+$text=str_replace(array("r","j","e"),"y",$text);
+$text=str_replace(array("n","m"),"a",$text);
+$text=str_replace(array("h","c","g","x","t"),"s",$text);
+$text=str_replace(array("v","u","w"),"o",$text);
+//------
+$text2=$text;$text="";$q=0;
+foreach(str_split($text2) as $ch){
+if($ch=="a"){
+if($q){
+$ch="s";
+}else{
+$ch="o";
+}
+if($q==0){$q=1;}else{$q=0;}
+}
+$text=$text.$ch;
+}
+//------
+$width=$sizex*((strlen($text)/4)+0.25);
+$height=$sizex;
+
+$img = imagecreatetruecolor($width,$height);
+$bg = imagecolorallocate($img, 255, 255, 255);
+imagefill($img, 0, 0, $bg);
+$l=array();
+$l["i"][0] = imagecreatefromjpeg("l/l0001.jpg");
+$l["y"][0] = imagecreatefromjpeg("l/l0002.jpg");
+$l["s"][0] = imagecreatefromjpeg("l/l0003.jpg");
+$l["o"][0] = imagecreatefromjpeg("l/l0004.jpg");
+$l["i"][1] = imagecreatefromjpeg("l/l0005.jpg");
+$l["y"][1] = imagecreatefromjpeg("l/l0006.jpg");
+$l["s"][1] = imagecreatefromjpeg("l/l0007.jpg");
+$l["o"][1] = imagecreatefromjpeg("l/l0008.jpg");
+//bool imagecopyresampled ( resource $dst_image , resource $src_image , int $dst_x , int $dst_y , int $src_x , int $src_y , int $dst_w , int $dst_h , int $src_w , int $src_h )
+$q=1;$i=0;
+foreach(str_split($text) as $ch){
+
+$x=$sizex/2*$i/2;
+$y=$sizex/2*$q;
+imagecopyresampled($img,$l[$ch][$q],$x,$y,0,0,$sizex/2,$sizex/2,imagesx($l[$ch][$q]),imagesy($l["y"][$q]));
+if($q==0){$q=1;}else{$q=0;}$i++;
+}
+//-------------------BOLD
+$width=$size*((strlen($text)/4)+0.25)+(2*$bold);
+$height=$size+(2*$bold);
+$img2 = imagecreatetruecolor($width,$height);
+        imagealphablending($img2,true);
+        imagesavealpha($img2,true);
+$bg = imagecolorallocatealpha($img2, 255, 255, 255,127);
+$pen = imagecolorallocate($img2, 0, 0, 0);
+imagefill($img2, 0, 0, $bg);
+for($y=0;$y<imagesy($img);$y++){
+for($x=0;$x<imagesx($img);$x++){
+	$rgb = imagecolorat($img, $x, $y);
+	$colors = imagecolorsforindex($img, $rgb);
+	if($colors["red"]<100){
+		$xx=$x*($size/$sizex)+$bold;
+		$yy=$y*($size/$sizex)+$bold;
+		imagefilledellipse ($img2,$xx,$yy,$bold,$bold,$pen);
+	}
+}
+}
+//-------------------
+}else{
+$img2 = imagecreatetruecolor(1,1);
+        imagealphablending($img2,true);
+        imagesavealpha($img2,true);
+$bg = imagecolorallocatealpha($img2, 255, 255, 255,127);
+imagefill($img2, 0, 0, $bg);
+}
+//-------------------
+header("Content-type: image/png");
+imagepng($img2);
+}*/
+
+//===========================================================================================================================tfontr
+
 function tfontr($text,$size=14,$color=""){
     if($color){
         //r($color);
@@ -759,7 +902,8 @@ function borderjs($id,$sendid="",$category="",$brd=1,$q=true){
     //return("border_".$category."='#border_".$category."_".$id."';alert(border_".$category.")");
     $style_a="'".$brd."px solid #cccccc'";
     $style_b="'0px solid #cccccc'";
-    return("\$('#border_".$category."_".$id."').css('border',$style_a);$('#border_".$category."_".$id."').css('z-index',z_index);if(typeof border_".$category."!='undefined')if('#border_".$category."_".$id."'!=border_".$category.")$(border_".$category.").css('border',$style_b);border_".$category."='#border_".$category."_".$id."';z_index++;".($q?"$(function(){\$.get('?y=".$_GET['y']."&e=nonex&set=".$category.",".$sendid."');});":''));
+    return("\$('#border_".$category."_".$id."').css('border',$style_a);$('#border_".$category."_".$id."').css('z-index',z_index);if(typeof border_".$category."!='undefined')if('#border_".$category."_".$id."'!=border_".$category.")$(border_".$category.").css('border',$style_b);border_".$category."='#border_".$category."_".$id."';z_index++;".($q?"setset='$category,$sendid';map_units_time=1;":''));
+/*"$(function(){\$.get('?y=".$_GET['y']."&e=aac&set=".$category.",".$sendid."');});"*/
 }
 function borderr2($html,$brd=1){
     return('<span style="border: '.$brd.'px solid #cccccc;z_index:1000">'.$html.'</span>');
@@ -1389,7 +1533,7 @@ function alert($text,$type,$tr=true,$nbsp=true){
     if($type==3){$col="322E99";}
     if($type==4){$col="333333";}
     if(strlen($col)==6)$col='#'.$col;
-    $text=str_replace('&nbsp;',' ',$text);
+    if($nbsp)$text=str_replace('&nbsp;',' ',$text);
     echo("<div style=\"background:$col;width:100%;\" >".($nbsp?'&nbsp;&nbsp;&nbsp;':'')."$text</div>");
 }
 function error($text,$tr=true){
@@ -1404,11 +1548,11 @@ function info($text,$tr=true){
 function blue($text,$tr=true){
     alert($text,3,$tr);
 }
-function infob($text,$color=4){
-    alert('<table width="100%"><tr align="center"><td>'.$text.'</td></tr></table>',$color,false,false);
+function infob($text,$color=4,$tr=false,$nbsp=false){
+    alert('<table width="100%"><tr align="center"><td>'.$text.'</td></tr></table>',$color,$tr,$nbsp);
 }
-function infobb($text){
-    alert('<table width="100%"><tr align="center"><td>'.$text.'</td></tr></table>','rgba(20,0,20,0.5)',false,false);
+function infobb($text,$tr=false,$nbsp=false){
+    alert('<table width="100%"><tr align="center"><td>'.$text.'</td></tr></table>','rgba(20,0,20,0.5)',$tr,$nbsp);
 }
 
 //======================================================================================
@@ -1593,6 +1737,7 @@ function js($js){
 //ODKAZY
 //===============================================================
 function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclick=""){
+
     $target='';
     if(!$data){$data=$GLOBALS['ss'];}
     if($nol!="x"){ if(!$nol){$text=lr($text);}else{$text=tr($text);}}
@@ -1608,6 +1753,9 @@ function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclic
     //if($textd=="none"){$add1="";$add2="";}
 	 if(strpos("x".$url,"menu:")){$class='href="#menu" class="menu" id="menu_'.str_replace('menu:','',$url).'"';$url='';}
     $tmp=urlr($url);
+
+	//echo($tmp);
+
     if(strpos("x".$tmp,"javascript: ")){$onclick=str_replace("javascript: ","",$tmp);$tmp="#".rand(100000,999999);}else{}
     if(strpos($url,'http://')===0){
 	$target='target="_blank"';

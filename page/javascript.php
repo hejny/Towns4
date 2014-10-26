@@ -133,6 +133,7 @@
                                 zaloha_a=$('#create-build').css('display');
                                 zaloha_t=$('#terrain-build').css('display');
                                 zaloha_e=$('#expandarea').css('display');
+				zaloha_at=$('#attackarea').css('display');
                                 zaloha_gr=$('#grid').css('display');
     			                zaloha_mb=$('.mapbox').css('display');
     			                zaloha_sb=$('.mapbox').css('saybox');
@@ -147,6 +148,7 @@
                                 if(zaloha_a=='block')build(window.build_master,window.build_id,window.build_func);
                                 if(zaloha_t=='block')terrain(window.tbuild_master,window.tbuild_id,window.tbuild_func);                           
        							$('#expandarea').css('display',zaloha_e);
+							$('#attackarea').css('display',zaloha_at);
     							$('#grid').css('display',zaloha_gr);
     								$('.mapbox').css('display',zaloha_mb);
     								$('.saybox').css('display',zaloha_sb);
@@ -312,9 +314,15 @@ $(document).ready(function(){
 
     
         /*===========================================================================AAC*/
-        rvrao=false;
+
+	
+    rvrao=false;
 	qbuffer='';
 	windows='';
+	map_units_time=<?php e(time()); ?>;
+	setset='';
+
+
 	qii=0;
         setInterval(function(){
 	    if(logged==true){
@@ -332,15 +340,15 @@ $(document).ready(function(){
         }	
 		
 		
-	    if(qbuffer || windows || qii>40){qii=0;
+	    if(qbuffer || windows || setset || qii>40){qii=0;
                  /*if(rvrao){alert('hybaa')}*/
                 
                 
                 if(playing){
-                    urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&map_units_time='+map_units_time;
-    		        //alert(urlpart);
-    		        qbuffer=''
+                    urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+    		    qbuffer=''
                     windows='';
+                    setset='';
                 }
                
               

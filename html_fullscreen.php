@@ -25,12 +25,17 @@ if($_GET['scale']){
 $screenwidth=$_GET['width'];
 $screenheight=$_GET['height'];
 $first=$_GET['first'];
+if(!$screenwidth)$screenwidth=$GLOBALS['ss']['screenwidth'];
+if(!$screenheight)$screenheight=$GLOBALS['ss']['screenheight'];
 if(!$screenwidth)$screenwidth=800;
-if(!$screenheight)$screenwidth=600;
+if(!$screenheight)$screenheight=600;
 if(!$first)$first=0;
 if(!logged())$first=1;
 $GLOBALS['screenheight']=$screenheight;
 $GLOBALS['screenwidth']=$screenwidth;
+
+$GLOBALS['ss']['screenheight']=$screenheight;
+$GLOBALS['ss']['screenwidth']=$screenwidth;
 //die($GLOBALS['screenwidth']);
 
 
@@ -169,6 +174,14 @@ exit2();
 	    $windows["topinfo"]=array("topinfo",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1);
        //$_GLOBALS['noxmap']=true;
     }
+    //====================================================================TOPINFO=APPAAC=
+    if(true){
+        $GLOBALS['topinfo']=lr('application_aac'.($GLOBALS['mobile']?'_short':''));
+        $GLOBALS['topinfo_url']=js2('location.reload();');
+        //"topinfo"=>array("topinfo",'%%',-161+13,'103%',0,array(0,1,1,1),1),
+	    $windows["topinfo"]=array("topinfo",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1,1);
+       //$_GLOBALS['noxmap']=true;
+    }
     //====================================================================
  
  
@@ -260,6 +273,7 @@ $w_w=$window[3];if(!$w_w)$w_w=0;
 $w_h=$window[4];if(!$w_h)$w_h=0;
 $w_rights=$window[5];//print_r($w_rights);
 $w_noborders=$window[6];
+$w_hide=$window[7];
 if($w_content and $w_name){
 if($w_name=="name")echo("<div id=\"window\" style=\"display:none;\">");
 t("window_$w_name>>");
@@ -317,6 +331,9 @@ t("window_$w_name>>");
 <?php
 t("<<window_$w_name");
 if($w_name=="name")echo("</div>");
+
+
+if($w_hide)js("$('#window_$w_name').css('display','none');");
 }}
 ?>
 
@@ -351,18 +368,20 @@ if(!$GLOBALS['mobile'] and !onlymap){
     <div style="position:absolute;top:0px;left:0px;width:100%;height:100%;overflow:scroll;">
     <?php*/
 
-    //dockbutton(-100,0,12,imgr('design/loading.gif',lr('loading'),25,25).lr('cache_loading')/*,showhide('window_quest-mini'),4,'dockbutton_tutorial'*/);
-
-    if(chat)
-    dockbutton(0,-155-(0*185)+5+(chat?0:140),-12,'{title_chat}',showhide('window_chat'),4);
-    dockbutton(0,-155-(1*185)+5+(chat?0:140),-12,'{title_write}',showhide('window_write'),4);
-    dockbutton(0,-155-(2*185)+5+(chat?0:140),-12,'{title_tutorial}',showhide('window_quest-mini'),4,'dockbutton_tutorial');
-    dockbutton('%',-27,14,'{title_create_building}','e=content;ee=create-create_master;submenu=1',4);
-    
+    eval(subpage('dockbuttons'));
 //e('</div>');
+
+
+
+//-------------------------------------------------------------------------------------------------
     ?>
-    
+
+
+
+
     <script type="text/javascript">
+	$('#window_chat').css('display','none');
+
         $('#window_chat').css('display','none');
         <?php if(!$_GET["write_text"]){ ?>$('#window_write').css('display','none');<?php } ?>
         
@@ -434,22 +453,26 @@ if(onlymap){
     	eval(subpage("javascript"));
     }*/
 
-    if(!$first){
+    /*if(!$first){
         eval(subpage("map"));
         ?><script type="text/javascript">parseMap();</script><?php
-    }else{
-        subempty('map');
+    }else{*/
+
+    subempty('map');
+
+    if(!logged() or $GLOBALS['ss']["log_object"]->set->val('map_xc')){
         
-            $js=('
-    
-    setTimeout(function() {
+    $js='setTimeout(function() {
         $.get(\'?y=&e=map\', function(vystup){
             $(\'#map\').html(vystup);
         });
-    },100);
+    },40);';
     
-    ');
-    
+    /*$js='$( document ).ready(function() {
+        $.get(\'?y=&e=map\', function(vystup){
+            $(\'#map\').html(vystup);
+        });
+    });';*/
     
     js($js);
         

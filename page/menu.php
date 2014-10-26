@@ -23,6 +23,10 @@ if($_GET['menuid']=='menu_map'){
 
 	ahref(trr(lr('menu_expand'),12),js2('if($(\'#expandarea\').css(\'display\')==\'block\'){$(\'#expandarea\').css(\'display\',\'none\')}else{$(\'#expandarea\').css(\'display\',\'block\')}1'));
 
+	e("</td></tr><tr><td>");
+
+	ahref(trr(lr('menu_attack'),12),js2('if($(\'#attackarea\').css(\'display\')==\'block\'){$(\'#attackarea\').css(\'display\',\'none\')}else{$(\'#attackarea\').css(\'display\',\'block\')}1'));
+
 
 	//tee('x',20,3,NULL,'x');
 	//e("</td></tr><tr><td>");
