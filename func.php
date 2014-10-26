@@ -286,11 +286,19 @@ if(typeof event === 'undefined'){1;}else{
     if(!$only and $sub!='map'){
         return($prompt."{if($('#$sub').html()){1;$bpart}else{1;$apart}}");
     }else{
+	
+	/*if($sub=='map'){
+		$before='';
+		$bpart
+	}else{
+		$before='';
+	}*/
         return($prompt."{if($('#$sub').html()){1;$bpart}}");
     }
 }
 //---------------------------------------------------------
 function subempty($sub,$html=''){
+    if(!$html)$html=nbsp;
     echo('<span id="'.$sub.'">'.$html.'</span>');
 }
 //---------------------------------------------------------

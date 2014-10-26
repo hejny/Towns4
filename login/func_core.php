@@ -9,7 +9,9 @@
 */
 //==============================
 
-function register_positionx($reg1,$reg2){
+
+//======================================================================================REGISTER POSITIONX
+function register_positionx($reg1,$reg2,$iiii=0){
 			if($reg1==4){
 				if($tid=sql_1data("SELECT `id` FROM [mpx]objects WHERE (`type`='town' OR `type`='town2') AND `name`='$reg2'")){
 					$rid=sql_array("SELECT `x`,`y` FROM [mpx]objects WHERE `type`='building' AND `own`='$tid' ORDER BY rand();");
@@ -46,7 +48,8 @@ function register_positionx($reg1,$reg2){
                     ORDER BY RAND()");
                     
                 }else{
-                    $array=unserialize(file_get_contents($file));    
+                    $array=unserialize(file_get_contents($file));
+   
                 }
                 if($array){ 
                     $q=true;
@@ -63,7 +66,7 @@ function register_positionx($reg1,$reg2){
 							$i++;
 						}
 					}else{
-						$sp=0;
+						$sp=$iiii;
 					}
 
                     list($x,$y)=$array[$sp];
@@ -74,6 +77,70 @@ function register_positionx($reg1,$reg2){
 		return(array($x,$y,$q));
 }
 
+//-------------------------------------------------REVIDOVAT POZICE
+
+define('register_min_distance',2);
+define('register_max_distance',15);
+
+function register_test($x,$y){
+	$ok=true;
+	//-------------------Zda není pozice moc blízko nebo daleko ostatním
+	if($ok){
+		$array=sql_array("SELECT `x`,`y` FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']["ww"]."' AND type='building' ORDER BY ABS(x-$x)+ABS(y-$y) LIMIT 1");
+			/** /foreach($array as $row){
+				list($xt,$yt)=$row;
+				$distance=sqrt(pow($x-$xt,2)+pow($y-$yt,2));
+				e(nbspo."$xt,$yt - $distance");br();
+			}/**/
+		list($xt,$yt)=$array[0];
+		$distance=sqrt(pow($x-$xt,2)+pow($y-$yt,2));
+		
+		if($distance<register_min_distance){$ok=false;if(debug)e('min distance '.$distance.'<'.register_min_distance);}
+		if($distance>register_max_distance){$ok=false;if(debug)e('max distance '.$distance.'>'.register_max_distance);}
+	}
+	//-------------------Zda není pozice moc daleko stromům/skalám
+	if($ok){
+		//zatím ne
+	}
+	//-------------------
+	return($ok);
+}
+
+//-------------------------------------------------REGISTER POSITIONT - už otestované pozice
+
+function register_positiont($reg1,$reg2){
+	
+	$iiii=0;
+	$i=100;
+	while($i>1){$i--;
+		$position=register_positionx($reg1,$reg2,$iiii);
+		$iiii++;
+		if(!$position){return(false);}
+
+		list($x,$y)=$position;
+		if(register_test($x,$y)){
+			return($position);
+		}
+	}
+	return(array(0,0,0));
+
+}
+
+/*    $file=tmpfile2("registerx_list","txt","text");
+    if(!file_exists($file) or unserialize(file_get_contents($file))==array()){
+        if(debug)e('No rewid pos to rewid');
+    }else{
+        $array=unserialize(file_get_contents($file));
+
+    }
+    $i=0;
+    while($array[$i]){
+     	list($x,$y)=$array[$i];
+
+
+
+		$i++;
+    }*/
 //======================================================================================REGISTER
 define("a_register_help","user,key,fbid");
 function a_register($param1,$param2='key',$fbid=false,$reg1=1,$reg2=''){
@@ -120,7 +187,7 @@ if($recid){
             }*/
 
             //-------------------------------------------------------------------------CREATE NEW TOWN
-		if(list($x,$y,$q)=register_positionx($reg1,$reg2)){
+		if(list($x,$y,$q)=register_positiont($reg1,$reg2)){
 	
                //--------------------------------------------------------------------------------
             

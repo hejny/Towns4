@@ -41,10 +41,19 @@ $style=' style="position:relative;top:-2px;left:-2px;background: rgba(20,10,30,0
 
 //e($GLOBALS['hl'].','.$GLOBALS['hl_x'].','.$GLOBALS['hl_y'].','.$GLOBALS['hl_ww']);
 
+/*js('alert("'.$GLOBALS['ss']["log_object"]->set->val('map_xc').'")');
+if(!$GLOBALS['ss']["log_object"]->set->val('map_xc')){
+	js('alert("123")');
+	$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);	
+	click($url,-1);
+}*/
 
-//přes use//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);
-//přes use//click($url,-1);
-$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
+//UZ NE//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
+
+
+
+
+
 
 //e($GLOBALS['screenwidth']);
 if($GLOBALS['mobile']){
@@ -82,8 +91,9 @@ if($GLOBALS['mobile']){
 $space=nbsp3;
 
 //e($GLOBALS['hl'].','.$GLOBALS['hl_x'].','.$GLOBALS['hl_y'].','.$GLOBALS['hl_ww']);
-border(iconr($url,'fx_center2',lr('fx_center'),$iconsize),$border1,$iconsize);  
-e($space);
+
+//UZ NE//border(iconr($url,'fx_center2',lr('fx_center'),$iconsize),$border1,$iconsize);  
+//UZ NE//e($space);
 
 //border(iconr("e=content;ee=profile;id=".useid,"profile_town","{profile_town}",$iconsize),$border2,$iconsize);
 //e($space3);
@@ -95,8 +105,8 @@ border(iconr("e=content;ee=profile;submenu=2","profile_user",lr('stat'),$iconsiz
 e($space);
 
 
-border(iconr('e=content;ee=create-create_master;submenu=3',"create_master_repair",lr('create_master_repair'),$iconsize),$border1,$iconsize);
-e($space);
+//UZ NE//border(iconr('e=content;ee=create-create_master;submenu=3',"create_master_repair",lr('create_master_repair'),$iconsize),$border1,$iconsize);
+//UZ NE//e($space);
 
 
 border(iconr("e=content;ee=plus-index","res_gold",lr('title_plus'),$iconsize),$border2,$iconsize);

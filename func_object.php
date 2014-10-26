@@ -87,6 +87,7 @@ class object{
                 $this->hard=$row["hard"];
                 $this->expand_=$row["expand"];
                 $this->collapse_=$row["collapse"];
+                $this->attack_=$row["attack"];
                 $this->own=$row["own"];
                 $this->ownname=$row["ownname"];
                 $this->in=$row["in"];
@@ -123,7 +124,7 @@ class object{
             //r($id);
             $id=nextid();
             $name='object '.$id;
-            sql_query("INSERT INTO `".mpx."objects` (`id`,`name`, `type`, `fp`, `fs`, `dev`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `collapse`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0, 0,'1', NULL, NULL, '0', '0')",1);
+            sql_query("INSERT INTO `".mpx."objects` (`id`,`name`, `type`, `fp`, `fs`, `dev`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `collapse`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);
             //$this->id=sql_1data("SELECT LAST_INSERT_ID()");
             $this->id=$id;
             $this->name=$name;
@@ -144,6 +145,7 @@ class object{
             $this->hard="";
             $this->expand_="";
             $this->collapse_="";
+	    $this->attack_="";
             $this->own="";
             $this->ownname="";
             $this->ww="1";
@@ -310,10 +312,11 @@ class object{
                     $this->fr=$this->hold->fp();  
                     //------------------------------FX
                     $this->fx=$this->fp+$this->fr;
-                    //------------------------------HARD,EXPAND,COLLAPSE
+                    //------------------------------HARD,EXPAND,COLLAPSE,ATTACK
                     $tmp=$funcs["hard"]["params"]["hard"];$this->hard=$tmp[0]*$tmp[1];//r(444);r($tmp);
 					$tmp=$funcs["expand"]["params"]["distance"];$this->expand_=$tmp[0]*$tmp[1];    
 					$tmp=$funcs["collapse"]["params"]["distance"];$this->collapse_=$tmp[0]*$tmp[1];
+					$tmp=$funcs["attack"]["params"]["distance"];$this->attack_=$tmp[0]*$tmp[1];
                     //------------------------------TIME
                     $this->t=time();   
                     //------------------------------FP=FS
@@ -353,6 +356,7 @@ class object{
                 `hard` =  '".(($this->hard))."',
                 `expand` =  '".(($this->expand_))."',
                 `collapse` =  '".(($this->collapse_))."',
+                `attack` =  '".(($this->attack_))."',
                 `own` =  '".(($this->own))."',
                 `in` =  '".(($this->in))."',
                 `ww` =  '".(($this->ww))."',
@@ -484,10 +488,13 @@ class object{
     }*/
     //--------------------------------------------tostring
 
+
+
+
     /**
      * @return mixed|string
      */
-    function tostring(){
+    /*function tostring(){
         $head=$this->name;
         $return=
 "$head:type =  ".($this->type).";
@@ -515,7 +522,11 @@ $head:x =  ".($this->x).";
 $head:y =  ".($this->y).";";
         $return=str_replace(nln.nln,nln,$return);
         return($return);
-    }
+    }*/
+
+
+
+
     //--------------------------------------------type
     function type(){
         /*$types=array_reverse($GLOBALS['config']["types"]);
@@ -552,9 +563,9 @@ $head:y =  ".($this->y).";";
             $funcs=$this->func->vals2list();
             $newfuncs=$funcs;
             $support=array();
-            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`collapse`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' ORDER BY t desc");
+            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`collapse`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' ORDER BY t desc");
             foreach($in2 as $item){
-                list($_id,$_type,$_fp,$_fs,$_dev,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_collapse,$_own,$_in,$_t,$_x,$_y)=$item;
+                list($_id,$_type,$_fp,$_fs,$_dev,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_collapse,$_attack,$_own,$_in,$_t,$_x,$_y)=$item;
                 $_x=intval($_x);$_y=intval($_y);
                 if(!$_x)$_x="";
                 foreach($funcs["hold$_x"]["params"] as $param=>$value){

@@ -48,6 +48,7 @@ function ftp_get_dir($conn_id,$local_dir,$remote_dir,$mode){
 	chmod($local_dir,0777);
 
 	$files = ftp_nlist($conn_id,$remote_dir);
+	//print_r($files);die();
 	foreach($files as $file){
 		$file_local=$local_dir.'/'.basename($file);
 		if(ftp_size($conn_id,$file)>1){
@@ -73,6 +74,7 @@ function ftp_put_dir($conn_id,$remote_dir,$local_dir,$mode){
 	ftp_chmod($conn_id,0777,$remote_dir);
 
 	$files = glob($local_dir.'/*');
+	//print_r($files);die();
 	foreach($files as $file){
 		$file_remote=$remote_dir.'/'.basename($file);
 		//e($file);br();

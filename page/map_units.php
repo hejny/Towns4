@@ -22,6 +22,7 @@ require_once(root.core."/func_map.php");
 
     $GLOBALS['units_stream']='';
     $GLOBALS['area_stream']='';
+    $GLOBALS['attack_stream']='';
 
 
 
@@ -66,7 +67,8 @@ if(!$GLOBALS['map_units_ids']){
 
 
 	if(!mobile){
-	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+35 AND (x+y)<($xu+$yu)+60";
+	/*dafaq*/
+	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 	}else{
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	}
@@ -78,12 +80,12 @@ if(!$GLOBALS['map_units_ids']){
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 		// AND ((`own`=".useid." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range/*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/);
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range/*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/);
 }else{
 	$where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,t,`func`,`fp`,`fs`,`func` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where");
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where");
 }
 
 
@@ -111,16 +113,18 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     
     $expand=floatval($row[10]);
     $collapse=floatval($row[11]);
+    $attack=floatval($row[12]);
     
     /*$func=new func($row[16]);
     $attack=$func->param('attack','distance');
     //e($row[16]);br();
     unset($func);*/
     
-    $time=intval($row[12]);
-    $func=$row[13];
-    $fp=$row[14];
-    $fs=$row[15];
+    $time=intval($row[13]);
+    $func=$row[14];
+    $fp=$row[15];
+    $fs=$row[16];
+    //$idid=$row[17];
 
     $uzids[]=$id;
 
@@ -207,28 +211,19 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         
 	t($name.' - beforeexpandcollapse');
 
-       //--------------------------------------------------------------EXPAND,COLLAPSE,ATTACK
-
-       //-------------------------------EXPAND
-       $attackx=$attack;
-       
-       $attack=sqrt(rand(10,30)/10);
-       //$expand=sqrt(rand(10,30)/10);
-       //$collapse=sqrt(rand(10,30)/10);
-       
-       
-        if(($expand and $own==useid) or $collapse or $attack){
-	    if($own!=useid){$expand=0;$attack=0;}
-        $file=tmpfile2('expand'.$expand.'collapse'.$collapse.'attack'.$attack,'png',"image");
+       //--------------------------------------------------------------EXPAND,COLLAPSE
+           
+        if(($expand and $own==useid) or $collapse){
+	    if($own!=useid){$expand=0;}
+        $file=tmpfile2('expand'.$expand.'collapse'.$collapse,'png',"image");
         //e($file);
 	       $y=1;//gr;
 	       $brd=3*$y;
 	       $se=82*$expand*$y;
 	       $sc=82*$collapse*$y;
-	       $sa=82*$attack*$y;
-	       $s=max(array($se,$sc,$sa));   
+	       $s=max(array($se,$sc));   
      
-        if(!file_exists($file)  or notmpimg/**/ or true/**/){
+        if(!file_exists($file)  or notmpimg/** or true/**/){
 
 
 		
@@ -240,22 +235,22 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		imagealphablending($img,true);
                 imagefill($img,0,0,$outer);
                 
-        $sxs=array('se'=>$se,'sc'=>$sc,'sa'=>$sa);
+        $sxs=array('se'=>$se,'sc'=>$sc);
         arsort($sxs);
         foreach($sxs as $key=>$sx){
             if($sx){
         		//-----EXPAND
         		if($key=='se'){
-                        $inner =  imagecolorallocatealpha($img, 0, 0, 0, 60);
+                        $inner =  imagecolorallocatealpha($img, 50, 50, 70, 60);//, 0, 0, 0, 70
         		}
         		//-----COLLAPSE
         		if($key=='sc'){
-                     	$inner =  imagecolorallocatealpha($img, 255, 0, 40, 60);
+                     	$inner =  imagecolorallocatealpha($img, 255, 0, 40, 70);
         		}
         		//-----ATTACK
-        		if($key=='sa'){
+        		/*if($key=='sa'){
                      	$inner =  imagecolorallocatealpha($img, 200, 255, 10, 60);
-        		}
+        		}*/
         		//-----DRAW
         		imagefilledellipse($img, $s/2, $s/4, $sx-$brd, ($sx/2)-$brd, $inner);
             }
@@ -273,35 +268,84 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         <img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
         </div></div>';
         }   
-	
-       //-------------------------------COLLAPSE
-       /*if($collapse){
-       $y=gr;
-       $brd=3*$y;
-       $s=82*$collapse*$y;
-        $file=tmpfile2('collapse'.$collapse,'png',"image");
-        if(!file_exists($file)  or notmpimg/** or true){    
-                $img=imagecreatetruecolor($s,$s/2);
+       //--------------------------------------------------------------ATTACK
+	//$attackx=$attack;
+	//$attack=1;
+       if($attack or $own!=useid){
+	    if($own!=useid){$attack=1;$aa=gr;}else{
+		$aa=gr;
+		//$attack_mafu=$GLOBALS['ss']["use_object"]->set->val("attack_mafu");
+		//list($attack_ma)=explode('-',$attack_mafu);
+		$set=$GLOBALS['ss']["use_object"]->set->val("set");
+		$set=str2list(xx2x($set));
+		$attack_mafu=$set['attack_mafu'];
+		list($attack_ma)=explode('-',$attack_mafu);
+		//print_r($set);br();
+		//e("$attack_ma==$id");br();
+		if($attack_ma==$id){
+			$selected='selected';
+		}else{
+			$selected='';
+		}
+		}
+
+
+        $file=tmpfile2('attack'.($own==useid?$attack:'x').$selected,'png',"image");
+        //e($file);
+	       $y=1;//gr;
+	       $brd=3*$y;
+	       $s=82*$attack*$y;
+     
+        if(!file_exists($file) or notmpimg/** or true/**/){
+
+
+		
+		//$sesc="$expand=$se,$collapse=$sc";
+
+                $img=imagecreate($aa*$s,$aa*$s/2);
                 imagealphablending($img,false);
                 $outer =  imagecolorallocatealpha($img, 0, 0, 0, 127);
-                $inner =  imagecolorallocatealpha($img, 255, 0, 0, 70);
-                $border = imagecolorallocatealpha($img, 0, 0, 0, 50);
+		imagealphablending($img,true);
+		//imageantialias($img,true);
                 imagefill($img,0,0,$outer);
-                imagefilledellipse($img, $s/2, $s/4, $s,  $s/2   , $border);
-                imagefilledellipse($img, $s/2, $s/4, $s-$brd, ($s/2)-$brd, $inner);
+                
+		if($own==useid){
+			if($selected){
+        			$inner =  imagecolorallocatealpha($img, 150, 255, 255, 70);
+				$outer =  imagecolorallocatealpha($img, 0, 0, 0, 50);
+			}else{
+        			$inner =  imagecolorallocatealpha($img, 150, 255, 255, 70);
+				$outer =  imagecolorallocatealpha($img, 0, 0, 0, 120);
+			}
+			
+			$plus=2;
+			imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*$s, $aa*($s/2), $outer);
+			imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*($s-$brd), $aa*(($s/2)-$brd), $inner);
+		}else{
+        		$inner =  imagecolorallocatealpha($img, 255, 100, 100, 80);
+			$outer =  imagecolorallocatealpha($img, 0, 0, 0, 50);
+			$plus=2;
+			imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*$s, $aa*($s/2), $outer);
+			imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*($s-$brd), $aa*(($s/2)-$brd), $inner);
+		}
+		//-----
                 imagesavealpha($img,true);
-                imagepng($img,$file);
+                imagepng($img,$file,9,PNG_ALL_FILTERS);
+		imagedestroy($img);
                 chmod($file,0777);
         }
         
-        $src=rebase(url.base.$file);        
-        $GLOBALS['area_stream'].='<div style="position:absolute;z-index:150;" id="collapse'.$id.'">
-        <div style="position:relative; top:'.($ry-((($s/$y/4)+htmlbgc)/$GLOBALS['mapzoom'])).'; left:'.($rx-($s/$y/2/$GLOBALS['mapzoom'])).';" >
-        <img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
+        $src=rebase(url.base.$file);
+
+
+	//die($src);    
+        $GLOBALS['attack_stream'].='<div style="position:absolute;z-index:150;" id="attack'.$id.'">
+        <div style="position:relative; top:'.($ry-((($s/$y/4)+htmlbgc)/$GLOBALS['mapzoom'])).'; left:'.($rx-($s/$y/2/$GLOBALS['mapzoom'])).';" >'./*$attackx.*/'       	
+	<img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
         </div></div>';
-        }*/
+        } 
+
 	
-        //-------------------------------
 	//--------------------------------------------------------------
         	t($name.' - beforeunit');
 	if(1/* and $time>$mapunitstime*/){

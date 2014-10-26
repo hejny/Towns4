@@ -270,7 +270,7 @@ if($q==1){
 	</script>
 
 	<?php
-	if(!is_numeric($GLOBALS['ss']["log_object"]->name)){
+	//if(!is_numeric($GLOBALS['ss']["log_object"]->name)){
     	if($GLOBALS['get']['fb_disconnect']){
     		sql_query("DELETE FROM [mpx]login WHERE method='facebook' AND id='".logid."'");
     		//success(lr('fb_disconnected'));
@@ -288,7 +288,8 @@ if($q==1){
     		eval(subpage('login-fb_login'));
     
     	}
-	}
+	blue(lr('fb_form_warning'));
+	//}
 	?>
 
 
