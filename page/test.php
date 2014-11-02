@@ -9,10 +9,12 @@
 */
 //==============================
 
-?>
-ddd
-<?php
+//r(mostnear(5,5));
+r(blocktest('A',25,5));
+die();
 
+
+/*
 exec('ls', $out);
 var_dump($out);
 // Look an array

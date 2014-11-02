@@ -188,13 +188,15 @@ function changemap($x,$y,$files=false){
     //sql_query("UPDATE `".mpx."map` SET  `hard` =  IF(`terrain`='t1' OR `terrain`='t11',1,0)+(SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=`".mpx."map`.`ww` AND  ROUND(`".mpx."objects`.`x`)=`".mpx."map`.`x` AND ROUND(`".mpx."objects`.`y`)=`".mpx."map`.`y`) WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
 }
 //------------------------
-function hard($rx,$ry,$w=false){
+
+//Funkce HARD je zastaralá
+/*function hard($rx,$ry,$w=false){
     if(!$w)$w=$GLOBALS['ss']["ww"];
     $hard1=sql_1data("SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$w." AND  `".mpx."map`.`x`=$rx AND `".mpx."map`.`y`=$ry");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
     $hard2=sql_1data("SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$w." AND  ROUND(`".mpx."objects`.`x`)=$rx AND ROUND(`".mpx."objects`.`y`)=$ry AND `own`!='".useid."'");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
     $hard=floatval($hard1)+floatval($hard2);
     return($hard);
-}
+}*/
   
 //======================================================================================
 //CONFIG

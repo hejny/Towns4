@@ -42,19 +42,27 @@ $rx=round($x);
 $ry=round($y);    
     
     if(/*!floatval(sql_1data("SELECT COUNT(1) FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`=$rx AND `y`=$ry AND `own`!='".useid."' LIMIT 1"))*/true){    
-    
-    //OLDHARD//sql_1data("SELECT hard FROM ".mpx."map WHERE x=ROUND(".($x).") AND y=ROUND(".($y).") LIMIT 1"))
-    $hard=hard($rx,$ry);
-    
-    //e($id);br();
-    //e("hard=$hard");br();
-    //e("resistance=".supportF($id,'resistance','hard'));br();
-    
-    if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
-    
-    //print_r(sql_array("SELECT id,name FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"));
-    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
-       
+
+    //OLD COLLAPSE//$hard=hard($rx,$ry);
+    //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
+	//OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){	
+
+	if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))==0){
+
+
+	$resistance=supportF($id,'resistance','resistance');
+	if(!$resistance){
+		$q=(!($blocktest=block1test('B',$x,$y)));
+	}else{
+		$q=true;
+	}
+
+
+	if($q){
+
+	if(!($blocktest=block2test('B',$x,$y))){
+
+
     if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
         
 
@@ -90,8 +98,8 @@ $ry=round($y);
 			$nextid=nextid();
 			define('object_id',$nextid);
 			$GLOBALS['object_ids']=array($nextid);
-			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `collapse`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`) 
-SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `collapse`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time()." FROM `".mpx."objects` WHERE id='$id'");
+			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`) 
+SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time()." FROM `".mpx."objects` WHERE id='$id'");
 		}
 
 		$GLOBALS['ss']["query_output"]->add("1",1);
@@ -304,16 +312,26 @@ $GLOBALS['ss']['use_object']->resurkey();
         define('object_build',true);
         define('create_error',lr('create_error_expand'));
         $GLOBALS['ss']["query_output"]->add("error",lr('create_error_expand'));
-    }}else{
+    }/*}else{
         define('object_build',true);
         define('create_error',lr('create_error_collapse'));
         $GLOBALS['ss']["query_output"]->add("error",lr('create_error_collapse'));
+    }*/
+	}else{
+        define('object_build',true);
+		if(is_numeric($blocktest))$blocktest='object';
+        define('create_error',lr('create_error_block_'.$blocktest));
+        $GLOBALS['ss']["query_output"]->add("error",lr('create_error_block_'.$blocktest));
     }}else{
         define('object_build',true);
         //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `".mpx."map`.`x`=$y AND `".mpx."map`.`y`=$x)+(SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`".mpx."objects`.`x`)=$y AND ROUND(`".mpx."objects`.`y`)=$x)";
         //$hard=sql_1data($sql);// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
-        define('create_error',lr('create_error_resistance'));
-        $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance'));
+        define('create_error',lr('create_error_resistance_'.$blocktest));
+        $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance_'.$blocktest));
+    }}else{
+        define('object_build',true);
+        define('create_error',lr('create_error_wall_distance'));
+        $GLOBALS['ss']["query_output"]->add("error",lr('create_error_wall_distance'));
     }}else{
         define('object_build',true);
         define('create_error',lr('create_error_duplicite'));
@@ -322,10 +340,10 @@ $GLOBALS['ss']['use_object']->resurkey();
 }
 
 //================================================================================================================
-function a_replace($id,$x=0,$y=0,$rot=0){
+/*function a_replace($id,$x=0,$y=0,$rot=0){
     r("$id,$x=0,$y=0,$rot=0");
     //require(root."control/func_map.php");
-    //if(/*sql_1data("SELECT hard FROM ".mpx."map WHERE x=ROUND(".($x).") AND y=ROUND(".($y).") LIMIT 1")-0==0 or */true){
+    //if(/*sql_1data("SELECT hard FROM ".mpx."map WHERE x=ROUND(".($x).") AND y=ROUND(".($y).") LIMIT 1")-0==0 or * /true){
 
 $res=sql_1data("SELECT res FROM ".mpx."objects WHERE id='$id'");
 
@@ -339,7 +357,7 @@ $ry=round($y);
     
     if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND `id`!='".$GLOBALS['ss']['aac_object']->id."' AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
        
-    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"].""))<=1/* and intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND `id`!='".$GLOBALS['ss']['aac_object']->id."' AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1*/){
+    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"].""))<=1/* and intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND `id`!='".$GLOBALS['ss']['aac_object']->id."' AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1* /){
         
         $GLOBALS['ss']['aac_object']->x=$x;
         $GLOBALS['ss']['aac_object']->y=$y;
@@ -369,7 +387,7 @@ $ry=round($y);
         define('create_error',lr('replace_error_duplicite'));
         $GLOBALS['ss']["query_output"]->add("error",lr('replace_error_duplicite'));
     }
-}
+}*/
 
 
 //================================================================================================================

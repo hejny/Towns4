@@ -85,13 +85,19 @@ function a_attack($id,$lowed=false){
             $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_distance',$a_dist));
             return;
         }
+		//-------BLOCK
+
+		if(block2test('A',$GLOBALS['ss']["aac_object"]->x,$GLOBALS['ss']["aac_object"]->y,$attacked->x,$attacked->y,$attacked->id)){
+            $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_block'));
+            return;
+		}
         
         //-------PRICE
         //e(1);
         list($q,$time,$a_fp2,$b_fp2,$a_tah,$b_tah,$a_atf,$b_atf)=attack_count(50,50,$a_fp,$b_fp,$a_at,$b_at,$a_cnt,$b_cnt,$a_de,$b_de,$a_att,$b_att);
         //e($a_tah);        
         $price=use_price("attack",array("time"=>$a_tah),$support[$attack_type]["params"],2);
-        if(!test_hold($price)){
+        if(!$GLOBALS['ss']["use_object"]->hold->testchange($price)){
             $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_price'));
             return;
         }
@@ -160,7 +166,10 @@ function a_attack($id,$lowed=false){
         
         $GLOBALS['ss']["aac_object"]->fp=$a_fp2;
         $attacked->fp=$b_fp2;
-        use_hold($price);
+        
+		$GLOBALS['ss']["use_object"]->hold->takehold($price);
+		//use_hold($price);
+
         if(!$b_fp2){
         $attacked->hold->take($steal);
         $steal->multiply(-1);

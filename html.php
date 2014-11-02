@@ -125,6 +125,10 @@ qlog(0,0,0,'html',NULL,NULL);
 
 </head>
 <body>
+<!--<a href="http://katalog.nene.cz/">Katalog internetových stránek</a>-->
+<?php if($GLOBALS['inc']['google_page']){ ?>
+<a href="https://plus.google.com/<?php e($GLOBALS['inc']['google_page']); ?>" rel="publisher"></a>
+<?php } ?>
 
 
 <?php if(logged() or 1){ /**/?>

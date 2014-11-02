@@ -20,6 +20,12 @@ Tato funkce slouží k vytvoření stavebních plánů.<br/>
     </label></td>
   </tr>
     <tr>
+ <td><strong>Brutal:</strong></td>
+    <td><label>
+<input name="brutal" type="text" id="brutal" value="0" />
+    </label></td>
+  </tr>
+    <tr>
     <td colspan="2"><label>
       <input type="submit" name="submit" value="OK" />
       
@@ -109,7 +115,7 @@ if($_POST['filename']){
 			$object->origin=($origin?explode(',',$origin):array($id));
 			if($origin){
 				foreach(explode(',',$origin) as $oid){
-					$ofunc=sql_1data('SELECT func FROM [mpx]objects WHERE `name`=\'{'.$oid.'}\' OR id=\''.$oid.'\'',2);
+					$ofunc=sql_1data('SELECT func FROM [mpx]objects WHERE `name`=\'{'.$oid.'}\' OR id=\''.$oid.'\'');
 					$ofunc=new func($ofunc);
 					$func->join($ofunc);
 				}
@@ -120,7 +126,7 @@ if($_POST['filename']){
 			$object->ww=0;
 			$object->own=$_POST['own'];
 			
-			textb($object->name);
+			textb($object->name);br();
 
 			r('name: '.$name);
 			r('id: '.$id);
@@ -150,18 +156,19 @@ if($_POST['filename']){
 				$upd_fx=$object->fx;
 				$upd_hard=$object->hard;
 				$upd_expand=$object->expand_;
-				$upd_collapse=$object->collapse_;
+				$upd_block=$object->block_;
 
 
-				$aff=sql_query("UPDATE [mpx]objects SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', hard='$upd_hard', expand='$upd_expand', collapse='$upd_collapse' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') AND origin='$upd_origin' AND ww!=0",1);
-				echo(' - '.$aff);
+				$aff=sql_query("UPDATE [mpx]objects SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', hard='$upd_hard', expand='$upd_expand', block='$upd_block' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') ".($_POST['brutal']?'':"AND origin='$upd_origin'")." AND ww!=0",2);br();
+				//die();
+				//echo(' - '.$aff);
 			}
 
 				
 
 			if($id/* and $object->id!=$id*/){
 				sql_query('DELETE FROM [mpx]objects WHERE id='.$id,1);
-				sql_query('UPDATE [mpx]objects SET id='.$id.' WHERE id='.$object->id,2);
+				sql_query('UPDATE [mpx]objects SET id='.$id.' WHERE id='.$object->id,2);br();
 				r('reid: '.$object->id.' >>> '.$id);
 			}
 

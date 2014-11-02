@@ -599,6 +599,106 @@ function xsuccessalert($text){
 r('OLD!-xsuccessalert');
 if(xsuccess()){alert($text,1);}
 }*/
+//=================================================================================================blocktest
+function block1test($type,$x,$y){
+
+	$x=round($x);
+	$y=round($y);
+
+	if($type=='A'){
+		$cc=intval(sql_1data("SELECT id FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y AND `block`!=0 LIMIT 1",1));
+		if($cc)return($cc);
+
+	}elseif($type=='B'){
+
+		$cc=sql_1data("SELECT terrain FROM ".mpx."map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+		//e($cc);			
+		if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
+
+	}
+
+
+return(0);
+
+}
+//-----------------------------------------------------
+function block2test($type,$x1,$y1,$x2=false,$y2=false,$noid=false){
+//e('block2test');
+
+if(!$x2){
+	$x2=$x1;
+	$y2=$y1;
+	list($x1,$y1)=mostnear($x2,$y2);
+}
+
+
+$dist=sqrt(pow($x1-$x2,2)+pow($y1-$y2,2));
+$distx=floor($dist)+1;
+r($dist.','.$distx);
+$i=0;
+$ccc=array();
+
+while($i<=$distx){
+	$pa=$i/$distx;
+	$pb=1-$pa;
+
+	$x=($x1*$pb)+($x2*$pa);	
+	$y=($y1*$pb)+($y2*$pa);
+	$x=round($x);
+	$y=round($y);
+
+	//e("($x,$y)");
+	
+
+	if(($x!=$xx or $y!=$yy) and !($x==$x1 and $y==$y1) and !($x==$x2 and $y==$y2)){
+
+		//e("x");
+		r("$i: $x,$y");
+	
+		if($type=='A'){
+			$cc=(sql_array("SELECT id,type FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ((`type`='building' AND `block`!=0) OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1));
+			//print_r($cc);br();
+			if($cc){
+				if($cc[0][1]=='rock'){return('rock');}
+				$ccc[]=$cc[0];
+				//print_r($ccc);br();
+			}
+
+		}elseif($type=='B'){
+			$cc=sql_1data("SELECT type FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock' OR `type`='tree') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1);
+
+		
+			//e($cc);
+			if($cc){
+				return($cc);
+			}
+
+			$cc=sql_1data("SELECT terrain FROM ".mpx."map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+			//e($cc);			
+			if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
+
+ 		}
+
+		$xx=$x;
+		$yy=$y;
+
+	}
+	$i++;
+}
+
+//print_r($ccc);
+if(count($ccc)==0){
+	return(0);
+}else{
+	return($ccc);
+}
+}
+//-------------------------------------------------mostnear
+function mostnear($x,$y){
+	$array=sql_array("SELECT x,y FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building') ORDER BY POW($x-x,2)+POW($y-y,2) LIMIT 1");
+	return($array[0]);
+
+}
 //===================================================================================================qlog
 function qlog($logid,$useid,$aacid,$function,$params,$output){
 	if(!defined('createdlog')){define('createdlog',true);
