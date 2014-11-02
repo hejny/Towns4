@@ -80,12 +80,12 @@ if(!$GLOBALS['map_units_ids']){
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 		// AND ((`own`=".useid." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range/*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/);
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range/*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/);
 }else{
 	$where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,collapse,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where");
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where");
 }
 
 
@@ -112,7 +112,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     $profileown=$row[9];
     
     $expand=floatval($row[10]);
-    $collapse=floatval($row[11]);
+    $block=floatval($row[11]);
     $attack=floatval($row[12]);
     
     /*$func=new func($row[16]);
@@ -212,15 +212,21 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 	t($name.' - beforeexpandcollapse');
 
        //--------------------------------------------------------------EXPAND,COLLAPSE
-           
-        if(($expand and $own==useid) or $collapse){
-	    if($own!=useid){$expand=0;}
-        $file=tmpfile2('expand'.$expand.'collapse'.$collapse,'png',"image");
+		define('size_radius',100);
+
+
+        if(($expand and $own==useid) or $block){
+	    if($own!=useid){$expand=0;$aa=gr;$ad='q';}else{$aa=gr;$ad='w';}
+		if($block){$block=distance_wall;}else{$block=0;}
+		//$expand=0.3;
+		//$expand=0.1;
+
+        $file=tmpfile2(size_radius.'expand'.$expand.'block'.$block.$ad/**.rand(1,9999)/**/,'png',"image");
         //e($file);
 	       $y=1;//gr;
 	       $brd=3*$y;
-	       $se=82*$expand*$y;
-	       $sc=82*$collapse*$y;
+	       $se=size_radius*$expand*$y;
+	       $sc=size_radius*$block*$y;
 	       $s=max(array($se,$sc));   
      
         if(!file_exists($file)  or notmpimg/** or true/**/){
@@ -229,7 +235,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		
 		//$sesc="$expand=$se,$collapse=$sc";
 
-                $img=imagecreate/*truecolor*/($s,$s/2);
+                $img=imagecreate($aa*$s,$aa*$s/2);
                 imagealphablending($img,false);
                 $outer =  imagecolorallocatealpha($img, 0, 0, 0, 127);
 		imagealphablending($img,true);
@@ -237,22 +243,35 @@ foreach($array as $row){//WHERE res=''//modelnamape//
                 
         $sxs=array('se'=>$se,'sc'=>$sc);
         arsort($sxs);
+
         foreach($sxs as $key=>$sx){
             if($sx){
         		//-----EXPAND
         		if($key=='se'){
                         $inner =  imagecolorallocatealpha($img, 50, 50, 70, 60);//, 0, 0, 0, 70
+						$outer =  imagecolorallocatealpha($img, 0, 0, 0, 50);
+						imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*$sx, $aa*($sx/2), $outer);
+						imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*($sx-$brd), $aa*(($sx/2)-$brd), $inner);
         		}
-        		//-----COLLAPSE
+        		//-----BLOCK
         		if($key=='sc'){
-                     	$inner =  imagecolorallocatealpha($img, 255, 0, 40, 70);
+						if($own!=useid){
+                     		$inner =  imagecolorallocatealpha($img, 255, 0, 40, 70);
+							$outer =  imagecolorallocatealpha($img, 150, 0, 20,  50);
+						}else{
+                     		$inner =  imagecolorallocatealpha($img, 0, 255, 40, 70);
+							$outer =  imagecolorallocatealpha($img, 0, 150, 20,  50);
+						}
+						
+						imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*$sx, $aa*($sx/2), $outer);
+						imagefilledellipse($img, $aa*$s/2, $aa*$s/4, $aa*($sx-$brd), $aa*(($sx/2)-$brd), $inner);
         		}
         		//-----ATTACK
         		/*if($key=='sa'){
                      	$inner =  imagecolorallocatealpha($img, 200, 255, 10, 60);
         		}*/
         		//-----DRAW
-        		imagefilledellipse($img, $s/2, $s/4, $sx-$brd, ($sx/2)-$brd, $inner);
+
             }
         }
 		//-----
@@ -290,11 +309,11 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		}
 
 
-        $file=tmpfile2('attack'.($own==useid?$attack:'x').$selected,'png',"image");
+        $file=tmpfile2(size_radius.'attack'.($own==useid?$attack:'x').$selected,'png',"image");
         //e($file);
 	       $y=1;//gr;
 	       $brd=3*$y;
-	       $s=82*$attack*$y;
+	       $s=size_radius*$attack*$y;
      
         if(!file_exists($file) or notmpimg/** or true/**/){
 

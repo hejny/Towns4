@@ -226,7 +226,7 @@ exit2();
     $windows,
     array(
     //'langcontrol'=>array("langcontrol",97,1,62,27,array(0,0,1,1),4),
-    //'fblike'=>array("fblike",170,1,120,27,array(0,0,1,1),4)
+    'fblike'=>array("fblike",170,1,120,27,array(0,0,1,1),4)
     ));
 
 

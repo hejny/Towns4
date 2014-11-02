@@ -118,6 +118,30 @@ elseif($id==$attack_master){error(lr('attack_self'));}
 else{
 $attacker=new object($attack_master);r($attack_master);
 $attacked=new object($id);
+
+
+//--------------------------------------------------------------------------------------------------BLOCK
+//e($attacked->id);
+$block=block2test('A',$attacker->x,$attacker->y,$attacked->x,$attacked->y,$attacked->id);
+
+if($block){
+	$noconfirm=1;
+	br();
+	if(is_array($block)){
+
+		foreach($block as $block1){
+			error(lr('attack_error_block_object',id2name($block1['id'])));
+			ahref(lr('attack_unblock_button'),'e=content;ee=attack-attack;set=attack_id,'.$block1['id']);
+
+		}
+	
+	}else{
+		error(lr('attack_error_block_'.$block));
+	}
+	br(2);
+}
+//--------------------------------------------------------------------------------------------------
+
 if(!$attacked->loaded or !$attacker->loaded){error(lr('attack_wtf'));
     }/*elseif($attacked->ww!=$GLOBALS['ss']["ww"]){error('{attack_ww}');}*/else{
     $type=$attacked->type;

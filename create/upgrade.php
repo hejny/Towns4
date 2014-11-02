@@ -93,7 +93,7 @@ if($id?ifobject($id):false){
 			br();
 			e('<table width="100%" border="0" cellpadding="0" cellspacing="0">');
 			foreach($primes as $pid=>$prime){
-				if($prime['count'] and strpos($prime['name'],'create_')===false){
+				if($prime['count'] and strpos($prime['name'],'create_')===false and $prime['name']!='{block}' and $prime['name']!='{resistance}'){
 					//print_r($prime);
 					e('<tr>');
 					//e('<td width="10">'.($prime['count']==1?'':$prime['count'].'x').'</td>');
