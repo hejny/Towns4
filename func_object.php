@@ -35,7 +35,7 @@ class object{
 		t("object - create - a");
             $sql_ownname="(SELECT name FROM ".mpx."objects as tmp WHERE tmp.id=".mpx."objects.own) AS ownname";
             $sql_inname="(SELECT name FROM ".mpx."objects as tmp WHERE tmp.id=".mpx."objects.in) AS inname";
-            $result = sql_array("SELECT *,$sql_ownname,$sql_inname FROM ".mpx."objects WHERE $where ORDER BY `id` LIMIT 1",0);
+            $result = sql_array("SELECT *,$sql_ownname,$sql_inname FROM ".mpx."objects WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1",0);
             $row = $result[0];
             if($row){
                 //---------------
@@ -384,7 +384,7 @@ class object{
 	
 	foreach(array('tree','rock') as $type){
 
-		foreach(sql_array('SELECT `id`,`func`,(SELECT sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) FROM `[mpx]objects` as `B` WHERE type=\''.$type.'\' ORDER BY sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) LIMIT 1) FROM `[mpx]objects` as `A` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' ') as $row){
+		foreach(sql_array('SELECT `id`,`func`,(SELECT sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) FROM `[mpx]objects` as `B` WHERE type=\''.$type.'\' ORDER BY sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) LIMIT 1) FROM `[mpx]objects` as `A` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
 			list($id,$func,$distance)=$row;
 			$func=func2list($func);
 			
@@ -408,7 +408,7 @@ class object{
 	}
 	//------------------------holdx
 	$surkey=array();
-	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]holdx%\' ') as $row){
+	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]holdx%\' AND'.objt()) as $row){
 		list($func)=$row;
 		$func=func2list($func);
 		for($i=1;$i<50;$i++){
@@ -429,7 +429,7 @@ class object{
 
 	//------------------------change
 	$eff=0;
-	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]change%\' ') as $row){
+	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]change%\' AND '.objt()) as $row){
 		list($func)=$row;
 		$func=func2list($func);
 		foreach(array('change'/*,'change2','change3','change4','holdx5','holdx6'*/) as $fname){
@@ -452,12 +452,17 @@ class object{
         r($this->profile->vals2str());
         }else{r("not loaded");}
     }
-    //--------------------------------------------delete
+    //--------------------------------------------delete je zastaralé
     /**
      *
      */
     function delete(){
         sql_query("DELETE FROM `".mpx."objects` WHERE `id` = '".$this->id."'");
+        $this->loaded=false;
+    }
+
+    function deletex(){
+        sql_query("UPDATE `".mpx."objects` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'");
         $this->loaded=false;
     }
     //--------------------------------------------//TASKS//
@@ -563,7 +568,7 @@ $head:y =  ".($this->y).";";
             $funcs=$this->func->vals2list();
             $newfuncs=$funcs;
             $support=array();
-            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' ORDER BY t desc");
+            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' AND ".objt()." ORDER BY t desc");
             foreach($in2 as $item){
                 list($_id,$_type,$_fp,$_fs,$_dev,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_block,$_attack,$_own,$_in,$_t,$_x,$_y)=$item;
                 $_x=intval($_x);$_y=intval($_y);
@@ -634,7 +639,7 @@ $head:y =  ".($this->y).";";
 	sort($origin);
 	$this->origin=$origin;
 
-	$reference=sql_array("SELECT `name`,`profile`,`res`,`own` FROM `[mpx]objects` WHERE `ww`=0 AND `origin`='".implode(',',$origin)."' ORDER BY RAND()");
+	$reference=sql_array("SELECT `name`,`profile`,`res`,`own` FROM `[mpx]objects` WHERE `ww`=0 AND `origin`='".implode(',',$origin)."' AND ".objt()." ORDER BY RAND()");
 	if($reference){
 		list($name,$profile,$res,$own)=$reference[0];
 		$this->name=$name;
@@ -683,7 +688,7 @@ $head:y =  ".($this->y).";";
     function resc($own=false){
 	if(!$own)$own=$this->own;
 	$res=$this->res;
-        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own);
+        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own.' AND '.objt());
     	$profileown=str2list($profileown);
     	if($profileown['color']){
 		$res=str_replace('000000',$profileown['color'],$res);
@@ -691,10 +696,11 @@ $head:y =  ".($this->y).";";
 	return($res);
     }
 }
-//======================================================================================
+//============================================================================================================================================================================
+//======================================================================================resc
 //--------------------------------------------resc out
     function resc($res,$own){
-        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own);
+        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own.' AND '.objt());
     	$profileown=str2list($profileown);
     	if($profileown['color']){
 		$res=str_replace('000000',$profileown['color'],$res);
@@ -703,42 +709,46 @@ $head:y =  ".($this->y).";";
     }
 
 //--------------------------------------------
+//======================================================================================supportF
 
 function supportF($id,$function,$value=""){
     $object=new object($id);
     return($object->supportF($function,$value));
 }
 
-
+//======================================================================================nextid
 function nextid($id){
     $id=sql_1data('SELECT max(id) FROM [mpx]objects')-1+101;
     return($id);
 }
 
+//======================================================================================id2name
 ///NEEEEEEEEEEEEFEKTINIIIIIIIIIIIII
 function id2name($id){
-    $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'");
+    $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
     if(!$name)$name='?';
     return($name);
 }
 
+//======================================================================================name2id
 function name2id($name){
     if(!is_numeric($name)){
-        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'");
+        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'".' AND '.objt());
     }else{
         $id=$name;
     }
     return($id);
 }
-
+//======================================================================================id2unique
 function id2unique($id){
     if(!$id)return('');
     $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'");
-    $count=sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE name='$name'")-1+1;
+    $count=sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE name='$name'".' AND '.objt())-1+1;
     if($count>1)$name.="($id)";
     return($name);
 }
 
+//======================================================================================unique2id
 function unique2id($unique){
     $unique=trim($unique);
     list($name,$id)=explode('(',$unique);
@@ -746,16 +756,16 @@ function unique2id($unique){
     if($id){
         $id=trim(str_replace(')','',$id));
     }else{
-        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'");
+        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'".' AND '.objt());
     }
     return($id);
     
 }
 
-
+//======================================================================================id2info
 
 function id2info($id,$rows){
-    $info=sql_array("SELECT $rows FROM ".mpx."objects WHERE id='$id'");
+    $info=sql_array("SELECT $rows FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
     foreach ($info as &$value) {
     $info = $info[0];
     }
@@ -769,8 +779,9 @@ function id2info($id,$rows){
  * @param string $limit
  * @return array
  */
+//======================================================================================objects
 function objects($where="",$order="",$limit=""){
-    if($where){$where="WHERE ".$where;}
+    if($where){$where="WHERE ".$where.' AND '.objt();}
     if($order){$order="ORDER BY ".$order;}
     if($limit){$limit="LIMIT ".$limit;}
     $result = sql_query("SELECT * FROM ".mpx."objects $where $order $limit");
@@ -781,29 +792,52 @@ function objects($where="",$order="",$limit=""){
     mysql_free_result($result);
     return($objects);
 }
-//======================================================================================
+//======================================================================================coolround
 
 
 function coolround($i){
 
 $time=$GLOBALS['ss']['use_object']->set->ifnot('coolround',0);
 return($time);
-
-
-
+}
 /*$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 return($mapunitstime);
 return(time()-600);*/
 
+//======================================================================================trackobject
+
+
+function trackobject($id){
+
+$time=time();
+
+sql_query("
+INSERT INTO [mpx]objects
+(`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `stoptime`)
+SELECT
+".nextid().", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, ".$time."
+FROM 
+[mpx]objects 
+WHERE id='".sql($id)."' ");
+
+sql_query("UPDATE [mpx]objects SET `starttime`='".$time."' WHERE id='".sql($id)."' ");
+
+
+
+
 }
-//======================================================================================
+
+
+//trackobject(2289241);
+//die();
+//======================================================================================ifobject
 /**
  * @param $id
  * @return array|bool
  */
 function ifobject($id){
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE id='$id' OR name='$id'",1);
+    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE id='$id' OR name='$id'".' AND '.objt(),1);
     //r($result);
     if($result){
         return($result);
@@ -811,11 +845,11 @@ function ifobject($id){
         return(0);
     }
 }
-//================================================topobject
+//======================================================================================topobject
 function topobject($id,$i=0){
     if($i>8)return(false);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT own FROM ".mpx."objects WHERE id='$id' OR name='$id' LIMIT 1");
+    $result = sql_1data("SELECT own FROM ".mpx."objects WHERE id='$id' OR name='$id' AND ".objt()." LIMIT 1");
     //e("($i,$result)");
     if($result==$id)return($id);
     if($result){
@@ -824,12 +858,12 @@ function topobject($id,$i=0){
         return($id);
     }
 }
-//================================================superown
+//======================================================================================superown
 function superown(){
-    foreach(sql_array('SELECT id FROM [mpx]objects WHERE superown IS NULL') as $id){
+    foreach(sql_array('SELECT id FROM [mpx]objects WHERE superown IS NULL AND '.objt()) as $id){
         $id=$id[0];
         $top=topobject($id);
-        sql_query('UPDATE [mpx]objects SET superown='.$top.' WHERE id='.$id);
+        sql_query('UPDATE [mpx]objects SET superown='.$top.' WHERE id='.$id.' AND '.objt());
     }
 }
 
@@ -856,7 +890,7 @@ function resolve($origin){
 
 	if(!$originx)$originx=array();
 	if(!$GLOBALS['resolve_originxs']){
-		$GLOBALS['resolve_originxs']=sql_array('SELECT id,origin FROM '.mpx.'objects WHERE ww=0 ORDER BY id');
+		$GLOBALS['resolve_originxs']=sql_array('SELECT id,origin FROM '.mpx.'objects WHERE ww=0 AND '.objt().' ORDER BY id');
 		usort($GLOBALS['resolve_originxs'],'resolve_sort');
 		
 	}
@@ -923,10 +957,10 @@ function resolve($origin){
 }
 
 
-//================================================EFFINDEX
+//======================================================================================EFFINDEX
 
 function effindex($id){
-	if($origin=sql_1data("SELECT origin FROM [mpx]objects WHERE id='$id' OR name='$id'")){
+	if($origin=sql_1data("SELECT origin FROM [mpx]objects WHERE id='$id' OR name='$id'".' AND '.objt())){
 		$origin=explode(',',$origin);
 		$ids=resolve($origin);
 		//if(debug){print_r($ids);}

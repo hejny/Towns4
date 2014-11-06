@@ -42,12 +42,12 @@ if(!$order)$order="fs";
 
 //r($GLOBALS['where']);
 
-$max=sql_1data("SELECT COUNT(1) FROM `".mpx."objects` WHERE ".$GLOBALS['where']);
+$max=sql_1data("SELECT COUNT(1) FROM `".mpx."objects` WHERE ".$GLOBALS['where'].' AND '.objt());
 //echo($max);
 $limit=limit("stat",$GLOBALS['where'],16,$max);
 
 
-$array=sql_array("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`own`,`in`,`x`,`y`,`ww`$ad1$ad2$ad3 FROM `".mpx."objects` WHERE ".$GLOBALS['where']." ORDER BY $order DESC LIMIT $limit");
+$array=sql_array("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`own`,`in`,`x`,`y`,`ww`$ad1$ad2$ad3 FROM `".mpx."objects` WHERE ".$GLOBALS['where']." AND ".objt()." ORDER BY $order DESC LIMIT $limit");
 //r($limit);
 //fs2lvl
 ?>

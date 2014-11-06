@@ -37,7 +37,7 @@ echo($tmp);br(2);*/
 logged=true;
 
 if(apptime!=<?php e(filemtime(core.'/page/aac.php')); ?>){
-	$('#window_topinfo').css('display','block');	
+	$('#window_topinfox').css('display','block');	
 }
 
 

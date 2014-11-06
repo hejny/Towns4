@@ -106,9 +106,9 @@ function a_attack($id,$lowed=false){
 		$conqueror=false;
         //e($attacked->name.'=='.mainname());
         if($attacked->name==mainname()/*id2name($GLOBALS['config']['register_building'])*/){
-		if(sql_1data('SELECT count(id) FROM [mpx]objects WHERE own='.$attacked->own)!=1){
+		if(sql_1data('SELECT count(id) FROM [mpx]objects WHERE own='.$attacked->own.' AND '.objt())!=1){
 
-			if(sql_1data('SELECT type FROM [mpx]objects WHERE id='.$attacked->own)=='town2'){
+			if(sql_1data('SELECT type FROM [mpx]objects WHERE id='.$attacked->own.' AND '.objt())=='town2'){
 				$conqueror=true;
 			}else{
             		$GLOBALS['ss']["query_output"]->add("error",lr('attack_error_mainlast'));
@@ -120,15 +120,15 @@ function a_attack($id,$lowed=false){
 	}
         //-------
 
-	$a_pos=sql_array('SELECT x,y FROM [mpx]objects WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$GLOBALS['ss']["aac_object"]->own);
-	$b_pos=sql_array('SELECT x,y FROM [mpx]objects WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$attacked->own);
+	$a_pos=sql_array('SELECT x,y FROM [mpx]objects WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$GLOBALS['ss']["aac_object"]->own.' AND '.objt());
+	$b_pos=sql_array('SELECT x,y FROM [mpx]objects WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$attacked->own.' AND '.objt());
 	
 	$a_hlvz=sqrt(pow($a_pos[0][0]-$GLOBALS['ss']["aac_object"]->x,2)+pow($a_pos[0][1]-$GLOBALS['ss']["aac_object"]->y,2));
 	$b_hlvz=sqrt(pow($b_pos[0][0]-$attacked->x,2)+pow($b_pos[0][1]-$attacked->y,2));
 
 
-	$a_buildingsfs=sql_1data('SELECT count(fs) FROM [mpx]objects WHERE own='.$GLOBALS['ss']["aac_object"]->own.' AND res NOT LIKE \'%{%\'',1)-1+1;
-	$b_buildingsfs=sql_1data('SELECT count(fs) FROM [mpx]objects WHERE own='.$attacked->own.' AND res NOT LIKE \'%{%\'',1)-1+1;
+	$a_buildingsfs=sql_1data('SELECT count(fs) FROM [mpx]objects WHERE own='.$GLOBALS['ss']["aac_object"]->own.' AND res NOT LIKE \'%{%\''.' AND '.objt(),1)-1+1;
+	$b_buildingsfs=sql_1data('SELECT count(fs) FROM [mpx]objects WHERE own='.$attacked->own.' AND res NOT LIKE \'%{%\''.' AND '.objt(),1)-1+1;
 
 	r($a_buildingsfs,$b_buildingsfs);
 
@@ -204,7 +204,7 @@ function a_attack($id,$lowed=false){
 			//$attacked->fp=1;
 
 			if($conqueror){
-				$owner_id=sql_query('UPDATE [mpx]objects SET own='.$GLOBALS['ss']['logid'].' WHERE type=\'town2\' AND id='.$attacked->own);
+				$owner_id=sql_query('UPDATE [mpx]objects SET own='.$GLOBALS['ss']['logid'].' WHERE type=\'town2\' AND id='.$attacked->own.' AND '.objt());
 				$GLOBALS['ss']["query_output"]->add("success",lr('attack_success_conq'));
 				click('e=login-use');
 		
@@ -214,7 +214,7 @@ function a_attack($id,$lowed=false){
 				    	$attacked->own=$GLOBALS['ss']["aac_object"]->own;
 				}else{
 				    
-					list($x,$y,$q)=register_position();
+					list($x,$y,$q)=register_positiont();
 					if($q){
 						$attacked->x=$x;
 						$attacked->y=$y;
@@ -224,6 +224,7 @@ function a_attack($id,$lowed=false){
 				}
 		    }
 		}
+		trackobject($attacked->id);//záloha původního objektu, nastavení časů
         $attacked->update();
         //-----
         /*if($a_fp2==1){
@@ -350,7 +351,7 @@ function a_xmine($func1name){
         //r($func);
         $distance=$func['distance'];
         $attack=$func['attack'];
-        $sql="SELECT id,func FROM [mpx]objects WHERE ww=$ww  AND type='".($object->func->profile($func1name,'limit'))."' AND POW(x-$x,2)+POW(y-$y,2)<=POW($distance,2) ORDER BY fr  DESC";
+        $sql="SELECT id,func FROM [mpx]objects WHERE ww=$ww  AND type='".($object->func->profile($func1name,'limit'))."' AND POW(x-$x,2)+POW(y-$y,2)<=POW($distance,2) AND ".objt()." ORDER BY fr  DESC";
         $attack_id=false;
         foreach(sql_array($sql) as $row){
             list($tmpid,$tmpfunc)=$row;

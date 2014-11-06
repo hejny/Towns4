@@ -1,6 +1,6 @@
 <h3>E-mail novinky</h3>
 <?php
-$array=sql_array("SELECT post_title,post_content,guid,post_name FROM `wp_posts` WHERE `post_type` = 'post' AND `post_status` = 'publish' AND `post_password` = '' ORDER BY `ID` DESC LIMIT 1");
+$array=sql_array("SELECT post_title,post_content,guid,post_name FROM `".sql($GLOBALS['inc']['wp_posts'])."` WHERE `post_type` = 'post' AND `post_status` = 'publish' AND `post_password` = '' ORDER BY `ID` DESC LIMIT 1");
 list($post_title,$post_content,$guid,$post_name)=$array[0];
 
 //echo('Posílaný příspěvek: <a href="'.$guid.'" target="_blank">'.$post_title.'</a>');

@@ -17,12 +17,12 @@ require_once(root.core."/func_map.php");
 backup($GLOBALS['where'],"1");
 //r($GLOBALS['where']);
 $order="fs";
-$max=sql_1data("SELECT COUNT(1) FROM `".mpx."objects` WHERE ".$GLOBALS['where']);
+$max=sql_1data("SELECT COUNT(1) FROM `".mpx."objects` WHERE ".$GLOBALS['where'].' AND '.objt());
 //echo($max);
 $limit=limit("stat2",$GLOBALS['where'],102,$max);
 
 
-$array=sql_array("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,(SELECT `own`  FROM `".mpx."objects` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `".mpx."objects` as `X` WHERE `X`.`name`=`".mpx."objects`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `own`,`in`,`x`,`y`,`ww` FROM `".mpx."objects` WHERE ".$GLOBALS['where']." ORDER BY $order LIMIT $limit");
+$array=sql_array("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,(SELECT `own`  FROM `".mpx."objects` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `".mpx."objects` as `X` WHERE `X`.`name`=`".mpx."objects`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `own`,`in`,`x`,`y`,`ww` FROM `".mpx."objects` WHERE ".$GLOBALS['where']." AND ".objt()." ORDER BY $order LIMIT $limit");
 
 contenu_a();
 

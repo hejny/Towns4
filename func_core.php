@@ -15,7 +15,7 @@
 //======================================================================================LEAVE
 define("a_leave_help","");
 function a_leave($id){
-    sql_query('UPDATE [mpx]objects SET own=0 WHERE own='.useid.' AND id='.$id);
+    sql_query('UPDATE [mpx]objects SET own=0 WHERE own='.useid.' AND id='.$id.' AND '.objt());
 }
 //======================================================================================LEAVE
 define("a_dismantle_help","");
@@ -34,9 +34,9 @@ function a_dismantle($id){
         $GLOBALS['ss']['use_object']->hold->takehold($fc);
         
         
-        $tmp->ww=-4;
-        $tmp->t=time();
-        $tmp->update();
+        //$tmp->ww=-4;
+        //$tmp->t=time();
+        $tmp->deletex();
     }
 }
 //echo(useid.','.logid.','.$GLOBALS['ss']['use_object']->name);
@@ -130,7 +130,9 @@ function a_profile_edit($id,$key,$value){
     if($update)$object->update();
 }
 //===============================================================================================================ITEMS
-define("a_items_help","");
+
+
+/*define("a_items_help","");
 function a_items(){
     //id,type,fp,fs,dev,name,password,func,set,res,profile,hold,own,in,t,x,y
     //r("SELECT * FROM objects WHERE `in`='".($GLOBALS['ss']["use_object"]->id)."' ORDER BY t");
@@ -156,7 +158,9 @@ function a_item($id,$action,$param=false,$param2=false){
         $item->x=$param;
         $item->y=$param2;
     }
-}
+}*/
+
+
 //======================================================================================IMAGE
 /*define("a_image_help","name,description,filepath");
 function a_image($name,$description,$filepath){
