@@ -80,12 +80,12 @@ if(!$GLOBALS['map_units_ids']){
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 		// AND ((`own`=".useid." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range/*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/);
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range./*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/' AND '.objt());
 }else{
 	$where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where");
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where AND ".objt());
 }
 
 

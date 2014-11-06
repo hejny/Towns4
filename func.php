@@ -758,7 +758,7 @@ if(!$GLOBALS['mobile']){
 //==========================================================================================building
 
  function building($name){
-    $q=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own=\''.useid.'\' AND name=\''.$name.'\'')-1+1;
+    $q=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own=\''.useid.'\' AND name=\''.$name.'\' AND '.objt())-1+1;
     return($q);
 }
 //==========================================================================================rand_color

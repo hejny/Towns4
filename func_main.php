@@ -370,7 +370,7 @@ if($error){
 Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&iacute;... ');
 
 
-	$restarturl='https://api.digitalocean.com/droplets/2655391/power_cycle?client_id=48e241a825673f8a3a765af6fbdb9a29&api_key=772bad5a245c2afecb679ace70e58bd6';
+	$restarturl=$GLOBALS['inc']['restart_url'];
 
 	$file=root.cache.'/reboot.txt';
 	//echo($file);
@@ -450,6 +450,18 @@ function sql_csv($q,$w=false){
     //r($array);
     return($array);
 }
+//--------------------------------------------
+function objt($alt){
+	if($alt)$alt="`$alt`.";
+	if(!$GLOBALS['showtime']){
+		return($alt.'`stoptime`=0');
+
+	}else{
+
+		return($GLOBALS['showtime'].'>='.$alt.'`starttime` AND ('.$GLOBALS['showtime'].'<'.$alt.'`stoptime` OR '.$alt.'`stoptime`=0)');
+	}
+}
+
 //---------------------NOVe KONFIGURACE
 $array=sql_array('SELECT `key`,`value` FROM [mpx]config');
 

@@ -86,8 +86,31 @@ $stream=str_replace('http="','target="_blank" href="http://',$stream);
 $stream=str_replace('href="javascript:','href="#" onclick="',$stream);
 //$stream=smiles($stream);
 
-//-----------------------------------------------------------------------------------External
+//-----------------------------------------------------------------------------------AAC
 
+if(strpos($stream,'<!--aac-->')){
+	/*$aac='<table width="100%" border="0">';
+
+	$array=sql_array("SELECT post_title,guid,post_date FROM `wp_posts` WHERE `post_type` = 'post' AND `post_status` = 'publish' AND `post_password` = '' ORDER BY `ID` DESC LIMIT 2");
+	foreach($array as $row){
+		
+		list($post_title,$guid,$post_date)=$row;
+		$post_date=date('d.m.Y', strtotime($post_date));
+		$aac.=('<tr><td width="30"><a href="'.$guid.'" target="_blank">'.$post_date.'</a></td><td align="right"><a href="'.$guid.'" target="_blank">'.$post_title.'</a></td></tr>');
+	}
+	$aac.='</table>';*/
+
+
+	$array=sql_array("SELECT post_title,guid,post_date FROM `".sql($GLOBALS['inc']['wp_posts'])."` WHERE `post_type` = 'post' AND `post_status` = 'publish' AND `post_password` = '' ORDER BY `ID` DESC LIMIT 1");
+		list($post_title,$guid,$post_date)=$array[0];
+		$post_date=date('d.m', strtotime($post_date));
+		$aac=('<a href="'.$guid.'" target="_blank">'.lr('last_aac').' '.$post_title.' ('.$post_date.')</a>');
+
+	$stream=str_replace('<!--aac-->',$aac,$stream);
+}	
+
+
+//-----------------------------------------------------------------------------------External
 
 $i=0;
 while($tmp=substr2($stream,'<!--','-->',$i)){
@@ -96,7 +119,7 @@ while($tmp=substr2($stream,'<!--','-->',$i)){
     
     list($page,$div)=explode(',',$tmp);
     
-    $pagedata=sql_1data("SELECT `post_content` FROM `wp_posts` WHERE `post_name`='".sql($page)."' ");
+    $pagedata=sql_1data("SELECT `post_content` FROM `".sql($GLOBALS['inc']['wp_posts'])."` WHERE `post_name`='".sql($page)."' ");
     $pagedata='<!--none--><!--/none-->'.$pagedata;
     if($div){
         $as='<!--'.$div.'-->';

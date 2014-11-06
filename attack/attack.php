@@ -65,7 +65,7 @@ if(!$ns)contenu_a();
 //e($GLOBALS['ss']['useid']);br();
 //e($GLOBALS['ss']['logid']);br();
 
-$attack_buildings=sql_array('SELECT id,name,func FROM [mpx]objects WHERE own=\''.useid.'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' ');
+$attack_buildings=sql_array('SELECT id,name,func FROM [mpx]objects WHERE own=\''.useid.'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' AND '.objt());
 
 if(count($attack_buildings)==1){
 	$attack_master=$attack_buildings[0][0];

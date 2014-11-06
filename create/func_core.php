@@ -30,7 +30,7 @@ function a_create($id,$x=0,$y=0,$rot=0,$test=false,$tmaster=false){
     //require(root."control/func_map.php");
     //if(/*sql_1data("SELECT hard FROM ".mpx."map WHERE x=ROUND(".($x).") AND y=ROUND(".($y).") LIMIT 1")-0==0 or */true){
 
-$res=sql_1data("SELECT res FROM ".mpx."objects WHERE id='$id'");
+$res=sql_1data("SELECT res FROM ".mpx."objects WHERE id='$id' AND ".objt());
 //mail('ph@towns.cz','tmp',$res);
 
 if(substr($res,0,1)=='{' or strpos($res,'{}')){           
@@ -47,7 +47,7 @@ $ry=round($y);
     //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
 	//OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){	
 
-	if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))==0){
+	if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))==0){
 
 
 	$resistance=supportF($id,'resistance','resistance');
@@ -63,10 +63,10 @@ $ry=round($y);
 	if(!($blocktest=block2test('B',$x,$y))){
 
 
-    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
+    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
         
 
-        $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id'"));
+        $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id' AND ".objt()));
         if((!$test)?($GLOBALS['ss']["use_object"]->hold->takehold($fc)):($GLOBALS['ss']["use_object"]->hold->testchange($fc))){
             
             if($rot and strpos($res,'/1.png'))$res=str_replace('1.png',(($rot/15)+1).'.png',$res);
@@ -82,8 +82,8 @@ $ry=round($y);
 	   //foreach(sql_array("SELECT id,name,own FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".useid."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
 
 
-	    $func=func2list(sql_1data('SELECT func FROM [mpx]objects WHERE id='.$id));
-            list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".useid."'
+	    $func=func2list(sql_1data('SELECT func FROM [mpx]objects WHERE id='.$id.' AND '.objt()));
+            list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".useid."'
 	    if(!$jid){//e('ahoj');
             
 		
@@ -98,8 +98,8 @@ $ry=round($y);
 			$nextid=nextid();
 			define('object_id',$nextid);
 			$GLOBALS['object_ids']=array($nextid);
-			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`) 
-SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time()." FROM `".mpx."objects` WHERE id='$id'");
+			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`, `starttime`) 
+SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `".mpx."objects` WHERE id='$id'");
 		}
 
 		$GLOBALS['ss']["query_output"]->add("1",1);
@@ -164,6 +164,10 @@ SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx
 			if(!$test){
 				define('join_id',$jid);
 				define('object_id',$jid);
+
+			
+				trackobject($jid);//záloha původního objektu, nastavení časů
+
 				$GLOBALS['object_ids']=array($jid);
 				$joint=new object($jid);
 				$joint->join($id,$res.':'.$rot,$rot);
@@ -189,14 +193,14 @@ if(substr($res,0,1)=='{'){
 //---------------------------------------------------------------
 
 //print_r($res);
-$name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'");
+$name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
 $pres=$res;
 
 foreach(array(array($x,$y),array($x+1,$y),array($x,$y-1),array($x-1,$y),array($x,$y+1)) as $tmp){list($xx,$yy)=$tmp;
 
 
-$originname=sql_1data("SELECT `name` FROM ".mpx."objects WHERE ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy");
-$originres =sql_1data("SELECT `res` FROM ".mpx."objects WHERE ww='0' AND `name`='$originname'");
+$originname=sql_1data("SELECT `name` FROM ".mpx."objects WHERE ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy".' AND '.objt());
+$originres =sql_1data("SELECT `res` FROM ".mpx."objects WHERE ww='0' AND `name`='$originname'".' AND '.objt());
 if($originres){
 	$res=$originres;
 //}else{
@@ -212,10 +216,10 @@ $res=explode('}{',$res);
      
 $near=array();
 $groupsame="(`name`='$name' ".($func['join']['profile']['group']?"OR `func` LIKE '%group[7]5[10]".$func['join']['profile']['group']."%'":'').")";
-$near[0]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx+1 AND y=$yy"))>=1?1:0;
-$near[1]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy-1"))>=1?1:0;
-$near[2]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx-1 AND y=$yy"))>=1?1:0;
-$near[3]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy+1"))>=1?1:0;
+$near[0]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx+1 AND y=$yy".' AND '.objt()))>=1?1:0;
+$near[1]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy-1".' AND '.objt()))>=1?1:0;
+$near[2]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx-1 AND y=$yy".' AND '.objt()))>=1?1:0;
+$near[3]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy+1".' AND '.objt()))>=1?1:0;
 
     if($near==array(0,0,0,0)){$i=0;$rot=0;}
 elseif($near==array(1,0,0,0)){$i=1;$rot=0;}
@@ -243,10 +247,9 @@ if($resx[3]>=360)$resx[3]=$resx[3]-360;
 if($resx[3]<0)$resx[3]=$resx[3]+360;
 $resx=implode(':',$resx);
 
+sql_query("UPDATE ".mpx."objects SET res='$resx' WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy".' AND '.objt());
 
-sql_query("UPDATE ".mpx."objects SET res='$resx' WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy");
-
-$GLOBALS['object_ids'][]=sql_1data("SELECT `id` FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy");
+$GLOBALS['object_ids'][]=sql_1data("SELECT `id` FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy".' AND '.objt());
 
 }
 }
@@ -264,10 +267,10 @@ $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'");
      
 $near=array();
 $groupsame="(`name`='$name' OR `func` LIKE '%group[7]5[10]".$func['join']['profile']['group']."%')";
-$near[0]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx+1 AND y=$yy"))>=1?1:0;
-$near[1]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy-1"))>=1?1:0;
-$near[2]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx-1 AND y=$yy"))>=1?1:0;
-$near[3]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy+1"))>=1?1:0;
+$near[0]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx+1 AND y=$yy".' AND '.objt()))>=1?1:0;
+$near[1]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy-1".' AND '.objt()))>=1?1:0;
+$near[2]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx-1 AND y=$yy".' AND '.objt()))>=1?1:0;
+$near[3]=intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy+1".' AND '.objt()))>=1?1:0;
 
     if($near==array(1,1,1,1)){$i=1;}
 elseif($near==array(1,1,0,1)){$i=2;}
@@ -288,9 +291,9 @@ elseif($near==array(0,0,0,0)){$i=16;}
 
 $resx=str_replace('{}',$i,$res);
 r($resx);
-sql_query("UPDATE ".mpx."objects SET res='$resx' WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy");
+sql_query("UPDATE ".mpx."objects SET res='$resx' WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy".' AND '.objt());
 
-$GLOBALS['object_ids'][]=sql_1data("SELECT `id` FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy");
+$GLOBALS['object_ids'][]=sql_1data("SELECT `id` FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."' AND $groupsame AND ww='".$GLOBALS['ss']["ww"]."' AND x=$xx AND y=$yy".' AND '.objt());
 
 }
 //define('object_build',true);
@@ -406,6 +409,7 @@ function a_repair(){
 		//$GLOBALS['ss']["use_object"]->hold->showimg();
             if($GLOBALS['ss']["use_object"]->hold->takehold($price)){
 		//$GLOBALS['ss']["use_object"]->hold->showimg();
+				trackobject($GLOBALS['ss']["aac_object"]->id);//záloha původního objektu, nastavení časů
                 $GLOBALS['ss']["aac_object"]->fp=$GLOBALS['ss']["aac_object"]->fs;
                  $GLOBALS['ss']["query_output"]->add("success",lr('repair_success'));
                  $GLOBALS['ss']["query_output"]->add("1",1);
@@ -454,7 +458,7 @@ function a_upgrade($funcname,$paramname,$value){
 
 }*/
 function a_upgrade($prime,$count=1){
-	$joint=sql_1data('SELECT fc FROM `[mpx]objects` WHERE `type`=\'prime\' and `id`=\''.$prime.'\' ');//new object($prime);
+	$joint=sql_1data('SELECT fc FROM `[mpx]objects` WHERE `type`=\'prime\' and `id`=\''.$prime.'\' '.' AND '.objt());//new object($prime);
 	$fc=new hold($joint);
 	$fc->multiply(20*$count);
 	if(!$GLOBALS['ss']['use_object']->hold->testhold($fc)){
