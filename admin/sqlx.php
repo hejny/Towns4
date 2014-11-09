@@ -1,4 +1,15 @@
 <?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
+
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set("max_execution_time","1000");
 ini_set('memory_limit','500M');

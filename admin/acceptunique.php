@@ -1,4 +1,14 @@
 <?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2013
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
 require2("/func_map.php");
 require2("text/func_core.php");
 ?>
