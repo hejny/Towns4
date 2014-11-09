@@ -1,4 +1,16 @@
-<?php ob_end_flush();
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
+ob_end_flush();
+
 //error_reporting(E_ALL);
 ini_set('memory_limit','10000M');
  ?>

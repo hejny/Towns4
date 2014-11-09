@@ -1,3 +1,14 @@
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+?>
 <h3>Vytvo&#345;en&iacute; nov&eacute;ho sv&#283;ta </h3>
 Tento nátroj vytvoří kopii světa.<br/>
 <b>Upozornění: </b>Podkud cílový svět extistuje bude přemazán!<br />

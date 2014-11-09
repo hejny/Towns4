@@ -1,4 +1,15 @@
-<?php ob_end_flush();
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
+ob_end_flush();
 //error_reporting(E_ALL);
 ini_set('memory_limit','10000M');
  ?>
@@ -31,7 +42,19 @@ if($_GET['export']){
 mkdir(adminfile.'files/backup');
 chmod(adminfile.'files/backup',0777);
 
-$nejm=w.'_'.time().'_'.date('j_n_Y');
+if($_GET['export']==1){
+	if(!$_GET['notime']){
+		$nejm=w.'_'.time().'_'.date('j_n_Y');
+	}else{
+		$nejm=w;
+	}
+}else{
+	if(!$_GET['notime']){
+		$nejm='backup_'.time().'_'.date('j_n_Y');
+	}else{
+		$nejm='backup';
+	}
+}
 
 $file_name=adminfile."files/backup/".$nejm.".sql";
 $file_zip=adminfile."files/backup/".$nejm.".zip";

@@ -1,4 +1,14 @@
 <?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
 
 //session_cache_expire(9999);
 //session_start();
@@ -122,6 +132,18 @@ if($_POST["password_new"]){
 		//echo($_POST["password_new"].'-'.file_get_contents(adminroot.'password'));
 	}
 }
+
+if($_GET["password"]){
+	if($GLOBALS['inc']['admin'][$_GET["username"]]['password']==$_GET["password"]){
+		$GLOBALS['ss']["logged_new"]=$_GET["username"];
+	}else{
+		$alert=("Nesprávné heslo!<br/>");
+		//echo($_POST["password_new"].'-'.file_get_contents(adminroot.'password'));
+	}
+}
+
+
+
 if($GLOBALS['inc']['admin']['public'] and $_GET['public']){
 	$GLOBALS['ss']["logged_new"]='public';
 }
@@ -280,6 +302,7 @@ Podsvět:<br>
 if($GLOBALS['config']!=array()){
 $links=array(
 'none'=>'Úvod',
+'info'=>'Info',
 'adminer'=>'Adminer',
 'cron'=>'Cron',
 'cronbot'=>'CronBot',
@@ -316,6 +339,7 @@ $links=array(
 'deletetmp'=>'DeleteTmp',
 /*'setdefault'=>'SetDefault',*/
 'corex'=>'Push CORE',
+'backup'=>'Pull DB',
 //'export'=>'Export(old)',
 //'import'=>'Import(old)',
 'sqlx'=>'Import',

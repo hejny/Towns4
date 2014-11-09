@@ -1,3 +1,16 @@
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+
+	ZASTARALÁ FUNKCE
+*/
+//==============================
+?>
 <h3>E-mail novinky</h3>
 <?php
 $array=sql_array("SELECT post_title,post_content,guid,post_name FROM `wp_posts` WHERE `post_type` = 'post' AND `post_status` = 'publish' AND `post_password` = '' ORDER BY `ID` DESC LIMIT 1");

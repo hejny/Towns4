@@ -1,3 +1,14 @@
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+?>
 <h3>CreateTmp</h3>
 Vygenerování všech pomocných podkladů, 2D bloků, 3D bloků, modelů, přípravných a finálních obrázků na mapě<br/>
 <b>Upozornění: </b>Celý tento proces může trvat i několik hodin.<br/>

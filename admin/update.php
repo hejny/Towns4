@@ -1,3 +1,15 @@
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+?>
+
 <h3>Update FS/FP</h3>
 Aktualizuje FS, FP, FC, FR, FX, hard, expand, collapse podle aktuálního času<br/>
 <b>Upozornění: </b>Celý tento proces může trvat i několik hodin.<br/>

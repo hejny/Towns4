@@ -1,3 +1,14 @@
+<?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+?>
 <h3>CreateMap</h3>
 Tyto nástroje slouží k vytvoření mapy z průvodního mapového podkladu.<br/>
 <b>Upozornění: </b>Nesprávné použití může poškodit první podsvět!<br />

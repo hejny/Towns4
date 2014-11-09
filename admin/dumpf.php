@@ -1,4 +1,14 @@
 <?php
+/* Towns4Admin, www.towns.cz 
+   © Pavel Hejný | 2011-2014
+   _____________________________
+
+   admin/...
+
+   Towns4Admin - Nástroje pro správu Towns
+*/
+//==============================
+
 // MySQL server 
 Define("db_name",mysql_db);
 Define("db_host",mysql_host);
