@@ -174,11 +174,17 @@ if($GLOBALS['mobile']){
 eval(subpage('surkey'));
 
 
+if($GLOBALS['mobile']){
+	eval(subpage('topinfo'));
+	//eval(subpage('topinfox'));
+	//V mobilní verzi opravdu nemusí fungovat rychlá aktualizace
+}
+
 
 //subref("surkey",3);
    
 
-e(nbsp3);
+//e(nbsp3);
 
 
 

@@ -311,6 +311,7 @@ $links=array(
 'lang'=>'Lang',
 'translate'=>'Translate',
 'object'=>'Object',
+'addsurkey'=>'Suroviny+',
 'key'=>'Key',
 //'refill'=>'Refill T/R',
 'multibuild'=>'Multibuild',

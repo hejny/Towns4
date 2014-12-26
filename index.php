@@ -108,7 +108,7 @@ list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 define("timestart", time()+microtime());
 function t($text=""){if(timeplan){
 $time=time()+microtime()-timestart;
-$text=round($time,2)."<b>(+".(round($time-$GLOBALS['lasttime'],4)).")</b> - ".htmlspecialchars($text);
+$text=round($time,3)."<b>(+".(1000*round($time-$GLOBALS['lasttime'],6)).")</b> - ".htmlspecialchars($text);
 $GLOBALS['lasttime']=$time;
 echo("$text<br/>");}}
 t('start');
@@ -227,10 +227,17 @@ if($GLOBALS['ss']['fbid']){
     eval(subpage_('login-fb_process'));
 }
 //print_r($GLOBALS['get']);
-if($GLOBALS['get']['fb_select_id'] and $GLOBALS['get']['fb_select_key']){
+
+
+/*if($GLOBALS['get']['fb_select_id'] and $GLOBALS['get']['fb_select_key']){
     //e($GLOBALS['get']['fb_select_id'].$GLOBALS['get']['fb_select_key']);
     xquery('login',$GLOBALS['get']['fb_select_id'],'facebook',$GLOBALS['get']['fb_select_key']);
+*/
+if($GLOBALS['get']['login_select_userid'] and $GLOBALS['get']['login_select_id'] and $GLOBALS['get']['login_select_key']){
+    //e($GLOBALS['get']['login_select_id'].$GLOBALS['get']['login_select_key']);
+    xquery('login',$GLOBALS['get']['login_select_userid'],'towns',$GLOBALS['get']['login_select_key'],$GLOBALS['get']['login_select_id']);
 }
+
 //--------------------------------------------
 //r($_COOKIE);
 //r($post);
@@ -301,7 +308,7 @@ if($_GET["resetmemory"]){
     reloc();
 }
 //------------------------------------NOPASSWORD
-    $nofb=true;
+    /*$nofb=true;
     $nopass=true;
     foreach(sql_array('SELECT `method`,`key` FROM `[mpx]login` WHERE `id`=\''.($GLOBALS['ss']["log_object"]->id).'\'') as $row){
         list($method,$key)=$row;    
@@ -311,7 +318,12 @@ if($_GET["resetmemory"]){
         }
     }
     define('nofb',$nofb);
-    define('nopass',$nopass);
+    define('nopass',$nopass);*/
+    $tmp=sql_array("SELECT password,fbid FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
+    $tmp=$tmp[0];
+    define('nopass',$tmp['password']?0:1);
+    define('nofb',$tmp['fbid']?0:1);
+    
 //-----------------------------------WINDOWS
 $nwindows=$_GET["i"];
 if(logged() and $nwindows){

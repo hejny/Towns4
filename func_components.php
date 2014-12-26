@@ -169,10 +169,15 @@ setTimeout(function(){
 }
 }
 //======================================================================================dockbutton
-function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=false,$background='rgba(10,10,10,0.9)',$border='#222222'){
+function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=false,$background='rgba(10,10,10,0.9)',$border='#222222',$position='absolute'){
     $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
     $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
 
+    if(is_array($size)){
+        $sizex=$size[0];
+    }else{
+        $sizex=$size;
+    }
     if(!is_array($text)){$text=array($text);}
     if(!is_array($href)){$href=array($href);}
     if(!is_array($id)){$id=array($id);}
@@ -196,16 +201,20 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
     //if($y<0){$y=$GLOBALS['screenheight']+$y;}
   
     ?>
-    
-	<div style="position:absolute;left:<?php e(($x<0)?100:0); ?>%;top:<?php e(($y<0)?100:0); ?>%px;z-index:<?php e($z); ?>;">
 
+        <?php if($position=='relative')e('<div style="position:absolute;z-index:'.$z.';">'); ?>
+	<div style="display:block;position:<?php e($position); ?>;left:<?php e(($x<0)?100:0); ?>%;top:<?php e(($y<0)?100:0); ?>%px;z-index:<?php e($z); ?>;">
+        
+            
+            
     <?php 
     $i=0;
     while($text[$i]){
 	    ob_start();
     ?>
 
-	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="position:absolute;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($size<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;">
+            <?php /*if($position=='relative')e('<div style="position:absolute;z-index:'.$z.';">');*/ ?>
+	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="display:block;position:<?php e($position); ?>;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($sizex<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;">
 	    <table border="0" cellpadding="0" cellscpacing="0" width="100%" height="100%">
 	    <tr><td valign="midle" align="center" <?php e($count==1?'':'height="'.(abs($y)-9).'"'); ?>>
 	    <?php
@@ -218,7 +227,8 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
 	    </td></tr>
 	    </table>
 	    </div>
-
+            <?php /*if($position=='relative')e('</div>');*/ ?>
+            
 	<?php 
 
 	    $buffer = ob_get_contents();
@@ -231,6 +241,8 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
 ?>
 
     </div>
+    <?php if($position=='relative')e('</div>'); ?>
+
     <?php
 
 
@@ -267,7 +279,7 @@ function lr($i,$q=""){
 }*/
 //-----------------------------------------------------------------------langload
 
-	$lang=$GLOBALS['ss']["lang"];
+	
 	/*if(!$lang){
 		//echo($_SERVER['HTTP_ACCEPT_LANGUAGE']);
             //list($tmp)=explode(",",$_SERVER['HTTP_ACCEPT_LANGUAGE']); 
@@ -282,7 +294,11 @@ function lr($i,$q=""){
                 $lang=lang;
             }
         }*/
-	$lang=lang;
+        if($GLOBALS['ss']["lang"]){
+            $lang=$GLOBALS['ss']["lang"];
+        }else{
+            $lang=lang;
+        }
 	if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
 	if($_GET['lang']){$lang=$_GET['lang'];}
 	if($_GET['rvscgo']==1){$lang='rv';}
@@ -543,132 +559,144 @@ function inteligentparse($text){
 
 //--------------------------------------------
 function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$splitspace=true){
-    $stream='';
-    //$tracetext=$
-    $text=str_replace('[15]',' ',$text);
-    if(!$tracetext)$tracetext='X1PavelHejný';
-    if(is_array($size)){
-	list($size,$color)=$size;
-	//echo('ahoj');
-	//$stream=($orient);
-	//-------
-	$red=hexdec(substr($color,0,2));
-        $green=hexdec(substr($color,2,2));
-        $blue=hexdec(substr($color,4,2));
-        if($red>255){$red=255;}if($red<1){$red=1;}
-        if($green>255){$green=255;}if($green<1){$green=1;}
-        if($blue>255){$blue=255;}if($blue<1){$blue=1;}
-    }else{$color='none';}
     
-    if($size<0){$size=-$size;$orient=1;}else{$orient=0;}
-    
-    if(!$size){
-	$size=11;
-    }
-    $ga=230;
-    if($style){
-	$k=6;
-	$gb=70;
-	$ab=100;
+    t('trr - start');
+    $fileX=tmpfile2("$text,$size,$style,$html,$tracetext,$tag,$img,$splitspace",'txt','word');
+    if(!file_exists($fileX)/** or 1 /**/){
+        
+        $stream='';
+        //$tracetext=$
+        $text=str_replace('[15]',' ',$text);
+        if(!$tracetext)$tracetext='X1PavelHejný';
+        if(is_array($size)){
+            list($size,$color)=$size;
+            //echo('ahoj');
+            //$stream=($orient);
+            //-------
+            $red=hexdec(substr($color,0,2));
+            $green=hexdec(substr($color,2,2));
+            $blue=hexdec(substr($color,4,2));
+            if($red>255){$red=255;}if($red<1){$red=1;}
+            if($green>255){$green=255;}if($green<1){$green=1;}
+            if($blue>255){$blue=255;}if($blue<1){$blue=1;}
+        }else{$color='none';}
+
+        if($size<0){$size=-$size;$orient=1;}else{$orient=0;}
+
+        if(!$size){
+            $size=11;
+        }
+        $ga=230;
+        if($style){
+            $k=6;
+            $gb=70;
+            $ab=100;
+        }else{
+            $k=0;
+            $gb=70;
+            $ab=70;
+        }
+        $supersize=gr;
+        $fontfile = root.'lib/font/Trebuchet MS.ttf';
+        $fontsize=1;
+        //$fontfile = root.'lib/font/WC_RoughTrad.ttf';
+        //$fontsize=1;
+        $fn="-$size-$ga-$k-$gb-$ab-$supersize-$fontfile-$fontsize-$color-$html-$tracetext-$orient";
+        $size=intval($size*$supersize*$fontsize);
+        $ttfbox=imagettfbbox($size ,0, $fontfile, $tracetext);
+        $hh=$ttfbox[1]-$ttfbox[5];
+
+        $space='';
+        $text=contentlang($text);
+        //$text=str_replace(nbsp,' ',$text);
+        if($splitspace){$text=explode(' ',$text);}else{$text=array($text);}
+        //error_reporting(E_ALL);
+        foreach($text as $word){
+            $ttfbox=imagettfbbox($size ,0, $fontfile, 'X'.$word);
+            $ttfboxX=imagettfbbox($size ,0, $fontfile, 'X');
+            $width=($ttfbox[2]-$ttfbox[0])-($ttfboxX[2]-$ttfboxX[0]);	
+            $height=$hh;//$ttfbox[1]-$ttfbox[5];
+            //$word=contentlang($word);
+            //r($word);r();
+            $file=tmpfile2($word.$fn,'png','word');
+            if(!file_exists($file)/** or 1 /**/){
+               //r($ttfbox);	
+               $img=imagecreate/*truecolor*/($width,$height);
+               $img2=imagecreate/*truecolor*/($width,$height);
+               imagealphablending($img, false);
+               //imagesavealpha($img,true);
+               $fill=imagecolorallocatealpha($img, 255, 255, 255,127);
+               $fill2=imagecolorallocatealpha($img2, 255, 255, 255,127);
+               $color2=imagecolorallocate($img, 0, 0, 0);
+               //$color=imagecolorallocate($img, 0, 0, 0);
+               if($red)$color=imagecolorallocate($img, $red, $green, $blue);
+               if(!$red)$color=imagecolorallocate($img, $ga, $ga, $ga);
+               //$glow=imagecolorallocatealpha($img, 255, 255, 255,0);
+               if($red)$glow=imagecolorallocatealpha($img, $red, $green, $blue,$ab);
+               if(!$red)$glow=imagecolorallocatealpha($img, $gb, $gb, $gb,$ab);
+               $ellipse=imagecolorallocate($img, 20, 20, 20);
+               imagefill($img,0,0,$fill);
+               imagefill($img2,0,0,$fill2);
+
+               //$word='X'.$word;
+               imagettftext($img2, $size ,0, 0, -$ttfbox[5], $color2,$fontfile, $word);
+
+                     for($y = 1; $y!=imagesy($img2); $y++){
+                            for($x = 1; $x!=imagesx($img2); $x++){
+                                    $rgb=imagecolorsforindex($img2,imagecolorat($img2, $x,$y));
+                                    $al=$rgb["alpha"];
+                                    if($al<127){
+                                        imagefilledellipse($img,$x,$y,$k,$k,$glow);
+                                    }
+                     }}
+               /*foreach(array(-2,-1,1,2) as $k){
+               foreach(array(array($k,$k),array($k,-$k),array(0,$k),array(0,-$k),array($k,0)) as $tmp){
+                    list($xx,$yy)=$tmp;
+                    imagettftext($img, $size ,0, $xx, $yy-$ttfbox[5], $color2,$fontfile, $word);
+               }}*/
+
+                if($style==2){
+                    imagefilledellipse($img,$width/2,$height/2,$width/1,$height/1,$ellipse);
+                    //imageellipse($img,$width/2,$height/2,$width/2,$width/2,$glow);
+                }
+                if($style==3){
+                    imagefilledellipse($img,$width/2,$height/2,200,200,$ellipse);
+                    //imageellipse($img,$width/2,$height/2,$width/2,$width/2,$glow);
+                }
+
+
+               imagealphablending($img, true);
+               imagettftext($img, $size ,0, 0, -$ttfbox[5], $color,$fontfile, $word);
+               //r($img);
+               imagesavealpha($img,true);
+
+
+               if($orient){
+                    $img=imagerotate($img,270,0,true);
+                    imagesavealpha($img,true);
+               }
+                  imagepng($img,$file,9,PNG_ALL_FILTERS); 
+
+
+
+
+               chmod($file,0777);
+            }
+            if(!$html){
+                    $html='border="'.($style==3?2:'0').'"';
+            }
+
+
+            $stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.base.str_replace('../','',$file))/*$file*/.'" width="'.intval(($orient?$height:$width)/$supersize).'" height="'.intval(($orient?$width:$height)/$supersize).'" alt="'.$word.'" '.$html.'/>';
+            $space=$orient?'<br/>'.imgr('design/blank.png','',7,7).'<br/>':' ';
+        }
+        
+        file_put_contents2($fileX, $stream);
     }else{
-	$k=0;
-	$gb=70;
-	$ab=70;
+        $stream=file_get_contents($fileX);
     }
-    $supersize=gr;
-    $fontfile = root.'lib/font/Trebuchet MS.ttf';
-    $fontsize=1;
-    //$fontfile = root.'lib/font/WC_RoughTrad.ttf';
-    //$fontsize=1;
-    $fn="-$size-$ga-$k-$gb-$ab-$supersize-$fontfile-$fontsize-$color-$html-$tracetext-$orient";
-    $size=intval($size*$supersize*$fontsize);
-    $ttfbox=imagettfbbox($size ,0, $fontfile, $tracetext);
-    $hh=$ttfbox[1]-$ttfbox[5];
+    t('trr - stop');
     
-    $space='';
-    $text=contentlang($text);
-    //$text=str_replace(nbsp,' ',$text);
-    if($splitspace){$text=explode(' ',$text);}else{$text=array($text);}
-    //error_reporting(E_ALL);
-    foreach($text as $word){
-	$ttfbox=imagettfbbox($size ,0, $fontfile, 'X'.$word);
-	$ttfboxX=imagettfbbox($size ,0, $fontfile, 'X');
-        $width=($ttfbox[2]-$ttfbox[0])-($ttfboxX[2]-$ttfboxX[0]);	
- 	$height=$hh;//$ttfbox[1]-$ttfbox[5];
-	//$word=contentlang($word);
-	//r($word);r();
-	$file=tmpfile2($word.$fn,'png','word');
-	if(!file_exists($file)/** or 1 /**/){
-	   //r($ttfbox);	
-	   $img=imagecreate/*truecolor*/($width,$height);
-	   $img2=imagecreate/*truecolor*/($width,$height);
-           imagealphablending($img, false);
-	   //imagesavealpha($img,true);
-	   $fill=imagecolorallocatealpha($img, 255, 255, 255,127);
-           $fill2=imagecolorallocatealpha($img2, 255, 255, 255,127);
-	   $color2=imagecolorallocate($img, 0, 0, 0);
-	   //$color=imagecolorallocate($img, 0, 0, 0);
-	   if($red)$color=imagecolorallocate($img, $red, $green, $blue);
-	   if(!$red)$color=imagecolorallocate($img, $ga, $ga, $ga);
-           //$glow=imagecolorallocatealpha($img, 255, 255, 255,0);
-	   if($red)$glow=imagecolorallocatealpha($img, $red, $green, $blue,$ab);
-	   if(!$red)$glow=imagecolorallocatealpha($img, $gb, $gb, $gb,$ab);
-	   $ellipse=imagecolorallocate($img, 20, 20, 20);
-	   imagefill($img,0,0,$fill);
-	   imagefill($img2,0,0,$fill2);
-
-	   //$word='X'.$word;
-	   imagettftext($img2, $size ,0, 0, -$ttfbox[5], $color2,$fontfile, $word);
-		 
-		 for($y = 1; $y!=imagesy($img2); $y++){
-			for($x = 1; $x!=imagesx($img2); $x++){
-				$rgb=imagecolorsforindex($img2,imagecolorat($img2, $x,$y));
-				$al=$rgb["alpha"];
-				if($al<127){
-				    imagefilledellipse($img,$x,$y,$k,$k,$glow);
-				}
-		 }}
-	   /*foreach(array(-2,-1,1,2) as $k){
-	   foreach(array(array($k,$k),array($k,-$k),array(0,$k),array(0,-$k),array($k,0)) as $tmp){
-		list($xx,$yy)=$tmp;
-       	        imagettftext($img, $size ,0, $xx, $yy-$ttfbox[5], $color2,$fontfile, $word);
- 	   }}*/
-
-	    if($style==2){
-		imagefilledellipse($img,$width/2,$height/2,$width/1,$height/1,$ellipse);
-                //imageellipse($img,$width/2,$height/2,$width/2,$width/2,$glow);
-	    }
-	    if($style==3){
-		imagefilledellipse($img,$width/2,$height/2,200,200,$ellipse);
-                //imageellipse($img,$width/2,$height/2,$width/2,$width/2,$glow);
-	    }
-
-
-	   imagealphablending($img, true);
-	   imagettftext($img, $size ,0, 0, -$ttfbox[5], $color,$fontfile, $word);
-	   //r($img);
-	   imagesavealpha($img,true);
-	   
-	   
-	   if($orient){
-	        $img=imagerotate($img,270,0,true);
-	        imagesavealpha($img,true);
-	   }
-	      imagepng($img,$file,9,PNG_ALL_FILTERS); 
-	       
-	   
-	   
-	   
-	   chmod($file,0777);
-	}
-	if(!$html){
-		$html='border="'.($style==3?2:'0').'"';
-	}
-
-
-	$stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.base.str_replace('../','',$file))/*$file*/.'" width="'.intval(($orient?$height:$width)/$supersize).'" height="'.intval(($orient?$width:$height)/$supersize).'" alt="'.$word.'" '.$html.'/>';
-	$space=$orient?'<br/>&nbsp;<br/>':' ';
-    }
     return($stream);
 }
 
@@ -973,6 +1001,9 @@ function table($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=fa
 	e('</table>');
 }
 //---------------------------------------------------------loadbar
+function loadbar($fp,$fs,$plus=0,$show=0,$width='0',$height='0',$color1='33cc66',$color2='aa4422'){
+	echo(loadbarr($fp,$fs,$plus,$show,$width,$height,$color1,$color2));
+}
 
 function loadbarr($fp,$fs,$plus=0,$show=0,$width='0',$height='0',$color1='33cc66',$color2='aa4422'){
 
@@ -1069,9 +1100,14 @@ function cleartmp($id){
 }
 //--------------------------------------------
 function imageurl($file,$rot=1,$grey=false){
-    $file2=tmpfile2($file.','.$rot.','.$grey,imgext,"image");
+
+	$ext=explode('.',$file);
+	$ext=$ext[count($ext)-1];
+	
+    $file2=tmpfile2($file.','.$rot.','.$grey,$ext,"image");
     $file1="image/".$file;
     if(!file_exists($file2) or filemtime($file1)>filemtime($file2) or notmpimg /** or true/**/){
+        t('imageurl - startcreating');
         if(str_replace("id_","",$file)==$file){
             //r($rot);
             if($rot>1 or $grey){
@@ -1155,6 +1191,7 @@ function imageurl($file,$rot=1,$grey=false){
                 file_put_contents2($file2,$contents);
             }
         }
+        t('imageurl - stopcreating');
         }
         $stream=rebase(url.base.$file2);//=$GLOBALS['ss']["url"].$file2;
         return($stream);
@@ -1168,6 +1205,7 @@ function imgr($file,$alt="",$width="",$height="",$rot=1,$border=0,$grey=0){
     if($width){$width="width=\"$width\"";}
     if($height){$height="height=\"$height\"";}
     $stream=imageurl($file,$rot,$grey);
+    t('imgr - after imageurl');
     if($border)
         $border='style="border: '.$border.'px solid #cccccc"';
     else
@@ -1203,7 +1241,7 @@ function iconr($url,$icon,$name="",$s=22,$rot=1,$grey=0){
     $tmp=urlr($url);
     if(strpos("x".$tmp,"javascript: ")){$onclick=str_replace("javascript: ","",$tmp);$tmp="#";}
 	
-    if(strpos($url,'http://')===0){//e($url);
+    if(strpos($url,'http://')===0 or strpos($url,'https://')===0){//e($url);
 	$target='target="_blank"';
      }    
     if($url){$url="href=\"".$tmp."\"";}
@@ -1357,12 +1395,12 @@ if($script)e('</script>');
 //--------------------------------------------
 function input_textr($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){
     //echo(xsuccess());
-    if(!$value and !xsuccess())$value=$_POST[$name];
+    if($value===false and !xsuccess())$value=$_POST[$name];
     $value=tr($value,true);
     $stream="<input type=\"input\" name=\"$name\" id=\"$name\" value=\"$value\" size=\"$cols\"  maxlength=\"$max\" style=\"$style\"/>";
     return($stream);
 }
-function input_text($name,$value=1,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){echo(input_textr($name,$value,$max,$cols));}
+function input_text($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){echo(input_textr($name,$value,$max,$cols));}
 
 //--------------------------------------------
 /*function input_colorr($name,$value='000000'){
@@ -1409,7 +1447,7 @@ function input_textarea($name,$value='',$cols="",$rows="",$style='',$placeholder
 function input_checkboxr($name,$value){
     if(!$value and !xsuccess())$value=$_POST[$name];
     if($value){$ch="checked=\"checked\"";}else{$ch="";}
-    $stream="<input type=\"checkbox\" name=\"$name\" $ch />";
+    $stream="<input type=\"checkbox\" name=\"$name\" id=\"$name\" $ch />";
     return($stream);
 }
 function input_checkbox($name,$value){echo(input_checkboxr($name,$value));}
@@ -1439,10 +1477,15 @@ function s_input($name,$value){
 }
 //----------------------------------------------------------------------------------------
 function limit($page,$w,$step,$to,$d=0){$to=$to-$step;//d-deafult
+	//br();echo("limit($page,$w,$step,$to,$d=0)");br();
+	//echo('('.$d.'/'.$to.')');
+	//echo('('.(ceil($d/$step)+1).'/'.(ceil($to/$step)+1).')');
+
+
     if(is_array($page)){$e=$page[0];$ee=$page[1];}else{$e=$page;$ee=$page;}
     $w=md5("limit_".$e."_".$w);
-    if(get('limit'))$GLOBALS['ss'][$w]=get($w);
-    if(!$GLOBALS['ss'][$w])$GLOBALS['ss'][$w]=$d;
+    if(get('limit')){$GLOBALS['ss'][$w]=get($w);}else{$GLOBALS['ss'][$w]=$d;}
+    //if(!$GLOBALS['ss'][$w])$GLOBALS['ss'][$w]=$d;
     $d=$GLOBALS['ss'][$w];
     
     //echo("$step,$to");
@@ -1756,10 +1799,16 @@ function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclic
 
 	//echo($tmp);
 
-    if(strpos("x".$tmp,"javascript: ")){$onclick=str_replace("javascript: ","",$tmp);$tmp="#".rand(100000,999999);}else{}
-    if(strpos($url,'http://')===0){
-	$target='target="_blank"';
+    if(strpos("x".$tmp,"javascript: ")){$onclick=str_replace("javascript: ","",$tmp);$tmp="#".rand(100000,999999);}else{}   //24.12.2014
+    
+    if(strpos($url,'http://')===0 or strpos($url,'https://')===0){
+        if(strpos($url,'#noblank')===false){
+            $target='target="_blank"';
+        }else{
+            $tmp=str_replace('#noblank','',$tmp);
+        }
      }
+     
     if($url){$url="href=\"".$tmp."\"";}
     if($onclick){$onclick="onclick=\"$onclick\"";}
 	//e($url);
@@ -2000,7 +2049,7 @@ function liner_($id="use",$p=1){
     $response=xquery("info",$id);
     $id=$response["id"];
     //-----------
-    if($p>1)$p="".$p;
+    if($p==1)$p='';
     $hline=lr($response["type"].$p)." ".tr($response["name"],true);
     if($response["in"]){
         $hline=$hline.'('.$response["inname"].')';
@@ -2012,8 +2061,8 @@ function liner($id="use",$p=1){
     $response=xquery("info",$id);
     $id=$response["id"];
     //-----------
-    if($p>1)$p="_".$p;
-    $hline=textcolorr(lr($response["type"].$p),$response["dev"])." ".tr($response["name"],true);
+    if($p==1)$p='';
+    $hline=lr($response["type"].$p)." ".tr($response["name"],true);
     if($response["in"]){
         $hline=$hline.textqqr(ahrefr($response["inname"],"page=profile;id=".$response["in"],"none",true));
     }
@@ -2035,18 +2084,18 @@ function profiler($id="use"){
     $id=$response["id"];
     if($array["showmail"]){$array["mail"]=$array2["mail"];}
     $array["showmail"]="";
-    //-----------
-    $in2=xquery("items");
-    $in2=$in2["items"];
-    $in2=csv2array($in2);
-    //-----------
+    //----------------------------------------------------------------Základní info ID, LVL, počet budov, vlastník
     $stream.=("<table width=\"".((!$GLOBALS['mobile']?contentwidth-3:'96%'))."\"><tr><td valign=\"top\"><table>");
     //-----------
-    $hline=contentlang(tfontr(textcolorr(lr($response["type"]),$response["dev"])." ".tr($response["name"],true),18));
+    /*$hline=lrr(contentlang(tfontr(textcolorr(lr($response["type"]),$response["dev"])." ".tr($response["name"],true),18));
     if($response["in"]){
-        $hline=contentlang($hline.textqqr(ahrefr($response["inname"],"page=profile;id=".$response["in"],"none",true)));
-    }
-    $stream.=("<tr><td colspan=\"2\"  width=\"300\"><h3>$hline<hr/></h3></td></tr>");
+        $hline=lrr(contentlang($hline.textqqr(ahrefr($response["inname"],"page=profile;id=".$response["in"],"none",true))),16);
+    }*/
+	$stream.=brr();
+
+	$hline=trr(contentlang(lr($response["type"])).' '.tr($response["name"],true),16);
+
+    $stream.=("<tr><td colspan=\"2\"  width=\"300\">$hline<hr/></td></tr>");
     $stream.=("<tr><td><b>".lr("id").": </td><td></b>".($response["id"])."</td></tr>");
     
     if($response["type"]=='building'){
@@ -2057,27 +2106,38 @@ function profiler($id="use"){
     }elseif($response["type"]=='town' or $response["type"]=='town2'){
     
         $building_count=sql_1data('SELECT count(1) FROM [mpx]objects as x WHERE x.own='.$id.' AND type=\'building\'');
-        $lvl=sql_1data('SELECT sum(x.fs) FROM [mpx]objects as x WHERE x.own='.$id.' AND (x.type=\'town\' OR x.type=\'town2\') AND type=\'building\'');
+        $lvl=sql_1data('SELECT sum(fs) FROM [mpx]objects WHERE name!=\''.mainname().'\' AND own='.$id.' AND type=\'building\' AND '.objt());
         
         $stream.=("<tr><td><b>".lr("level").": </td><td></b>".fs2lvl($lvl)."</td></tr>");
         $stream.=("<tr><td><b>".lr("building_count").": </td><td></b>".$building_count."</td></tr>");
+		
 
     }elseif($response["type"]=='user'){
 
         $town_count=sql_1data('SELECT count(1) FROM [mpx]objects as x WHERE x.own='.$id.' AND (type=\'town\' OR type=\'town2\')');
         $building_count=sql_1data('SELECT count(1) FROM [mpx]objects as x WHERE x.own=(SELECT y.id FROM [mpx]objects as y WHERE y.own='.$id.' AND (y.type=\'town\' OR y.type=\'town2\') LIMIT 1) AND type=\'building\'');
-        $lvl=sql_1data('SELECT sum(x.fs) FROM [mpx]objects as x WHERE x.name!=\''.mainname().'\' AND x.own=(SELECT y.id FROM [mpx]objects as y WHERE y.own='.$id.' LIMIT 1) AND type=\'building\'');
-    
 
+
+        $lvl=sql_1data('SELECT sum(fs) FROM [mpx]objects WHERE name!=\''.mainname().'\' AND superown='.$id.' AND type=\'building\' AND '.objt());
+		
         $stream.=("<tr><td><b>".lr("level").": </td><td></b>".fs2lvl($lvl)."</td></tr>");
+
+
         //$stream.=("<tr><td><b>".lr("town_count").": </td><td></b>".$town_count."</td></tr>");
         $stream.=("<tr><td><b>".lr("building_count").": </td><td></b>".$building_count."</td></tr>");
 
     }
-    //-----------
-    $q=false;
+
+	if($response["own"]){
+	$stream.=("<tr><td><b>".lr("owner").": </td><td></b>"./*ahrefr(id2name,'e=content;ee=profile;id='.$response["own"])*/liner($response["own"])."</td></tr>");
+	}
+	if($response["superown"] and $response["superown"]!=$response["own"] and $response["superown"]!=$response["id"]){
+	$stream.=("<tr><td><b>".lr("superowner").": </td><td></b>"./*ahrefr(id2name,'e=content;ee=profile;id='.$response["own"])*/liner($response["superown"])."</td></tr>");
+	}
+
+    //----------------------------------------------------------------Profilové info
     foreach($array as $a=>$b){
-        if($a!=''.($a-1+1) and trim($b) and $b!="@" and $a!="text"  and $a!="description"  and $a!="text" and $a!="image" and $a!="mail" and $a!="sendmail"){
+        if($a!=''.($a-1+1) and trim($b) and $b!="@" and $a!="text"  and $a!="description"  and $a!="text" and $a!="image" and $a!="public" and $a!="author" and strpos($a,"mail")===false and strpos($a,"fb")===false){
             $pa=$a;
             $a=lr($a);
             $b=tr($b);
@@ -2086,19 +2146,19 @@ function profiler($id="use"){
             if($pa=="age"){$b=intval((time()-$b)/(3600*24*365.25),0.1);}
             if($pa=="mail"){$b="<a href=\"mailto: $b\">$b</a>";}
             if($pa=="web"){$b="<a href=\"http://$b/\">$b</a>";}
+			if($pa=="color"){$b=tfontr('#'.$b,NULL,$b);}
             //if(!($pa=="description")){
             $stream.=("<tr><td ><b>$a: </b></td><td>$b</td></tr>");
-		$q=true;
             //}else{
             //    $stream.=("<tr><td colspan=\"2\"><code>$b</code></td></tr>");
             //}
         }
     }
     //-----------
-    if($q)$stream.=("<tr><td colspan=\"2\"><hr/></td></tr>");
+    $stream.=("<tr><td colspan=\"2\"><hr/></td></tr>");
 
-     //-------------------------------------------------------------------%func
-    $support=array();
+     //-------------------------------------------------------------------Info o předmětech
+    /*$support=array();
     $stream3="";
     $stream3=$stream3.("<table width=\"100%\" cellspacing=\"0\">");
     foreach($in2 as $item){
@@ -2142,10 +2202,12 @@ function profiler($id="use"){
             $stream3=$stream3.("</td></tr>");
         }
     }
-    $stream3=$stream3.("</table>");
+    $stream3=$stream3.("</table>");*/
     //r($support);
-    //------------------------------------------------------------------------
+    //------------------------------------------------------------------------Info o funkcích
     //$stream.=("<b>".lr("f_life").": </b>".$response["fp"]."/".$response["fs"]."");
+	
+	$q=false;
     $classes=array("move","create","attack","defence");
     foreach($classes as $aclass){
         foreach($funcs as $name=>$func){
@@ -2163,6 +2225,7 @@ function profiler($id="use"){
                         $stream.=("<tr><td>");
                         $stream.=nbsp3.lr("f_".$class."_".$fname).":";
                         $stream.=("</td><td>");
+						$q=true;
                         //$q.textqqr("$e1,$e2");
                         //r("$class - $fname");
                         $support1=$support[$class][$fname];
@@ -2184,45 +2247,87 @@ function profiler($id="use"){
     //if($funcs["image"]){$stream.=("<tr><td colspan=\"2\">Tento uživatel může nahrávat obrázky.</td></tr>");}
     //$stream.=("<tr><td colspan=\"2\"><hr/></td></tr>");
     $stream.=("</table>");
+	if($q)$stream.=hrr();
+	
     //-----------{""
     $stream.=$stream3;
-    //------------------------------------------------------------------------
-        //r($response);
+
+    //------------------------------------------------------------------------vlastněná města
+	if($response["type"]=='user'){
+		$iconsize=25;
+
+		$array=sql_array('SELECT `id`,`name`,`profile` FROM [mpx]objects WHERE `own`=\''.($id).'\' AND (`type`=\'town\' OR `type`=\'town2\') ORDER BY `type`,ABS('.$id.'-`id`)');
+		foreach($array as $row){
+			list($id_,$name_,$profile_,$mainid_,$x_,$y_,$ww_)=$row;
+			$profile_=str2list($profile_);
+			$color_=$profile_['color'];
+			if(!$color_)$color_='699CFE';
+			$border1=array(2,$color_);
+			$url='e=content;ee=profile;id='.$id_;
+
+			$stream.=borderr(iconr($url,"profile_town",contentlang($name_),$iconsize,NULL),$border1,$iconsize);
+			$stream.=nbsp3;
+			$stream.=ahrefr(trr(contentlang($name_),15),$url);
+			$stream.=brr();
+
+		}
+		$stream.=hrr();
+	}
+    //------------------------------------------------------------------------Další akce
+        //--------------Vlastní
         if($response['ww']==$GLOBALS['ss']['ww']){
-        $stream.=("<hr/>");
+        //$stream.=hrr();
         if(useid==$id or logid==$id){
             
             $stream.=ahrefr(lr("profile_edit"),"e=content;ee=settings;submenu=1;id=$id",false);
-            $stream.=("<br/>");
+            $stream.=brr();
             
             if(logid==$id){
                 $stream.=ahrefr(lr("password_edit"),"e=content;ee=settings;submenu=2",false);
-                $stream.=("<br/>");
+                $stream.=brr();
             }
-        }else{
+        }
+		//--------------Nejste to vy
+		{
+			//--------------útok
              if($response["type"]=='building' or $response["type"]=='tree' or $response["type"]=='rock'){
                     $stream.=ahrefr(lr("attack_".$response["type"]),"e=content;ee=attack-attack;page=attack;set=attack_id,$id",false);
+					$stream.=brr();
              }elseif($response["type"]=='user'){
+
+					//--------------Poslat zprávu
+
                     $stream.=ahrefr(lr('send_message'),"e=content;ee=text-messages;submenu=5;to=$id",false);
+					$stream.=brr();
+
+             }elseif($response["type"]=='town' or $response["type"]=='town2' or $response["type"]=='building'){
+
+					//--------------Centrovat mapu
+					$url=centerurl($id,$response["x"],$response["y"],$response["ww"]);
+    				$stream.=ahrefr(lr('stat_center'),$url);
+					$stream.=brr();
+                    //$stream.=ahrefr(lr('send_message'),"e=content;ee=text-messages;submenu=5;to=$id",false);
+
+
+
              }
         }}
-        //r($response["in"]);
-        if($GLOBALS['ss']["useid"]==$response["in"]){
-        $stream.=ahrefpr("Opravdu chcete odhodit tento předmět?","odhodit předmět","query=item $id drop",false);
-        }
-    //-----------
+
+
+    //----------------------------------------------------------------OBRázek, POPIS
     if($response["type"]!="message") {
         $stream.=("</td><td align=\"justify\" valign=\"top\" width=\"147\">");
-        $stream.=imgr("id_$id","",147);
+        $stream.=imgr("id_$id","",147,NULL,1,2);
         $stream.=br;
-        $stream.=markdown($array["description"]);
-    }else{
+        $stream.=inteligentparse($array["description"]);
+    }/*else{
         $stream.=("</td><td width=\"200\" align=\"left\" valign=\"top\">");
         $stream.="<b>".tr($array["subject"])."</b>".br;
         $stream.=tr($array["text"]);
-    }
+    }*/
     $stream.=("</td></tr></table>");
     return($stream);
+	//----------------------------------------------------------------
 }
 function profile($id="use"){echo(profiler($id));}
 ?>

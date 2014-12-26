@@ -9,33 +9,33 @@
 */
 //==============================
 
-blue(lr('register_info'));
+blue(lr('register_infox'));
 br();
 
-ahref(trr(lr('register_random'),19,3,'style="background: rgba(30,30,30,0.9);border: 3px solid #222222;border-radius: 2px;"'),js2('register(1,\'\')'));
-br();br();
-info(lr('register_random_info'));
-br();
-
-tee(lr('register_near'),19,3,'style="background: rgba(30,30,30,0.9);border: 3px solid #222222;border-radius: 2px;"');br();br();
-info(lr('register_near_info'));
-br();
 ?>
-<form id="reg_form" name="reg_form" method="POST" action="<?php url("q=login [login_username],towns,[login_password];login_try=1"); ?>">
+<form id="reg_form" name="reg_form" method="POST" action="">
 
-<input type="input" name="near" id="near" value="<?php echo($_POST["near"]) ?>"  style="<?php echo(mobile?'font-size:18px;':''); ?>width:150px;border: 2px solid #000000; background-color: #999999"/>
+<table>
+<tr><td><b><?php le("username"); ?>:</b></td><td><?php input_text("register_username",''); ?></td></tr>
+<tr><td><b><?php le("password"); ?>:</b></td><td><?php input_text("register_password",''); ?></td></tr>
+<tr><td><b><?php le("email"); ?>:</b></td><td><?php input_text("register_email",'@'); ?></td></tr>
+<tr><td colspan="2"><?php input_checkbox("register_sendmail",1); ?><b><?php le("sendmail"); ?></b></td></tr>
+<tr><td colspan="2"><?php le("sendmail_info"); ?></b></td></tr>
 
+</table>
 
-<?php moveby(trr(nbsp.lr('register_near_ok').nbsp,13,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"',NULL,'input'),0,3); ?>
+<?php
+    br();
+    tee(nbsp.lr('register_finish').nbsp,13,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"',NULL,'input')
+?>
 
-
-<span id="loading_reg" style="visibility:hidden;">&nbsp;&nbsp;&nbsp;<?php le('loading'); ?></span>
 
 </form>
 <script>
 $("#reg_form").submit(function() {
-
-    register(4,$('#near').val());
+    //alert(123);
+    register($('#register_username').val(),$('#register_password').val(),$('#register_email').val(),($("#register_sendmail").is(':checked') ? 1 : 0));
+    //alert(345);
     return(false);
 });
 </script>

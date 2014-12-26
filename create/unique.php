@@ -39,13 +39,16 @@ $limit=$func[$unique_func]['params']['limit'][0]*$func[$unique_func]['params']['
 
 $group=$func[$unique_func]['profile']['group'];
 $groupx=$group;
+
+$GLOBALS['groupby']='';
 if($group){
 	infob(contentlang(lr('unique_from',$object->name)));
 	
 	if($groupx!='extended'){
 	    $group="func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'";//" AND name!='".$object->name."'";
     }else{
-        $group=/*"func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'".*/' own='.$object->own.' GROUP BY name';//" AND name!='".$object->name."'";
+        $group=/*"func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'".*/' own='.$object->own." AND name!='".mainname()."'";//" AND name!='".$object->name."'";
+		$GLOBALS['groupby']='GROUP BY name';
     }
 }else{
 	$group="func NOT LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]%'";

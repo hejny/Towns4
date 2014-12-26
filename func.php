@@ -257,7 +257,7 @@ function md5t($text){
     //return($names[$i]);
 }
 //===================================================URSL, SUBPAGE, WINDOWS
-function target($sub,$w="",$ee="",$q,$only=false,$rot="",$noi=false,$prompt='',$set='',$cache=''){
+function target($sub,$w="",$ee="",$q,$only=false,$rot="",$noi=false,$prompt='',$set='',$cache='',$jsa=''){
     //newwindow
     if($q)$q="&q=$q";
     if($w)$w="&w=$w";
@@ -275,6 +275,9 @@ if(typeof event === 'undefined'){1;}else{
 }
 ";
     $iv="\$('#loading').css('display','none');";
+    if($jsa)$iv.=$jsa;
+    
+    
     if(!$noi){$inter="&i=$sub,$ee";}else{$inter="";}
     $bpart=("\$(function(){\$.get('?y=".$_GET['y']."&e=$ee$w$q$rot$inter$set', function(vystup){\$('#$sub').html(vystup);$iv});$vi});");
     if($cache){
@@ -381,6 +384,7 @@ function subescape($sub){
         $buffer = ob_get_contents();
         ob_end_clean();
     }
+    //e($buffer);br();
      //-------
         //$buffer=contentlang($buffer);
         $bufferx="";
@@ -450,7 +454,7 @@ function subexec($sub){
 //---------------------------------------------------------
 function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
     //r($tmp);
-    if(str_replace("http://","",$tmp)==$tmp){
+    if(str_replace("http://","",$tmp)==$tmp and str_replace("https://","",$tmp)==$tmp){
         if(logged()){
             //echo("rand");
             $md5=md52(session_id().$tmp);
@@ -467,6 +471,7 @@ function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
         $q=$GLOBALS['ss'][$md5]["q"];$qq=$q;
         $ee=$GLOBALS['ss'][$md5]["ee"];
         $js=$GLOBALS['ss'][$md5]["js"];
+        $jsa=$GLOBALS['ss'][$md5]["jsa"];
         $ref=$GLOBALS['ss'][$md5]["ref"];
         $rot=$GLOBALS['ss'][$md5]["rot"];
         $i=$GLOBALS['ss'][$md5]["i"];
@@ -476,7 +481,7 @@ function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
         if($i){$i="&amp;i=$i";}else{$i="";}
         if($set){$set="&amp;set=$set";}else{$set="";}
         if(!$prompt)$prompt='';        
-        if(!$e and !$js  and !$ref){
+        if(!$e and !$js and !$ref){
             //r("outling(!$e and !$js  and !$ref)");
             return(/*$GLOBALS['ss']["url"]*/url."?y=".$_GET['y']."&amp;w=".$md5.$q.$rot.$i.$set);//.$tmpx
         }else{
@@ -490,7 +495,7 @@ function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
             $set=$GLOBALS['ss'][$md5]["set"];
             $cache=$GLOBALS['ss'][$md5]["cache"];
             //r($GLOBALS['ss'][$md5]);
-            if($e)$js=$js.target($e,$md5,$ee,$qq,false,$rot,$noi,$prompt,$set,$cache);//.$tmpxx
+            if($e)$js=$js.target($e,$md5,$ee,$qq,false,$rot,$noi,$prompt,$set,$cache,xx2x($jsa));//.$tmpxx
             if($ref)$js=$js.target($ref);
             return("javascript: ".($js));//addslashes
         }
@@ -521,6 +526,9 @@ function urlx($url,$script=true){e(urlxr($url,$script));if($script){exit2();}}
 //------------------------
 function js2($js){
 	return("js=".x2xx($js));
+}//------------------------
+function jsa2($js){
+	return("jsa=".x2xx($js));
 }
 //======================================================================================
 /*function file2hex($file){
@@ -827,6 +835,15 @@ function post_request($url,$data){
     return($result);
 
 }
+
+//==========================================================================================check_email
+
+function check_email($email) {
+    $atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]'; // znaky tvořící uživatelské jméno
+    $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])'; // jedna komponenta domény
+    return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
+}
+
 
 //==========================================================================================
 require(root.core."/func_components.php");

@@ -261,36 +261,59 @@ echo($_GET['unsubscribe']?'&unsubscribe='.urlencode($_GET['unsubscribe']):'');
 
 }
 //------------------------------------------------------------------------------------------------------------------
-function register(param1,param2){
-//alert('register '+param1+','+param2);
+//var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+x2xx = function(text){
+<?php
+    $i=0;
+    foreach($GLOBALS['ss']["vals_a"] as $val_a){
+        if($val_a!=nln and $val_a!='[' and $val_a!=']'){
+            e("text=text.split('".addslashes($val_a)."').join('".$GLOBALS['ss']["vals_bb"][$i]."');");
+        }
+        $i++;
+    }
+?>
+return(text);
+}
+
+//-------------------------------------------------
+
+function register(username,password,email,sendmail){
+//alert(username+','+password+','+email+','+sendmail);
+//alert(encodeBase64(username));
 <?php if($_GET['width']){e('ww='.$_GET['width'].';');}else{e('ww=$(window).width();');} ?>
 <?php if($_GET['height']){e('hh='.$_GET['height'].';');}else{e('hh=$(window).height();');} ?>
 
 <?php $page='-html_fullscreen'; ?>
 
-/*$(function(){});*/
-
-/*alert('?y=<?php e($_GET['y']); ?>&s=<?php e(ssid); ?>&e=<?php e($page); ?>&width=' + ww + '&height=' + hh + '&mobile=<?php echo($GLOBALS['mobile']?'1':'0'); ?>&j=<?php echo($_GET['j']); ?>&addposition=<?php echo($_GET['addposition']); ?>&'+add);*/
-<?php
-	/*$vi="
-	//if(typeof event === 'undefined'){1;}else{
-	alert(1);
-	\$('#loading').css('display','block');
-	\$('#loading').css('left',event.pageX-10);
-	\$('#loading').css('top',event.pageY-10);
-	//}
-	";
-        $iv="\$('#loading').css('display','none');";*/
-
-
-	$key=rand(1111111,9999999);
-	$GLOBALS['ss']['register_key']=$key;
-?>
+register_username=$('#register_username').val();
+register_password=$('#register_password').val();
+register_email=$('#register_email').val();
+register_sendmail=$("#register_sendmail").is(':checked') ? true : false ;
 
 $('#html_fullscreen').html(nacitacihtml);
 
+username=x2xx(username);
+password=x2xx(password);
+email=x2xx(email);
+/*username=username?Base64.encode(username):'';
+password=password?Base64.encode(password):'';
+email=email?Base64.encode(email):'';*/
 
-$.get('?y=<?php e($_GET['y']); ?>&s=<?php e(ssid); ?>&e=<?php e($page); ?>&width=' + ww + '&height=' + hh + '&mobile=<?php echo($GLOBALS['mobile']?($GLOBALS['android']?2:1):0); ?>&j=<?php echo($_GET['j']); ?>&addposition=<?php echo($_GET['addposition']); ?>&q=register new,<?php e($key); ?>,0,'+param1+','+param2+'&login_try=1', function(vystup){$('#html_fullscreen').html(vystup);});/**/
+
+
+$.get('?y=<?php e($_GET['y']); ?>&s=<?php e(ssid); ?>&e=<?php e($page); ?>&width=' + ww + '&height=' + hh + '&mobile=<?php echo($GLOBALS['mobile']?($GLOBALS['android']?2:1):0); ?>&j=<?php echo($_GET['j']); ?>&addposition=<?php echo($_GET['addposition']); ?>&q=register,'+(username)+','+(password)+','+(email)+','+(sendmail)+'&register_try=1', 
+function(vystup){
+    $('#html_fullscreen').html(vystup);
+    
+    $('#register_username').val(register_username);
+    $('#register_password').val(register_password);
+    $('#register_email').val(register_email);
+    $("#register_sendmail").attr('checked', register_sendmail);
+    //alert(register_sendmail);
+    
+});/**/
+
+
 
 }
 //------------------------------------------------------------------------------------------------------------------
@@ -329,11 +352,11 @@ $.get('?y=<?php e($_GET['y']); ?>&q=logout&s=<?php e(ssid); ?>&e=<?php e($page);
 
 		$tdiff=time()-$GLOBALS['ss']["log_object"]->t;
 		//e('alert('.$tdiff.');');
-		if($tdiff<=60*2){
-		    e('reloc();');
-		}else{
+		//if($tdiff<=60*2){
+		//    e('reloc();');
+		//}else{
 		    e('reloc(1);');
-		}
+		//}
 
 ?>
 

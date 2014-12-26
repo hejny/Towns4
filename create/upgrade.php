@@ -12,7 +12,7 @@
 
 
 
-$fields="`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
+$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
 /*if($_GET["id"]){
     $id=$_GET["id"];
 }elseif($GLOBALS['get']["id"]){
@@ -27,7 +27,7 @@ sg("id");
 if($id?ifobject($id):false){
     $sql="SELECT $fields FROM ".mpx."objects WHERE id=$id";
     $array=sql_array($sql);
-    list($id, $name, $type, $dev, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
+    list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
 
  
     if($own==useid or $own==logid){

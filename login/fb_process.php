@@ -16,22 +16,23 @@ if($GLOBALS['ss']['fbid']!=-1){
     $fbid=$GLOBALS['ss']['fbid'];
 	
 	if(!logged()){
-	$tmpids=sql_array('SELECT `id` FROM `[mpx]login` WHERE `key`=\''.$fbid.'\' AND `method`=\'facebook\'');
+	$tmpids=sql_array('SELECT `id` FROM `[mpx]users` WHERE `fbid`=\''.$fbid.'\' AND `aac`=\'1\'');
 	if(count($tmpids)==0){
 		//echo('createuser');
 		//$GLOBALS['fb_createuser']=$fbid;
 
 
-		$key=rand(1111111,9999999);
-		$GLOBALS['ss']['register_key']=$key;
-		xquery('register','new',$key,$fbid);
+		//$key=rand(1111111,9999999);
+		//$GLOBALS['ss']['register_key']=$key;
+		a_register('new','','','','',$GLOBALS['user_profile']);
+                
 		
-	}elseif(count($tmpids)==1){
+	}elseif(count($tmpids)>=1){
 		$tmpid=$tmpids[0][0];
 		xquery('login',$tmpid,'facebook',$fbid);
-	}else{
+	}/*else{
 		/*$tmpid=$tmpids[0][0];
-		xquery('login',$tmpid,'facebook',$fbid);*/
+		xquery('login',$tmpid,'facebook',$fbid);* /
 
 
 		$GLOBALS['ss']['fb_select_ids']=array();
@@ -41,9 +42,10 @@ if($GLOBALS['ss']['fbid']!=-1){
 			$GLOBALS['ss']['fb_select_ids'][count($GLOBALS['ss']['fb_select_ids'])]=$tmpid;
 			//echo($tmpid);
 		}
-	}
+	}*/
 	}else{
-		sql_query("INSERT INTO `[mpx]login` (`id`,`method`,`key`,`text`,`time_create`,`time_change`,`time_use`) VALUES ('".(logid)."','facebook','".$fbid."','".serialize($GLOBALS['user_profile'])."','".time()."','".time()."','".time()."')");
+            a_register('','','','','',$GLOBALS['user_profile']);
+		//sql_query("INSERT INTO `[mpx]login` (`id`,`method`,`key`,`text`,`time_create`,`time_change`,`time_use`) VALUES ('".(logid)."','facebook','".$fbid."','".serialize($GLOBALS['user_profile'])."','".time()."','".time()."','".time()."')");
 	}
 	
 }else{

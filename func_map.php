@@ -374,11 +374,142 @@ function rgb2lvl($r,$g,$b){
     
     return($lvl);
 }
-//----------------------------------------------------------------------------------------------------------------------PREDELMORE A PEVNINY
+//----------------------------------------------------------------------------------------------------------------------STARE PREDEL MORE, PEVNINY A TEMNOTY
 
-function t1border($im){//return($im);
-    for($y = 0; $y!=imagesy($im); $y++){
-        for($x = 0; $x!=imagesx($im); $x++){
+/*function tborder($im){//return($im);
+
+	$k=-0.1;
+	$q=0.1;
+	$temno=gr-1;//0.5;
+	$temnox=1;//1.1;//0.5;
+	$tlimit=30;
+	$limit=(imagesx($im)*imagesy($im))+10000;
+
+	//-------------------
+
+	//for($x = 0; $x!=imagesx($im); $x++){
+	$x=0;
+	while($x!=imagesx($im) and $limit>0){$limit--;
+    
+        //for($y = 0; $y!=imagesy($im); $y++){
+		$y=0;$i=0;
+		while($y!=imagesy($im) and $limit>0){$limit--;
+                $rgb=imagecolorsforindex($im,imagecolorat($im, $x,$y));
+
+
+                $r=$rgb["red"];
+                $g=$rgb["green"];
+                $b=$rgb["blue"];
+                
+		/*$r=$tmp;
+		$r=$g;
+		$g=$tmp;* /
+		if($b>$r*gr or $b>$g*gr){
+			$b=$b*gr;
+		}
+
+		
+		//---------------------------more
+
+
+				$r2=($r*(1-$q-$q))+($g*$q)+($b*$q);
+				$g2=($r*$q)+($g*(1-$q-$q))+($b*$q);
+				$b2=($r*$k)+($g*$k)+($b*(1-$k-$k));
+
+
+				if($r2<0)$r2=0;if($r2>255)$r2=255;
+				if($g2<0)$g2=0;if($g2>255)$g2=255;
+				if($b2<0)$b2=0;if($b2>255)$b2=255;
+
+			$r=$r2;
+            $g=$g2;
+            $b=$b2;
+		//---------------------------temnota
+
+				/*$k=-0.1;
+				$q=0.1;
+				$r2=($r*(1-$q-$q))+($g*$q)+($b*$q);
+				$g2=($r*$q)+($g*(1-$q-$q))+($b*$q);
+				$b2=($r*$k)+($g*$k)+($b*(1-$k-$k));
+
+
+				if($r2<0)$r2=0;if($r2>255)$r2=255;
+				if($g2<0)$g2=0;if($g2>255)$g2=255;
+				if($b2<0)$b2=0;if($b2>255)$b2=255;* /
+				if($r+$g+$b<$tlimit){
+					
+					//$r2=0;
+					//$g2=0;
+					//$b2=0;
+	
+						$vt=true;
+						$i=0;
+						while($vt and $y!=imagesy($im) and $limit>0){$limit--;
+							$i++;
+							$x2=$x;
+							$y2=$y;
+							$r3=pow((($r*2+20)/pow($i,$temno))/255,$temnox)*255;
+							$g3=pow((($g*2+10)/pow($i,$temno))/255,$temnox)*255;
+							$b3=pow(($b*2/pow($i,$temno))/255,$temnox)*255;
+							$tmpcolor=imagecolorallocate($im,$r3,$g3,$b3);
+							imagesetpixel($im,$x2,$y2,$tmpcolor);
+							imagecolordeallocate($tmpcolor);
+
+							$rgb=imagecolorsforindex($im,imagecolorat($im, $x,$y+5));
+
+							$y++;
+							if($rgb["red"]+$rgb["green"]+$rgb["blue"]<$tlimit){
+								$vt=true;
+							}else{
+								$vt=false;
+								break;
+								$i=0;
+							}
+
+						}
+				}else{
+
+		//---------------------------
+
+			$tmpcolor=imagecolorallocate($im,$r2,$g2,$b2);
+			imagesetpixel($im,$x,$y,$tmpcolor);
+			imagecolordeallocate($tmpcolor);
+			$y++;
+
+		}
+
+
+
+        }
+	 $x++;
+    }
+    return($im);
+}*/
+//----------------------------------------------------------------------------------------------------------------------NOVE PREDEL MORE, PEVNINY A TEMNOTY
+
+function tborder($im){//return($im);
+
+	$k=-0.1;
+	$q=0.1;
+	$py=50;
+	$tlimit=40;
+	$fall=1;
+	$fally=1;
+	$rmax=135;$gmax=188;$bmax=255;
+	$limit=(imagesx($im)*imagesy($im))+10000;
+
+	$im2=imagecreatetruecolor(imagesx($im),imagesy($im));
+	imagecopy($im2,$im,0,0,0,0,imagesx($im),imagesy($im));
+
+	//-------------------
+
+	//for($x = 0; $x!=imagesx($im); $x++){
+	$x=0;
+	while($x!=imagesx($im) and $limit>0){$limit--;
+    
+        //for($y = 0; $y!=imagesy($im); $y++){
+		$y=0;$i=0;
+		while($y!=imagesy($im) and $limit>0){$limit--;
                 $rgb=imagecolorsforindex($im,imagecolorat($im, $x,$y));
 
 
@@ -393,8 +524,10 @@ function t1border($im){//return($im);
 			$b=$b*gr;
 		}
 
-		$k=-0.1;
-		$q=0.1;
+		
+		//---------------------------more
+
+
 		$r2=($r*(1-$q-$q))+($g*$q)+($b*$q);
 		$g2=($r*$q)+($g*(1-$q-$q))+($b*$q);
 		$b2=($r*$k)+($g*$k)+($b*(1-$k-$k));
@@ -404,16 +537,85 @@ function t1border($im){//return($im);
 		if($g2<0)$g2=0;if($g2>255)$g2=255;
 		if($b2<0)$b2=0;if($b2>255)$b2=255;
 
-		$tmpcolor=imagecolorallocate($im,$r2,$g2,$b2);
+		$r=$r2;
+        $g=$g2;
+        $b=$b2;
 
-		imagesetpixel($im,$x,$y,$tmpcolor);
+		/*if($b>$r and $b>$g){
+		if($r+$g+$b>$rmax+$gmax+$bmax){ $rmax=$r;$gmax=$g;$bmax=$b; }
+		}*/
+		//---------------------------temnota
 
+		$x2=$x;
+		$y2=$y;
+
+		if($r+$g+$b<$tlimit){
+			
+			$down=$tlimit-($r+$g+$b);
+
+			$downy=round(pow($down,$fally));
+
+			$x2=$x;
+			$y2=$y+$downy;
+
+			//$r=($r+50)/$down;
+		    //$g=($g)/$down;
+		    //$b=($b)/$down;
+
+			//$r=100;
+			if($b>$r+2 and $b>$g+2){
+				$vocas=15;
+				$g=pow($g*gr,1)*gr*1-pow($down,$fall);
+				$b=pow($b*gr,1)*gr*1-pow($down,$fall);
+				$r=pow($r*gr,1)*gr*1-pow($down,$fall);
+
+			}else{
+				$vocas=0;
+				$g=pow($g/2,1)/2-pow($down,$fall);
+				$b=pow($b,gr)/2-pow($down,$fall);
+				$r=pow($r/2,1)*gr-pow($down,$fall)+10;
+			}
+			
+		}else{
+			$vocas=0;
+			/*if($b>$r and $b>$g){
+
+				if($r+$g+$b+100<$rmax+$gmax+$bmax){
+
+					$sum=($r+$g+$b);
+					$sumax=($rmax+$gmax+$bmax);
+
+					$r=$r/$sum*$sumax/gr;
+					$g=$g/$sum*$sumax/gr;
+					$b=$b/$sum*$sumax/gr;
+					//$r=($r+$rmax)/2;//-pow($down,$fall);
+					//$g=($g+$gmax)/2;//-pow($down,$fall);
+					//$b=($b+$bmax)/2;//-pow($down,$fall);
+				}
+			}*/
+		}
+
+		//---------------------------
+
+		if($r<0)$r=0;
+		if($g<0)$g=0;
+		if($b<0)$b=0;
+		$tmpcolor=imagecolorallocate($im2,round($r),round($g),round($b));
+		//if($x==$x2 and $y==$y2){	
+		//	imagesetpixel($im2,$x2,$y2,$tmpcolor);
+		//}else{
+			imageline($im2,$x2,$y2-$vocas,$x2,$y2+$py-$vocas,$tmpcolor);
+		//}
 		imagecolordeallocate($tmpcolor);
-        }
-    }
-    return($im);
-}
+		$y++;
 
+
+
+        }
+	 $x++;
+    }
+    return($im2);
+}
 
 
 //----------------------------------------------------------------------------------------------------------------------PROPOJENI
@@ -542,7 +744,7 @@ function mapbg($xc,$yc){
             imagesavealpha($img2,true);
             return($img2);
         }else{
-	    $img=t1border($img);
+	    $img=tborder($img);
             return($img);
         }
 }
@@ -653,6 +855,11 @@ sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND 
 //r(mapunits(20,128));
 //exit;
 //------------------------------------------------------------------------------------------------------------PROPOJENI2 HTMLMAP
+/*$gx=2;$gy=15;
+$x=($gy+$gx)*5+1;
+$y=($gy-$gx)*5+1;
+$treerock=mapunits($x,$y);
+r($treerock);*/
 //=============================================================
 function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$width=424*/){
 
@@ -778,11 +985,17 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
 			imagealphablending($model_tree,true); 
 			                        
                         imagecopyresized($model_rock,$model_tree,0,0,0,0,imagesx($model_rock),imagesy($model_rock),imagesx($model_rock),imagesy($model_rock));*/
-			//$treerock=imagecreatefrompng(root.'image/design/treerock.png');
-			$gx=2;$gy=15;
+			$treerock=imagecreatefrompng(root.'image/design/treerock.png');
+                        
+                        
+                        
+			/*$gx=2;$gy=15;
 			$x=($gy+$gx)*5+1;
                 	$y=($gy-$gx)*5+1;
-			$treerock=mapunits($x,$y/*,"x".$gx."y".$gy*/);
+			$treerock=mapunits($x,$y);*/
+                        
+                        
+                        
 			//r($treerock);
 			//$model_tree=model(sql_1data("SELECT res FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);  
 			//imagealphablending($model_tree,true); 
@@ -898,7 +1111,7 @@ function terraincolor($terrain){
     return(array($r,$g,$b));
 }
 //-----------------------
-function worldmap($width=500,$minsize=0,$w=false,$top=false,$worldmap_red=false){
+function worldmap($width=0,$minsize=0,$w=false,$top=false,$worldmap_red=false){
     if(!$w){
         $w=$GLOBALS['ss']["ww"];
         $mapsize=mapsize;
@@ -913,9 +1126,11 @@ function worldmap($width=500,$minsize=0,$w=false,$top=false,$worldmap_red=false)
             $mapsize=$mapsize2;
         } 
     }
+    if(!$width){
+		$width=$mapsize;
+	}
     
-    
-    $outimg=tmpfile2("worldmap,$width,$w,$minsize".($worldmap_red?serialize($worldmap_red):'').t_,"png","map");
+    $outimg=tmpfile2("worldmap,$width,$w,$minsize".($top?'top':'iso').($worldmap_red?serialize($worldmap_red):'').t_,"png","worldmap");
     if(!file_exists($outimg)/** or true/**/){
         
         if($mapsize<$minsize){   
@@ -926,33 +1141,53 @@ function worldmap($width=500,$minsize=0,$w=false,$top=false,$worldmap_red=false)
         
         $colors=array();
         
-        $s=$width/(sqrt(2*pow($mapsize,2))*$kk);      
-        //$width=sqrt(2*pow($mapsize,2))*$s*$kk;
-        $height=$width/2;
+		if(!$top){
+		    $s=$width/(sqrt(2*pow($mapsize,2))*$kk);      
+		    //$width=sqrt(2*pow($mapsize,2))*$s*$kk;
+		    $height=$width/2;
+		}else{
+		    //$s=2*$width/(sqrt(2*pow($mapsize,2))*$kk);      
+		    $height=$width;
+		}
         
         $img=imagecreatetruecolor($width, $height);
         imagealphablending($img, false);
-        list($r,$g,$b)=terraincolor('t1');
+        list($r,$g,$b)=terraincolor('t0');
         $y=gr;$yy=5;//5;
-        $colors[0]=imagecolorallocatealpha($img, ((($y*$r)+$g+$b)/(2+$y))/$yy,(($r+($y*$g)+$b)/(2+$y))/$yy,(($r+$g+($y*$b))/(2+$y))/$yy,90);   
+        //$colors[0]=imagecolorallocatealpha($img, ((($y*$r)+$g+$b)/(2+$y))/$yy,(($r+($y*$g)+$b)/(2+$y))/$yy,(($r+$g+($y*$b))/(2+$y))/$yy,90);
+		$colors['t1']=imagecolorallocate($img,$r,$g,$b);
         //$colors[0]=imagecolorallocatealpha(0,0,0,50);  
-        imagefill($img,0,0,$colors[0]);
+        imagefill($img,0,0,$colors['t1']);
         
         $limit=0;$q=true;
         while($q){$q=false;
-            foreach(sql_array('SELECT x,y,terrain FROM [mpx]map WHERE terrain!=\'t1\' AND ww=\''.$w.'\' LIMIT '.$limit.',500') as $row){
+            foreach(sql_array('SELECT x,y,terrain FROM [mpx]map WHERE  ww=\''.$w.'\' LIMIT '.$limit.',500') as $row){//WHERE terrain!=\'t1\' AND
                 $q=true;
                 list($x,$y,$terrain)=$row;
-                $xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);
-                $yy=($x+$y)/($mapsize*2)*($height/$kk)+(($height-($height/$kk))/2);
-                $radius=ceil($s*sqrt(2));
-                
-                if($terrain and $terrain!='t1'/**/){
+
+				if(!$top){
+		            $xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);
+		            $yy=($x+$y)/($mapsize*2)*($height/$kk)+(($height-($height/$kk))/2);
+		            $radius=ceil($s*sqrt(2));
+				}else{
+		            $xx=$x/($mapsize)*($width/$kk);
+		            $yy=$y/($mapsize)*($height/$kk);
+		            $xx2=($x+1)/($mapsize)*($width/$kk);
+		            $yy2=($y+1)/($mapsize)*($height/$kk);
+				}                
+
+				if(!$terrain)$terrain='t0';
+                if($terrain/* and $terrain!='t1'*/){
                     if(!$colors[$terrain]){
                         list($r,$g,$b)=terraincolor($terrain);
                         $colors[$terrain]=imagecolorallocate($img, $r, $g, $b);   
                     }
-                    imagefilledellipse($img, round($xx), round($yy), $radius, ceil($radius/gr), $colors[$terrain]);
+
+					if(!$top){
+                    	imagefilledellipse($img, round($xx), round($yy), $radius, ceil($radius/gr), $colors[$terrain]);
+					}else{
+                    	imagefilledrectangle($img, round($xx), round($yy), round($xx2), round($yy2), $colors[$terrain]);
+					}
                     //imagesetpixel($img, round($xx), round($yy), $colors[$terrain]);
                 }
             
@@ -974,6 +1209,7 @@ function worldmap($width=500,$minsize=0,$w=false,$top=false,$worldmap_red=false)
         imagefilter($img, IMG_FILTER_CONTRAST,-5);
         imagesavealpha($img, true);
         imagepng($img,$outimg,png_quality,png_filters);
+		chmod($outimg,0777);
     }
     return($outimg);
 }

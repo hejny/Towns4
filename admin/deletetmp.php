@@ -13,10 +13,30 @@
 <b>Upozornění: </b>Tato funkce pomocné soubory světa <?php echo(w); ?>.<br />
 <?php
 if($_GET['total']==w){
-	emptydir(root.cache);
-	echo('Pomocné soubory světa '.w.' byly smazány.');
-	session_destroy();
+	if($_GET['dir']){
+		
+		if(strpos($_GET['dir'],root.cache)===0 and !strpos($_GET['dir'],'..')){
+			emptydir($_GET['dir']);
+			echo('Pomocné soubory '.$_GET['dir'].' byly smazány.');br(2);
+		}else{
+			echo('!');br(2);
+		}
+
+
+	}else{
+		emptydir(root.cache);
+		echo('Pomocné soubory světa '.w.' byly smazány.');br(2);
+		session_destroy();
+	}
 }
 ?>
 
 <a href='?total=<?php echo(w); ?>'>smazat</a>
+
+<?php
+foreach(glob(root.cache.'/*') as $dir){
+br();
+e("<a href='?total=".w."&dir=".$dir."'>smazat $dir</a>");
+
+}
+?>

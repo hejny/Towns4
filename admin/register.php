@@ -50,13 +50,17 @@ if($_GET['wtf']==1){
         $array=unserialize(file_get_contents($file));
 		$array2=$array;
 		$i=0;$is=0;
+		$uz=array();
 		while($array[$i]){
 		 	list($x,$y)=$array[$i];
 				e("($x,$y) - ");
-				if(register_test($x,$y)){
-					textb("OK");
-				}else{
 
+				if(register_test($x,$y) and !$uz["($x,$y)"]){
+					textb("OK");
+					$uz["($x,$y)"]=true;
+
+				}else{
+					if($uz["($x,$y)"]){textb("Duplikát");}
 					if($_GET['wtf']==4){array_splice($array2,$i-$is,1);$is++;}
 				}
 				br();

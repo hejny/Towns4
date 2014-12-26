@@ -24,8 +24,10 @@ define("nbsp2", "&nbsp;&nbsp;");
 define("nbsp3", "&nbsp;&nbsp;&nbsp;");
 define("nbspo", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 function br($q=1){for($i=1;$i<=$q;$i++)echo(br);}
+function brr($q=1){$stream='';for($i=1;$i<=$q;$i++)$stream.=(br);return($stream);}
 function br2($spacesize=4){br();imge('design/blank.png','',$spacesize,$spacesize);br();}
 function hr($width=''){if(!$width){echo(hr);}else{echo('<hr width="'.$width.'">');}}
+function hrr($width=''){if(!$width){return(hr);}else{return('<hr width="'.$width.'">');}}
 function tab($q=50){for($i=1; $i<=$q; $i++)echo(nbsp);}
 function e($a){echo($a);}
 
@@ -390,7 +392,32 @@ Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&ia
 //die('ok');
 //---------------------
 function sql($text){return(/*mysqli_real_escape_string*/addslashes($text));}
-function sql_mpx($text){return(str_replace('[mpx]',mpx,$text));}
+function sql_mpx($text){
+    $array=explode('[mpx]',$text);
+    $i=1;
+    while($array[$i]){
+        
+        $prefix=mpx;
+        foreach($GLOBALS['inc']['mysql_global'] as $gtable){
+            if(substr($array[$i],0,strlen($gtable))==$gtable){
+                $prefix=$GLOBALS['inc']['mysql_global_prefix'];
+                break;
+            }
+            
+        }
+        $array[$i]=$prefix.$array[$i];
+        
+        $i++;
+    }
+    $text=implode('',$array);
+    //$text=str_replace('[mpx]',mpx,$text);
+    return($text);
+    
+}
+/*echo('SELECT [mpx] [mpx]lang [mpx]objects ');
+echo('<br/>');
+echo(sql_mpx('SELECT [mpx] [mpx]lang [mpx]objects '));
+exit;*/
 //--------------------------------------------
 function sql_query($q,$w=false){
     $q=sql_mpx($q);
@@ -453,13 +480,13 @@ function sql_csv($q,$w=false){
 //--------------------------------------------
 function objt($alt){
 	if($alt)$alt="`$alt`.";
-	if(!$GLOBALS['showtime']){
+	//if(!$GLOBALS['showtime']){
 		return($alt.'`stoptime`=0');
 
-	}else{
+	/*}else{
 
 		return($GLOBALS['showtime'].'>='.$alt.'`starttime` AND ('.$GLOBALS['showtime'].'<'.$alt.'`stoptime` OR '.$alt.'`stoptime`=0)');
-	}
+	}*/
 }
 
 //---------------------NOVe KONFIGURACE
