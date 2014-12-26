@@ -212,6 +212,7 @@ function a_attack($id,$lowed=false){
 				if($attacked->name!=id2name($GLOBALS['config']['register_building'])){
 						$GLOBALS['ss']["query_output"]->add("success",lr('attack_success'));
 				    	$attacked->own=$GLOBALS['ss']["aac_object"]->own;
+						$attacked->superown=$GLOBALS['ss']["aac_object"]->superown;
 				}else{
 				    
 					list($x,$y,$q)=register_positiont();

@@ -321,6 +321,7 @@ $(document).ready(function(){
 	windows='';
 	map_units_time=<?php e(time()); ?>;
 	setset='';
+	nmr=false;
 
 
 	qii=0;
@@ -339,13 +340,17 @@ $(document).ready(function(){
             //document.title='NE';
         }	
 		
-		
 	    if(qbuffer || windows || setset || qii>40){qii=0;
                  /*if(rvrao){alert('hybaa')}*/
                 
                 
                 if(playing){
-                    urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+					if(nmr){
+                    	urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
+						nmr=false;
+					}else{
+                    	urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+					}
     		    qbuffer=''
                     windows='';
                     setset='';
@@ -424,18 +429,29 @@ $(document).ready(function(){
         
         /*---------KEYDOWN*/
 	
+        shortcut_pl=0;
+        //-------------------
+        
         key_up=false;
         key_down=false;
         key_left=false;
         key_right=false;
         key_count=0;
+        
         /*-----*/
         $(document).keydown(function(e) {
-            /*alert(e.which);
+            //alert(e.which);
             //---------UP,DOWN,LEFT,RIGHT
-            alert(e.which);*/
 	    if(logged==true){
             if(chating==false){
+                
+                //--------------------------
+                if ( e.which ==80){ shortcut_pl=1; }
+                else if ( e.which ==76 && shortcut_pl==1){ <?php urlx('e=play;noi=1;',false); ?>;shortcut_pl=0; }
+                else{shortcut_pl=0;}
+                //-------------------------
+                
+                
                 if ( e.which ==82) {qii=9999;/*parseMap()firstload=4;*/}
                 /*if ( e.which ==84) {parseMap()}*/
                 /*if ( e.which ==87) {key_up=true;}*/

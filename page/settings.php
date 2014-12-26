@@ -122,10 +122,15 @@ if($q==1){
 	form_js('content','?e=settings&submenu=1&profile_edit=1',array('name','description','color'));
 //======================================================================================
 }elseif($q==2){
-//==============================================================================USER
+//==============================================================================
+    
+    
+    //e(useid.','.logid);
+    
+        //---------------------------------------------------------------------------------------------USER on World
 	if($_POST["name"] AND $GLOBALS['ss']["log_object"]->name!=$_POST["name"]){
-		//e($info["name"].'!='.$_POST["name"]);
 		$q=name_error($_POST["name"]);
+                //e($info["name"].'!='.$_POST["name"].' '.$q);
 		if(!$q){
 		    $GLOBALS['ss']["log_object"]->name=$_POST["name"];
 		    $GLOBALS['ss']["log_object"]->update();
@@ -133,13 +138,16 @@ if($q==1){
 			success(lr('profile_username').' '.lr('settings_changed')); 
 			if(is_numeric($GLOBALS['ss']["use_object"]->name)){
 	
+                                //e($_POST["name"]);
 				$GLOBALS['ss']["use_object"]->name=$_POST["name"];
 				$GLOBALS['ss']["use_object"]->update();
 				success(lr('profile_townname').' '.lr('settings_created')); 
 			}
 		   	
 		}else{
-		   error($q); 
+                   //if($GLOBALS['ss']["use_object"]->name!=$_POST["name"]){
+                        error($q);
+                   //}
 		}        
 
 		//xquery("profile_edit",useid,"name",$_POST["name"]);
@@ -152,46 +160,42 @@ if($q==1){
 			$q=false;
 		}
 	}
-
-	if($_POST["oldpass"] or $_POST["newpass"] or $_POST["newpass"]){
-	    if($post["newpass"]){
-		//alert("{password_change}",1);
-		//echo("<hr>");
-		//r('hovno');
+        //---------------------------------------------------------------------------------------------Password
+	if($_POST["oldpass"] or $_POST["newpass"] or $_POST["newpass2"]){
 		   
-		   xreport();
-		$backup_use=$GLOBALS['ss']['useid'];
-		xquery('login',$GLOBALS['ss']["logid"],'towns',$_POST["oldpass"]?$_POST["oldpass"]:$_POST["newpass"],$_POST["newpass"],$_POST["newpass2"]);
-		a_use($backup_use);
-		
-	/*if(xsuccess() and !$q){
-	  ?> 
-	<script>
-	setTimeout(function(){
-	    w_close('content');
-	},3000);
-	</script>
-	<?php
-	}*/
-		
-		//alert("chobot",2);
+             xreport();
+             //$oldpass=sql_1data("SELECT password FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1"); 
+             if(/*(!$oldpass or $_POST["oldpass"]) and */$_POST["newpass"] and $_POST["newpass2"]){
+                 
+                if($_POST["newpass"]==$_POST["newpass2"]){
+                    //if($oldpass==md5($_POST["oldpass"])){
+                        //print_r($_POST['newpass']);
+                        xquery("register",' ',$_POST['newpass'],'','','',$_POST['oldpass']);
+                        //success(lr('password_changed'),2);
+                    //}else{
+                    //    alert(lr('password_change_oldpass_error'),2);
+                    //}
+                    
+                }else{
+                    alert(lr('password_change_newpass2_error'),2);
+                }
+                
+
 		xreport();
 	    }else{
-		alert(lr('password_change_no_error'),2);
+		alert(lr('password_change_noall_error'),2);
 	    }
 	}
-	if($GLOBALS['ss']["logid"]!=$GLOBALS['ss']["useid"]){
-	    //alert("{password_change_use_warning;".$info2["name"]."}",3);
-	}
 
+        //---------------------------------------------------------------------------------------------Email
 	//print_r($_POST);
-	if($_POST["mail"]){
+	if($_POST["email"]){
 		    //e(111);
 		    //$GLOBALS['ss']["log_object"]->profile->add('mail',$_POST["mail"]);
 		    //$GLOBALS['ss']["log_object"]->profile->add('sendmail',$_POST["sendmail"]);
-		    xquery("profile_edit",logid,"mail",$_POST["mail"]);
+		    xquery("register",$_POST["username"],'',$_POST["email"],$_POST["sendmail"]?1:0);
 			xreport();
-		    xquery("profile_edit",logid,"sendmail",$_POST["sendmail"]?'1':'0');
+		    //xquery("profile_edit",logid,"sendmail",$_POST["sendmail"]?'1':'0');
 		    xquery("profile_edit",logid,"sendmail2",$_POST["sendmail2"]?'1':'0');
 		    xquery("profile_edit",logid,"sendmail3",$_POST["sendmail3"]?'1':'0');
 		    xquery("profile_edit",logid,"sendmail4",$_POST["sendmail4"]?'1':'0');
@@ -205,18 +209,26 @@ if($q==1){
 		xreport();
 	//realname,gender,age,showmail,web,description
 	//print_r($array);
+        //---------------------------------------------------------------------------------------------Load
+                
+        $username=sql_1data("SELECT name FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1"); 
+        $email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");        
+        $sendmail=sql_1data("SELECT sendmail FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");       
+        
+        //---------------------------------------------------------------------------------------------Form
 	?>
 	<form id="changepass" name="changepass" method="POST" action="" onsubmit="return false">
 	<table>
 
 
-	<?php if(true/*is_numeric($GLOBALS['ss']["log_object"]->name)*/){ ?>
-	<tr><td><b><?php e('*');le('name'); ?>:</b></td><td><?php input_text("name",$_POST["name"]?$_POST["name"]:(!is_numeric($GLOBALS['ss']["log_object"]->name)?$GLOBALS['ss']["log_object"]->name:'')); ?></td></tr>
-	<?php } ?>
-	<tr><td><b><?php le("mail"); ?>:</b></td><td><?php input_text("mail",$GLOBALS['ss']["log_object"]->profile->ifnot('mail','@')); ?></td></tr>
+	<?php /*if(true/*is_numeric($GLOBALS['ss']["log_object"]->name)* /){*/ ?>
+        <tr><td><b><?php e('*');le('username'); ?>:</b></td><td><?php input_text("username",$username); ?></td></tr>
+	<tr><td><b><?php e('*');le('nameonworld'); ?>:</b></td><td><?php input_text("name",$_POST["name"]?$_POST["name"]:(!is_numeric($GLOBALS['ss']["log_object"]->name)?$GLOBALS['ss']["log_object"]->name:'')); ?></td></tr>
+
+        <tr><td><b><?php le("email"); ?>:</b></td><td><?php input_text("email",$email); ?></td></tr>
 	
 	
-	<tr><td colspan="2"><?php input_checkbox("sendmail",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail','1')); ?><b><?php le("sendmail"); ?></b></td></tr>
+	<tr><td colspan="2"><?php input_checkbox("sendmail",$sendmail); ?><b><?php le("sendmail"); ?></b></td></tr>
 	<tr><td colspan="2"><?php input_checkbox("sendmail2",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail2','1')); ?><b><?php le("sendmail2"); ?></b></td></tr>
 	<tr><td colspan="2"><?php input_checkbox("sendmail3",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail3','1')); ?><b><?php le("sendmail3"); ?></b></td></tr>
 	
@@ -247,8 +259,9 @@ if($q==1){
 	$("#changepass").submit(function() {
 	    //alert(1);
 	    $.post('?y=<?php e($_GET['y']); ?>&e=settings&submenu=2',
-		{   name: $('#name').val(),
-		    mail: $('#mail').val(),
+		{   username: $('#username').val(),
+                    name: $('#name').val(),
+		    email: $('#email').val(),
 		    sendmail: $('input[name=sendmail]').attr('checked'), 
 		    sendmail2: $('input[name=sendmail2]').attr('checked'),
 		    sendmail3: $('input[name=sendmail3]').attr('checked'), 
@@ -272,13 +285,12 @@ if($q==1){
 	<?php
 	//if(!is_numeric($GLOBALS['ss']["log_object"]->name)){
     	if($GLOBALS['get']['fb_disconnect']){
-    		sql_query("DELETE FROM [mpx]login WHERE method='facebook' AND id='".logid."'");
-    		//success(lr('fb_disconnected'));
+    		a_register('','','','','',array());
     	}
     
     
-    	if(sql_1data("SELECT id FROM [mpx]login WHERE method='facebook' AND id='".logid."'")){
-    		$data=unserialize(sql_1data("SELECT text FROM [mpx]login WHERE method='facebook' AND id='".logid."'"));
+    	if(sql_1data("SELECT fbid FROM [mpx]users WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1")){
+    		$data=unserialize(sql_1data("SELECT fbdata FROM [mpx]users WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1"));
     	
     		le('fb_connected',$data['name']);br();
     		ahref(trr(lr('fb_disconnect'),15,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"'),'e=content;ee=settings;submenu=2;fb_disconnect=1');

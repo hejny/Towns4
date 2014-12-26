@@ -47,7 +47,7 @@ $ry=round($y);
     //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
 	//OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){	
 
-	if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))==0){
+	if(!($walltype=sql_1data("SELECT `type` FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))){
 
 
 	$resistance=supportF($id,'resistance','resistance');
@@ -98,8 +98,8 @@ $ry=round($y);
 			$nextid=nextid();
 			define('object_id',$nextid);
 			$GLOBALS['object_ids']=array($nextid);
-			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `in`, `ww`, `x`, `y`, `t`, `starttime`) 
-SELECT ".$nextid.", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `".mpx."objects` WHERE id='$id'");
+			sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `starttime`) 
+SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `".mpx."objects` WHERE id='$id'");
 		}
 
 		$GLOBALS['ss']["query_output"]->add("1",1);
@@ -333,7 +333,7 @@ $GLOBALS['ss']['use_object']->resurkey();
         $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance_'.$blocktest));
     }}else{
         define('object_build',true);
-        define('create_error',lr('create_error_wall_distance'));
+        define('create_error',lr('create_error_'.$walltype.'_distance'));
         $GLOBALS['ss']["query_output"]->add("error",lr('create_error_wall_distance'));
     }}else{
         define('object_build',true);

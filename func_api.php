@@ -62,7 +62,8 @@ function townsfunction($query,$q){$queryp=$query;
         }
     }
     if($func=="register"){
-        $aid=$params[0];//explode(",",$params);
+        //print_r($params);
+        $aid='new';/*$params[0]*/;//explode(",",$params);
         $funcname='register';
         $noregister=false;
     }else{
@@ -127,18 +128,18 @@ function townsfunction($query,$q){$queryp=$query;
 		                    
 		                    //-------------------------------------------------------------------ncgc
 		                    if($time>0 and $funcname=='create' AND !$GLOBALS['ncgc']){
-		                        e('ncgc');br();
+		                        //e('ncgc');br();
 		                        
 		                        
 		                        $GLOBALS['ncgc']=true;
 		                        
 		                        //$queryx=explode('.',$queryp,2);
 		                        $queryx=$queryp;
-		                        print_r($queryx);hr();
+		                        //print_r($queryx);hr();
 		                        
 		                        $group=$GLOBALS['ss']['aac_func']['profile']['group'];
 		                        
-		                        $masters=sql_array("SELECT `id` FROM [mpx]objects WHERE `own`='".useid."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id",2);
+		                        $masters=sql_array("SELECT `id` FROM [mpx]objects WHERE `own`='".useid."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id");
 		                        
                                 foreach($masters as $master){
                                     
@@ -149,10 +150,10 @@ function townsfunction($query,$q){$queryp=$query;
     		                        //$queryx=implode('.',$queryx);
     		                        
     		                        
-    		                        print_r($queryx);br();
+    		                        //print_r($queryx);br();
     		                        townsfunction($queryx,$q);
     		                        
-    		                        print_r($GLOBALS['ss']['query_output']->vals2list());hr();
+    		                        //print_r($GLOBALS['ss']['query_output']->vals2list());hr();
     		                        
     		                        
     		                        if($GLOBALS['ss']['query_output']->val(1)==1){
@@ -214,8 +215,12 @@ function townsfunction($query,$q){$queryp=$query;
                     $paramsx=implode(',',$params);
                     $paramsx=str_replace(",","\",\"",$paramsx);
                     $paramsx="\"$paramsx\"";
-                    $paramsx=str_replace(",\"\"","",$paramsx);//Prázdné parametry
-                    $paramsx=str_replace("\"\",","",$paramsx);
+                    
+                    if($noregister){
+                        $paramsx=str_replace(",\"\"","",$paramsx);//Prázdné parametry
+                        $paramsx=str_replace("\"\",","",$paramsx);
+                    }
+                    
                     if($paramsx=="\"\""){$paramsx="";}
                     $funceval="$funcname($paramsx);";
                     //r($funceval);
@@ -243,7 +248,7 @@ function townsfunction($query,$q){$queryp=$query;
             $GLOBALS['ss']["query_output"]->add("error","$queryp: neexistující funkce u tohoto objektu($aid) $func");
         }
         }else{
-            if($func!="login"){
+            if($func!="login" and $func!="register"){
                 $GLOBALS['ss']["query_output"]->add("error","nepřihlášený uživatel");
             }
        }
@@ -368,6 +373,17 @@ function xreport(){
         }else{
             foreach($success as $tmp){
                 alert($tmp,1);
+            }
+        }
+    }
+    
+    $info=$response['info'];
+    if($info){
+        if(!is_array($info)){
+            alert($info,3);
+        }else{
+            foreach($info as $tmp){
+                alert($tmp,3);
             }
         }
     }

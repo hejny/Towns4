@@ -77,23 +77,26 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 	}
     //----
     
-    if($_GET['map_units_time'])$map_units_time=sql($_GET['map_units_time']);
-    
-    //mainname()
-	$count=sql_1data("SELECT count(1) FROM `[mpx]objects` WHERE (ww=".$GLOBALS['ss']["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
-    if($count){
-        //e('alert(123);');
-        e('map_units_time='.time().';');
-        
-			subexec('map_units');		
-			subjs('units_stream',$GLOBALS['units_stream']);
-			subjs('expandarea',$GLOBALS['area_stream']);
-			subjs('attackarea',$GLOBALS['attack_stream']);
-			echo('$(\'#units_new\').html("");');
-			subjs('dockbuttons');
+	if($_GET['map_units_time']!=-1){
+
+		if($_GET['map_units_time'])$map_units_time=sql($_GET['map_units_time']);
+		
+		//mainname()
+		$count=sql_1data("SELECT count(1) FROM `[mpx]objects` WHERE (ww=".$GLOBALS['ss']["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
+		if($count){
+		    //e('alert(123);');
+		    e('map_units_time='.time().';');
+		    
+				subexec('map_units');		
+				subjs('units_stream',$GLOBALS['units_stream']);
+				subjs('expandarea',$GLOBALS['area_stream']);
+				subjs('attackarea',$GLOBALS['attack_stream']);
+				echo('$(\'#units_new\').html("");');
+				subjs('dockbuttons');
 			
 			
-    }
+		}
+	}
 
 //-----------------------------
 ?>

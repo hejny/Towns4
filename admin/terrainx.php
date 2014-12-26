@@ -19,7 +19,7 @@ Provést pasivní funkci terrainX<br/><br/>
 <?php
 if($_GET['terrainx']){
    
-	foreach(sql_array('SELECT id,ww,x,y,func FROM [mpx]objects WHERE ww>0 AND `func` LIKE \'%terrainx%\'') as $row){
+	foreach(sql_array('SELECT id,ww,x,y,func FROM [mpx]objects WHERE ww>0 AND `func` LIKE \'%terrainx%\' AND '.objt()) as $row){
 		list($id,$ww,$x,$y,$func)=$row;
 		if($ww!=0){
 		$x=intval($x);
@@ -32,7 +32,8 @@ if($_GET['terrainx']){
 
 
 		sql_query("UPDATE [mpx]map SET terrain='$terrain' WHERE `ww`=$ww AND $distance>sqrt(POW(`x`-$x,2)+POW(`y`-$y,2)) ",2);br();
-		sql_query("DELETE FROM [mpx]objects WHERE `id`=$id LIMIT 1",2);br();
+		sql_query("UPDATE [mpx]objects SET stoptime='".time()."' WHERE `id`=$id LIMIT 1",2);br();
+		//sql_query("DELETE FROM [mpx]objects WHERE `id`=$id LIMIT 1",2);br();
 		changemap($x,$y,2);
 		changemap($x+5,$y,2);
 		changemap($x-5,$y,2);

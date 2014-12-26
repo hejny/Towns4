@@ -188,14 +188,63 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 //============================================================časování
 
 
+if($GLOBALS['get']['play']){
 
-if($_GET['history'] or $_GET['play']){
+	//--------------------------------------------------------
+
+	if(!$history)$history=1;
+
+	$timenow=time();
+    $xcu=0;
+    $ycu=0;
+    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
+    if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
+    $xu=($ycu+$xcu)*5+1;
+    $yu=($ycu-$xcu)*5+1;
+	if(!mobile){
+	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+	}else{
+	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
+	}
+	$starttimes=sql_array('SELECT DISTINCT starttime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$times=array();
+	foreach($starttimes as $row){$times[]=$row[0];}
+	foreach($stoptimes as $row){$times[]=$row[0];}
+	$times[]=$timenow;
+	$times=array_unique($times,SORT_NUMERIC);
+	sort($times);
+
+	$lasttime=false;$i=0;
+	/*foreach($times as $time){
+		if($time!=0 and $time!=$timenow){
+			$timex=timer($time);
+		}elseif($time==$timenow){
+			$timex=lr('time_now');
+		}else{
+			$timex=lr('time_beginning');
+		}
+		//if($lasttime!==false){
+			$history[]=$time;
+		//}
+		$lasttime=$time;
+		$lasttimex=$timex;
+		$i++;
+	*/
+}else{
+    $times=array(time());
+}
+
+js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
+//============================================================časování staré
+
+/*if($_GET['history'] or $_GET['play']){
 
 	//--------------------------------------------------------
 	/*function script_($script){e('<script type="text/javascript" src="'.rebase(url.base.'/'.$script).'"></script>');}
 	function css_($css){e('<link rel="stylesheet" href="'.rebase(url.base.'/'.$css).'" type="text/css" />');}
 	script_('lib/jquery/js/jquery-1.6.2.min.js');
-	js('w_open=function(){alert(1);};');*/
+	js('w_open=function(){alert(1);};');* /
 	//--------------------------------------------------------
 	$play=$_GET['play'];
 	$history=$_GET['history']-1+1;
@@ -249,7 +298,7 @@ if($_GET['history'] or $_GET['play']){
 		js('setTimeout(function(){window.location.href = "?e=map&history='.($history+1).'&play=1";},200);');
 	}
 	if(debug)e(objt());
-}
+}*/
 
 //============================================================
 ?>

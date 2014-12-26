@@ -107,12 +107,12 @@ if($q){
 <!--==========-->
 <?php } ?>
 <div style="position:absolute;"><div style="position:relative;left:4;top:4;z-index:20;">
-<?php icon(js2($hidex.(!$q?"\$('#grid').css('display','none');":'')),"cancel",lr('cancel'),(!$GLOBALS['mobile']?20:25)); ?>
+<?php icon(js2($hidex.(!$q?"\$('#grid').css('display','none');map_units_time=0;":'')),"cancel",lr('cancel'),(!$GLOBALS['mobile']?20:25)); ?>
 </div></div>
 <!--==========-->
 <div style="position:absolute;"><div id="build_button" style="display:none;position:relative;left:-1;top:<?php e(round(160/$GLOBALS['mapzoom'])); ?>;">
 <?php /*icon(js2(($q?$hide.',':'').$js),"f_create_building_submit","{f_create_building_submit}",25);*/
-    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,(!$GLOBALS['mobile']?14:14),3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js));
+    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,(!$GLOBALS['mobile']?14:14),3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js.';'.(!$q?'nmr=true;':'')));
  ?>
 </div></div>
 <div style="position:absolute;"><div style="position:relative;left:<?php e(round(-150+(110*0.75*0.5))); ?>px;width:300px;text-align:center;top:<?php e(round(160/$GLOBALS['mapzoom'])+20); ?>;">

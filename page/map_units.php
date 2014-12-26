@@ -24,7 +24,7 @@ require_once(root.core."/func_map.php");
     $GLOBALS['area_stream']='';
     $GLOBALS['attack_stream']='';
 
-
+//------------------------------------------------------------------------------------------------------WHERE PREPARE
 
 	$say="''";//"(SELECT IF((`".mpx."text`.`timestop`=0 OR ".time()."<=`".mpx."text`.`timestop`),`".mpx."text`.`text`,'')  FROM `".mpx."text` WHERE `".mpx."text`.`from`=`".mpx."objects`.id AND `".mpx."text`.`type`='chat' ORDER BY `".mpx."text`.time DESC LIMIT 1)";
 	//$say="'ahoj'";
@@ -47,6 +47,9 @@ require_once(root.core."/func_map.php");
 
 if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 
+        $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
+
+//------------------------------------------------------------------------------------------------------SELECT - ONLY
 if(!$GLOBALS['map_units_ids']){
 
 	/*if($_GET['uzidsid']){
@@ -80,15 +83,18 @@ if(!$GLOBALS['map_units_ids']){
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 		// AND ((`own`=".useid." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range./*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"/**/' AND '.objt());
-}else{
-	$where=$GLOBALS['map_units_ids'];
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range.$whereplay );
+}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"*/
+    //------------------------------------------------------------------------------------------------------SELECT ALLES
+        $where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where AND ".objt());
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);// AND ".objt()
 }
 
 
+//print_r($array);
+//------------------------------------------------------------------------------------------------------FOREACH
 foreach($array as $row){//WHERE res=''//modelnamape//   
 
     //if(connection_aborted()){die();}
@@ -125,6 +131,13 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     $fp=$row[15];
     $fs=$row[16];
     //$idid=$row[17];
+    $starttime=$row['starttime'];
+    $stoptime=$row['stoptime'];
+    if(!$stoptime or $stoptime>time()){
+        $onmap=true;
+    }else{
+        $onmap=false;
+    }
 
     $uzids[]=$id;
 
@@ -157,65 +170,42 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		$usercolor=false;
 	}
 
+
+    //------------------------------------------------------------------------------------------------------pozice
     
-    if(contentlang(id2name($GLOBALS['config']['register_building']))==$name and logged()){ 
-	$say=id2name($own);
-	if(!is_numeric($say)){
-        	$say=str_replace(' ','&nbsp;',$say);
-	}else{
-		//$say=($say.','.logid);
-		if($own==useid){
-			$say=lr('xtype_own');
-		}else{
-			$say=lr('xtype_noreg');
-		}
-	}
-    }else{
-        $say='';
-    }
-    
-    if($id==useid){
+    /*if($id==useid){
         $_xc=$GLOBALS['ss']["use_object"]->x;
         $_yc=$GLOBALS['ss']["use_object"]->y;
         //$text=($_xc.','.$_yc);
         
-    }else{
+    }else{*/
         $_xc=$row[0];
         $_yc=$row[1];
-    }
+    /*}*/
     $xx=$_xc-$xu;
     $yy=$_yc-$yu;
-    //if($id!=useid)$xx=$xx+(rand(0,100)/100);
-    /*$ix2rx=0.5*$p;$ix2ry=0.25*$p;
-    $iy2rx=-0.5*$p;$iy2ry=0.25*$p;
-    $rx=($ix2rx*$xx)+($iy2rx*$yy)+$rxp;
-    $ry=($ix2ry*$xx)+($iy2ry*$yy)+$ryp;*/
+
+    //------------------------------------------------------------------------------------------------------
+    
     $rx=round((($px*$xx)-($px*$yy)+$rxp)/$GLOBALS['mapzoom']);
     $ry=round((($py*$xx)+($py*$yy)+$ryp)/$GLOBALS['mapzoom']);
     if($id==useid){
         $built_rx=$rx;
         $built_ry=$ry;
-        //r($built_rx);
     }
-    //if($rx>156 and $ry>0 and $rx<424*2.33-10 and $ry<212*3-20/* and $id!=useid*/){ }
-        //GRM313
+    
+    //------------------------------------------------------------------------------------------------------
+    
         if(/*($res or debug) and ($set=='x' or $set=='0=x') or $set=='x=x'*/true){
-        
-        /*if($own==useid){
-            //echo('aaa');
-            $area=$func['expand']['params']['distance'][0]*$func['expand']['params']['distance'][1];
-            if($area){
-                //echo($area);
-            }       
-        }*/
         
 	t($name.' - beforeexpandcollapse');
 
-       //--------------------------------------------------------------EXPAND,COLLAPSE
-		define('size_radius',100);
+           
+       //------------------------------------------------------------------------------------------------------EXPAND,COLLAPSE
+        define('size_radius',100);
 
 
-        if(($expand and $own==useid) or $block){
+        if($onmap and (($expand and $own==useid) or $block)){
 	    if($own!=useid){$expand=0;$aa=gr;$ad='q';}else{$aa=gr;$ad='w';}
 		if($block){$block=distance_wall;}else{$block=0;}
 		//$expand=0.3;
@@ -287,10 +277,10 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         <img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
         </div></div>';
         }   
-       //--------------------------------------------------------------ATTACK
+       //------------------------------------------------------------------------------------------------------ATTACK
 	//$attackx=$attack;
 	//$attack=1;
-       if($attack or $own!=useid){
+       if($onmap and ($attack or $own!=useid)){
 	    if($own!=useid){$attack=1;$aa=gr;}else{
 		$aa=gr;
 		//$attack_mafu=$GLOBALS['ss']["use_object"]->set->val("attack_mafu");
@@ -365,9 +355,8 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         } 
 
 	
-	//--------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------MODEL
         	t($name.' - beforeunit');
-	if(1/* and $time>$mapunitstime*/){
 
         $modelurl=modelx($res,$fp/$fs/*$_GLOBALS['map_night']*/,$usercolor);
 	t($name.' - afrer modelx');
@@ -392,14 +381,14 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         /**/
 	
 	$GLOBALS['units_stream'].='
-        <div style="position:absolute;z-index:'.($ry+1000).';" '.($id==useid?'id="jouu"':'').'>
+        <div style="position:absolute;z-index:'.($ry+1000).';display:'.($onmap?'block':'none').';"  class="timeplay" starttime="'.($starttime?$starttime:0).'" stoptime="'.($stoptime?$stoptime:0).'" >
         <div id="object'.$id.'" style="position:relative; top:'.($ry+round((-132-$height+157+4)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+2)/$GLOBALS['mapzoom'])).';">
 	';
 
         if($res and (/*$own==useid or */$time>$mapunitstime)){
 
 	$GLOBALS['units_stream'].='
-        <img src="'.($modelurl).'" width="'.(round(82/$GLOBALS['mapzoom'])).'" class="clickmap" border="0" alt="'.aacute(ENT_QUOTES).'" title="'.(aacute($name)).'"/>
+        <img src="'.($modelurl).'" width="'.(round(82/$GLOBALS['mapzoom'])).'" class="clickmap" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'"/>
 	';
         
 	}else{r('!res');}
@@ -407,41 +396,54 @@ foreach($array as $row){//WHERE res=''//modelnamape//
           
         $GLOBALS['units_stream'].='</div>';
         $GLOBALS['units_stream'].='</div>';
-	}
 
-        $GLOBALS['units_stream'].='
-        <div style="position:absolute;z-index:'.($ry+2000).';" >
-        <div title="'.aacute(($name)).'" style="position:relative; top:'.($ry+round((-132-40+157)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+7)/$GLOBALS['mapzoom'])).';">
-        <img src="'.imageurl('design/blank.png').'" class="unit" id="'.($id).'" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'" width="'.(round(70/$GLOBALS['mapzoom'])).'" height="'.(round(35/$GLOBALS['mapzoom'])).'"/>
-        </div>    
-        </div>';
-        t($name.' - afrer show shit');
+        //------------------------------------------------------------------------------------------------------UNIT CLICKMAP
+        if($onmap){
+            $GLOBALS['units_stream'].='
+            <div style="position:absolute;z-index:'.($ry+2000).';" >
+            <div title="'.aacute(($name)).'" style="position:relative; top:'.($ry+round((-132-40+157)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+7)/$GLOBALS['mapzoom'])).';">
+            <img src="'.imageurl('design/blank.png').'" class="unit" id="'.($id).'" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'" width="'.(round(70/$GLOBALS['mapzoom'])).'" height="'.(round(35/$GLOBALS['mapzoom'])).'"/>
+            </div>    
+            </div>';
+            t($name.' - afrer show shit');
+        }
+        //------------------------------------------------------------------------------------------------------Nápis nad městem / budovou
         
-        if($say){
         
-	$GLOBALS['units_stream'].='
-        <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >
-        <div title="'.(aacute($name)).'" style="position:relative; top:'.($ry-round(100/$GLOBALS['mapzoom'])).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75); border-radius: 2px;'.($usercolor?'border: 2px solid #'.$usercolor.';':'').' padding: 4px;">'.trr($say,13,NULL,'class="clickmap"').'</div>    
-        </div>';
+        if($onmap){
 
-	t($name.' - afrer show say');        
+            if(contentlang(id2name($GLOBALS['config']['register_building']))==$name and logged()){ 
+                $say=id2name($own);
+                if(!is_numeric($say)){
+                        $say=str_replace(' ','&nbsp;',$say);
+                }else{
+                        //$say=($say.','.logid);
+                        if($own==useid){
+                                $say=lr('xtype_own');
+                        }else{
+                                $say=lr('xtype_noreg');
+                        }
+                }
+            }else{
+                $say='';
+            }
+            //------------------------------------SHOW
+            if($say){
+                $GLOBALS['units_stream'].='
+                <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >
+                <div title="'.(aacute($name)).'" style="position:relative; top:'.($ry-round(100/$GLOBALS['mapzoom'])).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75); border-radius: 2px;'.($usercolor?'border: 2px solid #'.$usercolor.';':'').' padding: 4px;">'.trr($say,13,NULL,'class="clickmap"').'</div>    
+                </div>';
+
+                t($name.' - afrer show say');   
+            }
 
         }
         
-
+        //------------------------------------------------------------------------------------------------------
+        
 	t($name.' - konec');
 
-        //$GLOBALS['units_stream'].=ob_get_contents();
-        //ob_end_clean();
-	//$GLOBALS['units_uzids']=$uzids;
-        /**/ ?>
-
-	
-
-        <?php } ?>
-        
-        
-        <?php
+        }
         
         }
         

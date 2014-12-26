@@ -401,31 +401,38 @@ class func{
          return($return);
     }
     //--------------------------------------------vals2list
-    function vals2list(){
+    function vals2list($only=false){
         //r('vals2list');
         //r($this->funcs->vals2str());
         $return=$this->funcs->vals2list();
+        t('funcs - after vals2list');
         //r(1);
         //r($return["login"]);
         foreach($return as $i=>$tmp){
-            //r($return[$i]);
-            //r(gettype($return[$i]));
-            $return[$i]=str2list($return[$i]);//funkce
-            //r(2);
             
-            //$return[$i][1]=str2list($return[$i][1]);//
-            $return[$i]["params"]=str2list($return[$i]["params"]);//params
-            foreach($return[$i]["params"] as $key=>$value){
-                if(!$return[$i]["params"][$key][0]){$return[$i]["params"][$key][0]=0;}
-                if(!$return[$i]["params"][$key][1]){$return[$i]["params"][$key][1]=1;}
-                //if(!$return[$i]["params"][$key][2]){$return[$i]["params"][$key][2]=1;}
+            if(!$only or in_array($i,$only)){//e($i);
+                //r($return[$i]);
+                //r(gettype($return[$i]));
+                $return[$i]=str2list($return[$i]);//funkce
+                //r(2);
+
+                //$return[$i][1]=str2list($return[$i][1]);//
+                $return[$i]["params"]=str2list($return[$i]["params"]);//params
+                foreach($return[$i]["params"] as $key=>$value){
+                    if(!$return[$i]["params"][$key][0]){$return[$i]["params"][$key][0]=0;}
+                    if(!$return[$i]["params"][$key][1]){$return[$i]["params"][$key][1]=1;}
+                    //if(!$return[$i]["params"][$key][2]){$return[$i]["params"][$key][2]=1;}
+                }
+                $return[$i]["profile"]=str2list($return[$i]["profile"]);//profile
+                /*foreach($return[$i]["params"] as $ii=>$tmp2){
+                    $return[$i]["params"][$ii]=str2list($return[$i]["params"][$ii]);
+                }*/
+                //t('funcs - '.$i);
             }
-            $return[$i]["profile"]=str2list($return[$i]["profile"]);//profile
-            /*foreach($return[$i]["params"] as $ii=>$tmp2){
-                $return[$i]["params"][$ii]=str2list($return[$i]["params"][$ii]);
-            }*/
+            
         }
         //r($return["login"]);
+        t('funcs - end');
         return($return);
     }
     //--------------------------------------------func
@@ -659,9 +666,9 @@ function level($list){
     return($value);
 }
 //--------------------------------------------func2list
-function func2list($tmp){
+function func2list($tmp,$only=false){
     $tmp=new func($tmp);
-    $tmp=$tmp->vals2list();
+    $tmp=$tmp->vals2list($only);
     return($tmp);
 }
 
@@ -851,12 +858,12 @@ class hold extends vals{
         $hold=$hold->vals2list();
 	$test=array();
 	foreach($this->vals as $key=>$value){
-		if($key and substr($key,0,1)!='_' and !is_numeric($key) and $value){
+		if($key and $key!=plus_res and substr($key,0,1)!='_' and !is_numeric($key) and $value){
             		$test[$key]=$value;
 		}
         }
         foreach($hold as $key=>$value){
-		if($key and substr($key,0,1)!='_' and !is_numeric($key) and $value){
+		if($key and $key!=plus_res and substr($key,0,1)!='_' and !is_numeric($key) and $value){
             		$test[$key]=$test[$key]-$value;
 		}
         }
@@ -883,12 +890,12 @@ class hold extends vals{
         $hold=$hold->vals2list();
 	$test=array();
 	foreach($this->vals as $key=>$value){
-		if($key and substr($key,0,1)!='_' and !is_numeric($key) and $value){
+		if($key and $key!=plus_res and substr($key,0,1)!='_' and !is_numeric($key) and $value){
             		$test[$key]=$value;
 		}
         }
         foreach($hold as $key=>$value){
-		if($key and substr($key,0,1)!='_' and !is_numeric($key) and $value){
+		if($key and $key!=plus_res and substr($key,0,1)!='_' and !is_numeric($key) and $value){
             		$test[$key]=$test[$key]-$value;
 		}
         }

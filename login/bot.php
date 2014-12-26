@@ -9,6 +9,8 @@
 */
 //==============================
 
+die('nene');
+
 //error_reporting(E_ALL ^ E_NOTICE);
 ini_set("max_execution_time","1000");
 if($_GET['refresh'])header('refresh:'.($_GET['refresh'])); 
@@ -16,38 +18,52 @@ if($_GET['refresh'])header('refresh:'.($_GET['refresh']));
 //e('bot');
 //==============================
 
-function bot(){
+function bot($targetx,$targety,$targetww){
 	hr();
-	e(id2name($GLOBALS['ss']['logid']).' ('.$GLOBALS['ss']['logid'].')');
+	e(id2name($GLOBALS['ss']['logid']).' ('.$GLOBALS['ss']['logid'].')'.' . ('.$GLOBALS['ss']['useid'].')');
 	br();
 	
 	//$buildings=sql_array('SELECT name,COUNT(id) FROM [mpx]objects WHERE own='.useid.' GROUP BY name');
 	br();
-$buildings=sql_array('SELECT name,x,y FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' ORDER BY id DESC',2);
-	br();
+        $buildings=sql_array('SELECT name,x,y FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].'  AND '.objt().' ORDER BY id DESC');
+        /*foreach($buildings as $building){
+            if($name=='{building_main}'){
+                $targetx=$targetx-$building['x'];
+                $targety=$targety-$building['y'];
+                break;
+            }
+        }*/
+        t('bot.php - bot() - buildings');
+	//br();
 	//print_r($buildings);
+            
+        
+       
+        //-------------------------- MAIN BUILDING
 
-	foreach(sql_array("SELECT id,name,func,fp,fs FROM [mpx]objects WHERE own='".$GLOBALS['ss']['useid']."' ORDER BY RAND()") as $tmprow){list($id,$name,$func,$fp,$fs)=$tmprow;
+        if($GLOBALS['config']['register_building']){
+        //if(1){
+
+                if($hl=sql_array('SELECT id,ww,x,y FROM [mpx]objects WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].'  AND '.objt().' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
+                 //print_r($hl);
+            list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];
+        }else{//e(1);
+            $GLOBALS['hl']=0; 
+        }
+        }else{//e(2);
+            $GLOBALS['hl']=0; 
+        }
+        t('bot.php - bot() - main building');
+        //--------------------------
+        
+                
+                
+	if(true)
+	foreach(sql_array("SELECT id,name,func,fp,fs,x,y FROM [mpx]objects WHERE own='".$GLOBALS['ss']['useid']."'  AND ".objt()." ORDER BY RAND()",2) as $tmprow){list($id,$name,$func,$fp,$fs,$x,$y)=$tmprow;
 		e(textbr($name));br();
 
-	
-		//-------------------------- MAIN BUILDING
-
-		if($GLOBALS['config']['register_building']){
-		//if(1){
-
-			if($hl=sql_array('SELECT id,ww,x,y FROM [mpx]objects WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
-			 //print_r($hl);
-		    list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];
-		}else{//e(1);
-		    $GLOBALS['hl']=0; 
-		}
-		}else{//e(2);
-		    $GLOBALS['hl']=0; 
-		}
-		//--------------------------
-
-
+                t('bot.php - bot() - start building');
+                
 
 		//==============================EXT%BOT
 		
@@ -57,8 +73,9 @@ $buildings=sql_array('SELECT name,x,y FROM [mpx]objects WHERE own='.$GLOBALS['ss
 			/*xqr($id.'.xmine attack');
 			xqr($id.'.xmine attack2');*/
 
-			for($i=1;$i<20;$i++){
-				$rota=(rand(1,360)/180)*3.1415;
+			/*for($i=1;$i<20;$i++){
+				
+                                $rota=(rand(1,360)/180)*3.1415;
 				if(count($buildings)>4){
 					$distance=rand(10,40)/10;
 				}else{
@@ -69,7 +86,20 @@ $buildings=sql_array('SELECT name,x,y FROM [mpx]objects WHERE own='.$GLOBALS['ss
 				//e($id.'.create 1000003,+'.(cos($rota)*$distance).',+'.(sin($rota)*$distance).','.$rotb);
 				$success=xqr($id.'.create 1000003,+'.(cos($rota)*$distance).',+'.(sin($rota)*$distance).','.$rotb);
 				if($success){success('POSTAVENO');break;}
+			}*/
+                        for($i=5;$i>0;$i--){
+
+                                $pathx=(-$targetx+$GLOBALS['hl_x'])*($i/10)+(rand(-600,600)/100);
+                                $pathy=(-$targety+$GLOBALS['hl_y'])*($i/10)+(rand(-600,600)/100);
+                                
+                                $rotb=rand(1,360);
+                                
+                                $success=xqr($id.'.create 1000003,+'.($pathx).',+'.($pathy).','.$rotb);
+				if($success){success('STAVITEL POSTAVENO');break;}
 			}
+                        
+                        
+                        if(!$success){error('NEPOSTAVENO');}
 		//-----------------------------------------------------------------------------------------------
 		}elseif($name=='{building_master_wall}' or $name=='{building_master_terrain}'){
 		//-------------------------------------------------------------------------{building_master_wall}
@@ -187,12 +217,20 @@ if(rand(1,10)>7)shuffle($bps);
 
 			}
 
-			for($i=1;$i<20;$i++){
-				$rota=(rand(1,360)/180)*3.1415;
-				$distance=rand(10,   10*(0+pow(count($buildings),gr-1))  )/10;
-				e(id2name($bps[$bpi]).'distance='.$distance.' buildings='.count($buildings));
+			for($i=5;$i>0;$i--){
+				//$rota=(rand(1,360)/180)*3.1415;
+				//$distance=rand(10,   10*(0+pow(count($buildings),gr-1))  )/10;
+                                 
+                                   //e($targetx.','.$GLOBALS['hl_x']);
+
+                                $pathx=($targetx-$GLOBALS['hl_x'])*($i/10)+(rand(-400,400)/100);
+                                $pathy=($targety-$GLOBALS['hl_y'])*($i/10)+(rand(-400,400)/100);
+                                
+				//e(id2name($bps[$bpi]).'pathx='.$pathx.' buildings='.count($buildings));
 				$rotb=rand(1,360);
-				$success=xqr($id.'.create '.($bps[$bpi]).',+'.(cos($rota)*$distance).',+'.(sin($rota)*$distance).','.$rotb);
+                                
+                                blue($id.'.create '.($bps[$bpi]).',+'.($pathx).',+'.($pathy).','.$rotb);
+				$success=xqr($id.'.create '.($bps[$bpi]).',+'.($pathx).',+'.($pathy).','.$rotb);
 
 			if($success){if(defined('join_id')){success('PŘISTAVENO K '.join_id);}else{success('POSTAVENO');}break;}
 			}
@@ -280,22 +318,57 @@ if(rand(1,10)>7)shuffle($bps);
 		if($fp!=$fs){
 			xqr($id.'.repair');
 		}
-		
-		//==============================
+                
+                t('bot.php - bot() - end building');
 
 	}/**/
-
+		//die();
 		//--------------------------------------------------------------------------ATTACK
 		
 		success('ATTACKING');
-		$attack_buildings=sql_array('SELECT id,name,x,y,ww FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' ',2);br();
+		$attack_buildings=sql_array('SELECT id,name,x,y,ww FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\'  AND '.objt().' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' ',2);br();
 		foreach($attack_buildings as $row){
 			list($id,$name,$x,$y,$ww)=$row;
-			$aid=sql_1data('SELECT id FROM [mpx]objects WHERE ww='.$ww.' AND own!=\''.$GLOBALS['ss']['useid'].'\' AND type=\'building\' ORDER BY POW(x-'.$x.',2)+POW(y-'.$y.',2) ',2);br();
+			$aid=sql_1data('SELECT id FROM [mpx]objects WHERE ww='.$ww.' AND own!=\''.$GLOBALS['ss']['useid'].'\'  AND '.objt().' AND type=\'building\' ORDER BY POW(x-'.$x.',2)+POW(y-'.$y.',2) ',2);br();
 			e(textbr($name)."($id)[$x,$y] to $aid(".id2name($aid).')');br();			
 			xqr($id.'.attack,'.$aid);
 
 		}
+                t('bot.php - bot() - attacking');
+
+		//--------------------------------------------------------------------------DISMANTLE
+		
+		success('DISMANTLE');
+		//sql_array('SELECT name,x,y FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' ORDER BY id DESC');
+		$dismantle_buildings=sql_array('SELECT id,x,y,name FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' AND `name`!=\''.mainname().'\' AND '.objt().' ORDER BY RAND()',2);
+		//print_r($dismantle_buildings);
+		//e('<table>');
+		foreach($dismantle_buildings as $buildingA){
+			textb($buildingA['name']);br();
+			foreach($dismantle_buildings as $buildingB){
+				//e('<td>');
+				if($buildingA['id']!=$buildingB['id']){
+					$distance=sqrt(pow($buildingA['x']-$buildingB['x'],2)+pow($buildingA['y']-$buildingB['y'],2));
+					echo($buildingA['name'].' -('.$distance.')- '.$buildingB['name']);br();
+					if($distance<1 and $distance!=0){
+						$efA=substr_count('{and}',$buildingA['name']);
+						$efB=substr_count('{and}',$buildingB['name']);
+						if($efA>$efb){
+							$query=('dismantle '.$buildingA['id']);
+						}else{
+							$query=('dismantle '.$buildingB['id']);
+						}
+						blue($query);
+						xqr($query);
+						break(2);
+					}
+				}
+				//e('</td>');
+			}
+			//e('</tr>');
+		}
+                t('bot.php - bot() - dismantle');
+		//e('</table>');
 
 		//--------------------------------------------------------------------------
 
@@ -306,11 +379,11 @@ if(rand(1,10)>7)shuffle($bps);
 
 //==============================
 
+//----------------------------------------------------------------------------------------------------------------------------------BOTS
 success('BOTS');
 
 if($_GET['username']){
-
-
+//-------------------------------------------------------------------------------------------------------KONKRETNI UZIVATEL
 
 	xqr('login '.$_GET['username'].' towns '.$_GET['password']);
 	
@@ -319,20 +392,62 @@ if($_GET['username']){
 		bot();
 	}
 
-
-
-
-
-
 }else{
-	foreach(sql_array('SELECT id FROM [mpx]login WHERE `method`=\'bot\' AND time_use<'.time().'-(`key`'.($_GET['speed']?'/'.$_GET['speed']:'').') ORDER BY time_use LIMIT 1') as $id){list($id)=$id;
-		// LIMIT 1=sracka
+//-------------------------------------------------------------------------------------------------------TARGET
+	// AND time_use<'.time().'-(`key`'.($_GET['speed']?'/'.$_GET['speed']:'').')
+
+
+	//---------------------------------
+	t('bot.php - start');
+	$bots=array();
+	foreach(sql_array("SELECT `id` FROM `[mpx]objects` WHERE 1=(SELECT 1 FROM [mpx]login as x WHERE x.id=[mpx]objects.id AND `method`='bot' AND ".objt()." LIMIT 1)") as $row){
+	$bots[]=$row[0];
+	}
+	$botsw=implode("' OR superown='",$bots);
+	$botsw="(superown='$botsw')";
+	//e($botsw);
+	//die();
+
+        t('bot.php - select bots');
+	//starttime DESC
+	
+	foreach(sql_array('SELECT id,name,own,x,y,ww FROM [mpx]objects WHERE `own`!=0 AND `ww`>0 AND `name`!=\''.mainname().'\' AND !'.$botsw.' AND `type`=\'building\' AND starttime>'.(time()-(3600*24*2)).' ORDER BY RAND() LIMIT 100') as $row){
+		//hr();
+		//print_r($row);
+		$targetx=$row['x'];
+		$targety=$row['y'];
+		$targetww=$row['ww'];
+		//hr();
+
+	}
+        t('bot.php - select near');
+        
+	//GROUP BY superown ,name,own,superown,x,y
+	$botids=array();
+	foreach(sql_array('SELECT superown FROM [mpx]objects WHERE `own`!=0 AND `ww`='.$targetww.' AND `name`=\''.mainname().'\' AND '.$botsw.' AND `type`=\'building\' AND '.objt().' ORDER BY POW(`x`-'.$targetx.',2)+POW(`y`-'.$targety.',2) LIMIT 2') as $row){
+		/*hr();
+		print_r($row);
+		br();
+		e(id2name($row['superown']));
+		hr();*/
+		$botids[]=$row['superown'];
+
+	}
+
+        t('bot.php - select bot');
+	//print_r($botids);
+	//die();
+//-------------------------------------------------------------------------------------------------------TARGET -> BOT
+
+	//Všichni roboti//foreach(sql_array('SELECT id FROM [mpx]login WHERE `method`=\'bot\' ORDER BY time_use LIMIT 1') as $id){list($id)=$id;//LIMIT 1=sracka
+
+	foreach($botids as $id){
 		sql_query('UPDATE [mpx]login SET `time_use`='.time().' WHERE `method`=\'bot\' AND `id`='.$id);
 		//if($reporting){success('ID'.$id."(".id2name($id)."):");br();}
 
 		force_login($id);
 		blue("force_login($id);");
-
+                t('bot.php - force login');
         
 		if($_GET['uc']){
 			success('Unlimited Cooldown');
@@ -349,141 +464,27 @@ if($_GET['username']){
 			//print_r($GLOBALS['ss']['use_object']->hold->vals2list());
 			//$GLOBALS['ss']['use_object']->hold=$newhold;
 		}
-
-		bot();
+                t('bot.php - ul/uc');
+                t('bot.php - before bot()');
+		bot($targetx,$targety,$targetww);
+                t('bot.php - after bot');
 
 		$GLOBALS['ss']["log_object"]->update();
 		$GLOBALS['ss']["use_object"]->update();
 
 		unset($GLOBALS['ss']["log_object"]);
 		unset($GLOBALS['ss']["use_object"]);
+                
+                t('bot.php - logout');
 		
 	}
 }
 
-success('AUTO_REPAIR');
-
-$towns=sql_array("SELECT id,name,`set` FROM [mpx]objects WHERE (type='town' OR type='town2')");
-foreach($towns as $town){
-	list($townid,$townname,$townset)=$town;
-	textb($townname);br();
-	if(strpos($townset,'global_repair=off')===false){
-		
-		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM [mpx]objects WHERE own='".$townid."' ORDER BY RAND()");
-		$object=new object($townid);
-		foreach($buidings as $buiding){
-			list($id,$name,$fp,$fs,$set)=$buiding;
-			if($fp!=$fs){
-				if(strpos($set,'auto_repair=off')===false){
-				$repair_fuel=repair_fuel($id);
-				$repair_fuel=round((1-($fp/$fs))*$repair_fuel);
-				e($name.' - '.$repair_fuel);br();
-				$hold=new hold('fuel='.$repair_fuel);
-				if($object->hold->takehold($hold)){
-					sql_query('UPDATE [mpx]objects SET fp=fs WHERE id='.$id);
-				}else{
-					error('nedostategg suregg');
-				}
-				unset($hold);
-				}else{
-					blue('budova se neopravuje');
-				}
-			}
-		}
-		$object->update();
-		unset($object);
 
 
-	}else{
-		blue('auto opravy vypnute');
-	}
+//-------------------------------------------------Vlastní statistika
+qlog(0,0,0,'bot',NULL,NULL);
 
-}
-
-//====================================================================================================================================================================================
-
-
-		/*$func=func2list($func);
-		foreach($func as $func1name=>$func1){
-
-
-
-			e($func1name." (".$func1['class'].")");
-			     if($func1['class']=='attack' and ($func1['profile']['limit']=='tree' or $func1['profile']['limit']=='rock')){
-				e(textbr('-mine'));
-				//-----------------------------------mine
-				
-				$object=new object($id);
-				if($object->loaded){
-				        $x=$object->x;$y=$object->y;$ww=$object->ww;
-				        $func=$object->func->func($func1name);
-				        //r($func);
-				        $distance=$func['distance'];
-				        $attack=$func['attack'];
-				        $sql="SELECT id,func FROM [mpx]objects WHERE ww=$ww  AND type='".$func1['profile']['limit']."' AND POW(x-$x,2)+POW(y-$y,2)<=POW($distance,2) ORDER BY fr  DESC";
-				        $attack_id=false;
-				        foreach(sql_array($sql) as $row){
-				            list($tmpid,$tmpfunc)=$row;
-				            $tmpfunc=new func($tmpfunc);
-				            $defence=$tmpfunc->func('defence');
-				            $defence=$defence['defence'];
-				            
-					    //e("$defence<$attack");br();
-				            //e($tmpid);br();
-				            if($defence<$attack){//e($tmpid.' - ok');
-				                $attack_id=$tmpid;
-				                break;
-				            }
-				            //br();
-				            
-				    }
-				    if($attack_id){
-        				//e($id.'.'.$func1name.' '.$attack_id);
-        				xquery($id.'.'.$func1name,$attack_id);
-					xreport();
-				    }
-				}
-				//---------------------------------------	
-			}elseif($func1['class']=='attack'){
-				//e(textbr('-attack'));
-				//---------------------------------attack
-				
-				
-				
-				//---------------------------------------	
-			}elseif($func1['class']=='create'){
-				e(textbr('-create'));
-				//---------------------------------create
-				
-				
-				
-				//---------------------------------------	
-			}elseif($func1['class']=='repair' and $fp!=$fs){
-				e(textbr('-repair'));
-				//---------------------------------repair
-        				xquery($id.'.'.$func1name);
-					xreport();
-				//---------------------------------------
-			}elseif($func1['class']=='upgrade'){
-				//e(textbr('-upgrade'));
-				//--------------------------------upgrade
-				
-				
-				
-				//---------------------------------------
-			}elseif($func1['class']=='dismantle'){
-				//e(textbr('-dismantle'));
-				//------------------------------dismantle
-				
-				
-				
-				//---------------------------------------
-			}
-
-			br();
-		}
-
-		unset($func);*/
-
+//-------------------------------
 
 ?>

@@ -166,30 +166,17 @@ exit2();
 
     $windows=array(
 
-    
-
     'chat'=>false,
-
     'write'=>false,
-
     'quest-mini'=>false,
-
     'topinfo'=>false,
-
     'topinfox'=>false,
-
     'towns'=>false,
-
     'cache_loading'=>false,
-
 	'login-use'=>false,
-
     //'tabs'=>false,
-
     //'miniprofile'=>false,
-
     //'surkey'=>false,
-
     'topcontrol'=>false,
 
     );
@@ -218,7 +205,7 @@ exit2();
 
 
 
-
+	$windows['write']=array("write",0,-155-185+(chat?0:140),449,130,array(1,2,1,1),0);
 
     if(!$GLOBALS['mobile']){
 
@@ -230,7 +217,7 @@ exit2();
 
         //}
 
-		$windows['write']=array("write",0,-155-185+(chat?0:140),449,130,array(1,2,1,1),0);
+		
 
 		$windows['quest-mini']=array("quest-mini",0,/*-107*/-155-150+(chat?0:105)-($screenheight>800?185:0),449,130,array(1,2,1,1),0);
 
@@ -256,7 +243,8 @@ exit2();
 
 		$windows['quest-mini']=false;
 
-		$windows['quest-mobile']=array("quest-mobile",0,-25,'100%',130,array(0,1,1,1),1);
+		$windows['quest-mobile']=false;//array("quest-mobile",0,-25,'100%',130,array(0,1,1,1),1);
+		//PH tutorial se bude dělat jinak
 
 		//$GLOBALS['mcontent']=$windows['content'][1];
 
@@ -325,14 +313,18 @@ exit2();
     //e($rating);
 
     if(!$rating or $rating-(-3600*24*30)<time()){
+        $building_count=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' AND type=\'building\'')-1+1;
+        if($building_count>5){
+            $GLOBALS['topinfo']=lr('rating');
 
-        $GLOBALS['topinfo']=lr('rating');
+            //$url='https://docs.google.com/forms/d/16bRzuR9Tw7dQuJrc_Th855Nvz6rjQyuGBN9TpaQbACs/viewform?embedded=true#start=embed';
 
-        //$url='https://docs.google.com/forms/d/16bRzuR9Tw7dQuJrc_Th855Nvz6rjQyuGBN9TpaQbACs/viewform?embedded=true#start=embed';
+            $GLOBALS['topinfo_url']='e=content;ee=rating;';//.js2('window.open("'.$url.'", "rating", "location=yes,status=no,width=600,height=500,resizable")');
 
-        $GLOBALS['topinfo_url']='e=content;ee=rating;';//.js2('window.open("'.$url.'", "rating", "location=yes,status=no,width=600,height=500,resizable")');
-
-	    $windows["topinfo"]=array("topinfo",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1);
+            if(!$GLOBALS['mobile']){
+                $windows["topinfo"]=array("topinfo",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1);
+            }
+        }
 
     }
 
@@ -346,6 +338,7 @@ exit2();
 
         //"topinfo"=>array("topinfo",'%%',-161+13,'103%',0,array(0,1,1,1),1),
 
+		if(!$GLOBALS['mobile'])
 	    $windows["topinfo"]=array("topinfo",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1);
 
        //$_GLOBALS['noxmap']=true;
@@ -362,6 +355,7 @@ exit2();
 
         //"topinfo"=>array("topinfo",'%%',-161+13,'103%',0,array(0,1,1,1),1),
 
+		if(!$GLOBALS['mobile'])
 	    $windows["topinfox"]=array("topinfox",'0',(!$GLOBALS['mobile']?38:29),'100%',0,array(0,1,1,1),1,1);
 
        //$_GLOBALS['noxmap']=true;
@@ -424,7 +418,7 @@ exit2();
 
     'login-login'=>false,
 
-    'login-fb_select'=>false,
+    'login-login_select'=>false,
 
     'plus-ad'=>false,
 
@@ -444,7 +438,7 @@ exit2();
 
     $windows['login-login']=array("login-login",'0','0','100%',1,array(0,1,1,1),1);
 
-    $windows['login-fb_select']=array("login-fb_select",'%%','%%',300,200,array(1,1,1,1),0);
+    $windows['login-login_select']=array("login-login_select",'%%','%%',300,200,array(1,1,1,1),0);
 
 
 
@@ -456,7 +450,7 @@ exit2();
 
     //'langcontrol'=>array("langcontrol",97,1,62,27,array(0,0,1,1),4),
 
-    'fblike'=>array("fblike",170,1,120,27,array(0,0,1,1),4)
+    'fblike'=>array("fblike",170,1,220,27,array(0,0,1,1),4)
 
     ));
 
@@ -473,7 +467,7 @@ exit2();
     $windows,
 
     array(
-
+	'vasasojak'=>array("vasasojak",0,0,0,0,array(0,1,1,1),1),
     'copy'=>array("copy",-50,-25,500,0,array(0,1,1,1),1),
 
     'name'=>array("none",'[xx]','[yy]','[ww]','[hh]',array(1,1,1,1),0)
@@ -726,7 +720,7 @@ if($w_hide)js("$('#window_$w_name').css('display','none');");
 
 
 
-if(!$GLOBALS['mobile'] and !onlymap){
+if(/*!$GLOBALS['mobile'] and */!onlymap){
 
 
 

@@ -44,7 +44,7 @@
     //echo(3);
 	$GLOBALS['user_profile']=$user_profile;
 	$fbid=$user_profile['id'];
-	
+	//$fbname=$user_profile['first_name'].' '.$user_profile['last_name'];
     
 	
         $GLOBALS['ss']['fbid']=$fbid;

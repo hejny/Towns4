@@ -20,10 +20,11 @@ function a_leave($id){
 //======================================================================================LEAVE
 define("a_dismantle_help","");
 function a_dismantle($id){
-    if(/*$id==*/sql_1data('SELECT id FROM [mpx]objects WHERE own='.useid.' AND id='.$id) or $id=$GLOBALS['ss']['candismantle']){
+	
+    if(/*$id==*/sql_1data('SELECT id FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' AND id='.$id) or $id=$GLOBALS['ss']['candismantle']){
         $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id'"));
         $tmp=new object($id);
-        //$tmp->update(true);
+        //$tmp->update(true);//s
         //$fc=new hold($tmp->fc);
 
         //print_r($fc);
@@ -65,7 +66,6 @@ function a_info($q="use"){
     $GLOBALS['ss']["query_output"]->add("fs",$GLOBALS['ss'][$q."_object"]->fs);
     $GLOBALS['ss']["query_output"]->add("fr",$GLOBALS['ss'][$q."_object"]->fr);
     $GLOBALS['ss']["query_output"]->add("fx",$GLOBALS['ss'][$q."_object"]->fx);
-    $GLOBALS['ss']["query_output"]->add("dev",$GLOBALS['ss'][$q."_object"]->dev);
     $GLOBALS['ss']["query_output"]->add("name",$GLOBALS['ss'][$q."_object"]->name);
     //$GLOBALS['ss']["query_output"]->add("password",$GLOBALS['ss'][$q."_object"]->password);
     $GLOBALS['ss']["query_output"]->add("func",$GLOBALS['ss'][$q."_object"]->func->vals2str());
@@ -73,6 +73,7 @@ function a_info($q="use"){
     $GLOBALS['ss']["query_output"]->add("profile",$GLOBALS['ss'][$q."_object"]->profile->vals2str());
     $GLOBALS['ss']["query_output"]->add("hold",$GLOBALS['ss'][$q."_object"]->hold->vals2str());
     $GLOBALS['ss']["query_output"]->add("own",$GLOBALS['ss'][$q."_object"]->own);
+    $GLOBALS['ss']["query_output"]->add("superown",$GLOBALS['ss'][$q."_object"]->superown);
     $GLOBALS['ss']["query_output"]->add("ownname",$GLOBALS['ss'][$q."_object"]->ownname);
     $GLOBALS['ss']["query_output"]->add("own2",$GLOBALS['ss'][$q."_object"]->own2);
     //r($GLOBALS['ss'][$q."_object"]->own2);

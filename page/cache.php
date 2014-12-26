@@ -10,31 +10,37 @@
 //==============================
 
 
-$pages=array();
+
 
 
 /*==================================================================================================cache_minimenu_[id]=*/
+//e('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.useid);
+
+$fileMM=tmpfile2(useid.round(time()/(3600*24)),'html','minimenu');
+if(!file_exists($fileMM)){
+    
+    $pages=array();
+    //$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
+    $array=sql_array('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.useid);
+    foreach($array as $row){
+        list($id)=$row;
+        t('cache minimenu '.$id);
+        $GLOBALS['get']["contextid"]=$id;
+
+
+        $key='minimenu_'.$id;
+        $value=subescape("minimenu");
+        //e(unescape($value));br();
+        $pages[$key]=$value;
 
 
 
-//$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
-$array=sql_array('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.useid);
-foreach($array as $row){
-    list($id)=$row;
-    t('cache minimenu '.$id);
-    $GLOBALS['get']["contextid"]=$id;
+    }
     
-    
-    $key='minimenu_'.$id;
-    $value=subescape("minimenu");
-    $pages[$key]=$value;
-    /*?>
-    <div id="cache_minimenu_<?php e($id); ?>" style="display:none;">
-    <?php eval(subpage("minimenu")); ?>
-    </div>
-    <?php*/
-    
-    
+    file_put_contents2($fileMM, serialize($pages));
+
+}else{
+    $pages=unserialize(file_get_contents($fileMM));
 
 }
 

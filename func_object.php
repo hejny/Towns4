@@ -20,7 +20,7 @@ class object{
      * @param $id
      * @param string $where
      */
-    function __construct($id=0,$where=""){
+    function __construct($id=0,$where="",$type=''){
 	t("object - create - start");
         //if($where==false){$where="";$this->noupdate=true;}else{$this->noupdate=false;}
         $this->noupdate=false;
@@ -28,6 +28,11 @@ class object{
         $id=sql($id);
         //r($id);
         if(!$where){$where="id='$id' OR name='$id'";}
+		if($type){
+					$type=sql($type);
+					if($type=='town'){$type="town' OR type='town2";}
+					$where="($where) AND (type='".$type."')";
+				}
         if($id!="create"){
             //r("nocreate");
             //$this->id=$id;
@@ -69,7 +74,7 @@ class object{
                 $this->fr=$row["fr"];
                 $this->fx=$row["fx"];
                 $this->fc=$row["fc"];
-                $this->dev=$row["dev"];
+                //OLD DEV//$this->dev=$row["dev"];
 		$this->origin=explode(',',$row["origin"]);
                 $this->name=$row["name"];
                 //$this->password=$row["password"];
@@ -89,6 +94,7 @@ class object{
                 $this->block_=$row["block"];
                 $this->attack_=$row["attack"];
                 $this->own=$row["own"];
+				$this->superown=$row["superown"];
                 $this->ownname=$row["ownname"];
                 $this->in=$row["in"];
                 $this->inname=$row["inname"];
@@ -124,7 +130,7 @@ class object{
             //r($id);
             $id=nextid();
             $name='object '.$id;
-            sql_query("INSERT INTO `".mpx."objects` (`id`,`name`, `type`, `fp`, `fs`, `dev`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `block`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);
+            sql_query("INSERT INTO `".mpx."objects` (`id`,`name`, `type`, `fp`, `fs`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `block`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);
             //$this->id=sql_1data("SELECT LAST_INSERT_ID()");
             $this->id=$id;
             $this->name=$name;
@@ -133,7 +139,7 @@ class object{
             $this->type="";
             $this->fp="";
             $this->fs="";
-            $this->dev="";
+            //OLD DEV//$this->dev="";
 	    $this->origin='';
             //$this->name="untitled_".$this->id;
             //$this->password="";
@@ -147,6 +153,7 @@ class object{
             $this->block_="";
 	    $this->attack_="";
             $this->own="";
+			$this->superown="";
             $this->ownname="";
             $this->ww="1";
             $this->in="";
@@ -205,7 +212,7 @@ class object{
             //$stream.=",".$this->fs;
             //$stream.=",".$this->fr;
             //$stream.=",".$this->fx;
-            $stream.=",".$this->dev;
+            //OLD DEV//$stream.=",".$this->dev;
 	    $stream.=serialize($this->origin);//implode(',',$this->origin);
             $stream.=",".serialize($this->func);//$this->func->vals2str();
             //$stream.=",".$this->set->vals2str();
@@ -214,6 +221,7 @@ class object{
             //$stream.=",".$this->hard;
             //$stream.=",".$this->expand_;
             $stream.=",".$this->own;
+			$stream.=",".$this->superown;
         $stream=md5($stream);
         return($stream);
     }
@@ -249,6 +257,16 @@ class object{
 			
 			//e($this->orig_sum.'!='.$this->sum());
 
+            
+                //PREVENCE REWRITE
+                /*if(!$GLOBALS['objects_updated']){
+                    $GLOBALS['objects_updated']=array();
+                }
+                if(in_array($this->id,$GLOBALS['objects_updated'])){
+                    return;
+                }
+                $GLOBALS['objects_updated'][]=$this->id;*/
+            
             if($this->orig_sum!=$this->sum() or $force){//$this->loaded=false;
                 if($this->orig_sum2!=$this->sum(true)){cleartmp($this->id);}
                 //echo("updating ".$this->id);
@@ -336,6 +354,7 @@ class object{
                 }
                 //==================================================================ARYYD
                 //success(lr('updating',$this->name));
+                //e($this->name);
                 $query=("UPDATE  ".mpx."objects SET 
                 `type` =  '".($this->type)."',
                 `fp` =  '".($this->fp)."',
@@ -345,7 +364,7 @@ class object{
                 `fc` =  '".($this->fc)."',
                 ".//`fx` =  ".($this->fr)."+(SELECT SUM(`fr`) FROM `objects` AS tmp WHERE tmp.`own`='".$this->id."' OR tmp.`in`='".$this->id."'),
                 //UPDATE objects SET `fx` = 10+(SELECT 1 FROM objects AS xxxx)
-                "`dev` =  '".($this->dev)."',
+                "
                 `origin` =  '".implode(',',$this->origin)."',
                 `name` =  '".($this->name)."',
                 `func` =  '".($this->func->vals2str())."',
@@ -358,6 +377,7 @@ class object{
                 `block` =  '".(($this->block_))."',
                 `attack` =  '".(($this->attack_))."',
                 `own` =  '".(($this->own))."',
+				`superown` =  '".(($this->superown))."',
                 `in` =  '".(($this->in))."',
                 `ww` =  '".(($this->ww))."',
                 `t`=  '".($this->t)."',
@@ -368,9 +388,12 @@ class object{
                 r($query);
                 //r("t");
                 sql_query($query);
+                //e($this->name.'('.$this->id.')');
+                //e($this->profile->vals2str());
+                //ahref('aaa',js2('alert("'.addslashes($query).'");'));
 		//e('['.$this->id.': '.$this->hold->vals2str().']');
                 //r("t");
-//echo(mysql_error());
+                //echo(mysql_error());
             }
         }else{
 		//e('update - not loaded');
@@ -568,9 +591,9 @@ $head:y =  ".($this->y).";";
             $funcs=$this->func->vals2list();
             $newfuncs=$funcs;
             $support=array();
-            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' AND ".objt()." ORDER BY t desc");
+            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' AND ".objt()." ORDER BY t desc");
             foreach($in2 as $item){
-                list($_id,$_type,$_fp,$_fs,$_dev,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_block,$_attack,$_own,$_in,$_t,$_x,$_y)=$item;
+                list($_id,$_type,$_fp,$_fs,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_block,$_attack,$_own,$_in,$_t,$_x,$_y)=$item;
                 $_x=intval($_x);$_y=intval($_y);
                 if(!$_x)$_x="";
                 foreach($funcs["hold$_x"]["params"] as $param=>$value){
@@ -813,9 +836,9 @@ $time=time();
 
 sql_query("
 INSERT INTO [mpx]objects
-(`id`, `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `stoptime`)
+(`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `stoptime`)
 SELECT
-".nextid().", `name`, `type`, `dev`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, ".$time."
+".nextid().", `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, ".$time."
 FROM 
 [mpx]objects 
 WHERE id='".sql($id)."' ");
@@ -836,8 +859,9 @@ sql_query("UPDATE [mpx]objects SET `starttime`='".$time."' WHERE id='".sql($id).
  * @return array|bool
  */
 function ifobject($id){
+	$id=trim($id);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE id='$id' OR name='$id'".' AND '.objt(),1);
+    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE (id='$id' OR name='$id' OR profile LIKE '%mail=$id;%')".' AND '.objt(),1);
     //r($result);
     if($result){
         return($result);
@@ -1005,10 +1029,11 @@ function repair_fuel($id){
  * @return bool|string
  */
 function name_error($id){
-    $id=xx2x($id);
+    /*$id=xx2x($id);
     if($GLOBALS['ss']["use_object"]->name==$id){
             return(lr('name_error_same'));//"Toto jméno právě používáte.");
-    }
+    }*/
+    
     if($id!=trim($id)){
             return(lr('name_error_space'));//"Jméno nesmí začínat ani končit mezerou.");
     }

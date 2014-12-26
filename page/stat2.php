@@ -19,10 +19,10 @@ backup($GLOBALS['where'],"1");
 $order="fs";
 $max=sql_1data("SELECT COUNT(1) FROM `".mpx."objects` WHERE ".$GLOBALS['where'].' AND '.objt());
 //echo($max);
-$limit=limit("stat2",$GLOBALS['where'],102,$max);
+$limit=limit("stat2",$GLOBALS['where'].' AND '.objt(),102,$max);
 
 
-$array=sql_array("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,(SELECT `own`  FROM `".mpx."objects` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `".mpx."objects` as `X` WHERE `X`.`name`=`".mpx."objects`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `own`,`in`,`x`,`y`,`ww` FROM `".mpx."objects` WHERE ".$GLOBALS['where']." AND ".objt()." ORDER BY $order LIMIT $limit");
+$array=sql_array("SELECT `id`,`name`,`type`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,`own`,(SELECT `own`  FROM `".mpx."objects` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `".mpx."objects` as `X` WHERE `X`.`name`=`".mpx."objects`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `rown`,`in`,`x`,`y`,`ww` FROM `".mpx."objects` WHERE ".$GLOBALS['where']." AND ".objt()." ".$GLOBALS['groupby']." ORDER BY $order LIMIT $limit",1);
 
 contenu_a();
 
@@ -39,10 +39,10 @@ $i=$GLOBALS['ss']['ord'];
 $onrow=1;
 $ii=$onrow;
 foreach($array as $row){$i++;$ii--;
-    list($id,$name,$type,$dev,$fs,$fp,$fr,$fx,$fc,$res,$profile,$own,$in,$x,$y,$ww)=$row;
+    list($id,$name,$type,$fs,$fp,$fr,$fx,$fc,$res,$profile,$own,$rown,$in,$x,$y,$ww)=$row;
     $profile=new profile($profile);
     $description=trim($profile->val('description'));
-    $res=resc($res,useid);
+    $res=resc($res,$GLOBALS['ss']['useid']);
     /*$hline=ahrefr(textcolorr(lr($type),$dev)." ".tr($name,true),"e=content;ee=profile;id=$id","none","x");
     $in=xyr($x,$y);
     $lvl=fs2lvl($fs);

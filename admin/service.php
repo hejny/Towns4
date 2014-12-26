@@ -35,15 +35,58 @@ if($_GET['action']){
 //=================================================Chátrání budov
 if($_GET['wtf']=='all' or $_GET['wtf']=='a'){
 
-$tmp=sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 ");
+$tmp=sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt());
 
 //print_r($tmp);
 
-sql_query("DELETE FROM [mpx]objects WHERE $wwhere AND `type`='building' AND fp<0 ");
+$tmp2=sql_query("UPDATE [mpx]objects SET stoptime=".time." WHERE $wwhere AND `type`='building' AND fp<0 AND ".objt());
 //sql_query("UPDATE [mpx]objects SET fp=0 WHERE $wwhere AND `type`='building' AND fp<0 ");
 //sql_query("UPDATE [mpx]objects SET fp=fs WHERE $wwhere AND `type`='building' ");
 
-e("Provedeno chátrání $tmp budov");br();
+e("Provedeno chátrání $tmp budov -&gt; spadlo $tmp2 budov.");br();
+
+//=================================================Oprava budov
+$tmp=0;
+$towns=sql_array("SELECT id,name,`set` FROM [mpx]objects WHERE (type='town' OR type='town2') AND ".objt());
+foreach($towns as $town){
+	list($townid,$townname,$townset)=$town;
+	//textb($townname);br();
+	if(strpos($townset,'global_repair=off')===false){
+		
+		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM [mpx]objects WHERE own='".$townid."' AND ".objt()." ORDER BY RAND()");
+		$object=new object($townid);
+		foreach($buidings as $buiding){
+			list($id,$name,$fp,$fs,$set)=$buiding;
+			if($fp!=$fs){
+				if(strpos($set,'auto_repair=off')===false){
+				$repair_fuel=repair_fuel($id);
+				$repair_fuel=round((1-($fp/$fs))*$repair_fuel);
+				//e($name.' - '.$repair_fuel);br();
+				$hold=new hold('fuel='.$repair_fuel);
+				if($object->hold->takehold($hold)){
+					sql_query('UPDATE [mpx]objects SET fp=fs WHERE id='.$id);
+                                        $tmp++;
+				}else{
+					//error('nedostategg suregg');
+				}
+				unset($hold);
+				}else{
+					//blue('budova se neopravuje');
+				}
+			}
+		}
+		$object->update();
+		unset($object);
+
+
+	}else{
+		//blue('auto opravy vypnute');
+	}
+    t('bot.php - 1 town');
+}
+
+e("Provedena oprava $tmp budov");br();
+
 }
 //=================================================Rozhození terénů
 if($_GET['wtf']=='all' or $_GET['wtf']=='b'){
@@ -187,7 +230,7 @@ if(!$test and !$croncron){
 ?>
 <br>
 <a href="?page=service&amp;action=1&amp;wtf=all">spustit</a><br>
-<!--<a href="?page=service&amp;action=$test&amp;wtf=a">testovat chátrání</a><br>-->
+<a href="?page=service&amp;action=$test&amp;wtf=a">spustit chátrání</a><br>
 <a href="?page=service&amp;action=test&amp;wtf=b">testovat terény</a><br>
 <a href="?page=service&amp;action=test&amp;wtf=c">testovat stromy/skály</a><br>
 

@@ -538,7 +538,7 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
         $yy=$y+(rand(-50,50)/100);
         //sql_query("INSERT INTO `".mpx."objects` (`name`,`res`, `x`, `y`, `hard`) VALUES ('tree [$x,$y]','$res','$xx','$yy',0.15)");
 	$defence=rand(5,15);$a=rand(0,1000);$b=rand(500,1500);
-	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `dev`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{tree} [$x,$y]', 'tree', 'N', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'energy=$a;wood=$b', '$res', '', '', '0.15', '0', '0', '1', '$xx', '$yy', '".time()."')");
+	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{tree} [$x,$y]', 'tree', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'energy=$a;wood=$b', '$res', '', '', '0.15', '0', '0', '1', '$xx', '$yy', '".time()."')");
 	
 	//exit;
         $chuj=4;
@@ -551,7 +551,7 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
         $yy=$y+(rand(-50,50)/100);
         //sql_query("INSERT INTO `".mpx."objects` (`name`,`res`, `x`, `y`, `hard`) VALUES ('rock [$x,$y]','$res','$xx','$yy',1)");
 	$defence=rand(20,100);$a=rand(1500,2000);$b=rand(0,2000);
-	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `dev`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{rock} [$x,$y]', 'rock', 'N', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'stone=$a;iron=$b', '$res', '', '', '1', '0', '0', '1', '$xx', '$yy', '".time()."')");
+	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{rock} [$x,$y]', 'rock', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'stone=$a;iron=$b', '$res', '', '', '1', '0', '0', '1', '$xx', '$yy', '".time()."')");
 
         $chuj=3;
     }
