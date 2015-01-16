@@ -104,14 +104,18 @@ function send_report($from,$to,$title="",$text="",$idle=false){
     if($time-(-3600*4)<time()){
     
     $too=new object($to);
-    $mail=$too->profile->val('mail');
+
+	//OLDSYS//$mail=sql_1data('SELECT email FROM [mpx]users WHERE id=(SELECT useid FROM [mpx]objects WHERE id='.($too->id).' LIMIT 1) LIMIT 1');
+	$mail=sql_1data('SELECT userid FROM [mpx]objects WHERE id='.($too->id));
+    //OLDSYS//$mail=$too->profile->val('mail');
     $sendmail2=$too->profile->ifnot('sendmail3',1);
     $sendmail5=$too->profile->ifnot('sendmail5',1);
-    //print_r($too->profile->vals2list());
-    unlink($too);
+    
+	//print_r($too->profile->vals2list());
+    unset($too);
     //print_r($sendmail3);
     if($sendmail2){
-        mailx($mail,lr('mail_new_report'),lr('mail_new_report_body1',id2name($from)),contentlang($title),inteligentparse($text),lr('mail_new_report_body4'));
+        mailx($mail,lr('mail_new_report'),lr('mail_new_report_body1',id2name($from)).'<br/>'.contentlang($title).'<br/>'.inteligentparse($text).'<br/>'.lr('mail_new_report_body4'));
         //e('mail');
     }
    // print_r($sendmail5);
@@ -140,15 +144,16 @@ function send_message($from,$to,$title="",$text="",$idle=false){
     //-----------
     
     $too=new object($to);
-    $mail=$too->profile->val('mail');
+	$mail=sql_1data('SELECT userid FROM [mpx]objects WHERE id='.($too->id));
+    //OLDSYS//$mail=$too->profile->val('mail');
     $sendmail2=$too->profile->ifnot('sendmail2',1);
     //$sendmail4x=$too->profile->val('sendmail4');
     $sendmail4=$too->profile->ifnot('sendmail4',1);
     //print_r($too->profile->vals2list());
-    unlink($too);
+    unset($too);
     //e($sendmail2);
     if($sendmail2){
-        mailx($mail,lr('mail_new_message'),lr('mail_new_message_body1',id2name($from)),inteligentparse($text),'',lr('mail_new_message_body4'));
+        mailx($mail,lr('mail_new_message'),lr('mail_new_message_body1',id2name($from)).'<br/>'.inteligentparse($text).'<br/>'.lr('mail_new_message_body4'));
         
         if($from==$GLOBALS['inc']['write_id']){
             blue('send mail '.$mail);

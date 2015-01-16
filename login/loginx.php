@@ -15,13 +15,6 @@
 
 
 
-
-
-
-
-
-
-
 <!--<div style="width:100%; height: 100%; background-color:rgba(17,17,17,0.7);">-->
 <table border="0" cellspacing="0" cellpadding="0">
 
@@ -62,14 +55,16 @@
 xreport();
 
 
-if (ae_detect_ie()/** or 1/**/) {
-
-
-
+if ($GLOBALS['isie']/** or 1/**/) {
 ?>
 <div style="background:#442222;" ><?php le('info_ie'); ?></div>
 <?php }
 
+
+if ($GLOBALS['mobilex']/** or 1/**/) {
+?>
+<div style="background:#442222;" ><?php le('info_mobile'); ?></div>
+<?php }
 
 
     $GLOBALS['ss']["helppage"]='about_'.w;
@@ -86,37 +81,46 @@ if (ae_detect_ie()/** or 1/**/) {
 
 
 //======================================================LOG
-    if(!$_POST['login_username']){hydepark('log');}else{br();}
+    hydepark('log');
     //br();
     ?>
     <div style="position:absolute;z-index:1000000;">
-    <div id="lshp_log" style="position:relative; left:33px; top:-200px; width:100%;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
+    <div id="lshp_log" style="position:relative; left:33px; top:-200px; width:230px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
-    <?php eval(subpage('login-log_form')); ?>
+    <?php
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_log\').css(\'display\',\'none\');')),95,2);
+		eval(subpage('login-log_form'));
+
+	?>
     
-    <?php if(!$GLOBALS['mobile']){e("<script>$('#lshp_log').draggable();</script>");} ?>
+    <?php if(!$GLOBALS['mobilex']){e("<script>$('#lshp_log').draggable({distance: 10});</script>");} ?>
     
     
     
     </div></div>
     <?php
-    if(!$_POST['login_username'])ihydepark('log');
+    ihydepark('log');
+	if($_POST['login_username'])js('$(\'#hydepark_log\').css(\'display\',\'block\');');
     //======================================================REG
-    if(!$_GET['register_try']){hydepark('reg');}else{br();}
+    hydepark('reg');
     //br();
     ?>
     <div style="position:absolute;z-index:1000000;">
-    <div id="lshp_reg" style="position:relative; left:20px; top:35px; width:100%;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
+    <div id="lshp_reg" style="position:relative; left:20px; top:-305px; width:300px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
-    <?php eval(subpage('login-reg_form')); ?>
+    <?php
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_reg\').css(\'display\',\'none\');')),130,2);
+		eval(subpage('login-reg_form'));
+	?>
     
-    <?php if(!$GLOBALS['mobile']){e("<script>$('#lshp_reg').draggable();</script>");} ?>
+    <?php if(!$GLOBALS['mobilex']){e("<script>$('#lshp_reg').draggable({distance: 10});</script>");} ?>
     
     
     
     </div></div>
     <?php
-    if(!$_GET['register_try']){ihydepark('reg');}
+    ihydepark('reg');
+	if($_GET['register_try'])js('$(\'#hydepark_reg\').css(\'display\',\'block\');');
 	//======================================================
 
 

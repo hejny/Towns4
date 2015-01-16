@@ -86,6 +86,41 @@ function exit2($e=false){
 	//mysql_close();
 	//$_SESSION['ss']=$GLOBALS['ss'];
 	t("memory_save");
+        //---------------------------------------------------------------------------------------------------timeplan
+        //if(timeplan){
+            $click=sql_1data('SELECT MAX(click) FROM `[mpx]timeplan`')-1+2;
+            if($GLOBALS['timeplan2sql']!=array()){
+                $sql='INSERT INTO `[mpx]timeplan` (`click`,`key`, `text`, `ms`, `uri`, `logid`, `useid`, `time`) VALUES';
+                $separator=''; 
+                foreach($GLOBALS['timeplan2sql'] as $row){
+                    list($key,$text,$ms)=$row;
+                    $sql.=$separator." ($click ,'".sql($key)."', '".sql($text)."', ".sql($ms).", '".sql($_SERVER['REQUEST_URI'])."', ".sql($GLOBALS['ss']['logid']).", ".sql($GLOBALS['ss']['useid']).", now())";
+                    $separator=',';
+                }
+                $sql.=';';
+                sql_query('CREATE TABLE IF NOT EXISTS `[mpx]timeplan` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `click` int(11) NOT NULL,
+                    `key` varchar(100) COLLATE utf8_czech_ci NOT NULL,
+                    `text` text COLLATE utf8_czech_ci NOT NULL,
+                    `ms` decimal(8,3) NOT NULL,
+                    `uri` text COLLATE utf8_czech_ci NOT NULL,
+                    `logid` int(11) NOT NULL,
+                    `useid` int(11) NOT NULL,
+                    `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    PRIMARY KEY (`id`),
+                    KEY `key` (`key`),
+                    KEY `click` (`click`),
+                    KEY `ms` (`ms`),
+                    KEY `logid` (`logid`),
+                    KEY `useid` (`useid`),
+                    KEY `time` (`time`)
+                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;'.$sql);
+                
+            }
+        //}
+        
+        //---------------------------------------------------------------------------------------------------
 	exit;
 }
 //================================================

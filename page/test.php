@@ -9,42 +9,46 @@
 */
 //==============================
 
-//r(mostnear(5,5));
-r(blocktest('A',25,5));
-die();
+//OLD USER SYSTEM -> NEW USER SYSTEM
+/*foreach(sql_array('SELECT id,fbdata FROM [mpx]users WHERE fbdata!=\'\'') as $row){
+	list($id,$fbdata)=$row;
+	$fbdata=substr2($fbdata,':"1','"');
+	sql_array('UPDATE  [mpx]users SET fbid=1'.$fbdata.' WHERE id='.$id,2);br();
+	
+
+}*/
 
 
-/*
-exec('ls', $out);
-var_dump($out);
-// Look an array
 
-$out = shell_exec('ls');
-var_dump($out);
+/*//OLD USER SYSTEM -> NEW USER SYSTEM
+foreach(sql_array('SELECT id,name,profile FROM [mpx]objects WHERE type=\'user\' AND ww=1 ORDER BY id') as $row1){
+	list($id,$name,$profile)=$row1;
+	$profile=str2list($profile);
+	$email=$profile['mail'];
+	if($email=='@')$email='';
+	$sendmail=$profile['sendmail']?1:0;
+	$password='';
+	$fbid='';
+	$fbdata='';
 
+	foreach(sql_array('SELECT `method`,`key`,`text` FROM [mpx]login WHERE id='.$id) as $row2){
+		list($method,$key,$text)=$row2;
+		if($method=='towns'){
+			$password=$key;
+		
+		}
+		if($method=='facebook'){
+			$fbid=$key;
+			$fbdata=$text;
+		}
+	}
 
-$a=shell_exec('ifconfig');
-print_r($a);
+	$userid=sql_1data("SELECT MAX(id) FROM `[mpx]users`")-1+2;
 
-exec('service mysql stop');
+	
+	sql_query("INSERT INTO `[mpx]users` (`id`, `aac`, `name`, `password`, `email`, `sendmail`, `fbid`, `fbdata`, `created`)
+VALUES ('$userid', '1', '".sql($name)."', '$password', '".sql($email)."', '$sendmail', '$fbid', '".sql($fbdata)."', now());",2);br();
+	sql_query('UPDATE [mpx]objects SET userid='.$userid.' WHERE type=\'user\' AND id='.$id);br();
 
-br();
-
-exec('sudo poweroff', $out);
-var_dump($out);
-// Look an array
-/*
-function mailx($to,$subject,$message){
-
-    $url=url.'?e=mailx&to='.urlencode($to).'&subject='.urlencode($subject).'&message='.urlencode($message);
-    get_headers($url);
-
-}
-
-//-----------------------------------
-
-/*echo('test');br();
-mailx('hejny.pavel@gmail.com','Funguje to','corehurá'.nln.'Funguje to'.nln.'ěščřžýáíéúů');
-echo('rychlosti');br();
-echo('mailu');*/
+}*/
 ?>

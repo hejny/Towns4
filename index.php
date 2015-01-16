@@ -99,20 +99,41 @@ if(!$admin){
 
 
 header("Connection: Keep-alive");
-//===============================================================================
+//===============================================================================url_param
 //if($_GET["e"])$_GET['e']=$_GET["e"];
 list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 
-//===============================================================================
+//===============================================================================timeplan
 //define("timeplan",true);
+
 define("timestart", time()+microtime());
-function t($text=""){if(timeplan){
-$time=time()+microtime()-timestart;
-$text=round($time,3)."<b>(+".(1000*round($time-$GLOBALS['lasttime'],6)).")</b> - ".htmlspecialchars($text);
-$GLOBALS['lasttime']=$time;
-echo("$text<br/>");}}
+$GLOBALS['timeplan2sql']=array();
+
+if(timeplan or is_array($GLOBALS['inc']['timeplan'])?$GLOBALS['inc']['timeplan']!=array():$GLOBALS['inc']['timeplan']=='*'){
+    function t($key="",$text=""){
+        $time=time()+microtime()-timestart;
+        $plus=1000*round($time-$GLOBALS['lasttime'],6);
+        //$plus='0.00'.substr($plus+'',2);
+        $texte=round($time,3)."<b>(+".$plus.")</b> - ".htmlspecialchars($key).($text?' - '.$text:'');
+        
+        if(is_array($GLOBALS['inc']['timeplan'])?in_array($key,$GLOBALS['inc']['timeplan']):$GLOBALS['inc']['timeplan']=='*'){
+            $GLOBALS['timeplan2sql'][]=array($key,$text,$plus);
+        }
+        
+        
+        $GLOBALS['lasttime']=$time;
+        
+        if(timeplan){
+            echo("$texte<br/>");
+        }
+    }
+}else{
+    function t($key="",$text=""){}
+}
 t('start');
-//--------------------------------------------
+//sleep(1);
+//t('start');
+//===============================================================================
 //error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
 define("root", "");
 //--------------------------------------------
@@ -398,18 +419,39 @@ if(logged() and $_GET['e']!="none"/**/){
 	
 //-------------------------------
 
-
+//e(23456);
 //r('set3'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
 t("before content");
 
 		//print_r($_GET);
+		//---------------------mobil
 		if(!is_bool($GLOBALS['ss']['mobile'])){
-			if($GLOBALS['mobile_detect']->isMobile()){
+			
+			if($GLOBALS['mobile_detect']->isMobile() && !$GLOBALS['mobile_detect']->isTablet() ){
 				$GLOBALS['ss']['mobile']=true;
 			}else{
 				$GLOBALS['ss']['mobile']=false;
 			}
 		}
+		//---------------------mobilni zarizeni
+		if(!is_bool($GLOBALS['ss']['mobilex'])){
+			
+			if($GLOBALS['mobile_detect']->isMobile()){
+				$GLOBALS['ss']['mobilex']=true;
+			}else{
+				$GLOBALS['ss']['mobilex']=false;
+			}
+		}
+		//---------------------IE
+		if(!is_bool($GLOBALS['ss']['isie'])){
+			
+			if(ae_detect_ie()){
+				$GLOBALS['ss']['isie']=true;
+			}else{
+				$GLOBALS['ss']['isie']=false;
+			}
+		}
+		//---------------------
 		if($_GET['mobile']){
 			$GLOBALS['ss']['mobile']=true;
 			if($_GET['mobile']==2){
@@ -423,6 +465,8 @@ t("before content");
 			$GLOBALS['ss']['android']=false;
 		}
 		$GLOBALS['mobile']=$GLOBALS['ss']['mobile'];
+		$GLOBALS['mobilex']=$GLOBALS['ss']['mobilex'];
+		$GLOBALS['isie']=$GLOBALS['ss']['isie'];
 		$GLOBALS['android']=$GLOBALS['ss']['android'];
 		define('mobile',$GLOBALS['mobile']);
 		define('android',$GLOBALS['android']);
@@ -456,7 +500,7 @@ if(!$GLOBALS['mapzoom']){
 
 
 if($_GET['e']){
-	if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='mailx' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac'){
+	if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='text-email' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac'){
 
 
 

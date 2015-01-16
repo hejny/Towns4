@@ -70,7 +70,8 @@ function fb_notify($user,$template,$print_r=0){
 
 //-----------------------------------------fb_user
 function fb_user($id){//$GLOBALS['ss']['logid']
-    $key=sql_1data('SELECT `key` FROM [mpx]login WHERE `method`=\'facebook\' AND `id`='.$id);
+	$useid=sql_1data('SELECT `userid` FROM [mpx]objects WHERE `id`='.$id);    
+	$key=sql_1data('SELECT `fbid` FROM [mpx]users WHERE `id`='.$useid);
     return($key);
     
 }

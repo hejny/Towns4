@@ -16,7 +16,8 @@
   // login URL
   $params = array(
     'display' => 'popup',
-    'redirect_uri' => url.corexx.('-fblogin')
+    'redirect_uri' => url.corexx.('-fblogin'),
+    'scope' => 'email'
   );
   //e($params['redirect_uri']);
   $loginUrl = $GLOBALS['facebook']->getLoginUrl($params);

@@ -576,7 +576,207 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                     
                     
                     $('#create-build_message').html(nacitacihtml);
+                    //=======================================================================================================================MEGATEST
+                    <?php /*
+
+                        $res=sql_1data("SELECT res FROM ".mpx."objects WHERE id='$id' AND ".objt());
+                        //mail('ph@towns.cz','tmp',$res);
+
+                        if(substr($res,0,1)=='{' or strpos($res,'{}')){           
+                        $x=round($x);
+                        $y=round($y);
+                        $GLOBALS['ss']["query_output"]->add("nocd",1);
+                        }
+                        $rx=round($x);
+                        $ry=round($y);    
+
+                            if(true){    
+
+                            //OLD COLLAPSE//$hard=hard($rx,$ry);
+                            //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
+                                //OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){	
+
+                                if(!($walltype=sql_1data("SELECT `type` FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))){
+
+
+                                $resistance=supportF($id,'resistance','resistance');
+                                if(!$resistance){
+                                        $q=(!($blocktest=block1test('B',$x,$y)));
+                                }else{
+                                        $q=true;
+                                }
+
+
+                                if($q){
+
+                                if(!($blocktest=block2test('B',$x,$y))){
+
+
+                            if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
+
+
+                                $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id' AND ".objt()));
+                                if((!$test)?($GLOBALS['ss']["use_object"]->hold->takehold($fc)):($GLOBALS['ss']["use_object"]->hold->testchange($fc))){
+
+                                    if($rot and strpos($res,'/1.png'))$res=str_replace('1.png',(($rot/15)+1).'.png',$res);
+
+                                    if(substr($res,0,1)!='{' and !strpos($res,'{}')){
+                                        $res=explode(':',$res);$res=$res[0].':'.$res[1].':'.$res[2];
+                                    }
+
+
+                                    $tol=sqrt(2)/2;
+                                    //define('create_error',"SELECT id FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".useid."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
+
+                                   //foreach(sql_array("SELECT id,name,own FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".useid."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
+
+
+                                    $func=func2list(sql_1data('SELECT func FROM [mpx]objects WHERE id='.$id.' AND '.objt()));
+                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".useid."'
+                                    if(!$jid){//e('ahoj');
+
+
+                                        if($func['join']['profile']['type']==2){
+                                                define('object_build',true);
+                                                define('create_error',lr('create_error_join_type2'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr("create_error_join_type2"));
+                                                return;
+                                        }else{
+
+                                        if(!$test){
+                                                $nextid=nextid();
+                                                define('object_id',$nextid);
+                                                $GLOBALS['object_ids']=array($nextid);
+                                                sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `starttime`) 
+                        SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `".mpx."objects` WHERE id='$id'");
+                                        }
+
+                                        $GLOBALS['ss']["query_output"]->add("1",1);
+
+                                        }
+                                        //define('create_ok','{create_ok_place}');
+
+                                    }else{
+                                        //e('bhoj');
+
+                                        $jfunc=func2list($jfunc);
+
+                                        if($func['join']['profile']['type']==3){
+                                                define('object_build',true);//die(1);
+                                                define('create_error',lr('create_error_join_type3'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type3'));
+                                                return;
+                                        }elseif($jfunc['join']['profile']['type']==3){
+                                                define('object_build',true);//die(2);
+                                                define('create_error',lr('create_error_join_type3x'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type3x'));
+                                                return;
+                                        }elseif($func['join']['profile']['type']==1 or $func['join']['profile']['type']==4){
+                                                define('object_build',true);//die(3);
+                                                define('create_error',lr('create_error_join_type1'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type1'));
+                                                return;
+                                        }elseif($jfunc['join']['profile']['type']==4 and strpos($jres,'[-4,-4,')===false){
+                                                define('object_build',true);//die(4);
+                                                define('create_error',lr('create_error_join_type4'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type4'));
+                                                return;
+                                        }elseif(!$jorigin){
+                                                define('object_build',true);//die(5);
+                                                define('create_error',lr('create_error_join_noorigin'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_noorigin'));
+                                                return;
+                                        }elseif($jown!=$GLOBALS['ss']['useid']){
+                                                define('object_build',true);
+                                                define('create_error',lr('create_error_join_noown'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_noown'));
+                                                return;
+                                        }elseif($jname==id2name($GLOBALS['config']['register_building'])){
+                                                define('object_build',true);
+                                                define('create_error',lr('create_error_join_main'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_main'));
+                                                return;
+                                        }elseif($tmaster?$jid==$tmaster:$jid==$GLOBALS['ss']["aac_object"]->id){
+                                                define('object_build',true);
+                                                define('create_error',lr('create_error_join_self'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_self'));
+                                                return;
+                                        }elseif($jfs!=$jfp){
+                                                define('object_build',true);
+                                                define('create_error',lr('create_error_join_fsfp'));
+                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_fsfp'));
+                                                return;
+                                        }else{
+
+
+                                                define('create_ok',contentlang(lr('create_ok_join',$jname)));
+                                                if(!$test){
+                                                        define('join_id',$jid);
+                                                        define('object_id',$jid);
+
+
+                                                        trackobject($jid);//záloha původního objektu, nastavení časů
+
+                                                        $GLOBALS['object_ids']=array($jid);
+                                                        $joint=new object($jid);
+                                                        $joint->join($id,$res.':'.$rot,$rot);
+                                                        $joint->update(true,true);
+                                                        unset($joint);
+                                                }
+                                                $GLOBALS['ss']["query_output"]->add("1",1);
+
+
+
+                                        }
+
+
+                                    }
+
+                                    //POZDEJI//changemap($x,$y);
+
+                                if(!$test){
+                        //==============================OPRAVA SPOJů
+
+                        //==============================
+
+
+                                 }else{
+                                    define('object_build',true);
+                                    define('create_error',lr('create_error_price'));
+                                    $GLOBALS['ss']["query_output"]->add("error",lr('create_error_price'));
+                                }
+                            }else{
+                                define('object_build',true);
+                                define('create_error',lr('create_error_expand'));
+                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_expand'));
+                            }
+                                }else{
+                                define('object_build',true);
+                                        if(is_numeric($blocktest))$blocktest='object';
+                                define('create_error',lr('create_error_block_'.$blocktest));
+                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_block_'.$blocktest));
+                            }}else{
+                                define('object_build',true);
+                                //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `".mpx."map`.`x`=$y AND `".mpx."map`.`y`=$x)+(SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`".mpx."objects`.`x`)=$y AND ROUND(`".mpx."objects`.`y`)=$x)";
+                                //$hard=sql_1data($sql);// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
+                                define('create_error',lr('create_error_resistance_'.$blocktest));
+                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance_'.$blocktest));
+                            }}else{
+                                define('object_build',true);
+                                define('create_error',lr('create_error_'.$walltype.'_distance'));
+                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_wall_distance'));
+                            }
+                    */ ?>
+                            
+                    //======================================================================================================================END OF MEGATEST
+                    
+                    
+                    //alert('?y=<?php e($_GET['y']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y);
+                    
                     $.get('?y=<?php e($_GET['y']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
+                    
+                    
+                    
                 });
 		        
 		   
@@ -847,6 +1047,10 @@ e('<div style="position:absolute;width:0px;height:0px;"><div style="position:rel
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:500;" class="clickmap" id="units_new"></div></div>');
 
 }
+
+//---------------------------------------------------------------------------------------------------
+
+
 /*echo('<script type="text/javascript">'.nln);
 $d=17;
 $xa=intval($GLOBALS['ss']["use_object"]->x-$d);
@@ -875,6 +1079,11 @@ foreach(sql_array("SELECT x,y,hard FROM `".mpx."map` WHERE ww=".$GLOBALS['ss']["
 }
 echo('];'.nln);
 echo('</script>');*/
+
+
+
+
+
 //-------------------------------
 
 

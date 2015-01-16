@@ -28,7 +28,7 @@ require_once(root.core."/func_map.php");
 
 	$say="''";//"(SELECT IF((`".mpx."text`.`timestop`=0 OR ".time()."<=`".mpx."text`.`timestop`),`".mpx."text`.`text`,'')  FROM `".mpx."text` WHERE `".mpx."text`.`from`=`".mpx."objects`.id AND `".mpx."text`.`type`='chat' ORDER BY `".mpx."text`.time DESC LIMIT 1)";
 	//$say="'ahoj'";
-	$profileown="(SELECT `profile` from [mpx]objects as x WHERE x.`id`=".mpx."objects.`own`) as `profileown`";
+	$profileown="(SELECT `profile` from [mpx]objects as x WHERE x.`id`=".mpx."objects.`own` LIMIT 1) as `profileown`";
 	    $xcu=0;
 	    $ycu=0;
 	    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];

@@ -321,16 +321,7 @@ mkdir3(root.cache);
 
 //print_r($GLOBALS['config']);
 
-//==========================================================================================mailx
 
-function mailx($to,$subject,$body1,$body2='',$body3='',$body4=''){
-    if($to and $to!='@'){
-        $url=url.'/corex/?e=mailx&to='.urlencode($to).'&subject='.urlencode($subject).'&body1='.urlencode($body1).'&body2='.urlencode($body2).'&body3='.urlencode($body3).'&body4='.urlencode($body4);
-        //e($url);
-        get_headers($url);
-    }
-
-}
 //===========================================================================================================================
 /*         __   __       
  |\/| \ / /__` /  \ |    
@@ -393,6 +384,7 @@ Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&ia
 //---------------------
 function sql($text){return(/*mysqli_real_escape_string*/addslashes($text));}
 function sql_mpx($text){
+    //-------------------------------------------Prefix [mpx]
     $array=explode('[mpx]',$text);
     $i=1;
     while($array[$i]){
@@ -411,12 +403,25 @@ function sql_mpx($text){
     }
     $text=implode('',$array);
     //$text=str_replace('[mpx]',mpx,$text);
+    //-------------------------------------------ROUND
+    while(strpos($text,' ROUND(')){
+        
+        list($text1,$text)=explode(' ROUND(',$text,2);
+        list($round,$text2)=explode(' ',$text,2);
+        list($key,$value)=explode(')=',$round,2);
+        $min=$value-0.5;
+        $max=$value-(-0.5);
+        $round=' '.$key.'<='.($max).' AND '.$key.'>'.($min).' ';
+        $text=$text1.$round.$text2;
+    }
+
+    //-------------------------------------------
     return($text);
     
 }
 /*echo('SELECT [mpx] [mpx]lang [mpx]objects ');
 echo('<br/>');
-echo(sql_mpx('SELECT [mpx] [mpx]lang [mpx]objects '));
+echo(sql_mpx('SELECT ROUND(x)=5 [mpx] [mpx]lang [mpx]objects '));
 exit;*/
 //--------------------------------------------
 function sql_query($q,$w=false){
@@ -424,7 +429,9 @@ function sql_query($q,$w=false){
     if($w==1){r($q);}
     if($w==2){echo($q);}
     if($w==3){echo($q);br();}
+    t();
     $response=$GLOBALS['pdo']->exec($q);
+    t('sql_query',$q);
     //$err=($response->errorInfo());if($err=$err[2] and debug)e($err);
     //$error=mysql_error();
     /*if($error and debug){
@@ -442,7 +449,9 @@ function sql_1data($q,$w=false){
     if($w==3){echo($q);br();}
     //$result=sql_query($q);
     $response= $GLOBALS['pdo']->prepare($q);
+    t();
     $response->execute();
+    t('sql_1data',$q);
     $err=($response->errorInfo());if($err=$err[2] and debug)e($err);
     $response = $response->fetchAll();
     //print_r($response);
@@ -457,7 +466,9 @@ function sql_array($q,$w=false){
     if($w==2){echo($q);}
     if($w==3){echo($q);br();}
     $array= $GLOBALS['pdo']->prepare($q);
+    t();
     $array->execute();
+    t('sql_array',$q);
     $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
     $array = $array->fetchAll();
     return($array);
@@ -469,7 +480,9 @@ function sql_csv($q,$w=false){
     if($w==2){echo($q);}
     if($w==3){echo($q);br();}
     $array= $GLOBALS['pdo']->prepare($q);
+    t();
     $array->execute();
+    t('sql_csv',$q);
     $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
     $array = $array->fetchAll();
     //r($array);
@@ -478,15 +491,15 @@ function sql_csv($q,$w=false){
     return($array);
 }
 //--------------------------------------------
-function objt($alt){
-	if($alt)$alt="`$alt`.";
-	//if(!$GLOBALS['showtime']){
+function objt($alt=false,$showtime=false){
+	if($alt){$alt="`$alt`.";}else{$alt='';}
+	if(!$showtime){
 		return($alt.'`stoptime`=0');
 
-	/*}else{
+	}else{
 
-		return($GLOBALS['showtime'].'>='.$alt.'`starttime` AND ('.$GLOBALS['showtime'].'<'.$alt.'`stoptime` OR '.$alt.'`stoptime`=0)');
-	}*/
+		return($showtime.'>='.$alt.'`starttime` AND ('.$showtime.'<'.$alt.'`stoptime` OR '.$alt.'`stoptime`=0)');
+	}
 }
 
 //---------------------NOVe KONFIGURACE
@@ -539,6 +552,33 @@ foreach($array as $row){
 //echo('cc');exit;
 //--------------------------------------------
 //r(sql_csv("SELECT * from objects"));
+//==========================================================================================mailx
+
+function mailx($to,$subject,$text,$world=false){
+	if(!$world){$world=w;}
+    if($to and $to!='@'){
+        //$url=url.'/corex/?e=mailx&to='.urlencode($to).'&subject='.urlencode($subject).'&body1='.urlencode($body1).'&body2='.urlencode($body2).'&body3='.urlencode($body3).'&body4='.urlencode($body4);
+        //e($url);
+        //get_headers($url);
+		$uz=sql_1data("SELECT COUNT(1) FROM  `[mpx]emails` WHERE `to`=".($to-1+1)." AND `subject`='".sql($subject)."' AND `text`='".sql($text)."'");
+
+		if(!$uz){
+			sql_query("INSERT INTO `[mpx]emails` (`to`, `subject`, `text`, `world`, `key`, `start`, `try`, `stop`) VALUES (".($to-1+1).", '".sql($subject)."', '".sql($text)."', '".sql($world)."', '".md5(rand(111111,999999))."', now(), 0, NULL);");
+
+				$url=url.'?e=text-email';
+				//e($url);
+				get_headers($url);
+
+			return(true);
+
+		}else{
+			return(false);
+		}
+
+		
+    }
+
+}
 //===============================================================================================================
 //--------------------------------------------XXX
 function str_replace2($from,$to,$text){

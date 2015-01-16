@@ -222,7 +222,7 @@ if($q==1){
 
 
 	<?php /*if(true/*is_numeric($GLOBALS['ss']["log_object"]->name)* /){*/ ?>
-        <tr><td><b><?php e('*');le('username'); ?>:</b></td><td><?php input_text("username",$username); ?></td></tr>
+        <tr><td><b><?php e('*');le('loginname'); ?>:</b></td><td><?php input_text("username",$username); ?></td></tr>
 	<tr><td><b><?php e('*');le('nameonworld'); ?>:</b></td><td><?php input_text("name",$_POST["name"]?$_POST["name"]:(!is_numeric($GLOBALS['ss']["log_object"]->name)?$GLOBALS['ss']["log_object"]->name:'')); ?></td></tr>
 
         <tr><td><b><?php le("email"); ?>:</b></td><td><?php input_text("email",$email); ?></td></tr>
