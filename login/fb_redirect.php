@@ -61,7 +61,10 @@
     
     js('window.opener.location.href = "'.url.corexx.'"; ');
     js('window.close();');
-    //js('location.href = "'.url.corexx.'";');
+	//exit2();
+    
+
+	//js('location.href = "'.url.corexx.'";');
     
    /* $js="
           //var baseWin = getBaseWinRef();

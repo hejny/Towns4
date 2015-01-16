@@ -407,8 +407,18 @@ class object{
 	
 	foreach(array('tree','rock') as $type){
 
-		foreach(sql_array('SELECT `id`,`func`,(SELECT sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) FROM `[mpx]objects` as `B` WHERE type=\''.$type.'\' ORDER BY sqrt(POW(A.x-B.x,2)+POW(A.y-B.y,2)) LIMIT 1) FROM `[mpx]objects` as `A` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
-			list($id,$func,$distance)=$row;
+                //ABS(A.x-B.x)+ABS(A.y-B.y)
+                
+		foreach(sql_array('SELECT `id`,`func`,x,y FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
+
+			list($id,$func,$x,$y)=$row;
+
+			//-------------------------distance
+			$dd=10;
+			$distance=sql_1data('SELECT SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2)) FROM `[mpx]objects` WHERE type=\''.$type.'\' AND '.objt().'  AND x<'.($x+$dd).' AND x>'.($x-$dd).' AND y<'.($y+$dd).' AND y>'.($y-$dd).' ORDER BY SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2))');
+
+			//-------------------------
+
 			$func=func2list($func);
 			
 			foreach(array('mine','mine2','mine3','mine4','mine5','mine6') as $fname){
@@ -861,7 +871,7 @@ sql_query("UPDATE [mpx]objects SET `starttime`='".$time."' WHERE id='".sql($id).
 function ifobject($id){
 	$id=trim($id);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE (id='$id' OR name='$id' OR profile LIKE '%mail=$id;%')".' AND '.objt(),1);
+    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.objt(),1);// OR profile LIKE '%mail=$id;%'
     //r($result);
     if($result){
         return($result);

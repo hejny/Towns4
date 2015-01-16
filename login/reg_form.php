@@ -17,7 +17,7 @@ br();
 
 <table>
 <tr><td><b><?php le("username"); ?>:</b></td><td><?php input_text("register_username",''); ?></td></tr>
-<tr><td><b><?php le("password"); ?>:</b></td><td><?php input_text("register_password",''); ?></td></tr>
+<tr><td><b><?php le("password"); ?>:</b></td><td><?php input_pass("register_password",''); ?></td></tr>
 <tr><td><b><?php le("email"); ?>:</b></td><td><?php input_text("register_email",'@'); ?></td></tr>
 <tr><td colspan="2"><?php input_checkbox("register_sendmail",1); ?><b><?php le("sendmail"); ?></b></td></tr>
 <tr><td colspan="2"><?php le("sendmail_info"); ?></b></td></tr>
@@ -27,6 +27,7 @@ br();
 <?php
     br();
     tee(nbsp.lr('register_finish').nbsp,13,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"',NULL,'input')
+
 ?>
 
 

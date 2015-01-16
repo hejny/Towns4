@@ -100,7 +100,7 @@ function register_test($x,$y){
 		$distance=sqrt(pow($x-$xt,2)+pow($y-$yt,2));
 		
 		if($distance<register_min_distance){$ok=false;if(debug)e('min distance '.$distance.'<'.register_min_distance);}
-		if($GLOBALS['buildin_count'] and $distance>register_max_distance){$ok=false;if(debug)e('max distance '.$distance.'>'.register_max_distance);}
+		//if($GLOBALS['buildin_count'] and $distance>register_max_distance){$ok=false;if(debug)e('max distance '.$distance.'>'.register_max_distance);}
 	}
 	//-------------------Zda není pozice moc daleko stromům/skalám
 	if($ok){
@@ -212,7 +212,7 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
     //$password=base64_decode($password);
     //$email=trim(base64_decode($email));
     
-    //success("$username,$password,$email,$sendmail");
+    //success("$username,$password,$email,$sendmail,$fbdata");
     //var_dump($email);
     if($GLOBALS['ss']["userid"]){
         $wu=' AND id!='.$GLOBALS['ss']["userid"];
@@ -230,31 +230,42 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
                 
             }else{
                 $GLOBALS['ss']["query_output"]->add("error",(lr('password_change_oldpass_error')));
-                return;
+                return(lr('password_change_oldpass_error'));
             }
         }
         if($email==='' or $email===NULL)$email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
         if($sendmail==='' or $sendmail===NULL)$sendmail=sql_1data("SELECT sendmail FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
         if($fbdata==='' or $fbdata===NULL)$fbdata=unserialize(sql_1data("SELECT fbdata FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1"));
+		//hr();print_r($fbdata);
+
     }else{
             $passwordx=$password;
-            $password=md5($password);
+            $password=$password?md5($password):$password;
     }
-    
-    if(!$email or $email=='@'){
+	   
+	
+    if(!$fbdata and (!$email or $email=='@')){
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_none')));
-    }elseif(sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `email`='".sql($email)."' AND aac=1 ".$wu)){
+		return(lr('register_error_email_none'));
+    }elseif(!$fbdata and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `email`='".sql($email)."' AND aac=1 ".$wu)){
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_you')));
+		return(lr('register_error_email_you'));
     }elseif(!$username){
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_username_none')));
-    }elseif($username!='new' and $error=name_error($username)){
+		return(lr('register_error_username_none'));
+    }elseif(!$fbdata and /*$username!='new' and*/ $error=name_error($username)){
         $GLOBALS['ss']["query_output"]->add("error",($error));
-    }elseif($username!='new' and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `name`='".sql($username)."' AND aac=1 ".$wu)){
+		return($error);
+    }elseif(!$fbdata and /*$username!='new' and*/ sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `name`='".sql($username)."' AND aac=1 ".$wu)){
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_username_blocked')));
-    }elseif(!check_email($email)){
+		return(lr('register_error_username_blocked'));
+    }elseif(!$fbdata and !check_email($email)){
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_wtf')));
-    }elseif($password==md5('')){
+		return(lr('register_error_email_wtf'));
+    }elseif(!$fbdata and $password==md5('')){
+		print_r($fbdata);br(3);
         $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_password_empty')));
+		return(lr('register_error_password_empty'));
     }else{
         
         //-------------------------------------------------------------------------BACKUP OLD USER
@@ -285,28 +296,33 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
         }
         
         //--------------------------
-        if($username=='new'){
+        /*if($username=='new'){
             $username='';
-        }
+        }*/
         if($sendmail=='checked')$sendmail=1;
         //-------------------------------------------------------------------------NEW 
         //
         
         
-        
-        
         sql_query("INSERT INTO `[mpx]users` ( ".($GLOBALS['ss']["userid"]?'`id`,':'')." `aac`, `name`, `password`, `email`, `sendmail`, `fbid`, `fbdata`, `created`)
 VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".sql($username)."', '".sql($password)."', '".sql(($email))."','".sql(($sendmail))."', '".($fbdata['id']?sql($fbdata['id']):'')."', '".($fbdata['id']?sql(serialize($fbdata)):'')."', now());");
+
 
         if(!$onlychanging){
             
             if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_success')));
             //e("a_login($username,'towns',$passwordx);");
-            a_login($username,'towns',$passwordx);
+			if(!$fbdata){
+            	a_login($username,'towns',$passwordx);
+			}else{
+            	a_login($username,'facebook',$fbdata['id']);
+			}
             
-            
+           	return(lr('register_success'));
         }else{
             if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_change_success')));
+
+			return(lr('register_change_success'));
         }
         //sql_query("INSERT INTO `[mpx]users` (`id`,`aac`, `name`, `password`, `email`, `sendmail`, `created`) VALUES  SELECT `id`,0, `name`, `password`, `email`, `sendmail`, `created` FROM [mpx]users WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1",2);
     }
@@ -319,16 +335,25 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
 
 define("a_login_help","user[,method,password,preferlogid]");
 function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
+	
+	$param1=xx2x($param1);
+	$param3=xx2x($param3);
 
+	$where='`id`=\''.sql($param1).'\' OR `name`=\''.sql($param1).'\' OR `email`=\''.sql(trim($param1)).'\'';
     if($param2=='towns'){
-        $where='`id`=\''.sql($param1).'\' OR `name`=\''.sql($param1).'\' OR `email`=\''.sql(trim($param1)).'\'';
+        
+		$where2='password=\''.md5($param3).'\'';
+
     }elseif($param2=='facebook'){
-        $where='`fbid`=\''.sql($param1).'\'';
+
+        $where2='`fbid`=\''.sql($param3).'\'';;
+
     }else{
         $GLOBALS['ss']["query_output"]->add("error",lr('f_login_method_wtf')); 
     }
     
-    $userid=sql_1data('SELECT `id` FROM `[mpx]users` WHERE ('.$where.') AND aac=1 AND password=\''.md5($param3).'\'  LIMIT 1');
+    $userid=sql_1data('SELECT `id` FROM `[mpx]users` WHERE ('.$where.') AND ('.$where2.') AND aac=1 LIMIT 1');
+	
 
     if(!$userid and $param2=='facebook'){
         
@@ -400,11 +425,11 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
 //======================================================================================LOGIN
 define("a_login_help","user,method,password[,newpassword,newpassword2]");
 function force_login($param1){
-	/*$param1=sql($param1);
+	$param1=sql($param1);
         $GLOBALS['ss']["log_object"] = new object(NULL,"type='user' AND (id='$param1' OR name='$param1')");
         $use=sql_1data('SELECT `id` FROM [mpx]objects WHERE `own`=\''.($GLOBALS['ss']["log_object"]->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());        
         $GLOBALS['ss']["logid"]=$GLOBALS['ss']["log_object"]->id;
-        a_use($use);*/     
+        a_use($use);/**/     
 }
 //======================================================================================LOGOUT
 define("a_logout_help","");

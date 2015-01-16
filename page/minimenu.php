@@ -69,7 +69,8 @@ $fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `
 if($_GET["xc"] and $_GET["yc"]){
     $x_=$_GET["xc"]+1;
     $y_=$_GET["yc"]+1;
-    $sql="SELECT $fields FROM ".mpx."objects WHERE `ww`='".$GLOBALS['ss']['ww']."' AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(x-$x_)+ABS(y-$y_) LIMIT 1";
+    $dd=1;
+    $sql="SELECT $fields FROM ".mpx."objects WHERE `ww`='".$GLOBALS['ss']['ww']."' AND x<".($x_+$dd)." AND x>".($x_-$dd)." AND y<".($y_+$dd)." AND y>".($y_-$dd)." AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(x-$x_)+ABS(y-$y_) LIMIT 1";
     t("minimenu - A1");
     
 }else{

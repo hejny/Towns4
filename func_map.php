@@ -1130,6 +1130,7 @@ function worldmap($width=0,$minsize=0,$w=false,$top=false,$worldmap_red=false){
 		$width=$mapsize;
 	}
     
+	//print_r($worldmap_red);
     $outimg=tmpfile2("worldmap,$width,$w,$minsize".($top?'top':'iso').($worldmap_red?serialize($worldmap_red):'').t_,"png","worldmap");
     if(!file_exists($outimg)/** or true/**/){
         
@@ -1196,12 +1197,25 @@ function worldmap($width=0,$minsize=0,$w=false,$top=false,$worldmap_red=false){
         }
         //-------------------------------------------------------
         if($worldmap_red){
-            $red=imagecolorallocate($img, 255,0,0);   
+            $bbg=imagecolorallocate($img, 10,10,10);
+			$bbr=imagecolorallocate($img, 0,0,0);
             foreach($worldmap_red as $row){
                 list($x,$y)=$row;
-                $xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);
+                /*$xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);
                 $yy=($x+$y)/($mapsize*2)*($height/$kk)+(($height-($height/$kk))/2);
-                imagefilledellipse($img, round($xx), round($yy), $radius, ceil($radius/gr), $red);
+                imagefilledellipse($img, round($xx), round($yy), $radius, ceil($radius/gr), $red);*/
+				//if(!$top){
+		        //    $xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);
+		        //    $yy=($x+$y)/($mapsize*2)*($height/$kk)+(($height-($height/$kk))/2);
+		        //    $radius=ceil($s*sqrt(2));
+				//}else{
+		            $xx=$x/($mapsize)*($width/$kk);
+		            $yy=$y/($mapsize)*($height/$kk);
+		            $xx2=($x+1)/($mapsize)*($width/$kk);
+		            $yy2=($y+1)/($mapsize)*($height/$kk);
+					imagefilledrectangle($img, round($xx), round($yy), round($xx2), round($yy2), $bbg);
+					imagerectangle($img, round($xx), round($yy), round($xx2), round($yy2), $bbr);
+				//}
             }
         }
         //-------------------------------------------------------

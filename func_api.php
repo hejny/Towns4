@@ -51,7 +51,7 @@ function townsfunction($query,$q){$queryp=$query;
 
 	
     if($func=="login"){//list($aid)
-        $aid=$params[0];//explode(",",$params);
+        $aid=sql_1data('SELECT `id` FROM `[mpx]objects` WHERE (`userid`=\''.sql($params[0]).'\' ) AND '.objt());//explode(",",$params);
 		//if(debug){br();print_r($params);br();e($aid);}
 		//("($aid)");
 		$aid=xx2x($aid);
