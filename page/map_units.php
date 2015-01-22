@@ -146,7 +146,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 
     
   
-
+        //------------------------------------------------Barva uživatele
 	$a=strpos($profileown,'color=');
 	if($a!==false){
 
@@ -169,6 +169,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 	}else{
 		$usercolor=false;
 	}
+        //------------------------------------------------
 
 
     //------------------------------------------------------------------------------------------------------pozice

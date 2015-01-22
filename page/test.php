@@ -7,6 +7,16 @@
 
    testování
 */
+
+$from=13756998;
+e($from);br();
+$from=topobject($from);
+e($from);br();
+e(id2name($from));br();
+
+
+
+
 //==============================
 
 //OLD USER SYSTEM -> NEW USER SYSTEM
