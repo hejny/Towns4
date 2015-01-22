@@ -800,16 +800,43 @@ function mapunits($gx,$gy,$xy,$buildings=false){
         $q=false;
 	//`type`='building' OR 
 	//echo('hurá');
+        
+        $profileown="(SELECT `profile` from [mpx]objects as x WHERE x.`id`=".mpx."objects.`own` LIMIT 1) as `profileown`";
         foreach(array_merge(
 
 /*sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),
 sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='rock')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),*/
-sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree' OR `type`='rock'".($buildings?' OR `type`=\'building\'':'').")"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY x,y")
+sql_array("SELECT x,y,res,name,id,fp,fs,$profileown FROM `".mpx."objects` WHERE  ww=".$GLOBALS['ss']["ww"]." "."AND ".objt()." AND res!='' AND (`type`='tree' OR `type`='rock'".($buildings?' OR `type`=\'building\'':'').")"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY x,y")
 
 ) as $row){
                     //if($row[2]){
+                            //------------------------------------------------Barva uživatele
+                            $profileown=$row['profileown'];
+                            $a=strpos($profileown,'color=');
+                            if($a!==false){
+
+                                    $profileown=substr($profileown,$a+6);
+                                    $usercolor=$profileown;
+                                    $b=strpos($profileown,';');
+                                    if($b)$profileown=substr($profileown,0,$b);
+                                    //e($profileown);		
+
+                                    if(strpos($res,'000000')){
+                                            $res=str_replace('000000',$profileown,$res);
+                                    }else{
+                                            /*$res=explode(':',$res);
+                                            $pos=strrpos($res[2],',');
+                                            $res[2]=substr($res[2],0,$pos+1).$profileown;
+                                            $res=implode(':',$res);
+                                            //$res=str_replace('000000',$profileown['color'],$res);	
+                                            */
+                                    }
+                            }else{
+                                    $usercolor=false;
+                            }
+                            //------------------------------------------------
                         $q=true;                        
-                        $model=model($row[2],1,20,1.5,0,$row[5]/$row[6]);                        
+                        $model=model($row[2],1,20,1.5,0,$row[5]/$row[6],0,false,$usercolor);                        
 						//r($row[3]);                        
                         //r($model);
                         //imagealphablending($model,true);

@@ -756,13 +756,46 @@ function nextid($id){
 }
 
 //======================================================================================id2name
-///NEEEEEEEEEEEEFEKTINIIIIIIIIIIIII
+
 function id2name($id){
     $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
-    if(!$name)$name='?';
+    if(!$name)$name=lr('unknown');
     return($name);
 }
+//======================================================================================id2own
 
+function id2own($id){
+    $own=sql_1data("SELECT own FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
+    if(!$own)$own=false;
+    return($own);
+}
+
+//======================================================================================townid2xy
+
+function townid2xy($id){
+    $xy=sql_array("SELECT x,y FROM ".mpx."objects WHERE type='building' AND own='$id' AND name='".mainname()."' AND ".objt());
+    if(!$xy){
+        $xy=false;
+    }else{
+        $xy=$xy[0];
+    }
+    return($xy);
+}
+
+//======================================================================================town2name
+
+function town2name($id){
+    $town=id2name($id);
+    $id=id2own($id);
+    $user=id2name($id);
+    
+    if($town==$user){
+        return($town);
+    }else{
+        return($town.'('.lr('user').' '.$user.')');
+    }
+}       
+                
 //======================================================================================name2id
 function name2id($name){
     if(!is_numeric($name)){

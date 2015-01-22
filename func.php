@@ -15,66 +15,11 @@
 require_once(root.core."/func_vals.php");
 require_once(root.core."/func_object.php");
 require_once(root.core."/func_main.php");
+require_once(root.core."/func_external.php");
 require_once(root.core."/memory.php");
 require_once(root.core."/mobile_detect.php");
 
 
-
-//=============================================================
-
-  eval('req'.'uire_once(root."lib/facebook_sdk/base_facebook.php");');
-  eval('req'.'uire_once(root."lib/facebook_sdk/facebook.php");');
-
-  $fb_config = array();
-  $fb_config['appId'] = fb_appid;
-  $fb_config['secret'] = fb_secret;
-
-  $facebook = new Facebook($fb_config);
-  
-
-
-  eval('req'.'uire_once(root."lib/facebook_sdk/base_facebook.php");');
-  eval('req'.'uire_once(root."lib/facebook_sdk/facebook.php");');
-
-  $fb_config = array();
-  $fb_config['appId'] = fb_appid;
-  $fb_config['secret'] = fb_secret;
-
-  $GLOBALS['facebook'] = new Facebook($fb_config);
-  
-//-----------------------------------------fb_notify
-  
-function fb_notify($user,$template,$print_r=0){
-    //print_r($print_r);
-    //e("($user,$template)");
-    //if($user===true)$user=fb_user();
-    if($user and $template){
-        
-        try {
-    
-        $app_access_token = $GLOBALS['inc']['fb_appid'] . '|' . $GLOBALS['inc']['fb_secret'];
-        $response = $GLOBALS['facebook']->api( '/'.$user.'/notifications', 'POST', array(
-                    'template' => $template,
-                    'href' => url,
-                    'access_token' => $app_access_token
-                ) );    
-         
-         if($print_r){print_r($response);br();}
-         
-        } catch (Exception $e) {
-            //echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-    }
-   
-}
-
-//-----------------------------------------fb_user
-function fb_user($id){//$GLOBALS['ss']['logid']
-	$useid=sql_1data('SELECT `userid` FROM [mpx]objects WHERE `id`='.$id);    
-	$key=sql_1data('SELECT `fbid` FROM [mpx]users WHERE `id`='.$useid);
-    return($key);
-    
-}
 //=============================================================
 //(4.5*6+5*6+4.5*6+3*2+5*7+1*2)/(6+6+6+2+7+2)
 define("notmp", false);
@@ -777,6 +722,15 @@ function rand_color() {
 }
 //die(rand_color());
 
+//==========================================================================================fb_user
+
+function fb_user($id){//$GLOBALS['ss']['logid']
+	$useid=sql_1data('SELECT `userid` FROM [mpx]objects WHERE `id`='.$id);    
+	$key=sql_1data('SELECT `fbid` FROM [mpx]users WHERE `id`='.$useid);
+    return($key);
+    
+}
+
 //==========================================================================================create_zip
 function create_zip($files,$zipfile){
     //e($files); e($zipfile);
@@ -801,39 +755,18 @@ function create_zip($files,$zipfile){
 	return file_exists($zipfile);
 }
 //==========================================================================================create_zip
-function extract_zip($zipfile,$to){
+//[PH] Rozbalení .zip souboru složky $to
+//http://php.net/manual/en/ziparchive.open.php
 
+function extract_zip($zipfile,$to){
 	$zip = new ZipArchive;
 	$res = $zip->open($zipfile);
-	if ($res === TRUE) {
-	    //echo 'ok';
+	if ($res === TRUE) {//Vše je OK
 	    $zip->extractTo($to);
 	    $zip->close();
 	} else {
 	    //echo 'failed, code:' . $res;
 	}
-
-}
-
-//==========================================================================================post_request
-
-function post_request($url,$data){
-    //$url = 'http://server.com/path';
-    //$data = array('key1' => 'value1', 'key2' => 'value2');
-    
-    // use key 'http' even if you send the request to https://...
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data),
-        ),
-    );
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    
-    //var_dump($result);
-    return($result);
 
 }
 

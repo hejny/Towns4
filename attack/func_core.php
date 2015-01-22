@@ -19,7 +19,7 @@ function a_attack($id,$lowed=false){
     r($id);
     //$id=sg("id");
     if(!$id){$GLOBALS['ss']["query_output"]->add("error",lr('attack_noid'));}
-    elseif($id==useid){$GLOBALS['ss']["query_output"]->add("error",lr('attack_self'));}
+    elseif($id==$GLOBALS['ss']["useid"]){$GLOBALS['ss']["query_output"]->add("error",lr('attack_self'));}
     else{
     $attacked=new object($id);
     if(!$attacked->loaded){$GLOBALS['ss']["query_output"]->add("error",lr('attack_unknown'));
@@ -250,7 +250,7 @@ function a_attack($id,$lowed=false){
 
 
         //if($type!='tree' and $type!='rock'){
-            send_report(useid,$id,'{'.('attack_report_title_q'.$q.';'.$info).'}','{'.('attack_report'.';'.$info).'}');
+            send_report($GLOBALS['ss']["useid"],$id,'{'.('attack_report_title_q'.$q.';'.$info).'}','{'.('attack_report'.';'.$info).'}');
         //}
 
 

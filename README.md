@@ -5,7 +5,7 @@
 * * *
 ### Kontakt
 
-**Organizace vývoje:** https://trello.com/townscz
+**Organizace vývoje:** https://trello.com/townsgame
 
 **Mail:** ph@towns.cz
 
@@ -41,6 +41,8 @@ U záloh, které používám, jsou všechna hesla xxx, abych mohl jednoduše tes
 **David Hrůša:** https://www.facebook.com/dhrusa
 
 **Přemysl Černý:** https://www.facebook.com/longhorn86
+
+**Marek Hám:** https://www.facebook.com/marek.ham
 
 Další se připište!
 
