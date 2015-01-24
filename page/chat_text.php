@@ -14,10 +14,10 @@
 
 if(logged()){
 	$q=(!$GLOBALS['mobile']?19:10);
-    //r(useid);
+    //r($GLOBALS['ss']['useid']);
     $stream='';
     // `id`,`from`,`to`,`text`,`time`,`timestop`
-    $sql="SELECT  `id`,`type`,`from`,`to`,`title`,`text`,`time` FROM `".mpx."text` WHERE (`to`='' OR `to`='".useid."' OR (`from`='".useid."' AND `type`!='message') OR `to`='".logid."' OR (`from`='".logid."' AND `type`!='message')) ORDER BY time DESC LIMIT $q";
+    $sql="SELECT  `id`,`type`,`from`,`to`,`title`,`text`,`time` FROM `".mpx."text` WHERE (`to`='' OR `to`='".$GLOBALS['ss']['useid']."' OR (`from`='".$GLOBALS['ss']['useid']."' AND `type`!='message') OR `to`='".$GLOBALS['ss']['logid']."' OR (`from`='".$GLOBALS['ss']['logid']."' AND `type`!='message')) ORDER BY time DESC LIMIT $q";
     //HOVNO  AND (`type`='report')
     //r($sql);
     $array=sql_array($sql);
@@ -49,7 +49,7 @@ if(logged()){
     	$stream='<span id="chat_first'.$i.'" >'.$stream;
     	$i++;
     }
-    $stream='<span id="chat_new" style="display:none;">['.timer(time())."]["./*liner*/id2name(logid)."]:".nbsp.'[text]'.br.'</span>'.$stream;
+    $stream='<span id="chat_new" style="display:none;">['.timer(time())."]["./*liner*/id2name($GLOBALS['ss']['logid'])."]:".nbsp.'[text]'.br.'</span>'.$stream;
     //echo($stream);
     echo(contentlang($stream));
     //echo(rand(1,9999));

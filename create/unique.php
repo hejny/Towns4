@@ -71,7 +71,7 @@ if($group){
 	$GLOBALS['where']="own=0 AND ww=0 AND fs<=".$maxfs.' AND '.$limit.' AND '.$group;
 }else*/if(1){
 	
-	//$GLOBALS['where']="own='".useid."' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' GROUP BY name'/**/;
+	//$GLOBALS['where']="own='".$GLOBALS['ss']['useid']."' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' GROUP BY name'/**/;
 
 	//$q=submenu(array("content","create-unique"),array(/*"unique_help",*/"unique_basic",/*"unique_own","unique_user"*/),1,'create');
 	$GLOBALS['where']=($groupx=='extended'?'':" ww=0 AND ").$group;
@@ -84,7 +84,7 @@ if($group){
 	    contenu_b();
 	}*/
 	if($q==1){$GLOBALS['where']="ww='0' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' AND '.$group/**/;}
-	//elseif($q==3){$GLOBALS['where']="own='".useid."' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' GROUP BY CONCAT(name,fs)'/**/;}
+	//elseif($q==3){$GLOBALS['where']="own='".$GLOBALS['ss']['useid']."' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' GROUP BY CONCAT(name,fs)'/**/;}
 	elseif($q==2){$GLOBALS['author']=true;$GLOBALS['where']="`profile` LIKE '%public=y%' AND name!='".id2name($GLOBALS['config']['register_building'])."' AND fs<=".$maxfs.' GROUP BY CONCAT(name,fs)'/**/;}
 
 } 

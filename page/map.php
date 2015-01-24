@@ -626,13 +626,13 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
                                     $tol=sqrt(2)/2;
-                                    //define('create_error',"SELECT id FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".useid."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
+                                    //define('create_error',"SELECT id FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".$GLOBALS['ss']['useid']."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
 
-                                   //foreach(sql_array("SELECT id,name,own FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".useid."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
+                                   //foreach(sql_array("SELECT id,name,own FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".$GLOBALS['ss']['useid']."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
 
 
                                     $func=func2list(sql_1data('SELECT func FROM [mpx]objects WHERE id='.$id.' AND '.objt()));
-                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".useid."'
+                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".$GLOBALS['ss']['useid']."'
                                     if(!$jid){//e('ahoj');
 
 

@@ -24,9 +24,9 @@ function a_terrain($terrain,$x=0,$y=0){
     if(!intval(sql_1data("SELECT COUNT(1) FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1"))){    
 
     
-    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".useid."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
+    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
        
-    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".useid."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
+    if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
         
 
     //if($GLOBALS['ss']["use_object"]->hold->takehold($fc)){

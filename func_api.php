@@ -15,8 +15,8 @@
 
 unset($GLOBALS['ss']["use_object"]);
 unset($GLOBALS['ss']["log_object"]);
-//r($GLOBALS['ss']["useid"]);
-//r($GLOBALS['ss']["logid"]);
+//r($GLOBALS['ss']['useid']);
+//r($GLOBALS['ss']['logid']);
 function townsfunction($query,$q){$queryp=$query;
 	
     //r($query);
@@ -40,11 +40,11 @@ function townsfunction($query,$q){$queryp=$query;
     //r("$remoteobject , $func , $params");
     //$params=str_replace(" ",",",$params);
     //$params=explode(",",$params);
-    if($GLOBALS['ss']["useid"] and $GLOBALS['ss']["logid"]){
+    if($GLOBALS['ss']['useid'] and $GLOBALS['ss']['logid']){
         if($remoteobject){
             $aid=$remoteobject;
         }else{
-            $aid=$GLOBALS['ss']["useid"];
+            $aid=$GLOBALS['ss']['useid'];
         }
     }
 	//r($aid);
@@ -77,8 +77,8 @@ function townsfunction($query,$q){$queryp=$query;
             if($noregister){
 
                 t("obj>>");
-                //if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']["useid"]){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']["useid"]);}
-                //if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']["logid"]){;$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']["logid"]);}
+                //if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']['useid']){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']['useid']);}
+                //if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']['logid']){;$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']['logid']);}
                 if(!$GLOBALS['ss']["aac_object"] and $remoteobject){$GLOBALS['ss']["aac_object"]= new object($remoteobject);} 
                 if($GLOBALS['ss']["aac_object"] and $remoteobject){
 			$GLOBALS['ss']["aac_object"]->update();
@@ -86,15 +86,15 @@ function townsfunction($query,$q){$queryp=$query;
 			$GLOBALS['ss']["aac_object"]= new object($remoteobject);    
 		}
 		t("obj - a");
-                if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']["useid"]){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']["useid"]);}
+                if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']['useid']){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']['useid']);}
 		t("obj - b");        
-                if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']["logid"]){$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']["logid"]);}
+                if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']['logid']){$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']['logid']);}
 		t("obj - c");
                 if(!$GLOBALS['ss']["aac_object"])$GLOBALS['ss']["aac_object"]=$GLOBALS['ss']["use_object"];
                 t("<<obj");
                 //r($aid);
                 if($aid==$remoteobject){$aid_object=$GLOBALS['ss']["aac_object"];}
-                if($aid==useid){$aid_object=$GLOBALS['ss']["use_object"];}
+                if($aid==$GLOBALS['ss']['useid']){$aid_object=$GLOBALS['ss']["use_object"];}
                 if(!$aid_object){$aid_object=new object($aid);}
                 
                 
@@ -102,7 +102,7 @@ function townsfunction($query,$q){$queryp=$query;
                 //$GLOBALS['ss']["use_object"]->xxx();
                 //r($aid_object->loaded);
                 //r(true);
-                //if($GLOBALS['ss']["useid"]){$id}
+                //if($GLOBALS['ss']['useid']){$id}
 				
                 $GLOBALS['ss']["aac_func"]=$aid_object->support();////func->vals2list();
 		//r($aid_object->id);
@@ -139,7 +139,7 @@ function townsfunction($query,$q){$queryp=$query;
 		                        
 		                        $group=$GLOBALS['ss']['aac_func']['profile']['group'];
 		                        
-		                        $masters=sql_array("SELECT `id` FROM [mpx]objects WHERE `own`='".useid."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id");
+		                        $masters=sql_array("SELECT `id` FROM [mpx]objects WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id");
 		                        
                                 foreach($masters as $master){
                                     
@@ -740,7 +740,7 @@ function qlog($logid,$useid,$aacid,$function,$params,$output){
     }
 	$output=serialize($output);
 
-	//if($function=='register'){mail('ph@towns.cz','new register','ref: '.$GLOBALS['ss']['ref'].nln.'function: '.$function.nln.'logid: '.$logid.nln.'useid: '.$useid.nln.'aacid: '.$aacid.nln.'params: '.$params.nln.'output: '.$params);}
+	//if($function=='register'){mail('ph@towns.cz','new register','ref: '.$GLOBALS['ss']['ref'].nln.'function: '.$function.nln.'$GLOBALS['ss']['logid']: '.$logid.nln.'$GLOBALS['ss']['useid']: '.$useid.nln.'aacid: '.$aacid.nln.'params: '.$params.nln.'output: '.$params);}
 
 
 	sql_query("INSERT INTO `[mpx]log` (`time`, `ip`, `user_agent`, `townssessid`, `lang`, `logid`, `useid`, `aacid`, `function`, `params`, `output`) VALUES (
@@ -765,13 +765,13 @@ function qlog($logid,$useid,$aacid,$function,$params,$output){
 function xlog($wtf,$value=false){
     //e("xlog($wtf,$value");
     if(!$value){
-        $value=sql_1data('SELECT params FROM [mpx]log WHERE logid='.logid.' AND function=\'x'.$wtf.'\'  '); 
+        $value=sql_1data('SELECT params FROM [mpx]log WHERE logid='.$GLOBALS['ss']['logid'].' AND function=\'x'.$wtf.'\'  '); 
         return($value);
     }else{
-        $count=sql_1data('SELECT count(1) FROM [mpx]log WHERE logid='.logid.' AND function=\'x'.$wtf.'\' AND params=\''.$value.'\'  '); 
+        $count=sql_1data('SELECT count(1) FROM [mpx]log WHERE logid='.$GLOBALS['ss']['logid'].' AND function=\'x'.$wtf.'\' AND params=\''.$value.'\'  '); 
         $count=$count-1+1;
         
-        qlog(logid,useid,0,'x'.$wtf,$value,false); 
+        qlog($GLOBALS['ss']['logid'],$GLOBALS['ss']['useid'],0,'x'.$wtf,$value,false); 
         
         return($count);
     }

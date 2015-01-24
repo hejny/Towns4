@@ -31,7 +31,7 @@ window(lr('title_write'),NULL,NULL,'write')
         //INSERT INTO `world1_text` (`idle`, `type`, `new`, `from`, `to`, `title`, `text`, `time`, `timestop`)VALUES ('0', 1, '1', '', '', '', '', '', '');
         
         
-        send_message(logid,$GLOBALS['inc']['write_id'],'write',$_GET["write_text"]);
+        send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'write',$_GET["write_text"]);
         backup_text($_GET["write_text"]);
         
         success(lr('write_success'));
@@ -40,7 +40,7 @@ window(lr('title_write'),NULL,NULL,'write')
         $height=117;
         $send=1;
 
-        send_message(logid,$GLOBALS['inc']['write_id'],'write',$_POST["write_text"]);
+        send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'write',$_POST["write_text"]);
         backup_text($_POST["write_text"]);
         
         success(lr('write_success'));

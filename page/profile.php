@@ -25,7 +25,7 @@ if($GLOBALS['get']["id"]){$GLOBALS['ss']["profileid"]=$GLOBALS['get']["id"];$q=1
 
 contenu_a();
 if($q==1){
-    if(!$GLOBALS['ss']["profileid"]){$GLOBALS['ss']["profileid"]=$GLOBALS['ss']["useid"];}
+    if(!$GLOBALS['ss']["profileid"]){$GLOBALS['ss']["profileid"]=$GLOBALS['ss']['useid'];}
     profile($GLOBALS['ss']["profileid"]);
     
 }elseif($q==3){$GLOBALS['stattype']='towns';eval(subpage("stat"));
@@ -73,7 +73,7 @@ echo("obrázek");
 echo("</td></tr></table>");
 ahref("upravit profil","page=profile_edit",false);
 echo("<br/>");
-if($GLOBALS['ss']["logid"]==$GLOBALS['ss']["useid"]){
+if($GLOBALS['ss']['logid']==$GLOBALS['ss']['useid']){
 ahref("změnit heslo","page=password_edit",false);
 }
 //echo($profile->vals2str());

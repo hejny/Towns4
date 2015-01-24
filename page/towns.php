@@ -95,7 +95,7 @@ $space=nbsp3;
 //UZ NE//border(iconr($url,'fx_center2',lr('fx_center'),$iconsize),$border1,$iconsize);  
 //UZ NE//e($space);
 
-//border(iconr("e=content;ee=profile;id=".useid,"profile_town","{profile_town}",$iconsize),$border2,$iconsize);
+//border(iconr("e=content;ee=profile;id=".$GLOBALS['ss']['useid'],"profile_town","{profile_town}",$iconsize),$border2,$iconsize);
 //e($space3);
 
 //border(iconr("e=content;ee=rating","profile_user",lr('stat'),$iconsize),$border1,$iconsize);
@@ -122,7 +122,7 @@ e($space);
 //e(space);
 
 
-/*$url="e=content;ee=text-messages;subpage=2;ref=chat;id=".useid;
+/*$url="e=content;ee=text-messages;subpage=2;ref=chat;id=".$GLOBALS['ss']['useid'];
 
             ob_start();    
             eval(subpage('chat_aac'));           

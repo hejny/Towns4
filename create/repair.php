@@ -30,7 +30,7 @@ if($id?ifobject($id):false){
     list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
 
  
-    if($own==useid or $own==logid){
+    if($own==$GLOBALS['ss']['useid'] or $own==$GLOBALS['ss']['logid']){
         //$GLOBALS['ss']["use_object"]->set->add('upgradetid',$id);
         //--------------------------
         if($fs==$fp){

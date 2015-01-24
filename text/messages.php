@@ -52,7 +52,7 @@ if(!$textclass){
     $tmp=$textclass;
 }
 
-//$max=sql_1data('SELECT COUNT(1) FROM [mpx]text WHERE `to`='.logid.' OR `from`='.logid.' OR `to`='.useid.' OR `from`='.useid.' OR `to`=0');
+//$max=sql_1data('SELECT COUNT(1) FROM [mpx]text WHERE `to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].' OR `to`=0');
 //$GLOBALS['limit']=limit(array('content',"messages"),'messages'.$q.$tmp,16,$max);
 $response=xquery("text","list",$tmp);//`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`
 //r($tmp);
@@ -73,7 +73,7 @@ contenu_a();
     $q=count($texts)-1;
     
     //print_r($texts[$q]);
-    if($texts[$q][5]==logid){
+    if($texts[$q][5]==$GLOBALS['ss']['logid']){
         $q=$texts[$q][4];
     }else{
         $q=$texts[$q][5];
@@ -118,10 +118,10 @@ contenu_a();
                 
                 
                 //$fromto=ifobject($to)?(short(id2name($from),8).nbsp.'&gt;&gt;'.nbsp.short(id2name($to),8)):short(id2name($from),8);
-                //$fromtoid=($from==logid?$to:$from);
+                //$fromtoid=($from==$GLOBALS['ss']['logid']?$to:$from);
                 
                 
-                //if($from!=useid and $from!=logid){
+                //if($from!=$GLOBALS['ss']['useid'] and $from!=$GLOBALS['ss']['logid']){
                     $fromto=ahrefr(short(id2name($from),20),"e=content;ee=profile;page=profile;id=".$from,'',true);
                 //}else{
                 //    $fromto=ahrefr(short(id2name($to),20),"e=content;ee=profile;page=profile;id=".$to,'',true);
@@ -142,7 +142,7 @@ contenu_a();
                 /*
                 echo("</td><td width=\"22\">");
                 e($authorid);
-                if((logid==$authorid or useid==$authorid) and $textclass){iconp(lr('delete_message_prompt'),"e=content;ee=text-messages;q=text delete ".$id,"delete","Smazat");}
+                if(($GLOBALS['ss']['logid']==$authorid or $GLOBALS['ss']['useid']==$authorid) and $textclass){iconp(lr('delete_message_prompt'),"e=content;ee=text-messages;q=text delete ".$id,"delete","Smazat");}
                 echo("</td><td width=\"22\">");*/
                 echo("</td></tr><tr  bgcolor=\"#000000\"><td align=\"left\" colspan=\"2\">");
                // e('<div style="width:'.(contentwidth-6).';overflow:none;">');
@@ -176,7 +176,7 @@ contenu_a();
             list($id,$idle,$type,$new,$from,$to,$title,$text,$time,$timestop,$count)=$tmp;
                 //r($id,$class,$title,$time,$author,$text);
                 
-                if($from!=useid and $from!=logid){
+                if($from!=$GLOBALS['ss']['useid'] and $from!=$GLOBALS['ss']['logid']){
                     $fromto=ahrefr(short(id2name($from),12),"e=content;ee=profile;page=profile;id=".$from,'',true);
                 }else{
                     $fromto=ahrefr(short(id2name($to),12),"e=content;ee=profile;page=profile;id=".$to,'',true);
@@ -192,7 +192,7 @@ contenu_a();
                     $title=short(xx2x(contentlang($text)),30);  
                 }
                 
-                if($new and $q!=1 and $to==useid)$title=tcolorr(textbr($title),'ff7777');
+                if($new and $q!=1 and $to==$GLOBALS['ss']['useid'])$title=tcolorr(textbr($title),'ff7777');
                 ahref($title,"e=content;ee=text-messages;textclass=".$idle,'',true);
                 //e("</td><td width=\"5%\">");
                 if($count!=1)e('('.$count.')');

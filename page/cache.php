@@ -14,14 +14,14 @@
 
 
 /*==================================================================================================cache_minimenu_[id]=*/
-//e('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.useid);
+//e('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
 
-$fileMM=tmpfile2(useid.round(time()/(3600*24)),'html','minimenu');
+$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','minimenu');
 if(!file_exists($fileMM)){
     
     $pages=array();
     //$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
-    $array=sql_array('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.useid);
+    $array=sql_array('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
     foreach($array as $row){
         list($id)=$row;
         t('cache minimenu '.$id);
@@ -53,7 +53,7 @@ if(!file_exists($fileMM)){
 $groups=array('master','main','wall','bridge','path','terrain');
 
 foreach($groups as $group){
-    $master=sql_1data("SELECT `id` FROM [mpx]objects WHERE `own`='".useid."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id LIMIT 1 ");
+    $master=sql_1data("SELECT `id` FROM [mpx]objects WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id LIMIT 1 ");
     
     if($master){
     

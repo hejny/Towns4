@@ -24,11 +24,11 @@ if($(\'#minimap\').css(\'display\')==\'block\'){
     $(\'#minimap\').css(\'display\',\'none\');
 }else{
     if(offset.top>$(window).height()/2)$(\'#window_topcontrol\').css(\'top\',tmp-100);
- }1')*/"e=content;ee=profile;id=".logid;
+ }1')*/"e=content;ee=profile;id=".$GLOBALS['ss']['logid'];
 $url2='e=content;ee=help;page=copy';
 
  moveby(ahrefr(imgr('logo/50.png','',27),$url2),0,-5);
- moveby(tfontr(ahrefr('<b>Towns</b>',$url2).'&nbsp;&gt;&nbsp;'.ahrefr(/*'Hlavní&nbsp;ostrov'*/id2name(logid),$url).'',14),27,0);
+ moveby(tfontr(ahrefr('<b>Towns</b>',$url2).'&nbsp;&gt;&nbsp;'.ahrefr(/*'Hlavní&nbsp;ostrov'*/id2name($GLOBALS['ss']['logid']),$url).'',14),27,0);
   
 e(nbsp.'</td><td>');
 

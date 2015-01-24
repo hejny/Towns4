@@ -61,7 +61,7 @@ while($i<=$dd){
     $maus=array();
 	$mausx=array();
 	$name="(SELECT name FROM `[mpx]objects` WHERE `[mpx]log`.logid=`[mpx]objects`.id)";
-	$mau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm-(3600*24*29) AND `time`<$tm+(3600*24)-1 AND `logid`!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//MAU
+	$mau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm-(3600*24*29) AND `time`<$tm+(3600*24)-1 AND logid!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//MAU
 	foreach($mau as $mau1){
 		if($mau1[1]==$mau1[2]){
 			$mausx[$mau1[0]]='['.$mau1[0].']';//id2name($mau1[1]);
@@ -73,7 +73,7 @@ while($i<=$dd){
 	$maus = array_unique($maus);
 	$mausx = array_unique($mausx);
 
-	$mau=round($scale*count($maus));//round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm-(3600*24*29) AND `time`<$tm+(3600*24)-1 AND `logid`!='0' AND $where"));//MAU
+	$mau=round($scale*count($maus));//round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm-(3600*24*29) AND `time`<$tm+(3600*24)-1 AND $GLOBALS['ss']['logid']!='0' AND $where"));//MAU
 	$maux=round($scale*count($mausx));
 	$maus=implode(', ',$maus);
 	$mausx=implode(', ',$mausx);
@@ -81,7 +81,7 @@ while($i<=$dd){
 	$daus=array();
 	$dausx=array();
 	$name="(SELECT name FROM `[mpx]objects` WHERE `[mpx]log`.logid=`[mpx]objects`.id)";
-	$dau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND `logid`!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//dau
+	$dau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND logid!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//dau
 	foreach($dau as $dau1){
 		if($dau1[1]==$dau1[2]){
 			$dausx[$dau1[0]]='['.$dau1[0].']';//id2name($dau1[1]);
@@ -102,7 +102,7 @@ while($i<=$dd){
 
 
 
-	//$dau=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND `logid`!='0' AND $where"));//DAU
+	//$dau=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND $GLOBALS['ss']['logid']!='0' AND $where"));//DAU
 
     $ips1=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE `function`='html' AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND $where"));//total
     $ips2=round($scale*sql_1data("SELECT COUNT(`ip`) FROM `[mpx]log` WHERE `function`='html' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//refresh
@@ -110,7 +110,7 @@ while($i<=$dd){
     $ipsxb=round($scale*sql_1data("SELECT COUNT(1) FROM `[mpx]log` WHERE `function`='create' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//build
     $ipsxa=round($scale*sql_1data("SELECT COUNT(1) FROM `[mpx]log` WHERE `function`='attack' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//attack   
     
-    $ips3=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE `logid`!='0' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//users
+    $ips3=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE logid!='0' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//users
     $ips4=round($scale*sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE `function`='register' AND `time`>$tm AND `time`<$tm+(3600*24)-1  AND $where"));//new
     $ips5=$ips1-$ips3;//sql_1data("SELECT COUNT(DISTINCT(`ip`)) FROM `[mpx]log` WHERE `function`='html' AND `time`>$tm AND `time`<$tm+(3600*24) ");//none
    

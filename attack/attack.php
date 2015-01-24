@@ -65,7 +65,7 @@ if(!$ns)contenu_a();
 //e($GLOBALS['ss']['useid']);br();
 //e($GLOBALS['ss']['logid']);br();
 
-$attack_buildings=sql_array('SELECT id,name,func FROM [mpx]objects WHERE own=\''.useid.'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' AND '.objt());
+$attack_buildings=sql_array('SELECT id,name,func FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' AND '.objt());
 
 if(count($attack_buildings)==1){
 	$attack_master=$attack_buildings[0][0];
@@ -107,7 +107,7 @@ $id=$attack_id;
 
 //$ownown=sql_1data('SELECT id ');
 if(topobject($id)==$GLOBALS['ss']['logid']){
-blue(lr('attack_same_logid'));
+blue(lr('attack_same_'.$GLOBALS['ss']['logid']));
 }
 
 xreport();
@@ -192,7 +192,7 @@ if(!$attacked->loaded or !$attacker->loaded){error(lr('attack_wtf'));
     
     //$q=submenu_img(array('content','attack-attack'),"typ útoku",$images,$names,"attack");
     //$attack_function=$names2[$q-1];
-    $a_id=$attack_master;//$GLOBALS['ss']["useid"];
+    $a_id=$attack_master;//$GLOBALS['ss']['useid'];
     $b_id=$id;
     $attack_type=$attack_function;//$names2[$q-1];
     //===================================================================

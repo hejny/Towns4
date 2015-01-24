@@ -191,7 +191,7 @@ function register_on_world($userid,$username){
         $GLOBALS['ss']["log_object"]->func->delete('login');
         $GLOBALS['ss']["log_object"]->func->add('login','login');
         $GLOBALS['ss']["log_object"]->update();           
-        $GLOBALS['ss']["logid"]=$GLOBALS['ss']["log_object"]->id;
+        $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
         a_use($id2);*/
         
         return($id);
@@ -310,7 +310,9 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
 
         if(!$onlychanging){
             
-            if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_success')));
+            
+            //PH - Dočasně pozastaveno, než vyřeším hlášky na hl. straně if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_success')));
+            
             //e("a_login($username,'towns',$passwordx);");
 			if(!$fbdata){
             	a_login($username,'towns',$passwordx);
@@ -333,7 +335,7 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
 //======================================================================================LOGIN
 
 
-define("a_login_help","user[,method,password,preferlogid]");
+define("a_login_help","user[,method,password,prefer logid ]");
 function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
 	
 	$param1=xx2x($param1);
@@ -406,7 +408,7 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
         if($log){
             $GLOBALS['ss']["log_object"] = new object($log);
             $use=sql_1data('SELECT `id` FROM [mpx]objects WHERE `own`=\''.($GLOBALS['ss']["log_object"]->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());        
-            $GLOBALS['ss']["logid"]=$GLOBALS['ss']["log_object"]->id;
+            $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
             a_use($use); 
         }
         
@@ -428,7 +430,7 @@ function force_login($param1){
 	$param1=sql($param1);
         $GLOBALS['ss']["log_object"] = new object(NULL,"type='user' AND (id='$param1' OR name='$param1')");
         $use=sql_1data('SELECT `id` FROM [mpx]objects WHERE `own`=\''.($GLOBALS['ss']["log_object"]->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());        
-        $GLOBALS['ss']["logid"]=$GLOBALS['ss']["log_object"]->id;
+        $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
         a_use($use);/**/     
 }
 //======================================================================================LOGOUT
@@ -456,10 +458,10 @@ function a_use($param1){
     $GLOBALS['ss']["use_object"] = new object($param1);
     //$GLOBALS['ss']["use_object"]->xxx();
     //$GLOBALS['ss']["query_output"]->add("1",1);
-    $GLOBALS['ss']["useid"]=$GLOBALS['ss']["use_object"]->id;
-    if($GLOBALS['ss']["use_object"]->own!=$GLOBALS['ss']["logid"] and $GLOBALS['ss']["logid"]!=$GLOBALS['ss']["useid"]){
+    $GLOBALS['ss']['useid']=$GLOBALS['ss']["use_object"]->id;
+    if($GLOBALS['ss']["use_object"]->own!=$GLOBALS['ss']['logid'] and $GLOBALS['ss']['logid']!=$GLOBALS['ss']['useid']){
         $GLOBALS['ss']["query_output"]->add("error","Tento objekt vám nepatří!");
-        $GLOBALS['ss']["useid"]=$GLOBALS['ss']["logid"];
+        $GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
         unset($GLOBALS['ss']["use_object"]);
         
     }

@@ -216,10 +216,12 @@ t("start");
 //------------
 //if($GLOBALS['get']["session_destroy"]){session_destroy();}
 //------------------------------
-if(!$GLOBALS['ss']["useid"])$GLOBALS['ss']["useid"]=$GLOBALS['ss']["logid"];
-define("useid", $GLOBALS['ss']["useid"]);
-define("logid", $GLOBALS['ss']["logid"]);
-//if($GLOBALS['ss']["logid"] and $GLOBALS['ss']["useid"]){
+if(!$GLOBALS['ss']['useid'])$GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
+
+//PH// Už nepoužívat - define("$GLOBALS['ss']['useid']", $GLOBALS['ss']['useid']);
+//PH// Už nepoužívat - define("$GLOBALS['ss']['logid']", $GLOBALS['ss']['logid']);
+
+////if($GLOBALS['ss']['logid'] and $GLOBALS['ss']['useid']){
 //if(!$GLOBALS['ss']["log_object"]->loaded/* or !$GLOBALS['ss']["use_object"]->loaded*/){session_destroy();refresh();}}
 
 
@@ -289,7 +291,7 @@ if($GLOBALS['get']['login_select_userid'] and $GLOBALS['get']['login_select_id']
 }*/
 
 
-if(logged() and !useid){//e('log1');
+if(logged() and !$GLOBALS['ss']['useid']){//e('log1');
     /*Přes SESSIDif($post["login_permanent"]){//e('log2');
       setcookie('towns_login_username',$post["login_username"],cookietime);
       setcookie('towns_login_password',$post["login_password"],cookietime);
@@ -297,8 +299,8 @@ if(logged() and !useid){//e('log1');
     }*/
     
 	reloc();	
-	//define('useid',$GlOBALS['ss']['useid']);
-	//define('logid',$GlOBALS['ss']['logid']);
+	//define('$GLOBALS['ss']['useid']',$GLOBALS['ss']['useid']);
+	//define('$GLOBALS['ss']['logid'],$GLOBALS['ss']['logid']);
 	//?PROČ//reloc();
 
     //refresh("page=main");
@@ -336,8 +338,8 @@ if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
         $own2=csv2array($info2["own2"]);
     //r($own2);
     //print_r($own2);
-    if(!$GLOBALS['ss']["useid"]){$GLOBALS['ss']["useid"]=$info["id"];}
-    if(!$GLOBALS['ss']["logid"]){$GLOBALS['ss']["logid"]=$info2["id"];}
+    if(!$GLOBALS['ss']['useid']){$GLOBALS['ss']['useid']=$info["id"];}
+    if(!$GLOBALS['ss']['logid']){$GLOBALS['ss']['logid']=$info2["id"];}
 }
 //-------------------------------RESETS
 if($_GET["resetwindow"]){
@@ -428,8 +430,8 @@ if(logged() and $_GET['e']!="none"/**/){
         $GLOBALS['settings']=$settings;
         
     }else{
-        $GLOBALS['ss']["useid"]=false;
-        $GLOBALS['ss']["logid"]=false;
+        $GLOBALS['ss']['useid']=false;
+        $GLOBALS['ss']['logid']=false;
         refresh();
         exit2();
     }
@@ -563,7 +565,7 @@ if(logged() and $_GET['e']!="none"/**/){
 
 $GLOBALS['ss']["log_object"]->update();
 
-//if(!$GLOBALS['ss']["use_object"]->loaded){$GLOBALS['ss']["use_object"]=new object(useid);}
+//if(!$GLOBALS['ss']["use_object"]->loaded){$GLOBALS['ss']["use_object"]=new object($GLOBALS['ss']['useid']);}
 //$GLOBALS['ss']["use_object"]->hold->showimg();
 $GLOBALS['ss']["use_object"]->update();
 $GLOBALS['ss']["aac_object"]->update();

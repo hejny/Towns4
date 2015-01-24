@@ -31,7 +31,7 @@ function admin_s_input($name,$value){
     return($GLOBALS['ss'][$name]);
 }
 //--------------------------
-$object=new object(admin_s_input("admin",$GLOBALS['ss']["useid"]));
+$object=new object(admin_s_input("admin",$GLOBALS['ss']['useid']));
 //print_r($object);
 
 //-----------------COPY

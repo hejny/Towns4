@@ -42,11 +42,11 @@ $q=submenu(array("content","plus-index"),array(/*"plus_pay",*/'plus_invite','plu
 
     <tr style="<?php e(($i%2)?'background: rgba(0,0,0,0.4)':'') ?>">
     <td width="100" align="left" valign="center">
-    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e(useid); ?>', '_blank', 'resizable=yes');">
+    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
     <h3><?php e($title); ?></h3>
     </a>
     </td><td align="left" valign="center">
-    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e(useid); ?>', '_blank', 'resizable=yes');">
+    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
     <?php ie($credit); ?> {res_<?php e(plus_res); ?>2} {plus_fromto} $<?php e($amount); ?>
     </a>
     </td>
@@ -98,7 +98,7 @@ br();le('plus_invite_info');br(2);
 		}
 
 		
-		send_message(logid,$GLOBALS['inc']['write_id'],'Towns invited FB',$_GET['invite_data']);
+		send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns invited FB',$_GET['invite_data']);
 		
 		br();
 		
@@ -175,7 +175,7 @@ clicktoshare=function(){
    {
      method: 'feed',
 
-     link: 'http://www.towns.cz/'.w.'/?ref=<?php e(logid); ?>'
+     link: 'http://www.towns.cz/'.w.'/?ref=<?php e($GLOBALS['ss']['logid']); ?>'
    },
    function(response) {
      if (response && response.post_id) {
@@ -195,7 +195,7 @@ clicktoshare=function(){
   {
     method: 'share',
     name: 'Towns 4',
-    href: 'http://www.towns.cz/<?php e(w); ?>/?ref=<?php e(logid); ?>'
+    href: 'http://www.towns.cz/<?php e(w); ?>/?ref=<?php e($GLOBALS['ss']['logid']); ?>'
   },
   function(response) {
     if (response && !response.error_code) {
@@ -281,8 +281,8 @@ if($cooldown>0){
 	if($_GET['shared']==1){
 		success(lr('share_success'));
 		
-		//mail('ph@towns.cz','Towns shared FB','user: '.id2name(logid).nln.'townid: '.useid);
-		send_message(logid,$GLOBALS['inc']['write_id'],'Towns shared FB','user: '.id2name(logid).nln.'townid: '.useid);
+		//mail('ph@towns.cz','Towns shared FB','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid']);
+		send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns shared FB','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid']);
 		
 		$GLOBALS['ss']['use_object']->hold->add(plus_res,plus_share-1+1);
 		$GLOBALS['ss']["use_object"]->set->add("share_time",time());
@@ -317,8 +317,8 @@ br();
 
    if($_POST['url']){
 	success(lr('shareo_success'));
-	send_message(logid,$GLOBALS['inc']['write_id'],'Towns shared','user: '.id2name(logid).nln.'townid: '.useid.nln.'url: '.$_POST['url']);
-	//mail('ph@towns.cz','Towns shared','user: '.id2name(logid).nln.'townid: '.useid.nln.'url: '.$_POST['url']);
+	send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns shared','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'url: '.$_POST['url']);
+	//mail('ph@towns.cz','Towns shared','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'url: '.$_POST['url']);
     }
 
 
@@ -373,7 +373,7 @@ contenu_b();}elseif($q==3){contenu_a();
 		error(lr('key_error_none'));
 	}elseif($keyx['time_used']){
 		$key='';
-		if($keyx['id']==logid){
+		if($keyx['id']==$GLOBALS['ss']['logid']){
 			error(lr('key_error_usedx'));
 		}else{
 			error(lr('key_error_used',id2name($keyx['id'])));
@@ -382,13 +382,13 @@ contenu_b();}elseif($q==3){contenu_a();
 		
 		$reward=new hold($keyx['reward']);
 		$GLOBALS['ss']['use_object']->hold->addhold($reward);
-		sql_query("UPDATE [mpx]key SET `id`='".logid."',`time_used`='".time()."' WHERE `key`='$key'");
+		sql_query("UPDATE [mpx]key SET `id`='".$GLOBALS['ss']['logid']."',`time_used`='".time()."' WHERE `key`='$key'");
 
 		//success($reward->textr(2));
 		success(lr('key_success'));
 		$reward->showimg();
-		//mail('ph@towns.cz','Towns key','user: '.id2name(logid).nln.'townid: '.useid.nln.'key: '.$_POST['key']);
-        send_message(logid,$GLOBALS['inc']['write_id'],'Towns key','user: '.id2name(logid).nln.'townid: '.useid.nln.'key: '.$_POST['key']);
+		//mail('ph@towns.cz','Towns key','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'key: '.$_POST['key']);
+        send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns key','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'key: '.$_POST['key']);
 
 
 		$key='';

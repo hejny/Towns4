@@ -30,7 +30,7 @@ if($id?ifobject($id):false){
     list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
 
  
-    if($own==useid or $own==logid){
+    if($own==$GLOBALS['ss']['useid'] or $own==$GLOBALS['ss']['logid']){
         //$GLOBALS['ss']["use_object"]->set->add('upgradetid',$id);
         //--------------------------
         if($fs==$fp){
@@ -120,7 +120,7 @@ foreach($reference as $row){
 }
 
 if($myversion){
-	$reference=array_merge($reference,array(array($id,$name,$res,$profile_str,logid)));
+	$reference=array_merge($reference,array(array($id,$name,$res,$profile_str,$GLOBALS['ss']['logid'])));
 	$prompt='prompt='.lr('discard_edited');
 }else{
 	$prompt='';
@@ -160,15 +160,15 @@ foreach($reference as $row){$i++;$ii--;
     //br();
     //ahref(lr('unique_profile'),'e=content;ee=profile;id='.$_id,'none',true);
     
-   if($_own and $_own!=-1 and $_own!=logid){
+   if($_own and $_own!=-1 and $_own!=$GLOBALS['ss']['logid']){
 	br();
 	e(lr('author').': '.liner($_own));
-    }elseif($_own==logid and $name==$_name and $myversion){
+    }elseif($_own==$GLOBALS['ss']['logid'] and $name==$_name and $myversion){
 	br();
 	blue(lr('author_edited'));
-    }elseif($_own==logid){
+    }elseif($_own==$GLOBALS['ss']['logid']){
 	br();
-	success(lr('author_logid'));
+	success(lr('author_'.$GLOBALS['ss']['logid']));
     }elseif($_own==-1){
 	br();
 	info(lr('author_towns'));
@@ -192,9 +192,9 @@ foreach($reference as $row){$i++;$ii--;
 
 
 if($myversion){
-    if(!sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".logid."' AND `ww`=-1 AND `name`='$name'")){
+    if(!sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-1 AND `name`='$name'")){
 
-	if(/*sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".logid."' AND `ww`=-2 AND `name`='$name'") and */false){
+	if(/*sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-2 AND `name`='$name'") and */false){
 		error(lr('public_unique_reject'));	
 	}else{
 		blue(lr('public_unique_info'));
@@ -204,14 +204,14 @@ if($myversion){
 		success('{public_unique_ok}');
 
 sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `own`, `in`, `ww`, `x`, `y`, `t`) 
-SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, 'x', `hard`, `expand`,'".logid."', `in`, -1, `x`,`y`, ".time()." FROM `".mpx."objects` WHERE id='$id'");
+SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, 'x', `hard`, `expand`,'".$GLOBALS['ss']['logid']."', `in`, -1, `x`,`y`, ".time()." FROM `".mpx."objects` WHERE id='$id'");
 		$tmp=new object($nid);
 		
 		$tmp->func->addF('group','group','extended','profile');
 		$tmp->update();
 		unset($tmp);
-		//mail('ph@towns.cz','Towns public','name: '.$name.nln.'id: '.$id.nln.'id(-1): '.$nid.nln.'user: '.id2name(logid).nln.'townid: '.useid);
-		//e('name: '.$name.nln.'id: '.$id.nln.'id(-1): '.$nid.nln.'user: '.id2name(logid).nln.'townid: '.useid);
+		//mail('ph@towns.cz','Towns public','name: '.$name.nln.'id: '.$id.nln.'id(-1): '.$nid.nln.'user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid']);
+		//e('name: '.$name.nln.'id: '.$id.nln.'id(-1): '.$nid.nln.'user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid']);
 		br();
 	}
 

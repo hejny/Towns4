@@ -110,7 +110,7 @@ foreach($array as $row){$i++;
         $fpfs=$ad1;
     }
 
-    if($id==logid){$adtr='bgcolor="#171717"';}else{$adtr='';}
+    if($id==$GLOBALS['ss']['logid']){$adtr='bgcolor="#171717"';}else{$adtr='';}
     e("<tr $adtr>
     <td>$i</td>
     "./*<td>$id</td>*/"
