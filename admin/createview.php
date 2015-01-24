@@ -20,6 +20,7 @@ Vykreslení náhledu mapy do jednoho obrázku<br/>
 <a href="?page=createview&amp;create=1">Vygenerovat Velké (zoom=1)</a><br>
 <a href="?page=createview&amp;create=0.7">Vygenerovat Normální (zoom=0.7)</a>
 <hr>
+<a href="?page=createview&amp;create=0.7&amp;createpost=test">Vygenerovat příspěvek (Test)</a><br>
 <a href="?page=createview&amp;create=0.7&amp;createpost=1">Vygenerovat příspěvek =&gt;WP</a>
 <hr>
 <!--<a href="?page=createview&create=adjust&height=720">Vygenerovat HD</a><br>
@@ -134,6 +135,8 @@ if($_GET['create']){
     //r($x,$y);
     $x=round($x);
     $y=round($y);
+    $xonmap=$x;
+    $yonmap=$y;
     //---------------------------------------Přepočítání do jiného SS 
     $tmp=2;
     $xc=(-(($y-1)/10)+(($x-1)/10));
@@ -210,14 +213,19 @@ if($_GET['create']){
         
         $file=str_replace(array('[world]/',w.'/'),'',$GLOBALS['inc']['url']).$file;
         
+        $mapurl=$GLOBALS['inc']['url'].$xonmap.','.$yonmap;
+        $text.=textbr(lr('view_onmap')).'<a href="'.$mapurl.'" target="_blank">'.$mapurl.'</a>';
+        $text.='<br/>';
         $text.='<img src="'.$file.'">';
         
 
-        
-        if($GLOBALS['inc']['wp_xmlrpc']){
-            $result=wpPostXMLRPC($title,$text,$GLOBALS['inc']['wp_xmlrpc'],$GLOBALS['inc']['wp_username'],$GLOBALS['inc']['wp_password'],1);
-            br();
-            e('Uloženo we WP jako příspěvek ID = '.$result);
+        if($_GET['createpost']==1){
+            if($GLOBALS['inc']['wp_xmlrpc']){
+                $result=wpPostXMLRPC($title,$text,$GLOBALS['inc']['wp_xmlrpc'],$GLOBALS['inc']['wp_username'],$GLOBALS['inc']['wp_password'],1);
+                br();
+                e('Uloženo we WP jako příspěvek ID = ');
+                print_r($result);
+            }
         }
         
         //----------------------------------------

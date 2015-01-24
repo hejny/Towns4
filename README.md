@@ -51,3 +51,7 @@ Další se připište!
 
 Každý soubor obsahuje hlavičku, pokud ho budete měnit, napište se do ní jako spoluautor + co jste udělali.
 
+* * *
+### Soubory
+
+Všechny soubory + databáze je v UTF-8 a jako oddělovač řádků používat \n

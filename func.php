@@ -676,7 +676,21 @@ $GLOBALS['ss']["vals_b"]=array("[star]","[comma]","[semicolon]","[colon]","[equa
 //die(xx2x(x2xx("{abc}")));
 //print_r(csv2array(array2csv(array(array("{abc}")))));
 //exit;
-//==========================================================================================
+//==========================================================================================convertpos
+function convertpos($x,$y){
+    $tmp=3;
+    $xc=(-(($y-1)/10)+(($x-1)/10));
+    $yc=((($y-1)/10)+(($x-1)/10));
+    $xx=(($xc-intval($xc))*-414)-($posuv);
+    $yy=(($yc-intval($yc)+$tmp)*-211);
+    $xx=round($xx/$GLOBALS['mapzoom']);
+    $yy=round($yy/$GLOBALS['mapzoom']);
+    $xc=intval($xc);
+    $yc=intval($yc)-$tmp;
+    $posuv=($posuv/$GLOBALS['mapzoom'])+(2.5*(424-(424/$GLOBALS['mapzoom'])));
+    return(array($xc,$yc,$xx,$yy,$posuv));
+}
+//==========================================================================================centerurl
 
 if(!function_exists('centerurl')){
 function centerurl($id,$x='x',$y=0,$ww=1,$noclose=false){//echo('bbb');
@@ -694,16 +708,8 @@ if(!$GLOBALS['mobile']){
 }else{
 	$posuv=400;//530;
 }
-    $tmp=3;
-    $xc=(-(($y-1)/10)+(($x-1)/10));
-    $yc=((($y-1)/10)+(($x-1)/10));
-    $xx=(($xc-intval($xc))*-414)-($posuv);
-    $yy=(($yc-intval($yc)+$tmp)*-211);
-    $xx=round($xx/$GLOBALS['mapzoom']);
-    $yy=round($yy/$GLOBALS['mapzoom']);
-    $xc=intval($xc);
-    $yc=intval($yc)-$tmp;
-    $posuv=($posuv/$GLOBALS['mapzoom'])+(2.5*(424-(424/$GLOBALS['mapzoom'])));
+
+    list($xc,$yc,$xx,$yy,$posuv)=convertpos($x,$y);
     //js2("wm_close();"
     $url='e=map;xc='.$xc.';yc='.$yc.';xx='.$xx.';yy='.$yy.';ww='.$ww.';posuv='.round($posuv).';center='.$id.';noi=1;'.((mobile and !$noclose)?js2("wm_close();"):'');
     //echo($url);

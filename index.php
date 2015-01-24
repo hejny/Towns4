@@ -51,7 +51,27 @@ if(strpos($tmp,'?'))$tmp=substr($tmp,0,strpos($tmp,'?'));
 $uri=explode('/',$tmp);
 //print_r($uri);
 $admin=false;$debug=false;$edit=false;$notmp=false;$timeplan=false;$onlymap=false;$speciale=false;
-foreach($uri as $x){if($x){if($x!='admin' AND $x!='debug' AND $x!='edit' AND $x!='notmp' AND $x!='timeplan' AND $x!='onlymap' AND $x!='corex' AND substr($x,0,1)!='-'){$world=$x;}elseif($x=='admin'){$admin=true;}elseif($x=='timeplan'){$timeplan=true;}elseif($x=='onlymap'){$onlymap=true;}elseif($x=='notmp'){$notmp=true;}elseif($x=='edit'){$edit=true;}elseif($x=='corex'){$corex=true;}elseif($x=='debug'){$debug=true;}else{$speciale=true;$GLOBALS['url_param']=substr($x,1);}}}
+foreach($uri as $x){
+    if($x){
+        if($x!='admin' AND $x!='debug' AND $x!='edit' AND $x!='notmp' AND $x!='timeplan' AND $x!='onlymap' AND $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
+        {$world=$x;}
+        elseif($x=='admin'){$admin=true;}
+        elseif($x=='timeplan'){$timeplan=true;}
+        elseif($x=='onlymap'){$onlymap=true;}
+        elseif($x=='notmp'){$notmp=true;}
+        elseif($x=='edit'){$edit=true;}
+        elseif($x=='corex'){$corex=true;}
+        elseif($x=='debug'){$debug=true;}
+        elseif(is_numeric(substr($x,0,1))){
+            $speciale=true;
+            //$x=str_replace(array('[',']'),'',$x);
+            list($GLOBALS['mapgtx'],$GLOBALS['mapgty'])=explode(',',$x);
+        }
+        else{$speciale=true;$GLOBALS['url_param']=substr($x,1);}
+        
+    }}
+        
+        
 //die($world);
 
 $ref=$_GET['ref']?'?ref='.$_GET['ref']:'';

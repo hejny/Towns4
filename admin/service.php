@@ -8,6 +8,9 @@
    Towns4Admin - Nástroje pro správu Towns
 */
 //==============================
+
+
+
 ?>
 <h3>Chaos ve <?php echo(w); ?> </h3>
 
@@ -32,20 +35,29 @@ set_time_limit(10000);
 
 
 if($_GET['action']){
-//=================================================Chátrání budov
+//=================================================Chátrání budov + Opravy 
+//--------------------------Analýza
 if($_GET['wtf']=='all' or $_GET['wtf']=='a'){
 
-$tmp=sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt());
+$buildingsall=array();
+foreach(sql_array("SELECT id FROM [mpx]objects WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt()) as $row){
+    list($id)=$row;
+    $buildingsall[$id]=true;
+    
+}
+//print_r($buildingsall);
+//$tmp=sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt());
+
 
 //print_r($tmp);
 
-$tmp2=sql_query("UPDATE [mpx]objects SET stoptime=".time." WHERE $wwhere AND `type`='building' AND fp<0 AND ".objt());
+
 //sql_query("UPDATE [mpx]objects SET fp=0 WHERE $wwhere AND `type`='building' AND fp<0 ");
 //sql_query("UPDATE [mpx]objects SET fp=fs WHERE $wwhere AND `type`='building' ");
 
-e("Provedeno chátrání $tmp budov -&gt; spadlo $tmp2 budov.");br();
 
-//=================================================Oprava budov
+
+//--------------------------Oprava budov
 $tmp=0;
 $towns=sql_array("SELECT id,name,`set` FROM [mpx]objects WHERE (type='town' OR type='town2') AND ".objt());
 foreach($towns as $town){
@@ -53,10 +65,17 @@ foreach($towns as $town){
 	//textb($townname);br();
 	if(strpos($townset,'global_repair=off')===false){
 		
-		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM [mpx]objects WHERE own='".$townid."' AND ".objt()." ORDER BY RAND()");
+		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM [mpx]objects WHERE own='".$townid."' AND ".objt()." AND `name`!='".sql(mainname())."' ORDER BY id DESC");
 		$object=new object($townid);
 		foreach($buidings as $buiding){
 			list($id,$name,$fp,$fs,$set)=$buiding;
+                        //--------------------virtuální $fp
+                        if($buildingsall[$id]===true){
+                            $fp=ceil($fp-($fs/chaos_fall));
+                            //ebr("$fp / $fs");
+                        }
+                        
+                        //--------------------
 			if($fp!=$fs){
 				if(strpos($set,'auto_repair=off')===false){
 				$repair_fuel=repair_fuel($id);
@@ -64,7 +83,9 @@ foreach($towns as $town){
 				//e($name.' - '.$repair_fuel);br();
 				$hold=new hold('fuel='.$repair_fuel);
 				if($object->hold->takehold($hold)){
-					sql_query('UPDATE [mpx]objects SET fp=fs WHERE id='.$id);
+                                        //Není potřeba chátrat v DB - chátrání je zatím pouze virtuální
+					//sql_query('UPDATE [mpx]objects SET fp=fs WHERE id='.$id);
+                                        $buildingsall[$id]=false;
                                         $tmp++;
 				}else{
 					//error('nedostategg suregg');
@@ -84,13 +105,28 @@ foreach($towns as $town){
 	}
     t('bot.php - 1 town');
 }
+ebr("Provedena virtuální oprava $tmp budov.");
 
-e("Provedena oprava $tmp budov");br();
+
+//--------------------------Chátrání budov - Provedení
+$tmp=0;
+foreach($buildingsall as $id=>$yes){
+    if($yes){
+        $tmp++;
+        trackobject($id);//záloha původního objektu, nastavení časů
+        sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE id=".$id);//chátrání
+    }
+}
+
+$tmp2=sql_query("UPDATE [mpx]objects SET stoptime=".time()." WHERE $wwhere AND `type`='building' AND fp<0 AND ".objt());
+ebr("Provedeno chátrání a záloha(bez opravy) $tmp budov.");
+ebr("spadlo $tmp2 budov.");
 
 }
 //=================================================Rozhození terénů
 if($_GET['wtf']=='all' or $_GET['wtf']=='b'){
 
+die('nene');
 $water=(sql_1data("SELECT count(1) FROM [mpx]map WHERE $wwhere AND (`terrain`='t1' or `terrain`='t11')",2)-1+1)/(mapsize*mapsize)*100;
 if($test){success("water=$water , chaos_water=".chaos_water);br();}
 //die();
@@ -180,6 +216,8 @@ e("Provedeno $i / $limit změn terénu");br();
 }
 //=================================================Rozhození stromů 110-tree 111-rock
 if($_GET['wtf']=='all' or $_GET['wtf']=='c'){
+    
+die('nene');
 foreach(array(110,111) as $origin){
 	if($origin==110){$type='tree';$terrain='t10';e('Provádím stromy...');br();}
 	if($origin==111){$type='rock';$terrain='t5';e('Provádím sklály');br();}
