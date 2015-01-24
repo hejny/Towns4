@@ -47,7 +47,7 @@ if($id and $GLOBALS['ss']['master']){//e(1);
     //e($id);
     $object_build=new object($id);
     //e($object_build->name);
-    $res=$object_build->res;//$object_build->resc(useid);
+    $res=$object_build->res;//$object_build->resc($GLOBALS['ss']['useid']);
 
 
     $res=explode(':',$res);

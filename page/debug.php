@@ -24,7 +24,7 @@ $lang=$GLOBALS['ss']["lang"];
 if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
 $GLOBALS['ss']["lang"]=$lang;*/
 //============================================================ADMIN
-if(useid==1){
+if($GLOBALS['ss']['useid']==1){
  br();
 	 //ahref("createuser","e=createuser","none","x");
 }

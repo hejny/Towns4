@@ -17,23 +17,23 @@
 define("a_text_help","action{list,send,delete}[idle][idle,to,title,text][,id]");
 function a_text($action,$idle,$to="",$title="",$text=""){
     //$add="(SELECT 1 FROM `".mpx."textqw` WHERE `".mpx."textqw`.`textclass`=`".mpx."text`.`class` AND `".mpx."textqw`.`object`='".($GLOBALS['ss']["log_object"]->id)."')";
-    $add1='(`to`='.logid.' OR `from`='.logid.' OR `to`='.useid.' OR `from`='.useid.') AND `to`!=0';
+    $add1='(`to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].') AND `to`!=0';
     $add2="`type`='message'";
     if($action=="list"){
         if(($idle and $idle!='new' and $idle!='public' and $idle!='report') or $idle=='chat'){
-            $add1='`to`='.logid.' OR `from`='.logid.' OR `to`='.useid.' OR `from`='.useid.' OR `to`=0';
+            $add1='`to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].' OR `to`=0';
             $add2="`type`='message' OR `type`='report' ";
 	     if($idle=='chat'){$add1='1';$add2="`type`='chat'";}
             $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop` FROM `".mpx."text` WHERE `idle`='$idle' AND ($add1) AND ($add2) ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."",1);
             if($array[0][3]==1){
                 r('notnew');
-                $add1='`to`='.logid.' OR `to`='.useid.'';
+                $add1='`to`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].'';
                 sql_query("UPDATE   `".mpx."text` SET `new`='0' WHERE `idle`='$idle' AND ($add1) AND ($add2)");
             }
             //print_r($array);
             $GLOBALS['ss']["query_output"]->add("list",$array);
         }else{
-            if($idle=='new'){$add3='`new`=1 AND (`from`!='.useid.' AND `from`!='.logid.')';$add2.=" OR `type`='report'";/*$add3='`time`>'.(time()-(3600*24*7));*/}else{$add3='1';}
+            if($idle=='new'){$add3='`new`=1 AND (`from`!='.$GLOBALS['ss']['useid'].' AND `from`!='.$GLOBALS['ss']['logid'].')';$add2.=" OR `type`='report'";/*$add3='`time`>'.(time()-(3600*24*7));*/}else{$add3='1';}
             if($idle=='public'){$add1='`to`=0';}
             if($idle=='report'){$add2="`type`='report'";}
 	  
@@ -53,8 +53,8 @@ function a_text($action,$idle,$to="",$title="",$text=""){
                         
                         $to_=topobject($to);
                                              
-                        //sql_query("INSERT INTO `".mpx."text`(`id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message',1,'".logid."','".$to_."','$title','$text','".(time())."','')");
-                        send_message(logid,$to_,$title,$text,$idle);
+                        //sql_query("INSERT INTO `".mpx."text`(`id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message',1,'".$GLOBALS['ss']['logid']."','".$to_."','$title','$text','".(time())."','')");
+                        send_message($GLOBALS['ss']['logid'],$to_,$title,$text,$idle);
 
 
                     if($to_==$to){
@@ -78,7 +78,7 @@ function a_text($action,$idle,$to="",$title="",$text=""){
         }
    
     }elseif($action=="delete"){  
-        sql_query("DELETE FROM `".mpx."text` WHERE `id`= '$idle' AND `from`='".logid."'");
+        sql_query("DELETE FROM `".mpx."text` WHERE `id`= '$idle' AND `from`='".$GLOBALS['ss']['logid']."'");
     }
 }
 //======================================================================================
@@ -188,9 +188,9 @@ define("a_chat","text");
 function a_chat($text){
     if(trim($text)){
     if($text!="."){
-        sql_query("INSERT INTO `".mpx."text` (`id`, `from`, `to`, `text`, `time`, `timestop`) VALUES (NULL, '".logid."', '', '$text', '".time()."', '')");
+        sql_query("INSERT INTO `".mpx."text` (`id`, `from`, `to`, `text`, `time`, `timestop`) VALUES (NULL, '".$GLOBALS['ss']['logid']."', '', '$text', '".time()."', '')");
     }else{
-        sql_query("UPDATE `".mpx."text` SET timestop='".time()."' WHERE `from`='".logid."' ORDER BY time DESC LIMIT 1");
+        sql_query("UPDATE `".mpx."text` SET timestop='".time()."' WHERE `from`='".$GLOBALS['ss']['logid']."' ORDER BY time DESC LIMIT 1");
     }
     }
 }

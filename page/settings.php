@@ -22,9 +22,9 @@ contenu_a();
 if($q==1){
 //===============================================================================TOWN
 	//if($GLOBALS['get']['id'])$GLOBALS['ss']['profile_edit_id']=$GLOBALS['get']['id'];
-	//if(!$GLOBALS['ss']['profile_edit_id'])$GLOBALS['ss']['profile_edit_id']=useid;
+	//if(!$GLOBALS['ss']['profile_edit_id'])$GLOBALS['ss']['profile_edit_id']=$GLOBALS['ss']['useid'];
 	//infob('{town_profile_info}');
-	$id=useid;//$GLOBALS['ss']['profile_edit_id'];
+	$id=$GLOBALS['ss']['useid'];//$GLOBALS['ss']['profile_edit_id'];
 
 	    $info=array();
 	    $tmpinfo=xquery("info",$id);
@@ -125,7 +125,7 @@ if($q==1){
 //==============================================================================
     
     
-    //e(useid.','.logid);
+    //e($GLOBALS['ss']['useid'].','.$GLOBALS['ss']['logid']);
     
         //---------------------------------------------------------------------------------------------USER on World
 	if($_POST["name"] AND $GLOBALS['ss']["log_object"]->name!=$_POST["name"]){
@@ -150,8 +150,8 @@ if($q==1){
                    //}
 		}        
 
-		//xquery("profile_edit",useid,"name",$_POST["name"]);
-		//xquery("profile_edit",logid,"name",$_POST["name"]);
+		//xquery("profile_edit",$GLOBALS['ss']['useid'],"name",$_POST["name"]);
+		//xquery("profile_edit",$GLOBALS['ss']['logid'],"name",$_POST["name"]);
 		xreport();
 	}else{
 		if(is_numeric($GLOBALS['ss']["log_object"]->name)){
@@ -195,17 +195,17 @@ if($q==1){
 		    //$GLOBALS['ss']["log_object"]->profile->add('sendmail',$_POST["sendmail"]);
 		    xquery("register",$_POST["username"],'',$_POST["email"],$_POST["sendmail"]?1:0);
 			xreport();
-		    //xquery("profile_edit",logid,"sendmail",$_POST["sendmail"]?'1':'0');
-		    xquery("profile_edit",logid,"sendmail2",$_POST["sendmail2"]?'1':'0');
-		    xquery("profile_edit",logid,"sendmail3",$_POST["sendmail3"]?'1':'0');
-		    xquery("profile_edit",logid,"sendmail4",$_POST["sendmail4"]?'1':'0');
-		    xquery("profile_edit",logid,"sendmail5",$_POST["sendmail5"]?'1':'0');
+		    //xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail",$_POST["sendmail"]?'1':'0');
+		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail2",$_POST["sendmail2"]?'1':'0');
+		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail3",$_POST["sendmail3"]?'1':'0');
+		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail4",$_POST["sendmail4"]?'1':'0');
+		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail5",$_POST["sendmail5"]?'1':'0');
 		    //$GLOBALS['ss']["log_object"]->update();
 		   //success(lr('namecreated')); 
 		}      
 
-		//xquery("profile_edit",useid,"name",$_POST["name"]);
-		//xquery("profile_edit",logid,"name",$_POST["name"]);
+		//xquery("profile_edit",$GLOBALS['ss']['useid'],"name",$_POST["name"]);
+		//xquery("profile_edit",$GLOBALS['ss']['logid'],"name",$_POST["name"]);
 		xreport();
 	//realname,gender,age,showmail,web,description
 	//print_r($array);
@@ -310,7 +310,7 @@ if($q==1){
     	//------------------------------------------------description
     	hr();
     	    $info=array();
-    	    $tmpinfo=xquery("info",logid);
+    	    $tmpinfo=xquery("info",$GLOBALS['ss']['logid']);
     	    $info["profile"]=new profile($tmpinfo["profile"]);
     	    $info["name"]=$tmpinfo["name"];
     	    $p=$info["profile"]->vals2list();
@@ -318,12 +318,12 @@ if($q==1){
     	if($_GET["profile_edit"]){
     
     	    if($_GET["description"] and $p["description"]!=$_GET["description"]){
-    			xquery("profile_edit",logid,"description",$_GET["description"]);xreport();
+    			xquery("profile_edit",$GLOBALS['ss']['logid'],"description",$_GET["description"]);xreport();
     			$p["description"]=$_GET["description"];
     		}
     
     	    if($_POST["description"] and $p["description"]!=$_POST["description"]){
-    			xquery("profile_edit",logid,"description",$_POST["description"]);xreport();
+    			xquery("profile_edit",$GLOBALS['ss']['logid'],"description",$_POST["description"]);xreport();
     			$p["description"]=$_POST["description"];
     		}  
     

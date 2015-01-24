@@ -66,7 +66,7 @@ if($_GET['e']=='-html_fullscreen'/**/ or 1/**/){
     js($js);
     
     
-$array=sql_array('SELECT `id`,`name`,`profile` FROM [mpx]objects WHERE `own`=\''.(logid).'\' AND (`type`=\'town\' OR `type`=\'town2\') ORDER BY `type`,ABS('.logid.'-`id`)');
+$array=sql_array('SELECT `id`,`name`,`profile` FROM [mpx]objects WHERE `own`=\''.($GLOBALS['ss']['logid']).'\' AND (`type`=\'town\' OR `type`=\'town2\') ORDER BY `type`,ABS('.$GLOBALS['ss']['logid'].'-`id`)');
 
 /*(SELECT id FROM [mpx]objects AS X WHERE X.`own`=[mpx]objects.id AND name=\''.sql(mainname()).'\' LIMIT 1),
 (SELECT x FROM [mpx]objects AS X WHERE X.`own`=[mpx]objects.id AND name=\''.sql(mainname()).'\' LIMIT 1),

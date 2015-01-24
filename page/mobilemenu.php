@@ -75,7 +75,7 @@ br();imge('design/blank.png','',$spacesize,$spacesize);br();
 
 
 
-border(iconr($url="e=content;ee=profile;id=".logid,"profile_user",lr('profile_user'),$iconsize),$border1,$iconsize);
+border(iconr($url="e=content;ee=profile;id=".$GLOBALS['ss']['logid'],"profile_user",lr('profile_user'),$iconsize),$border1,$iconsize);
 e(nbsp2);ahref(trr(lr('profile_user'),$textsize,1),$url);
 br();imge('design/blank.png','',$spacesize,$spacesize);br();
 
@@ -93,7 +93,7 @@ br();imge('design/blank.png','',$spacesize,$spacesize);br();
 eval(subpage('chat_aac'));
 //subref("chat_aac",3);
 
-$url="e=content;ee=text-messages;ref=chat;id=".useid;
+$url="e=content;ee=text-messages;ref=chat;id=".$GLOBALS['ss']['useid'];
 e(nbsp2);ahref(trr(lr('f_text'),$textsize,1),$url);
 br();imge('design/blank.png','',$spacesize,$spacesize);br();
 

@@ -15,8 +15,8 @@
     $space=' ';
 //===============================================================
 
-//e($GLOBALS['ss']['useid'].'x'.useid);br();
-//e($GLOBALS['ss']['logid'].'x'.logid);br();
+//e($GLOBALS['ss']['useid'].'x'.$GLOBALS['ss']['useid']);br();
+//e($GLOBALS['ss']['logid'].'x'.$GLOBALS['ss']['logid']);br();
 
 /*if(!function_exists('centerurl')){
 function centerurl($id,$x='x',$y=0,$ww=1){//echo('bbb');
@@ -86,7 +86,7 @@ if($_GET["xc"] and $_GET["yc"]){
     }
     t("minimenu - A2,2");
     if(!ifobject($id))$id=$GLOBALS['hl'];
-    $sql=/*$id!=useid?*/"SELECT $fields FROM ".mpx."objects WHERE id=$id";//:false;
+    $sql=/*$id!=$GLOBALS['ss']['useid']?*/"SELECT $fields FROM ".mpx."objects WHERE id=$id";//:false;
     $x_=false;
 }
 
@@ -142,7 +142,7 @@ if($sql and $id?ifobject($id):true){
             e('<span id="minimenunamea" style="display:block;">'.trr($name,13,2).'</span>');
             e('<span id="minimenunameb" style="display:none;">'.ahrefr(trr($name,13,2),"e=content;ee=profile;id=".$id,"none",true).'</span>');
             click(js2('$("#minimenunamea").css("display","none");$("#minimenunameb").css("display","block");'),1);
-            if($own and $own!=useid)ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
+            if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
 
             t("minimenu - C");
 
@@ -150,7 +150,7 @@ if($sql and $id?ifobject($id):true){
             if($profileown['color']){
                 $color=$profileown['color'];//$own_=('{xtype_own}');
                 $color2=$color;
-            }elseif($own==useid){ 
+            }elseif($own==$GLOBALS['ss']['useid']){ 
                 $color='699CFE';//$own_=('{xtype_own}');
                 $color2=$color;
             }elseif($own){
@@ -187,12 +187,12 @@ if($sql and $id?ifobject($id):true){
             t("minimenu - E");
 
             //===============================================================GOLD
-                /*if(id2name($GLOBALS['config']['register_building'])==$name and $own==useid){ 
+                /*if(id2name($GLOBALS['config']['register_building'])==$name and $own==$GLOBALS['ss']['useid']){ 
                         //border(iconr("e=content;ee=plus-index","res_".plus_res,"{title_plus}",$iconsize),0,$iconsize);
                         border(iconr("e=content;ee=help;page=index;page=tutorial_x",'help',"{help}",$iconsize),$border3,$iconsize); 
                 }*/
             //===============================================================FUNC
-            if($own==useid){
+            if($own==$GLOBALS['ss']['useid']){
                  $functionlist=array('attack','create','teleport','portal','repair','upgrade','design','replace','change','terrain');   
             }else{
                  $functionlist=array('portal');   
@@ -274,7 +274,7 @@ if($sql and $id?ifobject($id):true){
                                         //if($settings["create"]==$name)$yes=1;
                                 break;
                                 case 'replace':
-                                       /*if(intval(sql_1data("SELECT COUNT(1) FROM [mpx]objects WHERE own='".useid."' AND `ww`=".$GLOBALS['ss']["ww"]))<=1){
+                                       /*if(intval(sql_1data("SELECT COUNT(1) FROM [mpx]objects WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"]))<=1){
                                             $stream="build($id,".$GLOBALS['config']['register_building'].",'$fname')";
                                        }*/
                                 break;
@@ -370,12 +370,12 @@ if($sql and $id?ifobject($id):true){
             }
         }   
 
-                if($own!=useid){
+                if($own!=$GLOBALS['ss']['useid']){
                 //if($name)
                 $originres=sql_1data("SELECT `res` FROM [mpx]objects WHERE (`ww`='0' OR `ww`='-1') AND `name`='$name' LIMIT 1");
                 //e('ggg');
                 if(substr($originres,0,1)=='{' and substr($originres,-1)=='}'){//e('oiok');
-                        $nnn=sql_1data("SELECT count(1) FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".useid."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
+                        $nnn=sql_1data("SELECT count(1) FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".$GLOBALS['ss']['useid']."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
                         if($nnn){//e('ee1');
                                 $nnn=sql_1data("SELECT count(1) FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='$own' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
                                 if(!$nnn){//e('ee2');
@@ -388,7 +388,7 @@ if($sql and $id?ifobject($id):true){
                         $candismantle=false;
                 }
 
-            if($own==useid or $candismantle){ 
+            if($own==$GLOBALS['ss']['useid'] or $candismantle){ 
 
 
                 if($_GET['q']){$GLOBALS['object_ids']=array($GLOBALS['get']['dismantle']);define('onlyremove',true);aac();}
@@ -401,7 +401,7 @@ if($sql and $id?ifobject($id):true){
         //----------------------------------------------
                 //$own_=('vlastní budova');
             }
-                if($own and $own!=useid){
+                if($own and $own!=$GLOBALS['ss']['useid']){
                 //$own_=($ownname);
                    //Zatím nezobrazovat profil města//border(iconr("e=content;ee=profile;id=".$own,"profile_town2","{profile_town2}",$iconsize),0,$iconsize);
                    //Zatím nezobrazovat profil města//e($space);
@@ -415,7 +415,7 @@ if($sql and $id?ifobject($id):true){
 
 
 
-        if($own!=useid){
+        if($own!=$GLOBALS['ss']['useid']){
         if( $type!='tree' and $type!='rock') {
 
             if(/*id2name($GLOBALS['config']['register_building'])!=$name*/1){ 

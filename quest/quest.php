@@ -14,7 +14,7 @@ window(lr('title_quest'));
 contenu_a();
 
 
-foreach(sql_array('SELECT quest FROM [mpx]questt WHERE id='.useid) as $row){
+foreach(sql_array('SELECT quest FROM [mpx]questt WHERE id='.$GLOBALS['ss']['useid']) as $row){
 
 e($row[0]);
 br();

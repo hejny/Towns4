@@ -23,7 +23,7 @@ window(lr('title_chat'),NULL,NULL,'chat')
 
 
 <?php
-$url="e=content;ee=text-messages;ref=chat;id=".useid;
+$url="e=content;ee=text-messages;ref=chat;id=".$GLOBALS['ss']['useid'];
 
 //ahref(trr(lr('text_toall')),$url);
 
@@ -72,7 +72,7 @@ eval(subpage("chat_aac"));
                     q=say.substring(1);
                 }else{
                     q='chat [say]&say='+say;
-                    /*$('#objectchat<?php  echo(useid); ?>').html(say);*/
+                    /*$('#objectchat<?php  echo($GLOBALS['ss']['useid']); ?>').html(say);*/
                 }
                 
                 htmlplus=$('#chat_new').html();

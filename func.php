@@ -30,8 +30,8 @@ if($_GET["output"]=="js"){
     define("noreport", false);
 }
 define("imgext", "jpg");
-//$GLOBALS['ss']["useid"]=$GLOBALS['ss']["useid"];
-//$GLOBALS['ss']["logid"]=$GLOBALS['ss']["logid"];
+//$GLOBALS['ss']['useid']=$GLOBALS['ss']['useid'];
+//$GLOBALS['ss']['logid']=$GLOBALS['ss']['logid'];
 
 //===============================================================================================================
 if(!defined('mapsize')){
@@ -139,7 +139,7 @@ function changemap($x,$y,$files=false){
 /*function hard($rx,$ry,$w=false){
     if(!$w)$w=$GLOBALS['ss']["ww"];
     $hard1=sql_1data("SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$w." AND  `".mpx."map`.`x`=$rx AND `".mpx."map`.`y`=$ry");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
-    $hard2=sql_1data("SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$w." AND  ROUND(`".mpx."objects`.`x`)=$rx AND ROUND(`".mpx."objects`.`y`)=$ry AND `own`!='".useid."'");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
+    $hard2=sql_1data("SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$w." AND  ROUND(`".mpx."objects`.`x`)=$rx AND ROUND(`".mpx."objects`.`y`)=$ry AND `own`!='".$GLOBALS['ss']['useid']."'");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
     $hard=floatval($hard1)+floatval($hard2);
     return($hard);
 }*/
@@ -488,7 +488,7 @@ function jsa2($js){
 }*/
 //======================================================================================
 function logged(){
-    if($GLOBALS['ss']["logid"]){
+    if($GLOBALS['ss']['logid']){
 	if($GLOBALS['url_param']!='fbonly'){
 	    //if($GLOBALS['ss']["log_object"]->loaded and $GLOBALS['ss']["use_object"]->loaded){
             return(true);
@@ -718,7 +718,7 @@ if(!$GLOBALS['mobile']){
 //==========================================================================================building
 
  function building($name){
-    $q=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own=\''.useid.'\' AND name=\''.$name.'\' AND '.objt())-1+1;
+    $q=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND name=\''.$name.'\' AND '.objt())-1+1;
     return($q);
 }
 //==========================================================================================rand_color

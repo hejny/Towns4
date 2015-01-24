@@ -126,8 +126,8 @@ VALUES ('$key', 'gold=$gold;', '', '".time()."', '');");
 }
 
 
-//mail('ph@towns.cz','Towns key create','user: '.id2name(logid).nln.'townid: '.useid.nln.'gold: '.$_POST['gold'].nln.'count: '.$_POST['count'].nln.'type: '.$_POST['type']);
-send_message(logid,$GLOBALS['inc']['write_id'],'Towns key create','user: '.id2name(logid).nln.'townid: '.useid.nln.'gold: '.$_POST['gold'].nln.'count: '.$_POST['count'].nln.'type: '.$_POST['type']);
+//mail('ph@towns.cz','Towns key create','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'gold: '.$_POST['gold'].nln.'count: '.$_POST['count'].nln.'type: '.$_POST['type']);
+send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns key create','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid'].nln.'gold: '.$_POST['gold'].nln.'count: '.$_POST['count'].nln.'type: '.$_POST['type']);
 		
 
 if($_POST['type']==1){

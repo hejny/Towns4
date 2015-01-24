@@ -18,7 +18,7 @@ e('<table style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border
 if($GLOBALS['get']['quest'])$GLOBALS['ss']['quest']=$GLOBALS['get']['quest'];
 if($GLOBALS['get']['questi'])$GLOBALS['ss']['questi']=$GLOBALS['get']['questi'];
 
-$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".useid." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi,time1 LIMIT 1");
+$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".$GLOBALS['ss']['useid']." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi,time1 LIMIT 1");
 
 $quest=$quests[0];
 $time2=$quest[3];

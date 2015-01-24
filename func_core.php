@@ -15,7 +15,7 @@
 //======================================================================================LEAVE
 define("a_leave_help","");
 function a_leave($id){
-    sql_query('UPDATE [mpx]objects SET own=0 WHERE own='.useid.' AND id='.$id.' AND '.objt());
+    sql_query('UPDATE [mpx]objects SET own=0 WHERE own='.$GLOBALS['ss']['useid'].' AND id='.$id.' AND '.objt());
 }
 //======================================================================================LEAVE
 define("a_dismantle_help","");
@@ -40,7 +40,7 @@ function a_dismantle($id){
         $tmp->deletex();
     }
 }
-//echo(useid.','.logid.','.$GLOBALS['ss']['use_object']->name);
+//echo($GLOBALS['ss']['useid'].','.$GLOBALS['ss']['logid'].','.$GLOBALS['ss']['use_object']->name);
 //a_dismantle(2000226);
 //======================================================================================INFO
 
@@ -55,7 +55,7 @@ function a_info($q="use"){
         }
         $q="tmp";
     }
-    //echo(useid);
+    //echo($GLOBALS['ss']['useid']);
     //echo($q."_object");
     //$GLOBALS['ss'][$q."_object"]->xxx();
     if($GLOBALS['ss']["use_object"] and $GLOBALS['ss'][$q."_object"]){
@@ -92,9 +92,9 @@ function a_info($q="use"){
 //=======================================================================================PROFILE
 define("a_profile_edit_help","id,key,value");
 function a_profile_edit($id,$key,$value){
-    if($id==useid)$object=$GLOBALS['ss']["use_object"];
-    if($id==logid)$object=$GLOBALS['ss']["log_object"];
-    if(!$object){$object=new object($id);if($object->own!=useid){$GLOBALS['ss']["query_output"]->add("error",'no_own'); return;}$update=true;}
+    if($id==$GLOBALS['ss']['useid'])$object=$GLOBALS['ss']["use_object"];
+    if($id==$GLOBALS['ss']['logid'])$object=$GLOBALS['ss']["log_object"];
+    if(!$object){$object=new object($id);if($object->own!=$GLOBALS['ss']['useid']){$GLOBALS['ss']["query_output"]->add("error",'no_own'); return;}$update=true;}
     if($key!="name"){
         $GLOBALS['ss']["query_output"]->add("1",1);
 		if($object->profile->val($key)!=$value){
@@ -111,7 +111,7 @@ function a_profile_edit($id,$key,$value){
 
         //r($GLOBALS['ss']["use_object"]->profile->vals2list());
     }else{
-        //echo("SELECT 1 FROM objects WHERE name='".$value."' and id!='".useid."'");
+        //echo("SELECT 1 FROM objects WHERE name='".$value."' and id!='".$GLOBALS['ss']['useid']."'");
         $q=name_error($value);
         if(!$q){
             $object->name=$value;
@@ -122,7 +122,7 @@ function a_profile_edit($id,$key,$value){
         }
         //}else{
          //$GLOBALS['ss']["use_object"]->name=$value;
-        //if(sql_1data("SELECT 1 FROM objects WHERE name='".$value."' and id!='".$GLOBALS['ss']["useid"]."'")){
+        //if(sql_1data("SELECT 1 FROM objects WHERE name='".$value."' and id!='".$GLOBALS['ss']['useid']."'")){
         //    $GLOBALS['ss']["query_output"]->add("error","Jméno je už obsazené.");
         //}else{
         //    $GLOBALS['ss']["use_object"]->name=$value;

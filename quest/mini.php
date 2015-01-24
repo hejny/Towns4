@@ -34,7 +34,7 @@ if($GLOBALS['get']['quest'])$GLOBALS['ss']['quest']=$GLOBALS['get']['quest'];
 if($GLOBALS['get']['questi'])$GLOBALS['ss']['questi']=$GLOBALS['get']['questi'];
 
 //echo('questi='.$GLOBALS['ss']['questi']);br();
-$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".useid." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi DESC,time1 LIMIT 1");
+$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".$GLOBALS['ss']['useid']." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi DESC,time1 LIMIT 1");
 $quest=$quests[0];
 $time2=$quest[3];
 
@@ -149,11 +149,11 @@ if($quest){
 			if($GLOBALS['get']['finish']==1){//e('finite');
 				unset($GLOBALS['ss']['quest']);
 				unset($GLOBALS['ss']['questi']);
-				sql_query('UPDATE [mpx]questt SET time2=\''.time().'\' WHERE id='.useid.' AND quest=\''.$id.'\' and questi=\''.$i.'\'');
+				sql_query('UPDATE [mpx]questt SET time2=\''.time().'\' WHERE id='.$GLOBALS['ss']['useid'].' AND quest=\''.$id.'\' and questi=\''.$i.'\'');
 				$reward=new hold($reward);
 				$GLOBALS['ss']['use_object']->hold->addhold($reward);
 				if($next){
-					sql_query("INSERT INTO ".mpx."questt (`id`,`quest`,`questi`,`time1`,`time2`) VALUES ('".useid."','".$id."','".$next."','".time()."','')");
+					sql_query("INSERT INTO ".mpx."questt (`id`,`quest`,`questi`,`time1`,`time2`) VALUES ('".$GLOBALS['ss']['useid']."','".$id."','".$next."','".time()."','')");
 					/*?>
 					<script>
 					setTimeout(function(){

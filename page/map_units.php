@@ -82,9 +82,9 @@ if(!$GLOBALS['map_units_ids']){
 	$hlname=id2name($GLOBALS['config']['register_building']);
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
-		// AND ((`own`=".useid." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
+		// AND ((`own`=".$GLOBALS['ss']['useid']." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
 	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range.$whereplay );
-}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".logid."' OR `own`='".useid."')"*/
+}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".$GLOBALS['ss']['logid']."' OR `own`='".$GLOBALS['ss']['useid']."')"*/
     //------------------------------------------------------------------------------------------------------SELECT ALLES
         $where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
@@ -174,7 +174,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 
     //------------------------------------------------------------------------------------------------------pozice
     
-    /*if($id==useid){
+    /*if($id==$GLOBALS['ss']['useid']){
         $_xc=$GLOBALS['ss']["use_object"]->x;
         $_yc=$GLOBALS['ss']["use_object"]->y;
         //$text=($_xc.','.$_yc);
@@ -190,7 +190,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     
     $rx=round((($px*$xx)-($px*$yy)+$rxp)/$GLOBALS['mapzoom']);
     $ry=round((($py*$xx)+($py*$yy)+$ryp)/$GLOBALS['mapzoom']);
-    if($id==useid){
+    if($id==$GLOBALS['ss']['useid']){
         $built_rx=$rx;
         $built_ry=$ry;
     }
@@ -206,8 +206,8 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         define('size_radius',100);
 
 
-        if($onmap and (($expand and $own==useid) or $block)){
-	    if($own!=useid){$expand=0;$aa=gr;$ad='q';}else{$aa=gr;$ad='w';}
+        if($onmap and (($expand and $own==$GLOBALS['ss']['useid']) or $block)){
+	    if($own!=$GLOBALS['ss']['useid']){$expand=0;$aa=gr;$ad='q';}else{$aa=gr;$ad='w';}
 		if($block){$block=distance_wall;}else{$block=0;}
 		//$expand=0.3;
 		//$expand=0.1;
@@ -246,7 +246,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         		}
         		//-----BLOCK
         		if($key=='sc'){
-						if($own!=useid){
+						if($own!=$GLOBALS['ss']['useid']){
                      		$inner =  imagecolorallocatealpha($img, 255, 0, 40, 70);
 							$outer =  imagecolorallocatealpha($img, 150, 0, 20,  50);
 						}else{
@@ -281,8 +281,8 @@ foreach($array as $row){//WHERE res=''//modelnamape//
        //------------------------------------------------------------------------------------------------------ATTACK
 	//$attackx=$attack;
 	//$attack=1;
-       if($onmap and ($attack or $own!=useid)){
-	    if($own!=useid){$attack=1;$aa=gr;}else{
+       if($onmap and ($attack or $own!=$GLOBALS['ss']['useid'])){
+	    if($own!=$GLOBALS['ss']['useid']){$attack=1;$aa=gr;}else{
 		$aa=gr;
 		//$attack_mafu=$GLOBALS['ss']["use_object"]->set->val("attack_mafu");
 		//list($attack_ma)=explode('-',$attack_mafu);
@@ -300,7 +300,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		}
 
 
-        $file=tmpfile2(size_radius.'attack'.($own==useid?$attack:'x').$selected,'png',"image");
+        $file=tmpfile2(size_radius.'attack'.($own==$GLOBALS['ss']['useid']?$attack:'x').$selected,'png',"image");
         //e($file);
 	       $y=1;//gr;
 	       $brd=3*$y;
@@ -319,7 +319,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 		//imageantialias($img,true);
                 imagefill($img,0,0,$outer);
                 
-		if($own==useid){
+		if($own==$GLOBALS['ss']['useid']){
 			if($selected){
         			$inner =  imagecolorallocatealpha($img, 150, 255, 255, 70);
 				$outer =  imagecolorallocatealpha($img, 0, 0, 0, 50);
@@ -386,7 +386,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         <div id="object'.$id.'" style="position:relative; top:'.($ry+round((-132-$height+157+4)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+2)/$GLOBALS['mapzoom'])).';">
 	';
 
-        if($res and (/*$own==useid or */$time>$mapunitstime)){
+        if($res and (/*$own==$GLOBALS['ss']['useid'] or */$time>$mapunitstime)){
 
 	$GLOBALS['units_stream'].='
         <img src="'.($modelurl).'" width="'.(round(82/$GLOBALS['mapzoom'])).'" class="clickmap" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'"/>
@@ -418,8 +418,8 @@ foreach($array as $row){//WHERE res=''//modelnamape//
                 if(!is_numeric($say)){
                         $say=str_replace(' ','&nbsp;',$say);
                 }else{
-                        //$say=($say.','.logid);
-                        if($own==useid){
+                        //$say=($say.','.$GLOBALS['ss']['logid']);
+                        if($own==$GLOBALS['ss']['useid']){
                                 $say=lr('xtype_own');
                         }else{
                                 $say=lr('xtype_noreg');
