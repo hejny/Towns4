@@ -30,6 +30,7 @@ function hr($width=''){if(!$width){echo(hr);}else{echo('<hr width="'.$width.'">'
 function hrr($width=''){if(!$width){return(hr);}else{return('<hr width="'.$width.'">');}}
 function tab($q=50){for($i=1; $i<=$q; $i++)echo(nbsp);}
 function e($a){echo($a);}
+function ebr($a){echo($a);br();}
 
 //===============================================================================================================
 
