@@ -644,8 +644,7 @@ $(document).ready(function(){
 			/*alert("window_title_"+w_name);*/
 			loadingstream='<?php include(root.core."/page/loading.php"); ?>';
                 stream=stream.split("innercontent").join('<div id="'+w_name+'">'+loadingstream+"</div>");
-            stream=$('#windows').html()+stream;
-			$('#windows').html(stream);
+			$('#windows').append(stream);
 			w_drag();
 		/*--------*/
 			$('#say').focus();
