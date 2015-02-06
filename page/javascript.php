@@ -447,7 +447,7 @@ $(document).ready(function(){
                 
                 //--------------------------
                 if ( e.which ==80){ shortcut_pl=1; }
-                else if ( e.which ==76 && shortcut_pl==1){ <?php urlx('e=play;noi=1;',false); ?>;shortcut_pl=0; }
+                else if ( e.which ==76 && shortcut_pl==1){ <?php urlx('e=playx;noi=1;',false); ?>;shortcut_pl=0; }
                 else{shortcut_pl=0;}
                 //-------------------------
                 
@@ -474,6 +474,10 @@ $(document).ready(function(){
             key_down=false;
             key_left=false;
             key_right=false;
+
+
+            if ( e.which ==80){ shortcut_pl=0; }
+
             /*if ( e.which ==87) {key_up=false;}
             if ( e.which ==83) {key_down=false;}
             if ( e.which ==65) {key_left=false;}

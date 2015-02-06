@@ -98,12 +98,13 @@ function time5($a1,$c1,$a2,$c2){
     return(multi5($a1,time(),$c1,$a2,$c2));
 }
 //-----------------------------------------
+//@deprecated PH level objektu se nově počítá podle množství modulů
 function fs2lvl($fs,$decimal=0){
     $decimal=pow(10,$decimal);
     //$lvl=ceil(sqrt($fs/10/*10*/)/*log($fs)*/*$decimal)/$decimal;
     
     /*if(!$GLOBALS['main_building_fs']){
-        $GLOBALS['main_building_fs']=intval(sql_1data('SELECT fs FROM [mpx]objects WHERE id='.register_building));
+        $GLOBALS['main_building_fs']=intval(sql_1data('SELECT fs FROM `[mpx]pos_obj` WHERE id='.register_building));
     }*/
     /*$fs=$fs-$GLOBALS['main_building_fs']+gr;*/
     
@@ -120,6 +121,11 @@ function nn($tmp){
     }else{
         return(lr('null'));
     }
+}//-----------------------------------------
+function implodex($array,$delimiter=',',$enclosure='`'){
+  $str=implode($enclosure.$delimiter.$enclosure,$array);
+  $str=$enclosure.$str.$enclosure;
+  return($str);
 }
 //===============================================================================================================
 function rebase($url){
@@ -130,14 +136,18 @@ function rebase($url){
 }
 //echo('ahoj/www/../debile/index.php');
 //die(rebase('ahoj/www/../debile/index.php'));
-//===============================================================================================================
-function file_put_contents2($file,$contents){
+//===============================================================================================================fpc,fgc(staré file_put_contents2)
+function fpc($file,$contents){
     //echo($file)url;
     //if(file_exists($file)){file_put_contents($file,"");}
     $fh = fopen($file, 'w');
     fwrite($fh, $contents);
     fclose($fh);
     chmod($file,0777);
+}
+//--------------------------------------------fgc
+function fgc($file,$contents){
+    return(file_get_contents($file));
 }
 //--------------------------------------------
 function mkdir2($dir){
@@ -186,103 +196,11 @@ function emptydir($dir,$delete=false){
     }
 } 
 //-------------------------------------------
-//======================================================================================
-//===============================================================================================================ZASTARALE
-function astream($stream,$multi=true){//echo($stream);
-    $array=array();
-    $arraytmp=array();
-    $br=array("\n","\r");
-    $br2="
-    ";
-    $stream=" $stream ";
-    //----
-    while(strpos($stream,"/*")){
-        $a=strpos($stream,"/*");
-        $b=strpos(substr($stream,$a),"*/");
-        $stream=substr_replace($stream,"",$a,$b+2);
-    }
-    //----
-    while(strpos($stream,"//")){
-        $a=strpos($stream,"//");
-        $b=strpos(substr($stream,$a),nln);
-        $stream=substr_replace($stream,"",$a,$b+1);
-    }
-    //----
-    $stream=str_replace($br," ",$stream);
-    $arraytmp=explode("; ",$stream);
-    foreach($arraytmp as $tmp){
-        list($a,$b)=explode("=",$tmp,2);
-        //r($a);
-        $a=trim($a);
-        $b=trim($b);
-	$b=str_replace('\\','',$b);
-        if($a/* and substr($a,0,2)!="//"*/){
-            if($multi)$a=str_replace(":","']['",$a);
-            $a="\$array['$a']";
-            $a=$a."=\$b;";
-	    //e($a);
-            eval($a);
-            //r($b);
-            /*$a=explode(":",$a);
-            //$a=array_reverse($a);
-            foreach($a as $key){r($key);
-                $array[$a]=$b;
-            }*/
-        }
-        //die();
-    }
-    return($array);
-}
-/*$str=("
-a:b:c:d=ss;
-c=qqq;
-x:b=i;
-x:m=1;
-t=55;
-");*/
-//===============================================================================================================ZASTARALE
-function estream($e){
-    $stream="";
-    foreach($e as $key => $value){
-        //$stream=$stream."$key=\"$value\"\n";
-        $stream=$stream."$key=$value;\n";
-    }
-    return($stream);
-}
 //===============================================================================================================
 
 define('w',$GLOBALS['inc']['world']);
 
 
-/*$file=(root."world/".w.".txt");
-if(!file_exists($file)){
-?>
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html><head>
-<title>World Not Found</title>
-</head><body>
-<h1>Not Found</h1>
-<p>The requested world '<?php echo(w); ?>' was not found on this server.</p>
-<hr>
-<?php echo($_SERVER["SERVER_SIGNATURE"]); ?>
-</body></html>
-
-<?php
-exit2();  
-} */
- 
-//ZASTARALE  
-/*$stream=file_get_contents($file);
-$stream=astream($stream);
-//$file=(root."world/".w.".ini");
-//echo(file_get_contents($file));
-//$stream = parse_ini_file($file,true);
-//print_r($stream);
-//die('konec');
-foreach($stream as $key=>$value){
-    if(!defined($key))define($key,$value);
-    $GLOBALS['config'][$key]=$value;
-}*/
 
 if(!$GLOBALS['inc']['mysql_prefix'])$GLOBALS['inc']['mysql_prefix']='[world]_';
 
@@ -382,8 +300,9 @@ Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&ia
     die();
 }
 //die('ok');
-//---------------------
+//---------------------sql, sqlx
 function sql($text){return(/*mysqli_real_escape_string*/addslashes($text));}
+function sqlx($text){return("'".sql($text)."'");}
 function sql_mpx($text){
     //-------------------------------------------Prefix [mpx]
     $array=explode('[mpx]',$text);
@@ -420,16 +339,17 @@ function sql_mpx($text){
     return($text);
     
 }
-/*echo('SELECT [mpx] [mpx]lang [mpx]objects ');
-echo('<br/>');
-echo(sql_mpx('SELECT ROUND(x)=5 [mpx] [mpx]lang [mpx]objects '));
-exit;*/
-//--------------------------------------------
+//--------------------------------------------sql_remove_mpx
+function sql_remove_mpx($text){
+    $text=str_replace(array($GLOBALS['inc']['mysql_global_prefix'],mpx,'[mpx]'),'',$text);
+    return($text);
+}
+//--------------------------------------------sql_query
 function sql_query($q,$w=false){
     $q=sql_mpx($q);
     if($w==1){r($q);}
     if($w==2){echo($q);}
-    if($w==3){echo($q);br();}
+    if($w==3){echo($q.';');br();}
     t();
     $response=$GLOBALS['pdo']->exec($q);
     t('sql_query',$q);
@@ -441,13 +361,85 @@ function sql_query($q,$w=false){
     
     return($response);
 }
-//--------------------------------------------
+//--------------------------------------------sql_insert
+/**
+ * Provedení SQL insert dotazu pomocí asociovaného pole
+ * abc' => sqlx(abc)
+ *
+ * @param (string) Tabulka bez [mpx]
+ * @param (array) Asociované pole
+ * @param (integer) Zobrazit?
+ */
+function sql_insert($table,$array,$w=false){
+    $keys=array_keys($array);
+    $vals=array_values($array);
+    $keys=implodex($keys,',','`');
+    $i=0;
+    while(isset($vals[$i])){$vals[$i]=sql($vals[$i]);$i++;}
+    $vals=implodex($vals,',',"'");
+    $sql="INSERT INTO `[mpx]$table` ($keys) VALUES ($vals)";
+    return(sql_query($sql,$w));
+}
+//--------------------------------------------sql_reinsert
+/**
+ * Provedení SQL insert select dotazu pomocí asociovaného pole
+ * true' => zkopírování
+ * array[subtable,subkey]' =>  subselect (SELECT ... FROM ... WHERE ...)
+ * abc' => abc
+ * `abc`' => `abc`
+ * 'abc' => `abc'
+ *
+ * @param (string) Tabulka bez [mpx]
+ * @param (string) Podmínka
+ * @param (array) Asociované pole
+ * @param (integer) Zobrazit?
+ */
+function sql_reinsert($table,$table_where,$array,$w=false){
+    $keys=array_keys($array);
+    $vals=array_values($array);
+    $i=0;
+    while(isset($vals[$i])){
+        if($vals[$i]===true){
+            $vals[$i]='`'.$keys[$i].'`';
+        }elseif(is_array($vals[$i])){
+            list($sub_table,$sub_key)=$vals[$i];
+            $vals[$i]="(SELECT `[mpx]$sub_table`.`$sub_key` FROM `[mpx]$sub_table` WHERE $table_where)";
+        }
+        $i++;
+    }
+    $keys=implodex($keys,',','`');
+    $vals=implode($vals,',');
+    $vals=str_replace(',,',",'',",$vals);
+    $sql="INSERT INTO `[mpx]$table` ($keys) SELECT $vals FROM `[mpx]$table` WHERE $table_where LIMIT 1";
+    return(sql_query($sql,$w));
+}
+//--------------------------------------------sql_update
+/**
+ * Provedení SQL update dotazu pomocí asociovaného pole
+ * abc' => sqlx(abc)
+ *
+ * @param (string) Tabulka bez [mpx]
+ * @param (string) Podmínka
+ * @param (array) Asociované pole
+ * @param (integer) Zobrazit?
+ */
+function sql_update($table,$table_where,$array,$w=false){
+    $set=array();
+    foreach($array as $key=>$row){
+        $set[]="`$key`=".sqlx($row);
+
+    }
+    $set=implode(',',$set);
+    $sql="UPDATE `[mpx]$table` SET $set WHERE $table_where";
+    return(sql_query($sql,$w));
+}
+//--------------------------------------------sql_1data
 function sql_1data($q,$w=false){
     $q=sql_mpx($q);
 	if(!strpos($q,'LIMIT') and !strpos($q,'COUNT') and !strpos($q,'MAX') and !strpos($q,'MIN')){$q.=' LIMIT 1';}
     if($w==1){r($q);}
     if($w==2){echo($q);}
-    if($w==3){echo($q);br();}
+    if($w==3){echo($q.';');br();}
     //$result=sql_query($q);
     $response= $GLOBALS['pdo']->prepare($q);
     t();
@@ -460,12 +452,16 @@ function sql_1data($q,$w=false){
     //echo($response);
     return($response);
 }
-//--------------------------------------------
+//--------------------------------------------sql_1number
+function sql_1number($q,$w=false){
+    return(sql_1data($q,$w)-1+1);
+}
+//--------------------------------------------sql_array
 function sql_array($q,$w=false){
     $q=sql_mpx($q);
     if($w==1){r($q);}
     if($w==2){echo($q);}
-    if($w==3){echo($q);br();}
+    if($w==3){echo($q.';');br();}
     $array= $GLOBALS['pdo']->prepare($q);
     t();
     $array->execute();
@@ -474,12 +470,12 @@ function sql_array($q,$w=false){
     $array = $array->fetchAll();
     return($array);
 }
-//--------------------------------------------
+//--------------------------------------------sql_csv
 function sql_csv($q,$w=false){
     $q=sql_mpx($q);
     if($w==1){r($q);}
     if($w==2){echo($q);}
-    if($w==3){echo($q);br();}
+    if($w==3){echo($q.';');br();}
     $array= $GLOBALS['pdo']->prepare($q);
     t();
     $array->execute();
@@ -491,7 +487,7 @@ function sql_csv($q,$w=false){
     //r($array);
     return($array);
 }
-//--------------------------------------------
+//--------------------------------------------objt
 function objt($alt=false,$showtime=false){
 	if($alt){$alt="`$alt`.";}else{$alt='';}
 	if(!$showtime){
@@ -508,51 +504,64 @@ $array=sql_array('SELECT `key`,`value` FROM [mpx]config');
 
 if(!$array){
 
-/*$tmp=$_SERVER["REQUEST_URI"];
-$tmp=str_replace(w,$GLOBALS['inc']['world'],$tmp);
-die($tmp);
-header('Location: '.$tmp);
-exit;*/
-	if(!$GLOBALS['admin']){die('!config');}
-	//if(!$GLOBALS['admin']){header('Location: '.$GLOBALS['inc']['urld'].$ref);exit;}
-/*
-?>
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html><head>
-<title>World Not Found</title>
-</head><body>
-<h1>Not Found</h1>
-<p>The requested world '<?php echo(w); ?>' was not found on this server.</p>
-<hr>
-<?php echo($_SERVER["SERVER_SIGNATURE"]); ?>
-</body></html>
+    if(!$GLOBALS['admin']){
 
-<?php
-exit2();
-*/
-} 
+        $url='../'.$GLOBALS['inc']['default_world'];
+        ?>
+        <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>World Not Found</title>
+        <meta http-equiv="refresh"
+   content="4; url=<?php e($url); ?>">
+        </head><body>
+        <h1>World Not Found</h1>
+        <p>The requested world '<?php echo(w); ?>' was not found on this server.</p>
+        <p>Redirecting to default world <a href="<?php e($url); ?>"><?php e($url); ?></a> in 4 seconds.</p>
+        <hr>
+        <?php echo($_SERVER["SERVER_SIGNATURE"]); ?>
+        </body></html>
+        <?php
+        die();  
 
-
-$GLOBALS['config']=array();
-foreach($array as $row){
-    list($key,$value)=$row;
-    if(!strpos($key,':')){
-    	if(!defined($key))define($key,$value);
-	$GLOBALS['config'][$key]=$value;
-	//e($key."='$value'");br();
-    }else{
-	$key=str_replace(':',"']['",$key);
-	$key="['config']['$key']";
-	eval('$GLOBALS'.$key."='$value';");
-	//e('$GLOBALS'.$key."='$value';");br();
-	//$GLOBALS['config'][$key]=$value;
     }
+}else{
 
+    $GLOBALS['config']=array();
+    foreach($array as $row){
+        list($key,$value)=$row;
+        if(!strpos($key,':')){
+            if(!defined($key))define($key,$value);
+            $GLOBALS['config'][$key]=$value;
+            //e($key."='$value'");br();
+        }else{
+            $key=str_replace(':',"']['",$key);
+            $key="['config']['$key']";
+            eval('$GLOBALS'.$key."='$value';");
+            //e('$GLOBALS'.$key."='$value';");br();
+            //$GLOBALS['config'][$key]=$value;
+        }
+
+    }
+}
+//===============================================================================================================Vytváření struktury SQL
+function create_sql($table=false){
+    
+    $sql=fgc(core.'/create.sql');
+    if($table){
+        $a=strpos($sql,'CREATE TABLE `[mpx]'.$table.'`');
+        $sql=substr($sql,$a);
+        $b=strpos($sql,';');
+        $sql=substr($sql,0,$b);
+    }
+    $sql=str_replace('CREATE TABLE','CREATE TABLE IF NOT EXISTS',$sql);
+    //PH - SQL NEVALIDNI $sql=str_replace('CREATE VIEW','CREATE VIEW IF NOT EXISTS',$sql);
+    
+    return($sql);
+    
 }
 
-//echo('cc');exit;
-//--------------------------------------------
-//r(sql_csv("SELECT * from objects"));
+
+//die(create_sql('objects'));
 
 //===============================================================================================================
 //--------------------------------------------XXX

@@ -12,7 +12,7 @@
 
 
 
-$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
+$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
 /*if($_GET["id"]){
     $id=$_GET["id"];
 }elseif($GLOBALS['get']["id"]){
@@ -25,7 +25,7 @@ sg("id");
 
 //--------------------------
 if($id?ifobject($id):false){
-    $sql="SELECT $fields FROM ".mpx."objects WHERE id=$id";
+    $sql="SELECT $fields FROM `[mpx]pos_obj` WHERE id=$id";
     $array=sql_array($sql);
     list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
 
@@ -62,7 +62,7 @@ if($id?ifobject($id):false){
 
 
 
-			$reference=sql_array("SELECT `id`,`name`,`res`,`profile`,`own` FROM `[mpx]objects` WHERE `ww`=0 AND `origin`='$origin' ORDER BY `id`");
+			$reference=sql_array("SELECT `id`,`name`,`res`,`profile`,`own` FROM `[mpx]pos_obj` WHERE `ww`=0 AND `origin`='$origin' ORDER BY `id`");
 			if(!$reference){
 				$GLOBALS['ss']["helppage"]='upgrade_start';
 	   			$GLOBALS['nowidth']=true;
@@ -132,6 +132,8 @@ if($myversion){
 
 <?php
 /**/
+
+$limit=10;
 foreach($reference as $row){$i++;$ii--;
 	//`id`,`name`,`res`,`profile`,`own`
     list($_id,$_name,$_res,$_profile,$_own)=$row;
@@ -140,14 +142,14 @@ foreach($reference as $row){$i++;$ii--;
 
     e('<td  width="'.(70*0.75).'">');
 
-    
+
 
     if($_name==$name and $_description==$description and $_res==$res){
 	$border='3';
 	$ahref='';
     }else{
 	$border='0';
-	$ahref='e=content;ee=create-design;reference='.($_id).';'.$prompt;   
+	$ahref='e=content;ee=create-design;reference='.($_id).';'.$prompt;
     }
 
     //e($ahref);
@@ -155,11 +157,14 @@ foreach($reference as $row){$i++;$ii--;
     e('</td>');
     e('<td valign="middle">');
     //e($i);
-    ahref(trr($_name,13),$ahref,'none',true);
+	//die('abc');
+
+	//e(base64_encode($_name));
+	ahref(trr($_name,13),$ahref,'none',true);
 
     //br();
     //ahref(lr('unique_profile'),'e=content;ee=profile;id='.$_id,'none',true);
-    
+
    if($_own and $_own!=-1 and $_own!=$GLOBALS['ss']['logid']){
 	br();
 	e(lr('author').': '.liner($_own));
@@ -173,6 +178,7 @@ foreach($reference as $row){$i++;$ii--;
 	br();
 	info(lr('author_towns'));
     }
+
     /*if($description){
         br();
         te($description);   
@@ -180,7 +186,8 @@ foreach($reference as $row){$i++;$ii--;
 
     e('</td>');
     e('</tr><tr '.($iii?$iii=0:$iii='style="background: rgba(50,50,50,0.25);"').'>');
-    
+
+
 }
 ?>
 
@@ -192,9 +199,9 @@ foreach($reference as $row){$i++;$ii--;
 
 
 if($myversion){
-    if(!sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-1 AND `name`='$name'")){
+    if(!sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-1 AND `name`='$name'")){
 
-	if(/*sql_1data("SELECT id FROM `[mpx]objects` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-2 AND `name`='$name'") and */false){
+	if(/*sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['logid']."' AND `ww`=-2 AND `name`='$name'") and */false){
 		error(lr('public_unique_reject'));	
 	}else{
 		blue(lr('public_unique_info'));
@@ -203,8 +210,76 @@ if($myversion){
 		$nid=nextid();
 		success('{public_unique_ok}');
 
-sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `own`, `in`, `ww`, `x`, `y`, `t`) 
-SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, 'x', `hard`, `expand`,'".$GLOBALS['ss']['logid']."', `in`, -1, `x`,`y`, ".time()." FROM `".mpx."objects` WHERE id='$id'");
+
+
+
+
+
+
+
+		$nextid=nextid();
+		//------------------REINSERT objects
+		sql_reinsert('objects',"id='$id'",array(
+			'id' => $nid,
+			'name' => true,
+			'type' => true,
+			'userid' => true,
+			'origin' => true,
+			'fp' => true,
+			'func' => true,
+			'hold' => true,
+			'res' => true,
+			'profile' => true,
+			'set' => 'x',
+			'own' => $GLOBALS['ss']['logid'],
+			't' => time(),
+			'pt' => true
+		));
+		//------------------REINSERT objects_tmp
+		sql_reinsert('objects_tmp',"id='$id'",array(
+			'id' => $nid,
+			'fs' => true,
+			'fc' => true,
+			'fr' => true,
+			'fx' => true,
+			'superown' => $GLOBALS['ss']['logid'],
+			'expand' => true,
+			'block' => true,
+			'attack' => true,
+			'create_lastused' => true,
+			'create_lastobject' => true,
+			'create2_lastused' => true,
+			'create2_lastobject' => true,
+			'create3_lastused' => true,
+			'create3_lastobject' => true,
+			'create4_lastused' => true,
+			'create4_lastobject' => true
+		));
+		//------------------REINSERT positions
+		sql_reinsert('positions',"id='$id' AND ".objt(),array(
+			'id' => $nid,
+			'ww' => -1,
+			'x' => true,
+			'y' => true,
+			'traceid' => true,
+			'starttime' => true,
+			'readytime' => true,
+			'stoptime' => true
+		));
+		//------------------
+
+		//(`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `own`, `in`, `ww`, `x`, `y`, `t`)
+		//$nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, 'x', `hard`, `expand`,'".$GLOBALS['ss']['logid']."', `in`, -1, `x`,`y`, ".time()."
+
+		/*sql_query("INSERT INTO `[mpx]pos_obj` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `own`, `in`, `ww`, `x`, `y`, `t`)
+SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, 'x', `hard`, `expand`,'".$GLOBALS['ss']['logid']."', `in`, -1, `x`,`y`, ".time()." FROM `[mpx]pos_obj` WHERE id='$id'");*/
+
+
+
+
+
+
+
 		$tmp=new object($nid);
 		
 		$tmp->func->addF('group','group','extended','profile');

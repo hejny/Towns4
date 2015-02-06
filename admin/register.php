@@ -74,7 +74,7 @@ if($_GET['wtf']==1){
 					br();
 				$i++;
 			}*/
-	if($_GET['wtf']==4)file_put_contents2($file,serialize($array2));
+	if($_GET['wtf']==4)fpc($file,serialize($array2));
 
 	}
 	hr();
@@ -88,10 +88,10 @@ if($_GET['wtf']==1){
                     (`terrain`='t3' OR `terrain`='t4' OR `terrain`='t7' OR `terrain`='t8' OR `terrain`='t9' OR `terrain`='t12' OR `terrain`='t13')  AND 
                     9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
                     AND
-                    0=(SELECT COUNT(1) FROM [mpx]objects AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`))
+                    0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`))
                     ORDER BY RAND()");
 
-		file_put_contents2($file,serialize(array_merge($array2,$array1)));
+		fpc($file,serialize(array_merge($array2,$array1)));
 
 
 

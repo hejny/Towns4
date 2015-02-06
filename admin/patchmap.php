@@ -35,7 +35,7 @@ foreach(sql_array('SELECT id,`set`,x,y FROM '.mpx.'objects WHERE `type`=\'buildi
 		emptydir(root.cache.'/mapbg');
 
 		$file=tmpfile2("mapunitstime","txt","text");
-		file_put_contents2($file,time());
+		fpc($file,time());
 
 		echo('<script language="javascript">
     window.location.replace("?world='.w.'&page=createtmp&start=1");
@@ -43,7 +43,7 @@ foreach(sql_array('SELECT id,`set`,x,y FROM '.mpx.'objects WHERE `type`=\'buildi
 }
 if($_GET['start']==2){
 		$file=tmpfile2("mapunitstime","txt","text");
-		file_put_contents2($file,time());
+		fpc($file,time());
 		echo('Čas nastavený na '.time().'.<br>');
 }
 ?>

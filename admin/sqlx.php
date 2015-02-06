@@ -16,6 +16,9 @@ ini_set('memory_limit','500M');
 //session_start();
  ?>
 <h3>Import</h3>
+<?php
+error('Výrazně rychlejší a spolehlivější je použít přikaz SOURCE přes terminál.');
+?>
 Tato funkce provede import z MySQL Dump...<br/>
 <b>Upozornění: </b>Tato funkce by se měla provádět s prázdnou databází.<br/>
 <b>Upozornění: </b>Tento proces může trvat i několik mintut.<br/>

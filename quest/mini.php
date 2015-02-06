@@ -67,7 +67,7 @@ if($quest){
 
 			if(is_numeric($image)){
 				if(!defined("func_map"))require(root.core."/func_map.php");
-				$res=sql_1data('SELECT `res` FROM [mpx]objects WHERE id='.$image);
+				$res=sql_1data('SELECT `res` FROM `[mpx]pos_obj` WHERE id='.$image);
 				//e(modelx($res));
 				?><img src="<?php e(modelx($res)); ?>" height="122" alt="<?php e($name); ?>" /><?php /**/
 				//iprofile($image);
@@ -153,7 +153,7 @@ if($quest){
 				$reward=new hold($reward);
 				$GLOBALS['ss']['use_object']->hold->addhold($reward);
 				if($next){
-					sql_query("INSERT INTO ".mpx."questt (`id`,`quest`,`questi`,`time1`,`time2`) VALUES ('".$GLOBALS['ss']['useid']."','".$id."','".$next."','".time()."','')");
+					sql_query("INSERT INTO [mpx]questt (`id`,`quest`,`questi`,`time1`,`time2`) VALUES ('".$GLOBALS['ss']['useid']."','".$id."','".$next."','".time()."','')");
 					/*?>
 					<script>
 					setTimeout(function(){

@@ -20,7 +20,7 @@ if($_GET['finish']){
 <?php
 if($_POST['contents']){
 	echo('<b>změněno</b><br/>');
-	$contents=file_put_contents2(adminfile.'objects/cron.txt',$_POST['contents']);
+	$contents=fpc(adminfile.'objects/cron.txt',$_POST['contents']);
 }
 $contents=file_get_contents(adminfile.'objects/cron.txt');
 $contents=htmlspecialchars($contents);

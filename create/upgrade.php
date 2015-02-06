@@ -12,7 +12,7 @@
 
 
 
-$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
+$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, (SELECT `name` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `ownname`, `in`, `ww`, `x`, `y`, `t`";
 /*if($_GET["id"]){
     $id=$_GET["id"];
 }elseif($GLOBALS['get']["id"]){
@@ -25,7 +25,7 @@ sg("id");
 
 //--------------------------
 if($id?ifobject($id):false){
-    $sql="SELECT $fields FROM ".mpx."objects WHERE id=$id";
+    $sql="SELECT $fields FROM `[mpx]pos_obj` WHERE id=$id";
     $array=sql_array($sql);
     list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $ownname, $in, $ww, $x, $y, $t)=$array[0];
 
@@ -68,7 +68,7 @@ if($id?ifobject($id):false){
 
 			//e($_GET['q']);
 			$primes=array();
-			$array=sql_array('SELECT `id`,`name`,`fc` FROM `[mpx]objects` WHERE `type`=\'prime\' ');
+			$array=sql_array('SELECT `id`,`name`,`fc` FROM `[mpx]pos_obj` WHERE `type`=\'prime\' ');
 			foreach($array as $row){
 				list($pid,$name,$fc)=$row;
 				$primes[$pid]=array();

@@ -671,6 +671,11 @@ function func2list($tmp,$only=false){
     $tmp=$tmp->vals2list($only);
     return($tmp);
 }
+//--------------------------------------------paramvalue
+
+function paramvalue($param){
+    return($param[0]*$param[1]);
+}
 
 //===============================================================================================================SET
 class set extends vals{

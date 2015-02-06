@@ -85,7 +85,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
    }
 
     if(!file_exists($file) or debug){
-	    $array=sql_array('SELECT x,y FROM [mpx]objects WHERE ww='.ww.' AND '.(rand(1,10)>7?'1':'type=\'building\' AND  own!=\'\'').' ORDER BY RAND() LIMIT 1 ');
+	    $array=sql_array('SELECT x,y FROM `[mpx]pos_obj` WHERE ww='.ww.' AND '.(rand(1,10)>7?'1':'type=\'building\' AND  own!=\'\'').' ORDER BY RAND() LIMIT 1 ');
 	    list($x,$y)= $array[0];
 	    //echo("$x,$y");
 	    $tmp=3;
@@ -746,7 +746,7 @@ echo('area_x='.$xa.';'.nln);
 echo('area_y='.$ya.';'.nln);
 //e('alert('.$GLOBALS['ss']["use_object"]->x.');');
 echo('area=['.nln);
-foreach(sql_array("SELECT x,y,hard FROM `".mpx."map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
+foreach(sql_array("SELECT x,y,hard FROM `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
     list($area_x,$area_y,$area_hard)=$row;
     $q=1-$area_hard;
     if($q<0.2)$q=0;

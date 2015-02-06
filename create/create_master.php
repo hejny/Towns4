@@ -22,7 +22,7 @@ contenu_a();
 //počet, volných, čas uvolnění, id, fname
 $masters=array('master'=>array(0,0,0,0),'main'=>array(0,0,0,0),'wall'=>array(0,0,0,0),'bridge'=>array(0,0,0,0),'path'=>array(0,0,0,0),'terrain'=>array(0,0,0,0),'extended'=>array(0,0,0,0));
 
-$array=sql_array("SELECT `id`,`func`,`set` FROM [mpx]objects WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%' AND `type`='building' ");
+$array=sql_array("SELECT `id`,`func`,`set` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%' AND `type`='building' ");
 foreach($array as $row){
     list($id,$func,$set)=$row;
     //echo($func);
@@ -182,11 +182,11 @@ contenu_a();
 if($GLOBALS['get']['global_repair']){
 	$status=$GLOBALS['get']['global_repair'];
 
-	/*$set=sql_1data("SELECT `set` FROM [mpx]objects WHERE `id`=".$GLOBALS['ss']['useid']);
+	/*$set=sql_1data("SELECT `set` FROM `[mpx]pos_obj` WHERE `id`=".$GLOBALS['ss']['useid']);
 	$set=new set($set);
 	$set->val('global_repair',$status);
 	$set=$set->vals2str();
-	sql_query("UPDATE [mpx]objects SET `set`='".sql($set)."'  WHERE `id`=".$GLOBALS['ss']['useid']);*/
+	sql_query("UPDATE `[mpx]pos_obj` SET `set`='".sql($set)."'  WHERE `id`=".$GLOBALS['ss']['useid']);*/
 	$GLOBALS['ss']['use_object']->set->val('global_repair',$status);
 
 	//success('global_repair_turned'.$status);
@@ -196,11 +196,11 @@ if($GLOBALS['get']['auto_repair']){
 	$id=$GLOBALS['get']['auto_repair_id'];
 	$name=id2name($id);
 
-	$set=sql_1data("SELECT `set` FROM [mpx]objects WHERE `id`=".sql($id));
+	$set=sql_1data("SELECT `set` FROM `[mpx]pos_obj` WHERE `id`=".sql($id));
 	$set=new set($set);
 	$set->val('auto_repair',$status);
 	$set=$set->vals2str();
-	sql_query("UPDATE [mpx]objects SET `set`='".sql($set)."'  WHERE own='".$GLOBALS['ss']['useid']."' AND `name`='".sql($name)."'");
+	sql_query("UPDATE `[mpx]pos_obj` SET `set`='".sql($set)."'  WHERE own='".$GLOBALS['ss']['useid']."' AND `name`='".sql($name)."'");
 
 	//success('auto_repair_turned'.$status);
 }
@@ -209,7 +209,7 @@ if($GLOBALS['get']['auto_repair']){
 //e(loadbarr(20,100));
 //e(nln.nln.nln.nln);
 
-//$set=sql_1data("SELECT `set` FROM [mpx]objects WHERE `id`=".$GLOBALS['ss']['useid']);
+//$set=sql_1data("SELECT `set` FROM `[mpx]pos_obj` WHERE `id`=".$GLOBALS['ss']['useid']);
 //$set=str2list($set);
 $global_repair_status=$GLOBALS['ss']['use_object']->set->val('global_repair');
 if(/*$set['global_repair']*/$global_repair_status!='off'){
@@ -220,7 +220,7 @@ if(/*$set['global_repair']*/$global_repair_status!='off'){
 
 
 
-$array=sql_array("SELECT id,name,fp,fs,origin,func,`set`,res,profile,x,y FROM [mpx]objects WHERE own='".$GLOBALS['ss']['useid']."' and `name`!='".mainname()."' ORDER BY name");
+$array=sql_array("SELECT id,name,fp,fs,origin,func,`set`,res,profile,x,y FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."' and `name`!='".mainname()."' ORDER BY name");
 $table=array();
 $buildig_count=array();
 //$price_once_total=0;

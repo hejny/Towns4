@@ -18,7 +18,7 @@ if($_POST['default']){
 	$stream=file_get_contents(root.'index.php');//echo($stream);
 	$stream=substr2($stream,'define("w","','"',0,$_POST['default']);
 	//echo($stream);
-	file_put_contents2(root.'index.php',$stream);
+	fpc(root.'index.php',$stream);
 }
 $stream=file_get_contents(root.'index.php');
 $default=substr2($stream,'define("w","','"');

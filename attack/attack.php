@@ -65,7 +65,7 @@ if(!$ns)contenu_a();
 //e($GLOBALS['ss']['useid']);br();
 //e($GLOBALS['ss']['logid']);br();
 
-$attack_buildings=sql_array('SELECT id,name,func FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' AND '.objt());
+$attack_buildings=sql_array('SELECT id,name,func FROM `[mpx]pos_obj` WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND func LIKE \'%attack%\' AND func NOT LIKE \'%tree%\' AND func NOT LIKE \'%rock%\' AND '.objt());
 
 if(count($attack_buildings)==1){
 	$attack_master=$attack_buildings[0][0];
@@ -200,8 +200,8 @@ if(!$attacked->loaded or !$attacker->loaded){error(lr('attack_wtf'));
     r($attack_master);
     r($attack_function);
     //===================================================================
-    $a_fp=$attacker->getFP();
-    $b_fp=$attacked->getFP();
+    $a_fp=$attacker->fp;
+    $b_fp=$attacked->fp;
     $a_at=$attacker->supportF($attack_type,"attack");
     $b_at=$attacked->supportF("attack");
     //$a_att=$attacker->supportF($attack_type,"total");

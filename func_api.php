@@ -51,7 +51,7 @@ function townsfunction($query,$q){$queryp=$query;
 
 	
     if($func=="login"){//list($aid)
-        $aid=sql_1data('SELECT `id` FROM `[mpx]objects` WHERE (`userid`=\''.sql($params[0]).'\' ) AND '.objt());//explode(",",$params);
+        $aid=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE (`userid`=\''.sql($params[0]).'\' ) AND '.objt());//explode(",",$params);
 		//if(debug){br();print_r($params);br();e($aid);}
 		//("($aid)");
 		$aid=xx2x($aid);
@@ -139,7 +139,7 @@ function townsfunction($query,$q){$queryp=$query;
 		                        
 		                        $group=$GLOBALS['ss']['aac_func']['profile']['group'];
 		                        
-		                        $masters=sql_array("SELECT `id` FROM [mpx]objects WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id");
+		                        $masters=sql_array("SELECT `id` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id");
 		                        
                                 foreach($masters as $master){
                                     
@@ -262,7 +262,7 @@ function townsfunction($query,$q){$queryp=$query;
 			$params['3']='*****';
 			$params['4']='*****';
 		}
-		qlog($GLOBALS['ss']['log_object']->id,$GLOBALS['ss']['use_object']->id,$GLOBALS['ss']['aac_object']->id,$funcname_,implode(',',$params),$output);
+		qlog($funcname_,$GLOBALS['ss']['aac_object']->id,implode(',',$params),$output);
 	}
 	//r($GLOBALS['ss']["query_output"]->vals2str());
 	
@@ -622,12 +622,12 @@ function block1test($type,$x,$y){
 	$y=round($y);
 
 	if($type=='A'){
-		$cc=intval(sql_1data("SELECT id FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y AND `block`!=0 LIMIT 1",1));
+		$cc=intval(sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y AND `block`!=0 LIMIT 1",1));
 		if($cc)return($cc);
 
 	}elseif($type=='B'){
 
-		$cc=sql_1data("SELECT terrain FROM ".mpx."map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+		$cc=sql_1data("SELECT terrain FROM [mpx]map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 		//e($cc);			
 		if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
 
@@ -672,7 +672,7 @@ while($i<=$distx){
 		r("$i: $x,$y");
 	
 		if($type=='A'){
-			$cc=(sql_array("SELECT id,type FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ((`type`='building' AND `block`!=0) OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1));
+			$cc=(sql_array("SELECT id,type FROM `[mpx]pos_obj` WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ((`type`='building' AND `block`!=0) OR `type`='rock') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1));
 			//print_r($cc);br();
 			if($cc){
 				if($cc[0][1]=='rock'){return('rock');}
@@ -681,7 +681,7 @@ while($i<=$distx){
 			}
 
 		}elseif($type=='B'){
-			$cc=sql_1data("SELECT type FROM ".mpx."objects WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock' OR `type`='tree') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1);
+			$cc=sql_1data("SELECT type FROM `[mpx]pos_obj` WHERE ".($noid?"`id`!='$noid' AND":'')." own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='rock' OR `type`='tree') AND ROUND(`x`)=$x AND ROUND(`y`)=$y LIMIT 1",1);
 
 		
 			//e($cc);
@@ -689,7 +689,7 @@ while($i<=$distx){
 				return($cc);
 			}
 
-			$cc=sql_1data("SELECT terrain FROM ".mpx."map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+			$cc=sql_1data("SELECT terrain FROM [mpx]map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 			//e($cc);			
 			if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
 
@@ -711,26 +711,25 @@ if(count($ccc)==0){
 }
 //-------------------------------------------------mostnear
 function mostnear($x,$y){
-	$array=sql_array("SELECT x,y FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building') ORDER BY POW($x-x,2)+POW($y-y,2) LIMIT 1");
+	$array=sql_array("SELECT x,y FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building') ORDER BY POW($x-x,2)+POW($y-y,2) LIMIT 1");
 	return($array[0]);
 
 }
 //===================================================================================================qlog
-function qlog($logid,$useid,$aacid,$function,$params,$output){
+/* *
+ * Logovíní do tabulky log
+ *
+ * @param název aktivní nebo virtuální funkce
+ * @param id objektu
+ * @param parametry funkce nebo text
+ * @param výstup funkce
+ *
+ */
+function qlog($function,$aacid=0,$params='',$output=''){
+
+
 	if(!defined('createdlog')){define('createdlog',true);
-    	sql_query('CREATE TABLE IF NOT EXISTS `[mpx]log` (
-  `time` int(11) NOT NULL,
-  `ip` varchar(20) NOT NULL,
-  `user_agent` text NOT NULL,
-  `townssessid` varchar(32) NOT NULL,
-  `lang` varchar(4) NOT NULL,
-  `logid` int(20) NOT NULL,
-  `useid` int(20) NOT NULL,
-  `aacid` int(20) NOT NULL,
-  `function` varchar(20) NOT NULL,
-  `params` text NOT NULL,
-  `output` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;');
+        sql_query(create_sql('log'));
 	}
 	
 
@@ -738,30 +737,61 @@ function qlog($logid,$useid,$aacid,$function,$params,$output){
     if(!is_string($params)){
 	    $params=serialize($params);
     }
-	$output=serialize($output);
+    if(!is_string($output)){
+        $output=serialize($output);
+    }
 
 	//if($function=='register'){mail('ph@towns.cz','new register','ref: '.$GLOBALS['ss']['ref'].nln.'function: '.$function.nln.'$GLOBALS['ss']['logid']: '.$logid.nln.'$GLOBALS['ss']['useid']: '.$useid.nln.'aacid: '.$aacid.nln.'params: '.$params.nln.'output: '.$params);}
 
 
-	sql_query("INSERT INTO `[mpx]log` (`time`, `ip`, `user_agent`, `townssessid`, `lang`, `logid`, `useid`, `aacid`, `function`, `params`, `output`) VALUES (
+    //------------------INSERT log
+    sql_insert('log',array(
+        'time' => time(),
+        'ip' => $_SERVER["REMOTE_ADDR"],
+        'user_agent' => $_SERVER["HTTP_USER_AGENT"],
+        'townssessid' => $_COOKIE['TOWNSSESSID'],
+        'uri' => $_SERVER['REQUEST_URI'],
+        'lang' => $GLOBALS['ss']["lang"],
+        'adminname' => $GLOBALS['ss']["logged_new"],
+        'userid' => $GLOBALS['ss']["userid"],
+        'logid' => $GLOBALS['ss']['logid'],
+        'useid' => $GLOBALS['ss']['useid'],
+        'aacid' => $aacid,
+        'function' => $function,
+        'params' => $params,
+        'output' => $output
+    ));
+    //------------------
+
+
+	/*sql_query("INSERT INTO `[mpx]log` (`time`, `ip`, `user_agent`, `townssessid`,`uri`, `lang`, `logid`, `useid`, `aacid`, `function`, `params`, `output`) VALUES (
 	'".time()."',
-	'".addslashes($_SERVER["REMOTE_ADDR"])."',
-	'".addslashes($_SERVER["HTTP_USER_AGENT"])."',
-	'".addslashes($_COOKIE['TOWNSSESSID'])."',
-	'".addslashes($GLOBALS['ss']["lang"])."',
-	'".addslashes($logid)."',
-	'".addslashes($useid)."',
-	'".addslashes($aacid)."',
-	'".addslashes($function)."',
-	'".addslashes($params)."',
-	'".addslashes($output)."'
-	);");
+	'".sql($_SERVER["REMOTE_ADDR"])."',
+	'".sql($_SERVER["HTTP_USER_AGENT"])."',
+	'".sql($_COOKIE['TOWNSSESSID'])."',
+    '".sql($_SERVER['REQUEST_URI'])."',
+	'".sql($GLOBALS['ss']["lang"])."',
+	'".sql($logid)."',
+	'".sql($useid)."',
+	'".sql($aacid)."',
+	'".sql($function)."',
+	'".sql($params)."',
+	'".sql($output)."'
+	);");*/
 
 
 
 }
 
-//--------------
+//---------------------------------------------------------------
+/* *
+ * Testování a logování do tabulky log
+ *
+ * @param string název
+ * @param string hodnota
+ * @return integer počet stejných záznamů
+ *
+ */
 function xlog($wtf,$value=false){
     //e("xlog($wtf,$value");
     if(!$value){
@@ -771,7 +801,7 @@ function xlog($wtf,$value=false){
         $count=sql_1data('SELECT count(1) FROM [mpx]log WHERE logid='.$GLOBALS['ss']['logid'].' AND function=\'x'.$wtf.'\' AND params=\''.$value.'\'  '); 
         $count=$count-1+1;
         
-        qlog($GLOBALS['ss']['logid'],$GLOBALS['ss']['useid'],0,'x'.$wtf,$value,false); 
+        qlog('x'.$wtf,0,$value,false);
         
         return($count);
     }

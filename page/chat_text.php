@@ -17,7 +17,7 @@ if(logged()){
     //r($GLOBALS['ss']['useid']);
     $stream='';
     // `id`,`from`,`to`,`text`,`time`,`timestop`
-    $sql="SELECT  `id`,`type`,`from`,`to`,`title`,`text`,`time` FROM `".mpx."text` WHERE (`to`='' OR `to`='".$GLOBALS['ss']['useid']."' OR (`from`='".$GLOBALS['ss']['useid']."' AND `type`!='message') OR `to`='".$GLOBALS['ss']['logid']."' OR (`from`='".$GLOBALS['ss']['logid']."' AND `type`!='message')) ORDER BY time DESC LIMIT $q";
+    $sql="SELECT  `id`,`type`,`from`,`to`,`title`,`text`,`time` FROM `[mpx]text` WHERE (`to`='' OR `to`='".$GLOBALS['ss']['useid']."' OR (`from`='".$GLOBALS['ss']['useid']."' AND `type`!='message') OR `to`='".$GLOBALS['ss']['logid']."' OR (`from`='".$GLOBALS['ss']['logid']."' AND `type`!='message')) ORDER BY time DESC LIMIT $q";
     //HOVNO  AND (`type`='report')
     //r($sql);
     $array=sql_array($sql);

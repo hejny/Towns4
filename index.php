@@ -90,6 +90,7 @@ $gooduri=substr($gooduri,strpos($gooduri,'/'));
 //die($gooduri);
 if(!$admin and !$debug and !$edit and !$speciale and !$notmp and !$timeplan and !$onlymap and !$corex)if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
 
+$GLOBALS['inc']['default_world']=$GLOBALS['inc']['world'];
 $GLOBALS['inc']['world']=$world;
 //$GLOBALS['inc']['url']=str_replace('[world]',$world,$GLOBALS['inc']['url']);
 define('core',$GLOBALS['inc']['core']);
@@ -245,7 +246,7 @@ if(!$GLOBALS['hl'] and logged()){
 if($GLOBALS['config']['register_building']){
 //if(1){
 
-	if($hl=sql_array('SELECT id,ww,x,y FROM [mpx]objects WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
+	if($hl=sql_array('SELECT id,ww,x,y FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
 	 //print_r($hl);
     list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];
 }else{//e(1);
@@ -276,9 +277,9 @@ if($GLOBALS['ss']['fbid']){
     //e($GLOBALS['get']['fb_select_id'].$GLOBALS['get']['fb_select_key']);
     xquery('login',$GLOBALS['get']['fb_select_id'],'facebook',$GLOBALS['get']['fb_select_key']);
 */
-if($GLOBALS['get']['login_select_userid'] and $GLOBALS['get']['login_select_id'] and $GLOBALS['get']['login_select_key']){
+if($GLOBALS['get']['login_select_userid'] and $GLOBALS['get']['login_select_id'] and $GLOBALS['get']['login_select_key'] and $GLOBALS['get']['login_select_method']){
     //e($GLOBALS['get']['login_select_id'].$GLOBALS['get']['login_select_key']);
-    xquery('login',$GLOBALS['get']['login_select_userid'],'towns',$GLOBALS['get']['login_select_key'],$GLOBALS['get']['login_select_id']);
+    xquery('login',$GLOBALS['get']['login_select_userid'],$GLOBALS['get']['login_select_method'],$GLOBALS['get']['login_select_key'],$GLOBALS['get']['login_select_id']);
 }
 
 //--------------------------------------------

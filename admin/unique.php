@@ -31,8 +31,8 @@ if($_GET['dd']){$dd=$_GET['dd'];}else{$dd=1;}
 
 //-------------------------------------------------------------VYTVORIT BUDOVU
 if($_POST['origin']){
-    if(/*$id=sql_1data('SELECT id FROM [mpx]objects WHERE ww=0 AND own=0 AND origin=\''.$_GET['origin'].'\'')*/ false){
-        /*$profile=sql_1data('SELECT profile FROM [mpx]objects WHERE id='.$id);
+    if(/*$id=sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE ww=0 AND own=0 AND origin=\''.$_GET['origin'].'\'')*/ false){
+        /*$profile=sql_1data('SELECT profile FROM `[mpx]pos_obj` WHERE id='.$id);
         $profile=new profile($profile);
         $profile->add($description,$_POST['name']);*/
         /*$object=new object($id);
@@ -49,8 +49,42 @@ if($_POST['origin']){
         $origin=explode(',',$_POST['origin']);
         sort($origin);
         $origin=implode(',',$origin);
-        $sql="INSERT INTO [mpx]objects (`id`,`name`,`profile`,`origin`,`res`,`type`,`own`,`ww`) VALUES ('".nextid()."','".sql($_POST['name'])."','".sql($profile)."','".sql($origin)."','".sql($_POST['res'])."','building',".sql($_POST['author']).",-1)";
-        sql_query($sql);
+
+            $nextid=nextid();
+            //------------------INSERT objects
+            sql_insert('objects',array(
+                'id' => $nextid,
+                'name' => $_POST['name'],
+                'type' => 'building',
+                'userid' => '',
+                'origin' => $origin,
+                'fp' => '',
+                'func' => '',
+                'hold' => '',
+                'res' => $_POST['res'],
+                'profile' => $profile,
+                'set' => '',
+                'own' => $_POST['author'],
+                't' => '',
+                'pt' => ''
+            ));
+            //------------------INSERT positions
+            sql_insert('positions',array(
+                'id' => $nextid,
+                'ww' => '-1',
+                'x' => '',
+                'y' => '',
+                'traceid' => '',
+                'starttime' => '',
+                'readytime' => '',
+                'stoptime' => ''
+            ));
+            //------------------
+        //$sql="INSERT INTO `[mpx]pos_obj` (`id`,`name`,`profile`,`origin`,`res`,`type`,`own`,`ww`) VALUES ('".nextid()."','".sql($_POST['name'])."','".sql($profile)."','".sql($origin)."','".sql($_POST['res'])."','building',".sql($_POST['author']).",-1)";
+        //sql_query($sql);
+
+
+
     }
 }
 //-------------------------------------------------------------
@@ -84,7 +118,7 @@ if(!$join){
                 $auto_origin=explode(',',$auto_origin);
                 sort($auto_origin);
                 $auto_origin=implode(',',$auto_origin);
-                    $reference=sql_1data("SELECT `res` FROM `[mpx]objects` WHERE `ww`=0 AND `origin`='".$auto_origin."' ORDER BY id LIMIT 1");
+                    $reference=sql_1data("SELECT `res` FROM `[mpx]pos_obj` WHERE `ww`=0 AND `origin`='".$auto_origin."' ORDER BY id LIMIT 1");
                     if($reference){
                         if(count($join)!=$i+1/*count($join)==$i+2*/){
                             $auto_res=$reference;
@@ -168,7 +202,7 @@ if(!$join){
             $auto_origin=explode(',',$auto_origin);
             sort($auto_origin);
             $auto_origin=implode(',',$auto_origin);
-            $reference=sql_array("SELECT id,name,type,origin,profile,res,func,own,ww FROM `[mpx]objects` WHERE (`ww`=0 OR `ww`=-1) AND `origin`='".$auto_origin."'"/*."' ORDER BY RAND()"*/);
+            $reference=sql_array("SELECT id,name,type,origin,profile,res,func,own,ww FROM `[mpx]pos_obj` WHERE (`ww`=0 OR `ww`=-1) AND `origin`='".$auto_origin."'"/*."' ORDER BY RAND()"*/);
             foreach($reference as $row){
                 list($id,$name,$type,$origin,$profile,$res,$func,$own,$ww)=$row;
                 $profile=str2list($profile);

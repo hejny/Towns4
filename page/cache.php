@@ -14,14 +14,14 @@
 
 
 /*==================================================================================================cache_minimenu_[id]=*/
-//e('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
+//e('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
 
 $fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','minimenu');
 if(!file_exists($fileMM)){
     
     $pages=array();
     //$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
-    $array=sql_array('SELECT `id` FROM `[mpx]objects` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
+    $array=sql_array('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
     foreach($array as $row){
         list($id)=$row;
         t('cache minimenu '.$id);
@@ -37,7 +37,7 @@ if(!file_exists($fileMM)){
 
     }
     
-    file_put_contents2($fileMM, serialize($pages));
+    fpc($fileMM, serialize($pages));
 
 }else{
     $pages=unserialize(file_get_contents($fileMM));
@@ -53,7 +53,7 @@ if(!file_exists($fileMM)){
 $groups=array('master','main','wall','bridge','path','terrain');
 
 foreach($groups as $group){
-    $master=sql_1data("SELECT `id` FROM [mpx]objects WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id LIMIT 1 ");
+    $master=sql_1data("SELECT `id` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%group[7]5[10]$group%' AND `type`='building'  ORDER by id LIMIT 1 ");
     
     if($master){
     
@@ -79,8 +79,8 @@ foreach($groups as $group){
 
 
 //cache_create-build_1000003
-$buildings=sql_array("SELECT `id` FROM [mpx]objects WHERE `name` LIKE '{%}' AND `type`='building' AND `ww`=0 ");
-//$buildings=sql_array("SELECT `id` FROM [mpx]objects WHERE `id`='1000003' ");
+$buildings=sql_array("SELECT `id` FROM `[mpx]pos_obj` WHERE `name` LIKE '{%}' AND `type`='building' AND `ww`=0 ");
+//$buildings=sql_array("SELECT `id` FROM `[mpx]pos_obj` WHERE `id`='1000003' ");
 foreach($buildings as $building){
         $id=$building[0];
         

@@ -23,7 +23,7 @@ echo('<h3><a href="?page=mail&amp;action=test">testovat</a></h3>');
 echo('<h3>?page=mail&amp;action=test&mail=</h3>');
 echo('<h3><a href="?page=mail&amp;action=1">spustit</a></h3>');
 
-$array=sql_array("SELECT `id`,`name`,`t`,`profile` FROM `".mpx."objects` WHERE `type`='user' ORDER BY id");
+$array=sql_array("SELECT `id`,`name`,`t`,`profile` FROM `[mpx]pos_obj` WHERE `type`='user' ORDER BY id");
 
 
 e('<table width="100%" border="1">');

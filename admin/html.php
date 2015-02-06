@@ -9,11 +9,8 @@
 */
 //==============================
 
-if($_GET['scale']){
-    $scale=1;
-}else{
-    $scale=600/gr;
-}
+$scale=1;
+
 
 //---------------------------------------------------------
 
@@ -23,7 +20,7 @@ vzorek návštěvnosti ( z <?php e(mpx) ?>log )<br><br>
 <?php
 e('<table border="1" width="40%">');
 e('<tr>');
-e('<td width="10"><a href="?page=html&amp;scale=1&amp;countip='.$_GET['countip'].'&amp;dd='.$_GET['dd'].'">#</a></td>');
+e('<td width="10"><!--<a href="?page=html&amp;scale=1&amp;countip='.$_GET['countip'].'&amp;dd='.$_GET['dd'].'">#</a>--></td>');
 e('<td><b>MAU</b></td>');
 e('<td><b>DAU</b></td>');
 e('<td><b>MAUx</b></td>');
@@ -55,12 +52,12 @@ $where=($_GET['countip']?'':"`ip`!='".$_SERVER['REMOTE_ADDR']."' AND ")."`user_a
 
 $i=0;
 while($i<=$dd){
-    
+
 	//-----------------------------------------MAU
 
     $maus=array();
 	$mausx=array();
-	$name="(SELECT name FROM `[mpx]objects` WHERE `[mpx]log`.logid=`[mpx]objects`.id)";
+	$name="(SELECT name FROM `[mpx]pos_obj` WHERE `[mpx]log`.logid=`[mpx]pos_obj`.id)";
 	$mau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm-(3600*24*29) AND `time`<$tm+(3600*24)-1 AND logid!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//MAU
 	foreach($mau as $mau1){
 		if($mau1[1]==$mau1[2]){
@@ -80,7 +77,7 @@ while($i<=$dd){
 	//-----------------------------------------DAU
 	$daus=array();
 	$dausx=array();
-	$name="(SELECT name FROM `[mpx]objects` WHERE `[mpx]log`.logid=`[mpx]objects`.id)";
+	$name="(SELECT name FROM `[mpx]pos_obj` WHERE `[mpx]log`.logid=`[mpx]pos_obj`.id)";
 	$dau=sql_array("SELECT DISTINCT(`ip`),$name AS name,logid FROM `[mpx]log` WHERE (`function`='create' OR `function`='attack') AND `time`>$tm AND `time`<$tm+(3600*24)-1 AND logid!='0' AND $name NOT LIKE 'NPC%' AND $where");//br();//dau
 	foreach($dau as $dau1){
 		if($dau1[1]==$dau1[2]){
