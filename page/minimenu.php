@@ -65,12 +65,12 @@ $terrains=array(
 //--------------------------
 t("minimenu - start");
 
-$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, (SELECT `profile` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `profileown`, `set`, `hard`, `own`, (SELECT `name` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `ownname`, (SELECT `type` from ".mpx."objects as x WHERE x.`id`=".mpx."objects.`own`) as `owntype`, (SELECT count(1) from ".mpx."objects as x WHERE x.`own`=".mpx."objects.`own`) as `owncount`, `in`, `ww`, `x`, `y`, `t`";
+$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, (SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `profileown`, `set`, `hard`, `own`, (SELECT `name` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `ownname`, (SELECT `type` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `owntype`, (SELECT count(1) from `[mpx]pos_obj` as x WHERE x.`own`=`[mpx]pos_obj`.`own`) as `owncount`, `in`, `ww`, `x`, `y`, `t`,starttime,`readytime`,create_lastused,create_lastobject,create2_lastused,create2_lastobject,create3_lastused,create3_lastobject,create4_lastused,create4_lastobject";
 if($_GET["xc"] and $_GET["yc"]){
     $x_=$_GET["xc"]+1;
     $y_=$_GET["yc"]+1;
     $dd=1;
-    $sql="SELECT $fields FROM ".mpx."objects WHERE `ww`='".$GLOBALS['ss']['ww']."' AND x<".($x_+$dd)." AND x>".($x_-$dd)." AND y<".($y_+$dd)." AND y>".($y_-$dd)." AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(x-$x_)+ABS(y-$y_) LIMIT 1";
+    $sql="SELECT $fields FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' AND x<".($x_+$dd)." AND x>".($x_-$dd)." AND y<".($y_+$dd)." AND y>".($y_-$dd)." AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(x-$x_)+ABS(y-$y_) LIMIT 1";
     t("minimenu - A1");
     
 }else{
@@ -84,24 +84,24 @@ if($_GET["xc"] and $_GET["yc"]){
         
         $id=$GLOBALS['ss']["use_object"]->set->ifnot('contextid',$GLOBALS['hl']);
     }
+
     t("minimenu - A2,2");
     if(!ifobject($id))$id=$GLOBALS['hl'];
-    $sql=/*$id!=$GLOBALS['ss']['useid']?*/"SELECT $fields FROM ".mpx."objects WHERE id=$id";//:false;
+    $sql=/*$id!=$GLOBALS['ss']['useid']?*/"SELECT $fields FROM `[mpx]pos_obj` WHERE id=$id";//:false;
     $x_=false;
 }
 
 
 t("minimenu - A - end");
 //--------------------------
-
+//die($sql);
 //echo($sql);
 //echo($GLOBALS['hl']);
 if($sql and $id?ifobject($id):true){
-        //echo($sql);
         //t('before sql');
         $array=sql_array($sql);
         //t('after sql');
-        list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $profileown, $set, $hard, $own, $ownname, $owntype, $owncount, $in, $ww, $x, $y, $t)=$array[0];
+        list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $profileown, $set, $hard, $own, $ownname, $owntype, $owncount, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
 
         /*$fileMM=tmpfile2("$id,$t,".timeplan,'html','minimenu');
         if(!file_exists($fileMM)){//e('creating');
@@ -131,15 +131,31 @@ if($sql and $id?ifobject($id):true){
                         exit2();
                 }
             }
-            //----------------------------------------------  
+            //----------------------------------------------Level objektu - počet modulů
+                $origin=explode(',',$origin);
+                $level=count($origin);
+            //----------------------------------------------Ready time - když objekt ještě nestojí
+                //@todo PH potřeba přidělat i do API
+                if($readytime>time()){
+                    $timetoready=$readytime-time();
+                    $readypp=100-ceil(100*($readytime-time())/($readytime-$starttime));
+                }else{
+                    $timetoready=0;
+                }
+            //----------------------------------------------
             t("minimenu - B");
 
             $profileown=str2list($profileown);
+
             //$profilec=$profile;
 
             //e("<div style=\"position: relative;top: -10px;left: 0px;z-index:2;\">".trr($name,13,2)."</div>");
 
-            e('<span id="minimenunamea" style="display:block;">'.trr($name,13,2).'</span>');
+            //e('<span id="minimenunamea" style="display:block;">'.trr($name,13,2).'</span>');
+    //die($name);
+    //trr($name,13,2);
+    //die();
+
             e('<span id="minimenunameb" style="display:none;">'.ahrefr(trr($name,13,2),"e=content;ee=profile;id=".$id,"none",true).'</span>');
             click(js2('$("#minimenunamea").css("display","none");$("#minimenunameb").css("display","block");'),1);
             if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
@@ -175,10 +191,17 @@ if($sql and $id?ifobject($id):true){
         $('#map_context').css('border-color','#<?php e($color2); ?>');
         </script>
         <?php
-            e("<div style=\"position: relative;top: -4px;left: 2px;Font-size:12px;Color:#ffffff;z-index:2;\">".trr(fs2lvl($fs),10/*15*/,2)."</div>");   
+            //----------------------------zobrazení zdraví + level
+            e("<div style=\"position: relative;top: -4px;left: 2px;Font-size:12px;Color:#ffffff;z-index:2;\">".trr($level,10/*15*/,2)."</div>");
             e("<div style=\"position: relative;top: -15px;left: 0px;height:4px;width:100%;Background-color:#000000;z-index:1;\">");
             e("<div style=\"height:4px;width:".(($fp/$fs<=1)?$fp/$fs*100:100)."%;Background-color:#".$color.";z-index:3;\"></div></div>");
 
+            //----------------------------
+            if($timetoready) {
+                e("<div style=\"position: relative;top: -15px;left: 0px;height:4px;width:100%;Background-color:#000000;z-index:1;\">");
+                e("<div style=\"height:4px;width:".($readypp)."%;Background-color:#ffffff;z-index:3;\"></div></div>");
+            }
+            //----------------------------
 
 
 
@@ -274,7 +297,7 @@ if($sql and $id?ifobject($id):true){
                                         //if($settings["create"]==$name)$yes=1;
                                 break;
                                 case 'replace':
-                                       /*if(intval(sql_1data("SELECT COUNT(1) FROM [mpx]objects WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"]))<=1){
+                                       /*if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"]))<=1){
                                             $stream="build($id,".$GLOBALS['config']['register_building'].",'$fname')";
                                        }*/
                                 break;
@@ -320,11 +343,10 @@ if($sql and $id?ifobject($id):true){
                                 break;
                         }
                         t("minimenu $class - middle");
+
+                        //---------------------------------------------------------------Vykreslení tlačítka u minimenu
                         if($stream or $ahref){
 
-
-                            //te($xname);        
-                            //br();
                                 if($yes and $stream){echo("<script>$stream</script>");}
                                 //echo("<span class=\"functiondrag\" id=\"fd_$name\" style=\"position: relative;top:0px;left:0px;z-index:2;\">");
                                 //echo("<a onclick=\"$stream\">".nln);
@@ -352,32 +374,44 @@ if($sql and $id?ifobject($id):true){
 
                                 t("minimenu $class - B");
 
+                                //-----------time u tlačítka
+                                if($timetoready){
+                                    $buttontext=$timetoready;
+                                    $countdown=$timetoready;
+                                    $ahref='';//todo PH Promyslet, zda tlačítko attack opravdu zneaktivnit, dokud se budova staví
+                                    $stream='';
+                                }elseif($countdown>0){
+                                    $buttontext=$countdown;
+                                }else{
+                                    $buttontext=$xname;
+                                }
+                                //-----------
 
-
-                                //Parse error: syntax error, unexpected ',' in /media/towns4/towns4/core/page/minimenu.php on line 191
-                                //e($countdown);
                                 border(iconr(
                                 (($countdown and $class!='attack')?'':
                                 (($ahref?$ahref.';':'').($stream?"js=".x2xx($stream).';':''))),
-                                $icon,$xname,$iconsize,NULL,$countdown),$brd,$iconsize,$set_value,$set_key,$countdown>0?$countdown:$xname/*$countdown/*class*/);
+                                $icon,$xname,$iconsize,NULL,$countdown),$brd,$iconsize,$set_value,$set_key,$buttontext);
                                 $countdown=0;
                                 e($space);
 
 
                          }
+                        //---------------------------------------------------------------
+
                          t("minimenu $class - end");
                 }
             }
-        }   
+        }
 
+    //---------------------------------------------------------------Zjištění, zda jde objekt rozebrat
                 if($own!=$GLOBALS['ss']['useid']){
                 //if($name)
-                $originres=sql_1data("SELECT `res` FROM [mpx]objects WHERE (`ww`='0' OR `ww`='-1') AND `name`='$name' LIMIT 1");
+                $originres=sql_1data("SELECT `res` FROM `[mpx]pos_obj` WHERE (`ww`='0' OR `ww`='-1') AND `name`='$name' LIMIT 1");
                 //e('ggg');
                 if(substr($originres,0,1)=='{' and substr($originres,-1)=='}'){//e('oiok');
-                        $nnn=sql_1data("SELECT count(1) FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".$GLOBALS['ss']['useid']."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
+                        $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".$GLOBALS['ss']['useid']."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
                         if($nnn){//e('ee1');
-                                $nnn=sql_1data("SELECT count(1) FROM [mpx]objects WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='$own' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
+                                $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='$own' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
                                 if(!$nnn){//e('ee2');
                                         $GLOBALS['ss']['candismantle']=$id;
                                         $candismantle=true;
@@ -387,32 +421,39 @@ if($sql and $id?ifobject($id):true){
                 }else{
                         $candismantle=false;
                 }
-
+    //---------------------------------------------------------------Zobrazení rozebíracího tlačítka
             if($own==$GLOBALS['ss']['useid'] or $candismantle){ 
 
 
                 if($_GET['q']){$GLOBALS['object_ids']=array($GLOBALS['get']['dismantle']);define('onlyremove',true);aac();}
                if(id2name($GLOBALS['config']['register_building'])!=$name){
-                    border(iconr('e=map_context;ee=minimenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id,'f_dismantle',lr('f_dismantle'),$iconsize),0,$iconsize,NULL,NULL,lr('f_dismantle'));
-                    e($space);
+
+
+                   border(
+                       iconr(($timetoready?'':'e=map_context;ee=minimenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id),
+                       'f_dismantle',lr('f_dismantle'),$iconsize,NULL,$timetoready)
+                       ,0,$iconsize,NULL,NULL,$timetoready?$timetoready:lr('f_dismantle'));
+
+
                     //border(iconr('e=map_context;ee=minimenu;prompt={f_leave_prompt};q=leave '.$id,'f_leave','{f_leave}',$iconsize),0,$iconsize);
                     //e($space);
                }
-        //----------------------------------------------
-                //$own_=('vlastní budova');
             }
+    //---------------------------------------------------------------Zobrazení odkazu nepřátelského profilu
+
+
                 if($own and $own!=$GLOBALS['ss']['useid']){
                 //$own_=($ownname);
                    //Zatím nezobrazovat profil města//border(iconr("e=content;ee=profile;id=".$own,"profile_town2","{profile_town2}",$iconsize),0,$iconsize);
                    //Zatím nezobrazovat profil města//e($space);
-                $ownown=sql_1data('SELECT `own` FROM [mpx]objects WHERE `id`=\''.$own.'\'');
+                $ownown=sql_1data('SELECT `own` FROM `[mpx]pos_obj` WHERE `id`=\''.$own.'\'');
                 if($ownown){border(iconr("e=content;ee=profile;id=".$ownown,"profile_user2",lr('profile_user2'),$iconsize),0,$iconsize,NULL,NULL,lr('profile_user2'));e($space);}
             }/*elseif($type=='tree' or $type=='rock'){        
                 //$own_=('příroda');
             }else{
                 //$own_=('opuštěná budova');
             }*/
-
+    //---------------------------------------------------------------
 
 
         if($own!=$GLOBALS['ss']['useid']){
@@ -423,9 +464,9 @@ if($sql and $id?ifobject($id):true){
                 list($attack_master,$attack_function,$attack_function_name,$attack_function_icon)=explode('-',$GLOBALS['settings']['attack_mafu']);
                 if(ifobject($attack_master)){
 
-                    $set=new set(sql_1data("SELECT `set` FROM [mpx]objects WHERE `id`='$attack_master'"));
+                    $set=new set(sql_1data("SELECT `set` FROM `[mpx]pos_obj` WHERE `id`='$attack_master'"));
                     $set=$set->vals2list();
-                    $func=new func(sql_1data("SELECT `func` FROM [mpx]objects WHERE `id`='$attack_master'"));            
+                    $func=new func(sql_1data("SELECT `func` FROM `[mpx]pos_obj` WHERE `id`='$attack_master'"));
                     $func=$func->vals2list();                    
 
 

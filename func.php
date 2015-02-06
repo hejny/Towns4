@@ -131,15 +131,15 @@ function changemap($x,$y,$files=false){
 	    }
 
     }
-    //sql_query("UPDATE `".mpx."map` SET  `hard` =  IF(`terrain`='t1' OR `terrain`='t11',1,0)+(SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=`".mpx."map`.`ww` AND  ROUND(`".mpx."objects`.`x`)=`".mpx."map`.`x` AND ROUND(`".mpx."objects`.`y`)=`".mpx."map`.`y`) WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
+    //sql_query("UPDATE `[mpx]map` SET  `hard` =  IF(`terrain`='t1' OR `terrain`='t11',1,0)+(SELECT SUM(`[mpx]pos_obj`. `hard`) FROM `[mpx]pos_obj` WHERE `[mpx]pos_obj`.`ww`=`[mpx]map`.`ww` AND  ROUND(`[mpx]pos_obj`.`x`)=`[mpx]map`.`x` AND ROUND(`[mpx]pos_obj`.`y`)=`[mpx]map`.`y`) WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
 }
 //------------------------
 
 //Funkce HARD je zastaralá
 /*function hard($rx,$ry,$w=false){
     if(!$w)$w=$GLOBALS['ss']["ww"];
-    $hard1=sql_1data("SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$w." AND  `".mpx."map`.`x`=$rx AND `".mpx."map`.`y`=$ry");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
-    $hard2=sql_1data("SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$w." AND  ROUND(`".mpx."objects`.`x`)=$rx AND ROUND(`".mpx."objects`.`y`)=$ry AND `own`!='".$GLOBALS['ss']['useid']."'");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
+    $hard1=sql_1data("SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `[mpx]map`  WHERE `[mpx]map`.`ww`=".$w." AND  `[mpx]map`.`x`=$rx AND `[mpx]map`.`y`=$ry");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
+    $hard2=sql_1data("SELECT SUM(`[mpx]pos_obj`. `hard`) FROM `[mpx]pos_obj` WHERE `[mpx]pos_obj`.`ww`=".$w." AND  ROUND(`[mpx]pos_obj`.`x`)=$rx AND ROUND(`[mpx]pos_obj`.`y`)=$ry AND `own`!='".$GLOBALS['ss']['useid']."'");// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
     $hard=floatval($hard1)+floatval($hard2);
     return($hard);
 }*/
@@ -490,11 +490,11 @@ function jsa2($js){
 function logged(){
     if($GLOBALS['ss']['logid']){
 	if($GLOBALS['url_param']!='fbonly'){
-	    //if($GLOBALS['ss']["log_object"]->loaded and $GLOBALS['ss']["use_object"]->loaded){
+	    if(ifobject($GLOBALS['ss']["logid"])){
             return(true);
-	    //}else{
-	    //    return(false);
-	    //}
+	    }else{
+	        return(false);
+	    }
 	}else{
         return(false);
 	}
@@ -718,7 +718,7 @@ if(!$GLOBALS['mobile']){
 //==========================================================================================building
 
  function building($name){
-    $q=sql_1data('SELECT count(1) FROM [mpx]objects WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND name=\''.$name.'\' AND '.objt())-1+1;
+    $q=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND name=\''.$name.'\' AND '.objt())-1+1;
     return($q);
 }
 //==========================================================================================rand_color
@@ -731,7 +731,7 @@ function rand_color() {
 //==========================================================================================fb_user
 
 function fb_user($id){//$GLOBALS['ss']['logid']
-	$useid=sql_1data('SELECT `userid` FROM [mpx]objects WHERE `id`='.$id);    
+	$useid=sql_1data('SELECT `userid` FROM `[mpx]pos_obj` WHERE `id`='.$id);
 	$key=sql_1data('SELECT `fbid` FROM [mpx]users WHERE `id`='.$useid);
     return($key);
     

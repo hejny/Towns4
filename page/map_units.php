@@ -26,9 +26,9 @@ require_once(root.core."/func_map.php");
 
 //------------------------------------------------------------------------------------------------------WHERE PREPARE
 
-	$say="''";//"(SELECT IF((`".mpx."text`.`timestop`=0 OR ".time()."<=`".mpx."text`.`timestop`),`".mpx."text`.`text`,'')  FROM `".mpx."text` WHERE `".mpx."text`.`from`=`".mpx."objects`.id AND `".mpx."text`.`type`='chat' ORDER BY `".mpx."text`.time DESC LIMIT 1)";
+	$say="''";//"(SELECT IF((`[mpx]text`.`timestop`=0 OR ".time()."<=`[mpx]text`.`timestop`),`[mpx]text`.`text`,'')  FROM `[mpx]text` WHERE `[mpx]text`.`from`=`[mpx]pos_obj`.id AND `[mpx]text`.`type`='chat' ORDER BY `[mpx]text`.time DESC LIMIT 1)";
 	//$say="'ahoj'";
-	$profileown="(SELECT `profile` from [mpx]objects as x WHERE x.`id`=".mpx."objects.`own` LIMIT 1) as `profileown`";
+	$profileown="(SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own` LIMIT 1) as `profileown`";
 	    $xcu=0;
 	    $ycu=0;
 	    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
@@ -83,13 +83,13 @@ if(!$GLOBALS['map_units_ids']){
 	// OR (`type`='rock' AND RAND()<0.01)
 		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
 		// AND ((`own`=".$GLOBALS['ss']['useid']." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range.$whereplay );
-}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM [mpx]objects AS X WHERE X. `own`= [mpx]objects.`own` AND X. `type`='building')>1 OR `own`='".$GLOBALS['ss']['logid']."' OR `own`='".$GLOBALS['ss']['useid']."')"*/
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND "/*." AND (`type`='building') AND "*/.$range.$whereplay );
+}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM `[mpx]pos_obj` AS X WHERE X. `own`= `[mpx]pos_obj`.`own` AND X. `type`='building')>1 OR `own`='".$GLOBALS['ss']['logid']."' OR `own`='".$GLOBALS['ss']['useid']."')"*/
     //------------------------------------------------------------------------------------------------------SELECT ALLES
         $where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]objects` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);// AND ".objt()
+	$array=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);// AND ".objt()
 }
 
 
@@ -132,9 +132,18 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     $fs=$row[16];
     //$idid=$row[17];
     $starttime=$row['starttime'];
+    $readytime=$row['readytime'];
     $stoptime=$row['stoptime'];
     if(!$stoptime or $stoptime>time()){
-        $onmap=true;
+         $onmap=true;
+        if($readytime>time()){
+             
+            $fpfs=1+($readytime-time())/($readytime-$starttime);
+            
+        }else{
+            $fpfs=$fp/$fs;
+        }
+         
     }else{
         $onmap=false;
     }
@@ -359,7 +368,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 	//------------------------------------------------------------------------------------------------------MODEL
         	t($name.' - beforeunit');
 
-        $modelurl=modelx($res,$fp/$fs/*$_GLOBALS['map_night']*/,$usercolor);
+        $modelurl=modelx($res,$fpfs/*$_GLOBALS['map_night']*/,$usercolor);
 	t($name.' - afrer modelx');
         //TOTÁLNÍ MEGASRAČKA - //list($width, $height) = getimagesize($modelurl);
 	//TOTÁLNÍ MEGASRAČKA - echo("$width, $height");

@@ -22,7 +22,7 @@ $border3=array(2,'665544');
  $add0='(`to`='.$GLOBALS['ss']['useid'].' OR `to`='.$GLOBALS['ss']['logid'].')';
  $add1='`from`!='.$GLOBALS['ss']['useid'].' AND `from`!='.$GLOBALS['ss']['logid'].'';//' OR `to`='.$GLOBALS['ss']['logid'].'';
  $add2="`type`='message' OR `type`='report' ";
- $q=sql_1data("SELECT COUNT(`from`) FROM `".mpx."text` WHERE `new`=1 AND ($add0) AND ($add1) AND ($add2)");
+ $q=sql_1data("SELECT COUNT(`from`) FROM `[mpx]text` WHERE `new`=1 AND ($add0) AND ($add1) AND ($add2)");
  //$q=textbr($q);
  //$stream.=movebyr($q,-27,-4,'','z-index:2000;');
  //ahref($stream,$url);

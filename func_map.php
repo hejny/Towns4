@@ -117,7 +117,7 @@ function imgresizeh($img,$height) {
     $w=w;
     $zoom=zoom;
     //die("SELECT x,y,$wtf from `map` WHERE `w`=$w AND `x`>=$xc AND `y`>=$yc AND `x`<$xc+$zoom+2 AND `y`< $yc+$zoom+2 ORDER by `y`,`x`");
-    $mapd=sql_array("SELECT x,y,$wtf from `".mpx."map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`>=$xc AND `y`>=$yc AND `x`<$xc+$zoom AND `y`< $yc+$zoom ORDER by `y`,`x`");
+    $mapd=sql_array("SELECT x,y,$wtf from `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`>=$xc AND `y`>=$yc AND `x`<$xc+$zoom AND `y`< $yc+$zoom ORDER by `y`,`x`");
     $map=array();
     //r($mapd);exit;
     foreach($mapd as $row){list($x,$y,$wtf)=$row;
@@ -131,7 +131,7 @@ function imgresizeh($img,$height) {
 //=============================================================
 function map1($param,$xc=false,$yc=false,$outfile=false){
     //echo($param);
-    if(!$param){$param=sql_1data("SELECT terrain from `".mpx."map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`=1 AND `y`=1");}
+    if(!$param){$param=sql_1data("SELECT terrain from `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`=1 AND `y`=1");}
     if($xc===false or $yc===false){
         $rand=rand(1,7);
     }else{
@@ -297,7 +297,7 @@ function polyrand($seed,$amplitude,$periode,$x,$y){
                                     }
                             //}
                             $contents=serialize($GLOBALS/*['ss']*/['polyseed'][$seed]);
-                            file_put_contents2($file, $contents);
+                            fpc($file, $contents);
                     }
                 }
 		//--------
@@ -653,7 +653,7 @@ function mapbg($xc,$yc){
         }        
         //--------------------
            
-        $array=sql_array("SELECT x,y,terrain from `".mpx."map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`>=".round($xc-$exp-$pos)." AND `y`>=".round($yc-$exp-$pos)." AND `x`<".round($xc+$zoom+$exp+$pos+$lvlexp)." AND `y`<".round($yc+$zoom+$exp+$pos+$lvlexp)." ORDER by `y`,`x`");
+        $array=sql_array("SELECT x,y,terrain from `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`>=".round($xc-$exp-$pos)." AND `y`>=".round($yc-$exp-$pos)." AND `x`<".round($xc+$zoom+$exp+$pos+$lvlexp)." AND `y`<".round($yc+$zoom+$exp+$pos+$lvlexp)." ORDER by `y`,`x`");
         
         
         foreach($array as $row){
@@ -801,12 +801,12 @@ function mapunits($gx,$gy,$xy,$buildings=false){
 	//`type`='building' OR 
 	//echo('hurá');
         
-        $profileown="(SELECT `profile` from [mpx]objects as x WHERE x.`id`=".mpx."objects.`own` LIMIT 1) as `profileown`";
+        $profileown="(SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own` LIMIT 1) as `profileown`";
         foreach(array_merge(
 
-/*sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),
-sql_array("SELECT x,y,res,name,id,fp,fs FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='rock')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),*/
-sql_array("SELECT x,y,res,name,id,fp,fs,$profileown FROM `".mpx."objects` WHERE  ww=".$GLOBALS['ss']["ww"]." "."AND ".objt()." AND res!='' AND (`type`='tree' OR `type`='rock'".($buildings?' OR `type`=\'building\'':'').")"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY x,y")
+/*sql_array("SELECT x,y,res,name,id,fp,fs FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),
+sql_array("SELECT x,y,res,name,id,fp,fs FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='rock')"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY RAND() LIMIT 1"),*/
+sql_array("SELECT x,y,res,name,id,fp,fs,$profileown FROM `[mpx]pos_obj` WHERE  ww=".$GLOBALS['ss']["ww"]." "."AND ".objt()." AND res!='' AND (`type`='tree' OR `type`='rock'".($buildings?' OR `type`=\'building\'':'').")"."  AND x>=$x AND y>=$y AND x<=$x+$zoom AND y<=$y+$zoom ORDER BY x,y")
 
 ) as $row){
                     //if($row[2]){
@@ -1008,7 +1008,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
 
 
 			/*$model_rock=model('rock4',1,20,1.5,0,1);
-			$model_tree=model(sql_1data("SELECT res FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." AND id='1172015'  LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);    
+			$model_tree=model(sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." AND id='1172015'  LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);
 			imagealphablending($model_tree,true); 
 			                        
                         imagecopyresized($model_rock,$model_tree,0,0,0,0,imagesx($model_rock),imagesy($model_rock),imagesx($model_rock),imagesy($model_rock));*/
@@ -1024,7 +1024,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
                         
                         
 			//r($treerock);
-			//$model_tree=model(sql_1data("SELECT res FROM `".mpx."objects` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);  
+			//$model_tree=model(sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);
 			//imagealphablending($model_tree,true); 
 			//imagecopyresized($treerock,$model_tree,0,0,0,0,imagesx($model_tree),imagesy($model_tree),imagesx($model_tree),imagesy($model_tree));
 			
@@ -1050,7 +1050,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
                     chmod($outimgunits,0777);
                     ImageDestroy($img);
                 }else{
-                    file_put_contents2($img,'');    
+                    fpc($img,'');    
                 }
             }
             //-----------------------

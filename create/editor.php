@@ -45,7 +45,7 @@ if($action=='lang'){
 }elseif($action=='load'){
 	$p_pass=sql_1data('SELECT `key` FROM `[mpx]login` WHERE `id`='.$id);
 	if($pass==$p_pass){
-		$res=sql_1data('SELECT `res` FROM `[mpx]objects` WHERE `id`='.$id);
+		$res=sql_1data('SELECT `res` FROM `[mpx]pos_obj` WHERE `id`='.$id);
 		echo('success=1&res='.$res);
 	}else{
 		echo('error=1');
@@ -54,8 +54,8 @@ if($action=='lang'){
 }elseif($action=='save'){
 	$p_pass=sql_1data('SELECT `key` FROM `[mpx]login` WHERE `id`='.$id);
 	if($pass==$p_pass){
-		sql_query('UPDATE `[mpx]objects` SET `res`=\''.$res.'\', `t`=\''.time().'\'  WHERE `id`='.$id);
-		$xy=sql_array('SELECT `x`,`y` FROM `[mpx]objects` WHERE `id`='.$id);
+		sql_query('UPDATE `[mpx]pos_obj` SET `res`=\''.$res.'\', `t`=\''.time().'\'  WHERE `id`='.$id);
+		$xy=sql_array('SELECT `x`,`y` FROM `[mpx]pos_obj` WHERE `id`='.$id);
 		changemap($xy[0][0],$xy[0][1],true);
 		echo('success=1');
 	}else{

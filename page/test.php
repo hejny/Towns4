@@ -31,7 +31,7 @@ e(id2name($from));br();
 
 
 /*//OLD USER SYSTEM -> NEW USER SYSTEM
-foreach(sql_array('SELECT id,name,profile FROM [mpx]objects WHERE type=\'user\' AND ww=1 ORDER BY id') as $row1){
+foreach(sql_array('SELECT id,name,profile FROM `[mpx]pos_obj` WHERE type=\'user\' AND ww=1 ORDER BY id') as $row1){
 	list($id,$name,$profile)=$row1;
 	$profile=str2list($profile);
 	$email=$profile['mail'];
@@ -58,7 +58,7 @@ foreach(sql_array('SELECT id,name,profile FROM [mpx]objects WHERE type=\'user\' 
 	
 	sql_query("INSERT INTO `[mpx]users` (`id`, `aac`, `name`, `password`, `email`, `sendmail`, `fbid`, `fbdata`, `created`)
 VALUES ('$userid', '1', '".sql($name)."', '$password', '".sql($email)."', '$sendmail', '$fbid', '".sql($fbdata)."', now());",2);br();
-	sql_query('UPDATE [mpx]objects SET userid='.$userid.' WHERE type=\'user\' AND id='.$id);br();
+	sql_query('UPDATE `[mpx]pos_obj` SET userid='.$userid.' WHERE type=\'user\' AND id='.$id);br();
 
 }*/
 ?>

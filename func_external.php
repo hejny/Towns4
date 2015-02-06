@@ -91,7 +91,8 @@ function mailx($to,$subject,$text,$world=false){
 		$uz=sql_1data("SELECT COUNT(1) FROM  `[mpx]emails` WHERE `to`=".($to-1+1)." AND `subject`='".sql($subject)."' AND `text`='".sql($text)."'");
 
 		if(!$uz){
-			sql_query("INSERT INTO `[mpx]emails` (`to`, `subject`, `text`, `world`, `key`, `start`, `try`, `stop`) VALUES (".($to-1+1).", '".sql($subject)."', '".sql($text)."', '".sql($world)."', '".md5(rand(111111,999999))."', now(), 0, NULL);");
+                        $id=sql_1number('SELECT MAX(`id`) FROM `[mpx]emails`')+1;
+			sql_query("INSERT INTO `[mpx]emails` (`id`, `to`, `subject`, `text`, `world`, `key`, `start`, `try`, `stop`) VALUES (`id`, ".($to-1+1).", '".sql($subject)."', '".sql($text)."', '".sql($world)."', '".md5(rand(111111,999999))."', now(), 0, NULL);");
 
 				$url=url.'?e=text-email';
 				//e($url);

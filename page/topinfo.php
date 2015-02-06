@@ -43,7 +43,7 @@ if(!$GLOBALS['hl']){
 if($GLOBALS['config']['register_building']){
 //if(1){
 
-	if($hl=sql_array('SELECT id,ww,x,y FROM [mpx]objects WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
+	if($hl=sql_array('SELECT id,ww,x,y FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
 	 //br();
      //print_r($hl);
     list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];

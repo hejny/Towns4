@@ -36,7 +36,7 @@ $object=new object(admin_s_input("admin",$GLOBALS['ss']['useid']));
 
 //-----------------COPY
 if($post['copy'] and $post['copyid'] and ($post['copy']!=mpx or $post['copyid']!=$object->id)){
-   list($row)=sql_array('SELECT * FROM [mpx]objects WHERE id=\''.$object->id.'\'');
+   list($row)=sql_array('SELECT * FROM `[mpx]pos_obj` WHERE id=\''.$object->id.'\'');
    $row[0]=$post['copyid'];
    //print_r($row);br();
    $row2=array();
@@ -69,7 +69,7 @@ if($post["edit_func"]){
 }
 //----------------------------------------
 /*if($get["toall"]){
-foreach(sql_array("SELECT id,name FROM ".mpx."objects WHERE type='".$get["toall"]."'") as $id){list($id,$name)=$id;
+foreach(sql_array("SELECT id,name FROM `[mpx]pos_obj` WHERE type='".$get["toall"]."'") as $id){list($id,$name)=$id;
 	echo("$name($id)<br/>");
 	$object=new object($id);
 	
@@ -92,13 +92,13 @@ if($get["delete"]){
 }
 //----------------------------------------
 if($_POST["name"]){
-    $object->setName($_POST["name"]);
+    $object->name=($_POST["name"]);
 }
 if($_POST["fp"]){
-    $object->setFP($_POST["fp"]);
+    $object->fp=($_POST["fp"]);
 }
-$fp=$object->getFP();
-$name=$object->getName();
+$fp=$object->fp;
+$name=$object->name;
 ?>
 <form id="login" name="login" method="POST" action="?page=object">
 <?php

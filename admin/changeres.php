@@ -457,13 +457,13 @@ if($post["kmennuholnik"]){
 //-=====================================================================================
 if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){echo("<br>mapgenerator<br>");
     if($action=="map"){
-        sql_query("DELETE FROM `".mpx."map`",1);
+        sql_query("DELETE FROM `[mpx]map`",1);
     }
     if($action=="tree"){
-        sql_query("DELETE FROM `".mpx."objects` WHERE `name` LIKE '%tree%'",1);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%'",1);
     }
     if($action=="rock"){
-        sql_query("DELETE FROM `".mpx."objects` WHERE `name` LIKE '%rock%'",1);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%rock%'",1);
     }
     $im = imagecreatefrompng($imgurl);
     $bgs=array(
@@ -528,7 +528,7 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
     $lp=100;
     $l=rand($la*$lp,$lb*$lp)/$lp;
     //-----
-    $query="INSERT INTO `".mpx."map` (`x`, `y`, `ww`, `terrain`, `name`) VALUES ('$x','$y',1,'$terrain','')";
+    $query="INSERT INTO `[mpx]map` (`x`, `y`, `ww`, `terrain`, `name`) VALUES ('$x','$y',1,'$terrain','')";
     if($action=="map" and $q==0){sql_query($query);echo($query.br);}
     //-----
     if($terrain=="t10" and $action=="tree"){
@@ -536,9 +536,66 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
         $res=generate($post).":".rand(1,360);
         $xx=$x+(rand(-50,50)/100);
         $yy=$y+(rand(-50,50)/100);
-        //sql_query("INSERT INTO `".mpx."objects` (`name`,`res`, `x`, `y`, `hard`) VALUES ('tree [$x,$y]','$res','$xx','$yy',0.15)");
+        //sql_query("INSERT INTO `[mpx]pos_obj` (`name`,`res`, `x`, `y`, `hard`) VALUES ('tree [$x,$y]','$res','$xx','$yy',0.15)");
 	$defence=rand(5,15);$a=rand(0,1000);$b=rand(500,1500);
-	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{tree} [$x,$y]', 'tree', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'energy=$a;wood=$b', '$res', '', '', '0.15', '0', '0', '1', '$xx', '$yy', '".time()."')");
+
+
+
+
+
+            $nextid=nextid();
+            //------------------INSERT objects tree
+            sql_insert('objects',array(
+                'id' => $nextid,
+                'name' => "{tree} [$x,$y]",
+                'type' => 'tree',
+                'userid' => '',
+                'origin' => '',
+                'fp' => pow($defence,2),
+                'func' => 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile',
+                'hold' =>  "energy=$a;wood=$b",
+                'res' => sql($res),
+                'profile' => '',
+                'set' => '',
+                'own' => '0',
+                't' => '',
+                'pt' => time()
+            ));
+            //------------------INSERT objects_tmp tree
+            sql_insert('objects_tmp',array(
+                'id' => '',
+                'fs' => pow($defence,2),
+                'fc' => "'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."'",
+                'fr' => ($a+$b),
+                'fx' => ($a+$b+pow($defence,2)),
+                'superown' => '0',
+                'expand' => '',
+                'block' => '',
+                'attack' => '',
+                'create_lastused' => '',
+                'create_lastobject' => '',
+                'create2_lastused' => '',
+                'create2_lastobject' => '',
+                'create3_lastused' => '',
+                'create3_lastobject' => '',
+                'create4_lastused' => '',
+                'create4_lastobject' => ''
+            ));
+            //------------------INSERT positions tree
+            sql_insert('positions',array(
+                'id' => '',
+                'ww' => $GLOBALS['ss']["ww"],
+                'x' => $xx,
+                'y' => $yy,
+                'traceid' => '',
+                'starttime' => time(),
+                'readytime' => '',
+                'stoptime' => ''
+            ));
+            //------------------
+
+            //sql_query("INSERT INTO `[mpx]pos_obj` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{tree} [$x,$y]', 'tree', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'energy=$a;wood=$b', '$res', '', '', '0.15', '0', '0', '1', '$xx', '$yy', '".time()."')");
+
 	
 	//exit;
         $chuj=4;
@@ -549,9 +606,64 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
         $res=generate($post).":".rand(1,360);
         $xx=$x+(rand(-50,50)/100);
         $yy=$y+(rand(-50,50)/100);
-        //sql_query("INSERT INTO `".mpx."objects` (`name`,`res`, `x`, `y`, `hard`) VALUES ('rock [$x,$y]','$res','$xx','$yy',1)");
+        //sql_query("INSERT INTO `[mpx]pos_obj` (`name`,`res`, `x`, `y`, `hard`) VALUES ('rock [$x,$y]','$res','$xx','$yy',1)");
 	$defence=rand(20,100);$a=rand(1500,2000);$b=rand(0,2000);
-	sql_query("INSERT INTO `".mpx."objects` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{rock} [$x,$y]', 'rock', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'stone=$a;iron=$b', '$res', '', '', '1', '0', '0', '1', '$xx', '$yy', '".time()."')");
+
+            $nextid=nextid();
+            //------------------INSERT objects rock
+            sql_insert('objects',array(
+                'id' => $nextid,
+                'name' => "{rock} [$x,$y]",
+                'type' => 'rock',
+                'userid' => '',
+                'origin' => '',
+                'fp' => pow($defence,2),
+                'func' => 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile',
+                'hold' =>  "energy=$a;wood=$b",
+                'res' => sql($res),
+                'profile' => '',
+                'set' => '',
+                'own' => '0',
+                't' => '',
+                'pt' => time()
+            ));
+            //------------------INSERT objects_tmp rock
+            sql_insert('objects_tmp',array(
+                'id' => '',
+                'fs' => pow($defence,2),
+                'fc' => "'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."'",
+                'fr' => ($a+$b),
+                'fx' => ($a+$b+pow($defence,2)),
+                'superown' => '0',
+                'expand' => '',
+                'block' => '',
+                'attack' => '',
+                'create_lastused' => '',
+                'create_lastobject' => '',
+                'create2_lastused' => '',
+                'create2_lastobject' => '',
+                'create3_lastused' => '',
+                'create3_lastobject' => '',
+                'create4_lastused' => '',
+                'create4_lastobject' => ''
+            ));
+            //------------------INSERT positions rock
+            sql_insert('positions',array(
+                'id' => '',
+                'ww' => $GLOBALS['ss']["ww"],
+                'x' => $xx,
+                'y' => $yy,
+                'traceid' => '',
+                'starttime' => time(),
+                'readytime' => '',
+                'stoptime' => ''
+            ));
+            //------------------
+	        //sql_query("INSERT INTO `[mpx]pos_obj` (`name`, `type`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('{rock} [$x,$y]', 'rock', '".pow($defence,2)."', '".pow($defence,2)."', '".($a+$b)."', '".($a+$b+pow($defence,2))."', 'fp=0;iron=".ceil(pow($defence,2)*(2/3)).";fuel=".ceil(pow($defence,2)*(1/3))."', 'defence=class[5]defence[3]params[5]defence[7]5[10]$defence"."[7]2[10]1[3]0[5]profile', 'stone=$a;iron=$b', '$res', '', '', '1', '0', '0', '1', '$xx', '$yy', '".time()."')");
+
+
+
+
 
         $chuj=3;
     }

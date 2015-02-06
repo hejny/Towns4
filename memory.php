@@ -72,14 +72,12 @@ function exit2($e=false){
         }
 	}
 	//echo($values);
-    sql_query('CREATE TABLE IF NOT EXISTS `[mpx]memory` (
-                 `id` varchar(43) NOT NULL,
-                 `key` varchar(100) COLLATE utf8_czech_ci NOT NULL,
-                 `value` text COLLATE utf8_czech_ci NOT NULL,
-                 `time` int(11) NOT NULL,
-                 UNIQUE KEY `id` (`id`,`key`),
-                 KEY `time` (`time`)
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;');
+        
+    sql_query(create_sql('memory'));
+    
+    
+    
+    
     if($deletes)sql_query('DELETE FROM [mpx]memory WHERE (`id`=\''.ssid.'\' AND ('.$deletes.'))'/*.' OR `time`<'.(time()-memory_time)*/);
     if($values)sql_query('INSERT INTO [mpx]memory (`id`, `key`, `value`, `time`) VALUES '.$values.';');	
 	//e($values);
@@ -98,24 +96,8 @@ function exit2($e=false){
                     $separator=',';
                 }
                 $sql.=';';
-                sql_query('CREATE TABLE IF NOT EXISTS `[mpx]timeplan` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `click` int(11) NOT NULL,
-                    `key` varchar(100) COLLATE utf8_czech_ci NOT NULL,
-                    `text` text COLLATE utf8_czech_ci NOT NULL,
-                    `ms` decimal(8,3) NOT NULL,
-                    `uri` text COLLATE utf8_czech_ci NOT NULL,
-                    `logid` int(11) NOT NULL,
-                    `useid` int(11) NOT NULL,
-                    `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                    PRIMARY KEY (`id`),
-                    KEY `key` (`key`),
-                    KEY `click` (`click`),
-                    KEY `ms` (`ms`),
-                    KEY `logid` (`logid`),
-                    KEY `useid` (`useid`),
-                    KEY `time` (`time`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;'.$sql);
+                
+                sql_query(create_sql('timeplan').';'.$sql);
                 
             }
         //}

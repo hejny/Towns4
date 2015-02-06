@@ -16,7 +16,7 @@
 //======================================================================================
 define("a_text_help","action{list,send,delete}[idle][idle,to,title,text][,id]");
 function a_text($action,$idle,$to="",$title="",$text=""){
-    //$add="(SELECT 1 FROM `".mpx."textqw` WHERE `".mpx."textqw`.`textclass`=`".mpx."text`.`class` AND `".mpx."textqw`.`object`='".($GLOBALS['ss']["log_object"]->id)."')";
+    //$add="(SELECT 1 FROM `[mpx]textqw` WHERE `[mpx]textqw`.`textclass`=`[mpx]text`.`class` AND `[mpx]textqw`.`object`='".($GLOBALS['ss']["log_object"]->id)."')";
     $add1='(`to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].') AND `to`!=0';
     $add2="`type`='message'";
     if($action=="list"){
@@ -24,11 +24,11 @@ function a_text($action,$idle,$to="",$title="",$text=""){
             $add1='`to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].' OR `to`=0';
             $add2="`type`='message' OR `type`='report' ";
 	     if($idle=='chat'){$add1='1';$add2="`type`='chat'";}
-            $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop` FROM `".mpx."text` WHERE `idle`='$idle' AND ($add1) AND ($add2) ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."",1);
+            $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop` FROM `[mpx]text` WHERE `idle`='$idle' AND ($add1) AND ($add2) ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."",1);
             if($array[0][3]==1){
                 r('notnew');
                 $add1='`to`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].'';
-                sql_query("UPDATE   `".mpx."text` SET `new`='0' WHERE `idle`='$idle' AND ($add1) AND ($add2)");
+                sql_query("UPDATE `[mpx]text` SET `new`='0' WHERE `idle`='$idle' AND ($add1) AND ($add2)");
             }
             //print_r($array);
             $GLOBALS['ss']["query_output"]->add("list",$array);
@@ -37,15 +37,15 @@ function a_text($action,$idle,$to="",$title="",$text=""){
             if($idle=='public'){$add1='`to`=0';}
             if($idle=='report'){$add2="`type`='report'";}
 	  
-            $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,MAX(`time`) ,`timestop`, COUNT(`idle`) FROM `".mpx."text` WHERE ($add1) AND ($add2) AND ($add3) GROUP BY `idle` ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."");
+            $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,MAX(`time`) ,`timestop`, COUNT(`idle`) FROM `[mpx]text` WHERE ($add1) AND ($add2) AND ($add3) GROUP BY `idle` ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."");
             //print_r($array);            
             $GLOBALS['ss']["query_output"]->add("list",$array);
         }
     }elseif($action=="send"){
-        if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `".mpx."text`")-(-1);
+        if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
         if(trim($title) and trim($text)){
             if(/*$to=='0' OR */$to=ifobject($to)){
-                if(!sql_1data("SELECT 1 FROM `".mpx."text` WHERE `to`='$to' AND `title`='$title' AND `text`='$text'")){
+                if(!sql_1data("SELECT 1 FROM `[mpx]text` WHERE `to`='$to' AND `title`='$title' AND `text`='$text'")){
                     $no=0;
                     if($GLOBALS['ss']['message_limit'][$to]){if($GLOBALS['ss']['message_limit'][$to]+5>time()){$no=1;}}
                     $GLOBALS['ss']['message_limit'][$to]=time();
@@ -53,7 +53,7 @@ function a_text($action,$idle,$to="",$title="",$text=""){
                         
                         $to_=topobject($to);
                                              
-                        //sql_query("INSERT INTO `".mpx."text`(`id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message',1,'".$GLOBALS['ss']['logid']."','".$to_."','$title','$text','".(time())."','')");
+                        //sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message',1,'".$GLOBALS['ss']['logid']."','".$to_."','$title','$text','".(time())."','')");
                         send_message($GLOBALS['ss']['logid'],$to_,$title,$text,$idle);
 
 
@@ -78,25 +78,25 @@ function a_text($action,$idle,$to="",$title="",$text=""){
         }
    
     }elseif($action=="delete"){  
-        sql_query("DELETE FROM `".mpx."text` WHERE `id`= '$idle' AND `from`='".$GLOBALS['ss']['logid']."'");
+        sql_query("DELETE FROM `[mpx]text` WHERE `id`= '$idle' AND `from`='".$GLOBALS['ss']['logid']."'");
     }
 }
 //======================================================================================
 function backup_text($text){
     $file=tmpfile2($text,'txt','backup');
-    file_put_contents2($file,$text);
+    fpc($file,$text);
     
 }
 //======================================================================================
 function send_report($from,$to,$title="",$text="",$idle=false){
-    if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `".mpx."text`")-(-1);
+    if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
     $from=topobject($from);
     $to=topobject($to);
     
     
-    $time=sql_1data("SELECT time FROM `".mpx."text` WHERE `to`='".$to."' AND type='report' ORDER BY time DESC LIMIT 1");
+    $time=sql_1data("SELECT time FROM `[mpx]text` WHERE `to`='".$to."' AND type='report' ORDER BY time DESC LIMIT 1");
     
-    sql_query("INSERT INTO `".mpx."text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','report','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
+    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','report','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
     
     //-----------
     
@@ -105,8 +105,8 @@ function send_report($from,$to,$title="",$text="",$idle=false){
     
     $too=new object($to);
 
-	//OLDSYS//$mail=sql_1data('SELECT email FROM [mpx]users WHERE id=(SELECT useid FROM [mpx]objects WHERE id='.($too->id).' LIMIT 1) LIMIT 1');
-	$mail=sql_1data('SELECT userid FROM [mpx]objects WHERE id='.($too->id));
+	//OLDSYS//$mail=sql_1data('SELECT email FROM [mpx]users WHERE id=(SELECT useid FROM `[mpx]pos_obj` WHERE id='.($too->id).' LIMIT 1) LIMIT 1');
+	$mail=sql_1data('SELECT userid FROM `[mpx]pos_obj` WHERE id='.($too->id));
     //OLDSYS//$mail=$too->profile->val('mail');
     $sendmail2=$too->profile->ifnot('sendmail3',1);
     $sendmail5=$too->profile->ifnot('sendmail5',1);
@@ -130,21 +130,21 @@ function send_report($from,$to,$title="",$text="",$idle=false){
 //fb_notify(fb_user($to),lr('fb_new_report','text'));
 //======================================================================================
 function send_message($from,$to,$title="",$text="",$idle=false){
-    if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `".mpx."text`")-(-1);
+    if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
     //$from=topobject($from);
     $to=topobject($to);
     //e($to);
     
     
-    $time=sql_1data("SELECT time FROM `".mpx."text` WHERE `to`='".$to."' AND type='message' ORDER BY time DESC LIMIT 1");
+    $time=sql_1data("SELECT time FROM `[mpx]text` WHERE `to`='".$to."' AND type='message' ORDER BY time DESC LIMIT 1");
     
     
-    sql_query("INSERT INTO `".mpx."text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
+    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
     
     //-----------
     
     $too=new object($to);
-	$mail=sql_1data('SELECT userid FROM [mpx]objects WHERE id='.($too->id));
+	$mail=sql_1data('SELECT userid FROM `[mpx]pos_obj` WHERE id='.($too->id));
     //OLDSYS//$mail=$too->profile->val('mail');
     $sendmail2=$too->profile->ifnot('sendmail2',1);
     //$sendmail4x=$too->profile->val('sendmail4');
@@ -188,9 +188,9 @@ define("a_chat","text");
 function a_chat($text){
     if(trim($text)){
     if($text!="."){
-        sql_query("INSERT INTO `".mpx."text` (`id`, `from`, `to`, `text`, `time`, `timestop`) VALUES (NULL, '".$GLOBALS['ss']['logid']."', '', '$text', '".time()."', '')");
+        sql_query("INSERT INTO `[mpx]text` (`id`, `from`, `to`, `text`, `time`, `timestop`) VALUES (NULL, '".$GLOBALS['ss']['logid']."', '', '$text', '".time()."', '')");
     }else{
-        sql_query("UPDATE `".mpx."text` SET timestop='".time()."' WHERE `from`='".$GLOBALS['ss']['logid']."' ORDER BY time DESC LIMIT 1");
+        sql_query("UPDATE `[mpx]text` SET timestop='".time()."' WHERE `from`='".$GLOBALS['ss']['logid']."' ORDER BY time DESC LIMIT 1");
     }
     }
 }

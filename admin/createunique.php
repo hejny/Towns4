@@ -16,7 +16,7 @@ ob_end_flush();
 Tato funkce slouží k vytvoření stavebních plánů.<br/>
 <b>Upozornění: </b>Tato funkce může při nesprávném použití poškodit nultý podsvět!<br />
 <b>Upozornění: </b>Tento proces může trvat i několik minut.<br/>
-<b>NEXTID: </b><?php echo(sql_1data("SELECT max(id) FROM ".mpx."objects WHERE ww!='0'")-(-1)); ?><br/>
+<b>NEXTID: </b><?php echo(sql_1data("SELECT max(id) FROM `[mpx]pos_obj` WHERE ww!='0'")-(-1)); ?><br/>
 <form id="form1" name="form1" method="post" action="">
 <table  border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -87,7 +87,7 @@ if($_POST['filename']){
 						$origin=explode(',',$origin);
 						$i=0;while($origin[$i]){
 							if(!is_numeric($origin[$i])){
-								$origin[$i]=sql_1data('SELECT id FROM [mpx]objects WHERE `name`=\'{'.$origin[$i].'}\'');
+								$origin[$i]=sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE `name`=\'{'.$origin[$i].'}\'');
 							}
 						$i++;}
 						$origin=implode(',',$origin);
@@ -128,7 +128,7 @@ if($_POST['filename']){
 			$object->origin=($origin?explode(',',$origin):array($id));
 			if($origin){
 				foreach(explode(',',$origin) as $oid){
-					$ofunc=sql_1data('SELECT func FROM [mpx]objects WHERE `name`=\'{'.$oid.'}\' OR id=\''.$oid.'\'');
+					$ofunc=sql_1data('SELECT func FROM `[mpx]pos_obj` WHERE `name`=\'{'.$oid.'}\' OR id=\''.$oid.'\'');
 					$ofunc=new func($ofunc);
 					$func->join($ofunc);
 				}
@@ -172,7 +172,7 @@ if($_POST['filename']){
 				$upd_block=$object->block_;
 
 
-				$aff=sql_query("UPDATE [mpx]objects SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', hard='$upd_hard', expand='$upd_expand', block='$upd_block' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') ".($_POST['brutal']?'':"AND origin='$upd_origin'")." AND ww!=0",2);br();
+				$aff=sql_query("UPDATE `[mpx]pos_obj` SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', hard='$upd_hard', expand='$upd_expand', block='$upd_block' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') ".($_POST['brutal']?'':"AND origin='$upd_origin'")." AND ww!=0",2);br();
 				//die();
 				//echo(' - '.$aff);
 			}
@@ -180,8 +180,8 @@ if($_POST['filename']){
 				
 
 			if($id/* and $object->id!=$id*/){
-				sql_query('DELETE FROM [mpx]objects WHERE id='.$id,1);
-				sql_query('UPDATE [mpx]objects SET id='.$id.' WHERE id='.$object->id,2);br();
+				sql_query('DELETE FROM `[mpx]pos_obj` WHERE id='.$id,1);
+				sql_query('UPDATE `[mpx]pos_obj` SET id='.$id.' WHERE id='.$object->id,2);br();
 				r('reid: '.$object->id.' >>> '.$id);
 			}
 
@@ -204,12 +204,12 @@ if($_POST['filename']){
 
 		//br();
 		/*if($reg_name){
-			sql_query("UPDATE [mpx]objects SET func='$reg_func', fs='$reg_fs', fp='$reg_fs', fr='$reg_fr', fc='$reg_fc', fx='$reg_fx', hard='$reg_hard', expand='$reg_expand', collapse='$reg_collapse' WHERE name='$reg_name'",2);
+			sql_query("UPDATE `[mpx]pos_obj` SET func='$reg_func', fs='$reg_fs', fp='$reg_fs', fr='$reg_fr', fc='$reg_fc', fx='$reg_fx', hard='$reg_hard', expand='$reg_expand', collapse='$reg_collapse' WHERE name='$reg_name'",2);
 
 		}*/
 
 
-		sql_query("UPDATE [mpx]objects SET fp=fs WHERE ww='0'");
+		sql_query("UPDATE `[mpx]pos_obj` SET fp=fs WHERE ww='0'");
 		br();echo('<b>hotovo</b>');
 	}else{
 		echo('Soubor neexistuje!');

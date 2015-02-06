@@ -17,17 +17,17 @@ require2("text/func_core.php");
 <?php
 
 if($_GET['accept']){
-	sql_query('UPDATE [mpx]objects SET ww=0 WHERE id='.$_GET['accept']);
-	$tmpobject=new object(sql_1data("SELECT id FROM [mpx]objects WHERE `own`=".$_GET['own']." AND (`type`='town' OR `type`='town2')"));
+	sql_query('UPDATE `[mpx]pos_obj` SET ww=0 WHERE id='.$_GET['accept']);
+	$tmpobject=new object(sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE `own`=".$_GET['own']." AND (`type`='town' OR `type`='town2')"));
 	$tmpobject->hold->add('gold',$_GET['gold']);
 	$tmpobject->update();
 	unset($tmpobject);
 	send_report('1000078',$_GET['own'],'Budova '.$_GET['name'].' byla schválená','Vámi navržená budova '.$_GET['name'].' byla schválená a vám byla připočtena '.$_GET['gold'].' odměna zlata. Děkujeme za váš návrh.');
 }
 if($_GET['reject']=='alles'){
-	sql_query('UPDATE [mpx]objects SET ww=-2 WHERE ww=-1 AND name NOT LIKE \'{register_%\'');
+	sql_query('UPDATE `[mpx]pos_obj` SET ww=-2 WHERE ww=-1 AND name NOT LIKE \'{register_%\'');
 }elseif($_GET['reject']){
-	sql_query('UPDATE [mpx]objects SET ww=-2 WHERE id='.$_GET['reject']);
+	sql_query('UPDATE `[mpx]pos_obj` SET ww=-2 WHERE id='.$_GET['reject']);
 }
 
 

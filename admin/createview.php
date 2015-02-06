@@ -46,20 +46,20 @@ if($_GET['create']){
         while($posttype==$lastposttype){
             $posttype=rand(1,7);   
         }
-        file_put_contents2($file,$posttype);
+        fpc($file,$posttype);
         //---------------------------------------------------Zjištění, kdy se posílalo naposledy?
         $file=adminfile.'objects/lastview'.$posttype.'.txt';
         $time=time()-strtotime(file_get_contents($file));
         if($time==time())$time=3600*24;
         $time=$time-1+1;
-        file_put_contents2($file,date(DATE_ATOM,time()));
+        fpc($file,date(DATE_ATOM,time()));
         //---------------------------------------------------Zjištění posledního zobrazovaného města?
         $file=adminfile.'objects/lasttown.txt';
         $lasttown=file_get_contents($file)-1+1;
         //---------------------------------------------------Speciální zdroj
         if($posttype==1){
             //--------------------------------------Nejaktivnější město
-                $id=sql_1data("SELECT own FROM [mpx]objects WHERE type='building' AND starttime>".(time()-$time)." AND own!=$lasttown GROUP BY own ORDER BY COUNT(own) DESC LIMIT 1",3);
+                $id=sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE type='building' AND starttime>".(time()-$time)." AND own!=$lasttown GROUP BY own ORDER BY COUNT(own) DESC LIMIT 1",3);
 
                 if(!$id)return('žádné 1');
                 

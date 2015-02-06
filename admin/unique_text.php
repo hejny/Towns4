@@ -17,7 +17,7 @@ ob_end_flush();
 <?php
 if($_POST['contents']){
 	echo('<b>změněno</b><br/>');
-	$contents=file_put_contents2(adminfile.'objects/models.txt',$_POST['contents']);
+	$contents=fpc(adminfile.'objects/models.txt',$_POST['contents']);
 }
 $contents=file_get_contents(adminfile.'objects/models.txt');
 $contents=htmlspecialchars($contents);

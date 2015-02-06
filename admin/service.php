@@ -40,32 +40,32 @@ if($_GET['action']){
 if($_GET['wtf']=='all' or $_GET['wtf']=='a'){
 
 $buildingsall=array();
-foreach(sql_array("SELECT id FROM [mpx]objects WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt()) as $row){
+foreach(sql_array("SELECT id FROM `[mpx]pos_obj` WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt()) as $row){
     list($id)=$row;
     $buildingsall[$id]=true;
     
 }
 //print_r($buildingsall);
-//$tmp=sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt());
+//$tmp=sql_query("UPDATE `[mpx]pos_obj` SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE $wwhere AND `type`='building' AND `name`!='".sql(mainname())."' AND fp>0 AND ".objt());
 
 
 //print_r($tmp);
 
 
-//sql_query("UPDATE [mpx]objects SET fp=0 WHERE $wwhere AND `type`='building' AND fp<0 ");
-//sql_query("UPDATE [mpx]objects SET fp=fs WHERE $wwhere AND `type`='building' ");
+//sql_query("UPDATE `[mpx]pos_obj` SET fp=0 WHERE $wwhere AND `type`='building' AND fp<0 ");
+//sql_query("UPDATE `[mpx]pos_obj` SET fp=fs WHERE $wwhere AND `type`='building' ");
 
 
 
 //--------------------------Oprava budov
 $tmp=0;
-$towns=sql_array("SELECT id,name,`set` FROM [mpx]objects WHERE (type='town' OR type='town2') AND ".objt());
+$towns=sql_array("SELECT id,name,`set` FROM `[mpx]pos_obj` WHERE (type='town' OR type='town2') AND ".objt());
 foreach($towns as $town){
 	list($townid,$townname,$townset)=$town;
 	//textb($townname);br();
 	if(strpos($townset,'global_repair=off')===false){
 		
-		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM [mpx]objects WHERE own='".$townid."' AND ".objt()." AND `name`!='".sql(mainname())."' ORDER BY id DESC");
+		$buidings=sql_array("SELECT id,name,fp,fs,`set` FROM `[mpx]pos_obj` WHERE own='".$townid."' AND ".objt()." AND `name`!='".sql(mainname())."' ORDER BY id DESC");
 		$object=new object($townid);
 		foreach($buidings as $buiding){
 			list($id,$name,$fp,$fs,$set)=$buiding;
@@ -84,7 +84,7 @@ foreach($towns as $town){
 				$hold=new hold('fuel='.$repair_fuel);
 				if($object->hold->takehold($hold)){
                                         //Není potřeba chátrat v DB - chátrání je zatím pouze virtuální
-					//sql_query('UPDATE [mpx]objects SET fp=fs WHERE id='.$id);
+					//sql_query('UPDATE `[mpx]pos_obj` SET fp=fs WHERE id='.$id);
                                         $buildingsall[$id]=false;
                                         $tmp++;
 				}else{
@@ -114,11 +114,11 @@ foreach($buildingsall as $id=>$yes){
     if($yes){
         $tmp++;
         trackobject($id);//záloha původního objektu, nastavení časů
-        sql_query("UPDATE [mpx]objects SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE id=".$id);//chátrání
+        sql_query("UPDATE `[mpx]pos_obj` SET fp=CEIL(fp-(fs/".chaos_fall.")) WHERE id=".$id);//chátrání
     }
 }
 
-$tmp2=sql_query("UPDATE [mpx]objects SET stoptime=".time()." WHERE $wwhere AND `type`='building' AND fp<0 AND ".objt());
+$tmp2=sql_query("UPDATE `[mpx]pos_obj` SET stoptime=".time()." WHERE $wwhere AND `type`='building' AND fp<0 AND ".objt());
 ebr("Provedeno chátrání a záloha(bez opravy) $tmp budov.");
 ebr("spadlo $tmp2 budov.");
 
@@ -154,13 +154,13 @@ foreach($array as $tmp){
 $terrains=sql_array('SELECT `x`,`y`,`terrain` FROM [mpx]map AS A WHERE '.$wwhere.' AND ('.$subquery.') ORDER BY RAND() LIMIT '.$limit,$test?2:0);
 if($test)hr();
 
-// AS A WHERE (SELECT count(1) FROM [mpx]objects AS B WHERE POW(A.x-B.x,2)+POW(A.y-B.y,2)<POW('.sql(chaos_terrain_range).',2) )=0
+// AS A WHERE (SELECT count(1) FROM `[mpx]pos_obj` AS B WHERE POW(A.x-B.x,2)+POW(A.y-B.y,2)<POW('.sql(chaos_terrain_range).',2) )=0
 
 foreach($terrains as $tmp){
 	list($x,$y,$terrain)=$tmp;
 	$x=$x-1+1;$y=$y-1+1;
 
-	$budova=sql_1data("SELECT count(1) FROM [mpx]objects WHERE $wwhere AND ROUND(x)=$x AND ROUND(y)=$y",$test?2:0);if($test)br();
+	$budova=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE $wwhere AND ROUND(x)=$x AND ROUND(y)=$y",$test?2:0);if($test)br();
 	if($budova){
 		if($test)e('!budova');
 	}else{
@@ -180,7 +180,7 @@ foreach($terrains as $tmp){
 		$terrain2=sql_1data("SELECT terrain FROM [mpx]map WHERE $wwhere AND x=$tmpx AND y=$tmpy",$test?2:0);
 		if($test)br();
 		if($terrain2 and $terrain!=$terrain2){
-			//$budova=sql_1data("SELECT count(1) FROM [mpx]objects WHERE ROUND(x)=$tmpx AND ROUND(y)=$tmpy",$test?2:0);
+			//$budova=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE ROUND(x)=$tmpx AND ROUND(y)=$tmpy",$test?2:0);
 			if($test)br();
 			if(/*!$budova*/true){
 
@@ -226,16 +226,16 @@ foreach(array(110,111) as $origin){
 	if($test){
 		$limit=1;
 	}else{
-		$limit=ceil(sql_1data("SELECT count(1) FROM [mpx]objects WHERE $wwhere AND type='$type'")*(($type=='tree'?chaos_tree:chaos_rock)/100));
+		$limit=ceil(sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE $wwhere AND type='$type'")*(($type=='tree'?chaos_tree:chaos_rock)/100));
 		//die($limit);
 	}
 
-	$array=sql_array('SELECT `x`,`y` FROM [mpx]objects WHERE '.$wwhere.' AND origin LIKE \'%'.$origin.'%\' ORDER BY RAND() LIMIT '.$limit);
+	$array=sql_array('SELECT `x`,`y` FROM `[mpx]pos_obj` WHERE '.$wwhere.' AND origin LIKE \'%'.$origin.'%\' ORDER BY RAND() LIMIT '.$limit);
 	//t('a');
 	foreach($array as $row){
 		list($x,$y)=$row;
 
-		$id=sql_1data("SELECT `id` FROM [mpx]objects WHERE $wwhere AND type='$type' ORDER BY POW(x-$x,2)+POW(y-$y,2) LIMIT 1");
+		$id=sql_1data("SELECT `id` FROM `[mpx]pos_obj` WHERE $wwhere AND type='$type' ORDER BY POW(x-$x,2)+POW(y-$y,2) LIMIT 1");
 		//t('b');
 
 		$new=sql_array('SELECT `x`,`y` FROM [mpx]map WHERE '.$wwhere.' AND terrain=\''.$terrain.'\' ORDER BY RAND() LIMIT 1');
@@ -245,7 +245,7 @@ foreach(array(110,111) as $origin){
 		$nx-=rand(-100,100)/50;
 		$ny-=rand(-100,100)/50;		
 
-		sql_query("UPDATE [mpx]objects SET `x`=$nx , `y`=$ny WHERE $wwhere AND `id`='$id' LIMIT 1");
+		sql_query("UPDATE `[mpx]pos_obj` SET `x`=$nx , `y`=$ny WHERE $wwhere AND `id`='$id' LIMIT 1");
 		changemap($x,$y,1);
 		changemap($nx,$ny,1);		
 		//br();

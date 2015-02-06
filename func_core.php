@@ -11,18 +11,12 @@
 
 
 
-
-//======================================================================================LEAVE
-define("a_leave_help","");
-function a_leave($id){
-    sql_query('UPDATE [mpx]objects SET own=0 WHERE own='.$GLOBALS['ss']['useid'].' AND id='.$id.' AND '.objt());
-}
-//======================================================================================LEAVE
+//======================================================================================DISMANTLE
 define("a_dismantle_help","");
 function a_dismantle($id){
 	
-    if(/*$id==*/sql_1data('SELECT id FROM [mpx]objects WHERE own='.$GLOBALS['ss']['useid'].' AND id='.$id) or $id=$GLOBALS['ss']['candismantle']){
-        $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id'"));
+    if(/*$id==*/sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE own='.$GLOBALS['ss']['useid'].' AND id='.$id) or $id=$GLOBALS['ss']['candismantle']){
+        $fc=new hold(sql_1data("SELECT fc FROM `[mpx]pos_obj` WHERE id='$id'"));
         $tmp=new object($id);
         //$tmp->update(true);//s
         //$fc=new hold($tmp->fc);
@@ -67,6 +61,7 @@ function a_info($q="use"){
     $GLOBALS['ss']["query_output"]->add("fr",$GLOBALS['ss'][$q."_object"]->fr);
     $GLOBALS['ss']["query_output"]->add("fx",$GLOBALS['ss'][$q."_object"]->fx);
     $GLOBALS['ss']["query_output"]->add("name",$GLOBALS['ss'][$q."_object"]->name);
+    $GLOBALS['ss']["query_output"]->add("origin",implode(',',$GLOBALS['ss'][$q."_object"]->origin));
     //$GLOBALS['ss']["query_output"]->add("password",$GLOBALS['ss'][$q."_object"]->password);
     $GLOBALS['ss']["query_output"]->add("func",$GLOBALS['ss'][$q."_object"]->func->vals2str());
     $GLOBALS['ss']["query_output"]->add("support",$GLOBALS['ss'][$q."_object"]->support());
@@ -77,15 +72,12 @@ function a_info($q="use"){
     $GLOBALS['ss']["query_output"]->add("ownname",$GLOBALS['ss'][$q."_object"]->ownname);
     $GLOBALS['ss']["query_output"]->add("own2",$GLOBALS['ss'][$q."_object"]->own2);
     //r($GLOBALS['ss'][$q."_object"]->own2);
-    $GLOBALS['ss']["query_output"]->add("in",$GLOBALS['ss'][$q."_object"]->in);
-    $GLOBALS['ss']["query_output"]->add("inname",$GLOBALS['ss'][$q."_object"]->inname);
     //$GLOBALS['ss']["query_output"]->add("in2",$GLOBALS['ss'][$q."_object"]->in2);
     $GLOBALS['ss']["query_output"]->add("t",$GLOBALS['ss'][$q."_object"]->t);
     $GLOBALS['ss']["query_output"]->add("tasks",$GLOBALS['ss'][$q."_object"]->tasks);
-    list($x,$y)=$GLOBALS['ss'][$q."_object"]->position();
     $GLOBALS['ss']["query_output"]->add("ww",$GLOBALS['ss'][$q."_object"]->ww);
-    $GLOBALS['ss']["query_output"]->add("x",$x);
-    $GLOBALS['ss']["query_output"]->add("y",$y);
+    $GLOBALS['ss']["query_output"]->add("x",$GLOBALS['ss'][$q."_object"]->x);
+    $GLOBALS['ss']["query_output"]->add("y",$GLOBALS['ss'][$q."_object"]->y);
     //r($GLOBALS['ss']["query_output"]->vals2str(),1);
     }
 }
@@ -130,69 +122,5 @@ function a_profile_edit($id,$key,$value){
     }
     if($update)$object->update();
 }
-//===============================================================================================================ITEMS
 
-
-/*define("a_items_help","");
-function a_items(){
-    //id,type,fp,fs,dev,name,password,func,set,res,profile,hold,own,in,t,x,y
-    //r("SELECT * FROM objects WHERE `in`='".($GLOBALS['ss']["use_object"]->id)."' ORDER BY t");
-    $csv=sql_csv("SELECT `id`,`type`,`fp`,`fs`,`dev`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($GLOBALS['ss']["use_object"]->id)."' ORDER BY t desc");
-    $GLOBALS['ss']["query_output"]->add("items",$csv);
-}
-//===============================================================================================================ITEM
-define("a_item_help","id,action[,param,param2]");
-function a_item($id,$action,$param=false,$param2=false){
-    $item=new object($id);
-    if($action=="drop"){
-        $item->delete();
-    }elseif($action=="status"){
-        //r($item->profile->status);
-        $item->profile->add("status",$param);
-    }elseif($action=="hold"){
-        //$GLOBALS['ss']["query_output"]->add("error",$param.$param2);
-        $itemx=new object("","`in`='".($GLOBALS['ss']["use_object"]->id)."' and x='$param' and y='$param2'");
-        if($itemx->loaded){
-            $itemx->x=$item->x;
-            $itemx->y=$item->y;
-        }
-        $item->x=$param;
-        $item->y=$param2;
-    }
-}*/
-
-
-//======================================================================================IMAGE
-/*define("a_image_help","name,description,filepath");
-function a_image($name,$description,$filepath){
-    $q=name_error($name);
-    if(!$q){
-        if(file_exists($filepath)){
-                $message=new object("create");
-                $message->name=$name;
-                $message->type="image";
-                $message->in=$GLOBALS['ss']["use_object"]->id;
-                $message->profile->add("author",$GLOBALS['ss']["use_object"]->id);
-                $message->profile->add("description",$description);
-                $message->resfile=true;
-                $message->res=$filepath;
-                //r($filepath);
-                //r($filepath);
-            $GLOBALS['ss']["query_output"]->add("success","Soubor byl nahrán.");
-            $GLOBALS['ss']["query_output"]->add("1",1);
-        }else{
-             $GLOBALS['ss']["query_output"]->add("error","Soubor neexistuje.");
-        }
-    }else{
-         $GLOBALS['ss']["query_output"]->add("error",$q);
-    }
-//$message=new object("create");
-//$this->resfile
-}/**/
-
-//======================================================================================
-/*function a_stat($while="1",$limit="10"){
-    $array=sql_csv("SELECT `id`,`name`,`type`,`dev`,`fs`,`fp`,`fr`,`fx`,`own`,`in`,`x`,`y` FROM `".mpx."objects` WHILE $while LIMIT $limit");
-    $GLOBALS['ss']["query_output"]->add("stat",$array);
-}*/
 ?>

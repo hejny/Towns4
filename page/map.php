@@ -81,7 +81,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
    }
 
     if(!file_exists($file) or debug){
-	    $array=sql_array('SELECT x,y FROM [mpx]objects WHERE ww='.ww.' AND '.(rand(1,10)>7?'1':'type=\'building\' AND  own!=\'\'').' AND '.objt().' ORDER BY RAND() LIMIT 1 ');
+	    $array=sql_array('SELECT x,y FROM `[mpx]pos_obj` WHERE ww='.ww.' AND '.(rand(1,10)>7?'1':'type=\'building\' AND  own!=\'\'').' AND '.objt().' ORDER BY RAND() LIMIT 1 ');
 	    list($x,$y)= $array[0];
 	    //echo("$x,$y");
 	    $tmp=3;
@@ -206,8 +206,8 @@ if($GLOBALS['get']['play']){
 	}else{
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	}
-	$starttimes=sql_array('SELECT DISTINCT starttime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
-	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$starttimes=sql_array('SELECT DISTINCT starttime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$times=array();
 	foreach($starttimes as $row){$times[]=$row[0];}
 	foreach($stoptimes as $row){$times[]=$row[0];}
@@ -262,8 +262,8 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 	}else{
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	}
-	$starttimes=sql_array('SELECT DISTINCT starttime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
-	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM [mpx]objects WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$starttimes=sql_array('SELECT DISTINCT starttime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
+	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$times=array();
 	foreach($starttimes as $row){$times[]=$row[0];}
 	foreach($stoptimes as $row){$times[]=$row[0];}
@@ -579,7 +579,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                     //=======================================================================================================================MEGATEST
                     <?php /*
 
-                        $res=sql_1data("SELECT res FROM ".mpx."objects WHERE id='$id' AND ".objt());
+                        $res=sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE id='$id' AND ".objt());
                         //mail('ph@towns.cz','tmp',$res);
 
                         if(substr($res,0,1)=='{' or strpos($res,'{}')){           
@@ -594,9 +594,9 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
                             //OLD COLLAPSE//$hard=hard($rx,$ry);
                             //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
-                                //OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){	
+                                //OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
 
-                                if(!($walltype=sql_1data("SELECT `type` FROM ".mpx."objects WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))){
+                                if(!($walltype=sql_1data("SELECT `type` FROM `[mpx]pos_obj` WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))){
 
 
                                 $resistance=supportF($id,'resistance','resistance');
@@ -612,10 +612,10 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                 if(!($blocktest=block2test('B',$x,$y))){
 
 
-                            if(intval(sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
+                            if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
 
 
-                                $fc=new hold(sql_1data("SELECT fc FROM ".mpx."objects WHERE id='$id' AND ".objt()));
+                                $fc=new hold(sql_1data("SELECT fc FROM `[mpx]pos_obj` WHERE id='$id' AND ".objt()));
                                 if((!$test)?($GLOBALS['ss']["use_object"]->hold->takehold($fc)):($GLOBALS['ss']["use_object"]->hold->testchange($fc))){
 
                                     if($rot and strpos($res,'/1.png'))$res=str_replace('1.png',(($rot/15)+1).'.png',$res);
@@ -626,13 +626,13 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
                                     $tol=sqrt(2)/2;
-                                    //define('create_error',"SELECT id FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".$GLOBALS['ss']['useid']."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
+                                    //define('create_error',"SELECT id FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".$GLOBALS['ss']['useid']."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
 
-                                   //foreach(sql_array("SELECT id,name,own FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".$GLOBALS['ss']['useid']."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
+                                   //foreach(sql_array("SELECT id,name,own FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".$GLOBALS['ss']['useid']."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
 
 
-                                    $func=func2list(sql_1data('SELECT func FROM [mpx]objects WHERE id='.$id.' AND '.objt()));
-                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `".mpx."objects`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".$GLOBALS['ss']['useid']."'
+                                    $func=func2list(sql_1data('SELECT func FROM `[mpx]pos_obj` WHERE id='.$id.' AND '.objt()));
+                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".$GLOBALS['ss']['useid']."'
                                     if(!$jid){//e('ahoj');
 
 
@@ -647,8 +647,8 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                                 $nextid=nextid();
                                                 define('object_id',$nextid);
                                                 $GLOBALS['object_ids']=array($nextid);
-                                                sql_query("INSERT INTO `".mpx."objects` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `starttime`) 
-                        SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `".mpx."objects` WHERE id='$id'");
+                                                sql_query("INSERT INTO `[mpx]pos_obj` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `starttime`)
+                        SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `[mpx]pos_obj` WHERE id='$id'");
                                         }
 
                                         $GLOBALS['ss']["query_output"]->add("1",1);
@@ -757,7 +757,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                 $GLOBALS['ss']["query_output"]->add("error",lr('create_error_block_'.$blocktest));
                             }}else{
                                 define('object_build',true);
-                                //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `".mpx."map`  WHERE `".mpx."map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `".mpx."map`.`x`=$y AND `".mpx."map`.`y`=$x)+(SELECT SUM(`".mpx."objects`. `hard`) FROM `".mpx."objects` WHERE `".mpx."objects`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`".mpx."objects`.`x`)=$y AND ROUND(`".mpx."objects`.`y`)=$x)";
+                                //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `[mpx]map`  WHERE `[mpx]map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `[mpx]map`.`x`=$y AND `[mpx]map`.`y`=$x)+(SELECT SUM(`[mpx]pos_obj`. `hard`) FROM `[mpx]pos_obj` WHERE `[mpx]pos_obj`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`[mpx]pos_obj`.`x`)=$y AND ROUND(`[mpx]pos_obj`.`y`)=$x)";
                                 //$hard=sql_1data($sql);// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
                                 define('create_error',lr('create_error_resistance_'.$blocktest));
                                 $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance_'.$blocktest));
@@ -1065,7 +1065,7 @@ echo('area_x='.$xa.';'.nln);
 echo('area_y='.$ya.';'.nln);
 //e('alert('.$GLOBALS['ss']["use_object"]->x.');');
 echo('area=['.nln);
-foreach(sql_array("SELECT x,y,hard FROM `".mpx."map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
+foreach(sql_array("SELECT x,y,hard FROM `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
     list($area_x,$area_y,$area_hard)=$row;
     $q=1-$area_hard;
     if($q<0.2)$q=0;

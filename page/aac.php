@@ -82,7 +82,7 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 		if($_GET['map_units_time'])$map_units_time=sql($_GET['map_units_time']);
 		
 		//mainname()
-		$count=sql_1data("SELECT count(1) FROM `[mpx]objects` WHERE (ww=".$GLOBALS['ss']["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
+		$count=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE (ww=".$GLOBALS['ss']["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
 		if($count){
 		    //e('alert(123);');
 		    e('map_units_time='.time().';');

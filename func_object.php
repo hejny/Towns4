@@ -5,7 +5,9 @@
 
    core/func_object.php
 
-   Tento soubor slouží k deklaraci objektu na spávu tabulky [mpx]objects.
+   Tento soubor slouží k deklaraci objektů a fukncí na mapě.
+   deklarace object
+   práce s daty world_objects, world_object_tmp a world_positions
 */
 //==============================
 
@@ -16,9 +18,12 @@
  *
  */
 class object{
+    //======================================================================================object->__construct
     /**
-     * @param $id
-     * @param string $where
+     * Inicializace objektu
+     * @author PH
+     *
+     * @param id
      */
     function __construct($id=0,$where="",$type=''){
 	t("object - create - start");
@@ -38,34 +43,13 @@ class object{
             //$this->id=$id;
             //r(">".$id,"t");
 		t("object - create - a");
-            $sql_ownname="(SELECT name FROM ".mpx."objects as tmp WHERE tmp.id=".mpx."objects.own) AS ownname";
-            $sql_inname="(SELECT name FROM ".mpx."objects as tmp WHERE tmp.id=".mpx."objects.in) AS inname";
-            $result = sql_array("SELECT *,$sql_ownname,$sql_inname FROM ".mpx."objects WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1",0);
+            $sql_ownname="(SELECT name FROM `[mpx]pos_obj` as tmp WHERE tmp.id=`[mpx]pos_obj`.own) AS ownname";
+            $result = sql_array("SELECT *,$sql_ownname FROM `[mpx]pos_obj` WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1",0);
             $row = $result[0];
             if($row){
                 //---------------
-                //TASKS//$this->tasks=sql_csv("SELECT * FROM ".mpx."tasks WHERE object='".$row["id"]."' ORDER BY time");
-                //---------------
-                /*$result3 = sql_query("SELECT id,name FROM objects WHERE own='".$row["id"]."' ORDER BY name");
-                 $this->own2=new vals();
-                while($own = mysql_fetch_array ($result3)){
-                 $this->own2->add($own["id"],$own["name"]);
-                }
-                mysql_free_result($result3);*/
-                //---------------
-                /*$result3 = sql_query("SELECT id,type FROM objects WHERE `in`='".$row["id"]."' ORDER BY name");
-                 $this->in2=new vals();
-                while($own = mysql_fetch_array ($result3)){
-                 $this->in2->add($own["id"],$own["type"]);
-                }
-                mysql_free_result($result3);*/
-                //r("t");
-                 $this->own2=sql_csv("SELECT id,name FROM ".mpx."objects WHERE (`type`='user' OR `type`='unit') AND own='".$row["id"]."' ORDER BY name");
-                // r("t");
-                 //r($this->own2);
-                 //$this->in2=sql_csv("SELECT id FROM objects WHERE `in`='".$row["id"]."' ORDER BY t");
-                //---------------
-		t("object - create - b");
+                //$this->own2=sql_csv("SELECT id,name FROM `[mpx]pos_obj` WHERE (`type`='user' OR `type`='unit') AND own='".$row["id"]."' ORDER BY name");
+		        t("object - create - b");
                 $this->loaded=true;
                 $this->id=$row["id"];
                 $this->type=$row["type"];
@@ -96,8 +80,6 @@ class object{
                 $this->own=$row["own"];
 				$this->superown=$row["superown"];
                 $this->ownname=$row["ownname"];
-                $this->in=$row["in"];
-                $this->inname=$row["inname"];
                 $this->ww=$row["ww"];
                 $this->t=$row["t"];
                 $this->pt=$row["pt"];
@@ -116,9 +98,7 @@ class object{
 
                 t("object - create - c");
 
-                //$this->x++;
-                $this->type();
-                //r("t","<");
+
                 return(true);
             }else{
                 //echo('hovnooooooooooooooo'.$id);
@@ -130,8 +110,61 @@ class object{
             //r($id);
             $id=nextid();
             $name='object '.$id;
-            sql_query("INSERT INTO `".mpx."objects` (`id`,`name`, `type`, `fp`, `fs`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `block`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);
-            //$this->id=sql_1data("SELECT LAST_INSERT_ID()");
+
+
+            //------------------INSERT objects
+            sql_insert('objects',array(
+                'id' => $id,
+                'name' => $name,
+                'type' => 'hybrid',
+                'userid' => '',
+                'origin' => '',
+                'fp' => '',
+                'func' => '',
+                'hold' => '',
+                'res' => '',
+                'profile' => '',
+                'set' => '',
+                'own' => '',
+                't' => '',
+                'pt' => ''
+            ));
+            //------------------INSERT objects_tmp
+            sql_insert('objects_tmp',array(
+                'id' => $id,
+                'fs' => '',
+                'fc' => '',
+                'fr' => '',
+                'fx' => '',
+                'superown' => '',
+                'expand' => '',
+                'block' => '',
+                'attack' => '',
+                'create_lastused' => '',
+                'create_lastobject' => '',
+                'create2_lastused' => '',
+                'create2_lastobject' => '',
+                'create3_lastused' => '',
+                'create3_lastobject' => '',
+                'create4_lastused' => '',
+                'create4_lastobject' => ''
+            ));
+            //------------------INSERT positions
+            sql_insert('positions',array(
+                'id' => $id,
+                'ww' => '',
+                'x' => '0',
+                'y' => '0',
+                'traceid' => '',
+                'starttime' => '',
+                'readytime' => '',
+                'stoptime' => ''
+            ));
+            //------------------
+
+            /*sql_query("INSERT INTO `[mpx]pos_obj` (`id`,`name`, `type`, `fp`, `fs`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `block`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);*/
+
+
             $this->id=$id;
             $this->name=$name;
             r("creating ".$this->id);
@@ -139,10 +172,7 @@ class object{
             $this->type="";
             $this->fp="";
             $this->fs="";
-            //OLD DEV//$this->dev="";
 	    $this->origin='';
-            //$this->name="untitled_".$this->id;
-            //$this->password="";
             $this->func=new func();
             $this->set=new set();
             $this->res="";
@@ -156,7 +186,6 @@ class object{
 			$this->superown="";
             $this->ownname="";
             $this->ww="1";
-            $this->in="";
             $this->t="";
             $this->x="";
             $this->y="";
@@ -164,7 +193,12 @@ class object{
         }
 	
     }
-    //--------------------------------------------sum,sum_
+    //======================================================================================object->sum
+    /**
+     * MD5 sumarizace objektu
+     * @author PH
+     *
+     */
     /**
      * @param bool $image
      * @return string
@@ -172,31 +206,6 @@ class object{
     function sum($image=false){
         $stream="";
         if(!$image){
-            /*$stream.=",".$this->id;
-            $stream.=",".$this->type;
-            $stream.=",".$this->fp;
-            //$stream.=",".$this->fs;
-            //$stream.=",".$this->fr;
-            //$stream.=",".$this->fx;
-            $stream.=",".$this->dev;
-	    $stream.=implode(',',$this->origin);
-            $stream.=",".$this->name;
-            //$stream.=",".$this->password;
-            //r(1);
-            $stream.=",".$this->func->vals2str();
-            //r(2);            
-            $stream.=",".$this->set->vals2str();
-            $stream.=",".$this->res;
-            $stream.=",".$this->profile->vals2str();
-            $stream.=",".$this->hold->vals2str();
-            $stream.=",".$this->hard;
-            $stream.=",".$this->expand_;
-            $stream.=",".$this->block_;
-            $stream.=",".$this->own;
-            $stream.=",".$this->in;
-            $stream.=",".$this->ww;
-            $stream.=",".$this->x;
-            $stream.=",".$this->y;*/
 	    $stream=serialize($this);
         }else{
             $stream.=",".$this->res;
@@ -209,30 +218,23 @@ class object{
         $stream="";
             $stream.=",".$this->type;
             $stream.=",".$this->fp;
-            //$stream.=",".$this->fs;
-            //$stream.=",".$this->fr;
-            //$stream.=",".$this->fx;
-            //OLD DEV//$stream.=",".$this->dev;
-	    $stream.=serialize($this->origin);//implode(',',$this->origin);
+	        $stream.=serialize($this->origin);//implode(',',$this->origin);
             $stream.=",".serialize($this->func);//$this->func->vals2str();
-            //$stream.=",".$this->set->vals2str();
             $stream.=",".$this->res;
             $stream.=",".serialize($this->hold);//$this->hold->vals2str();
-            //$stream.=",".$this->hard;
-            //$stream.=",".$this->expand_;
             $stream.=",".$this->own;
 			$stream.=",".$this->superown;
         $stream=md5($stream);
         return($stream);
     }
-    //--------------------------------------------update
+    //======================================================================================object->update
     /**
+     * Update objektu databáze
+     * @author PH
      *
+     * @$force bool
      */
-    function __destruct(){/*$this->update();*/}//r(glob("tmp/32/193/*"));
-    /**
-     *
-     */
+
     function update($force=false,$fpfs=false){
         //echo("destructing ".$this->id);
         //echo("<br>");
@@ -352,10 +354,60 @@ class object{
                 }else{
                     r("updating sumaries -".$this->id);
                 }
-                //==================================================================ARYYD
-                //success(lr('updating',$this->name));
-                //e($this->name);
-                $query=("UPDATE  ".mpx."objects SET 
+                //==================================================================
+
+
+                //------------------UPDATE objects
+                sql_update('objects',"id='".$this->id."'",array(
+                    //'id' => $this->xxx,
+                    'name' => $this->name,
+                    'type' => $this->type,
+                    //'userid' => $this->xxx,
+                    'origin' => implode(',',$this->origin),
+                    'fp' => $this->fp,
+                    'func' => ($this->func->vals2str()),
+                    'hold' => ($this->hold->vals2str()),
+                    'res' => $this->res,
+                    'profile' => ($this->profile->vals2str()),
+                    'set' => ($this->set->vals2str()),
+                    'own' => $this->own,
+                    't' => $this->t,
+                    'pt' => $this->pt
+                ));
+                //------------------UPDATE objects_tmp
+                sql_update('objects_tmp',"id='".$this->id."'",array(
+                    //'id' => $this->xxx,
+                    'fs' => $this->fs,
+                    'fc' => $this->fc,
+                    'fr' => $this->fr,
+                    'fx' => $this->fx,
+                    'superown' => $this->superown,
+                    'expand' => $this->expand_,
+                    'block' => $this->block_,
+                    'attack' => $this->attack_
+                    /*'create_lastused' => $this->xxx,
+                    'create_lastobject' => $this->xxx,
+                    'create2_lastused' => $this->xxx,
+                    'create2_lastobject' => $this->xxx,
+                    'create3_lastused' => $this->xxx,
+                    'create3_lastobject' => $this->xxx,
+                    'create4_lastused' => $this->xxx,
+                    'create4_lastobject' => $this->xxx*/
+                ));
+                //------------------UPDATE positions
+                sql_update('positions',"id='".$this->id."'",array(
+                    //'id' => $this->xxx,
+                    'ww' => $this->ww,
+                    'x' => $this->x,
+                    'y' => $this->y
+                    //'traceid' => $this->xxx,
+                    //'starttime' => $this->xxx,
+                    //'readytime' => $this->xxx,
+                    //'stoptime' => $this->xxx
+                ));
+                //------------------
+
+                /*$query=("UPDATE  `[mpx]pos_obj` SET
                 `type` =  '".($this->type)."',
                 `fp` =  '".($this->fp)."',
                 `fs` =  '".($this->fs)."',
@@ -371,36 +423,30 @@ class object{
                 `set` =  '".($this->set->vals2str())."',
                 `res` =  '".$this->res."',
                 `profile` =  '".($this->profile->vals2str())."',
-                `hold` =  '".($this->hold->vals2str())."',
-                "./*`hard` =  '".(($this->hard))."',*/"
                 `expand` =  '".(($this->expand_))."',
                 `block` =  '".(($this->block_))."',
                 `attack` =  '".(($this->attack_))."',
                 `own` =  '".(($this->own))."',
-				`superown` =  '".(($this->superown))."',
-                `in` =  '".(($this->in))."',
                 `ww` =  '".(($this->ww))."',
                 `t`=  '".($this->t)."',
                 `pt`=  '".($this->pt)."',
                 `x` =  '".($this->x)."',
                 `y` =  '".($this->y)."'
-                WHERE  id ='".($this->id)."'");
-                r($query);
-                //r("t");
-                sql_query($query);
-                //e($this->name.'('.$this->id.')');
-                //e($this->profile->vals2str());
-                //ahref('aaa',js2('alert("'.addslashes($query).'");'));
-		//e('['.$this->id.': '.$this->hold->vals2str().']');
-                //r("t");
-                //echo(mysql_error());
+                WHERE  id ='".($this->id)."'");*/
+
+
             }
         }else{
 		//e('update - not loaded');
 		r('update - not loaded');
 	}
     }
-    //--------------------------------------------resurkey
+    //======================================================================================object->resurkey
+    /**
+     * Přepočítat získávané suroviny u města
+     * @author PH
+     *
+     */
     function resurkey(){
 
 	$surkey=array();
@@ -409,13 +455,13 @@ class object{
 
                 //ABS(A.x-B.x)+ABS(A.y-B.y)
                 
-		foreach(sql_array('SELECT `id`,`func`,x,y FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
+		foreach(sql_array('SELECT `id`,`func`,x,y FROM `[mpx]pos_obj` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
 
 			list($id,$func,$x,$y)=$row;
 
 			//-------------------------distance
 			$dd=10;
-			$distance=sql_1data('SELECT SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2)) FROM `[mpx]objects` WHERE type=\''.$type.'\' AND '.objt().'  AND x<'.($x+$dd).' AND x>'.($x-$dd).' AND y<'.($y+$dd).' AND y>'.($y-$dd).' ORDER BY SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2))');
+			$distance=sql_1data('SELECT SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2)) FROM `[mpx]pos_obj` WHERE type=\''.$type.'\' AND '.objt().'  AND x<'.($x+$dd).' AND x>'.($x-$dd).' AND y<'.($y+$dd).' AND y>'.($y-$dd).' ORDER BY SQRT(POW('.$x.'-x,2)+POW('.$y.'-y,2))');
 
 			//-------------------------
 
@@ -439,9 +485,9 @@ class object{
 	foreach($surkey as $var=>$val){
 		$this->hold->vals['_'.$var]=round($val);
 	}
-	//------------------------holdx
+    //----------------------------
 	$surkey=array();
-	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]holdx%\' AND'.objt()) as $row){
+	foreach(sql_array('SELECT `func`FROM `[mpx]pos_obj` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]holdx%\' AND'.objt()) as $row){
 		list($func)=$row;
 		$func=func2list($func);
 		for($i=1;$i<50;$i++){
@@ -459,10 +505,9 @@ class object{
 	}
 
 	$this->hold->rebase();
-
-	//------------------------change
+	//----------------------------
 	$eff=0;
-	foreach(sql_array('SELECT `func`FROM `[mpx]objects` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]change%\' AND '.objt()) as $row){
+	foreach(sql_array('SELECT `func`FROM `[mpx]pos_obj` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]change%\' AND '.objt()) as $row){
 		list($func)=$row;
 		$func=func2list($func);
 		foreach(array('change'/*,'change2','change3','change4','holdx5','holdx6'*/) as $fname){
@@ -474,134 +519,34 @@ class object{
 	$this->hold->vals['_change']=round($eff*100);
 
     }
-    //--------------------------------------------xxx
+
+    //======================================================================================object->deletex
     /**
+     * Zneplatnění objektu - (z hráčského pohledu smazání)
+     * @author PH
      *
      */
-    function xxx(){
-        r($this->id);
-        if($this->loaded){
-        r($this->name);
-        r($this->profile->vals2str());
-        }else{r("not loaded");}
-    }
-    //--------------------------------------------delete je zastaralé
-    /**
-     *
-     */
-    function delete(){
-        sql_query("DELETE FROM `".mpx."objects` WHERE `id` = '".$this->id."'");
-        $this->loaded=false;
-    }
 
     function deletex(){
-        sql_query("UPDATE `".mpx."objects` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'");
+        sql_query("UPDATE `[mpx]pos_obj` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'");
         $this->loaded=false;
     }
-    //--------------------------------------------//TASKS//
+
+
+    //======================================================================================object->support
     /**
-     * @param $time
-     * @param $func
-     * @param $params
+     * Přepočítání func se všemi podporami - potřeba obnovit
+     * @author PH
+     *
      */
-    /*function addtask($name,$time,$func,$params){
-        $result2 = sql_query("SELECT * FROM ".mpx."tasks WHERE object='".$this->id."' ORDER BY time");
-        $this->maxtime=time();$q=0;
-        while($task = mysql_fetch_array ($result2)){
-            $this->maxtime=$task["time"];$q=1;
-        }
-        mysql_free_result($result2);/*
-        if($q){
-            $GLOBALS['ss']["query_output"]->add("error","Jste zaneprázdněni.");
-            return(false);
-        }
-        //echo($time."<br>");
-        $params=$params->vals2str();
-        sql_query("INSERT INTO ".mpx."tasks (`name`,`object`,`timestart`,`time`,`func`,`params`) VALUES ('".($name)."','".($this->id)."',".($this->maxtime).",".($this->maxtime+$time).",'$func', '$params');");
-        return(true);
-    }
-     //--------------------------------------------
-     function deletetask($taskid){
-        sql_query("DELETE FROM ".mpx."tasks WHERE id='".$taskid."' AND object='".$this->id."'");
-    }*/
-    //--------------------------------------------tostring
-
-
-
-
-    /**
-     * @return mixed|string
-     */
-    /*function tostring(){
-        $head=$this->name;
-        $return=
-"$head:type =  ".($this->type).";
-$head:fp =  ".($this->fp).";
-$head:fs =  ".($this->fs).";
-$head:fr =  ".($this->fr).";
-$head:fx =  ".($this->fx).";
-$head:fc =  ".($this->fc).";
-$head:dev =  ".($this->dev).";
-$head:origin =  ".(implode(',',$this->origin)).";
-$head:name =  ".($this->name).";
-".($this->func->vals2strobj("$head:func"))."
-".($this->set->vals2strobj("$head:set"))."
-$res:dev =  ".($this->res).";
-".($this->profile->vals2strobj("$head:profile"))."
-".($this->hold->vals2strobj("$head:hold"))."
-$head:hard =  ".(($this->hard)).";
-$head:expand =  ".(($this->expand_)).";
-$head:block =  ".(($this->block_)).";
-$head:own =  ".(($this->own)).";
-$head:in =  ".(($this->in)).";
-$head:ww =  ".(($this->ww)).";
-$head:t=  ".(time()).";
-$head:x =  ".($this->x).";
-$head:y =  ".($this->y).";";
-        $return=str_replace(nln.nln,nln,$return);
-        return($return);
-    }*/
-
-
-
-
-    //--------------------------------------------type
-    function type(){
-        /*$types=array_reverse($GLOBALS['config']["types"]);
-         foreach($types as $key=>$value){
-             $af=explode(",",$value["af"]);
-             r($key);
-             r($af);
-        }
-         $funcs=$this->func->vals2list();
-         r();*/
-     }
-     //--------------------------------------------getName,...
-    function getName(){return($this->name);}
-    function setName($value){$this->name=$value;}
-    function getFS(){return($this->fs);}
-    function getFP(){return($this->fp);}
-    function setFP($value){$this->fp=$value;}
-     //--------------------------------------------position
-    function position(){
-        list(list($id,$name,$object,$timestart,$time,$func,$params))=csv2array($this->tasks);
-        if($func=="move"){
-            $params=str2list($params);
-            $x=time5($timestart,$time,$this->x,$params["x"]);
-            $y=time5($timestart,$time,$this->y,$params["y"]);
-        }else{
-            $x=$this->x;
-            $y=$this->y;
-        }
-        return(array($x,$y));
-    }
-    //--------------------------------------------support
     function support(){
         if($this->loaded){
             $funcs=$this->func->vals2list();
             $newfuncs=$funcs;
             $support=array();
-            $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM ".mpx."objects WHERE `in`='".($this->id)."' AND ".objt()." ORDER BY t desc");
+            /*
+             * @todo PH vymyslet, co se support systémem?
+             * $in2=sql_array("SELECT `id`,`type`,`fp`,`fs`,`name`,NULL,`func`,`set`,NULL,`profile`,`hold`,`hard`,`expand`,`block`,`attack`,`own`,`in`,`t`,`x`,`y` FROM `[mpx]pos_obj` WHERE `in`='".($this->id)."' AND ".objt()." ORDER BY t desc");
             foreach($in2 as $item){
                 list($_id,$_type,$_fp,$_fs,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_hard,$_expand,$_block,$_attack,$_own,$_in,$_t,$_x,$_y)=$item;
                 $_x=intval($_x);$_y=intval($_y);
@@ -626,6 +571,7 @@ $head:y =  ".($this->y).";";
                     }
                 }
             }
+            */
             foreach($newfuncs as $name=>$func){
                 $class=$func["class"];
                 $params=$func["params"];
@@ -672,7 +618,7 @@ $head:y =  ".($this->y).";";
 	sort($origin);
 	$this->origin=$origin;
 
-	$reference=sql_array("SELECT `name`,`profile`,`res`,`own` FROM `[mpx]objects` WHERE `ww`=0 AND `origin`='".implode(',',$origin)."' AND ".objt()." ORDER BY RAND()");
+	$reference=sql_array("SELECT `name`,`profile`,`res`,`own` FROM `[mpx]pos_obj` WHERE `ww`=0 AND `origin`='".implode(',',$origin)."' AND ".objt()." ORDER BY RAND()");
 	if($reference){
 		list($name,$profile,$res,$own)=$reference[0];
 		$this->name=$name;
@@ -717,11 +663,17 @@ $head:y =  ".($this->y).";";
 	unset($joinobject);
     }
 
-    //--------------------------------------------resc
+    //======================================================================================object->resc
+    /**
+     * Zdrojový kód modelu s uživatelskou barvou
+     * @author PH
+     *
+     * @param integer vlastník
+     */
     function resc($own=false){
 	if(!$own)$own=$this->own;
 	$res=$this->res;
-        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own.' AND '.objt());
+        $profileown=sql_1data('SELECT `profile` from `[mpx]pos_obj` WHERE `id`='.$own.' AND '.objt());
     	$profileown=str2list($profileown);
     	if($profileown['color']){
 		$res=str_replace('000000',$profileown['color'],$res);
@@ -733,7 +685,7 @@ $head:y =  ".($this->y).";";
 //======================================================================================resc
 //--------------------------------------------resc out
     function resc($res,$own){
-        $profileown=sql_1data('SELECT `profile` from [mpx]objects WHERE `id`='.$own.' AND '.objt());
+        $profileown=sql_1data('SELECT `profile` from `[mpx]pos_obj` WHERE `id`='.$own.' AND '.objt());
     	$profileown=str2list($profileown);
     	if($profileown['color']){
 		$res=str_replace('000000',$profileown['color'],$res);
@@ -751,21 +703,21 @@ function supportF($id,$function,$value=""){
 
 //======================================================================================nextid
 function nextid($id){
-    $id=sql_1data('SELECT max(id) FROM [mpx]objects')-1+101;
+    $id=sql_1data('SELECT max(id) FROM `[mpx]pos_obj`')-1+101;
     return($id);
 }
 
 //======================================================================================id2name
 
 function id2name($id){
-    $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
+    $name=sql_1data("SELECT name FROM `[mpx]pos_obj` WHERE id='$id'".' AND '.objt());
     if(!$name)$name=lr('unknown');
     return($name);
 }
 //======================================================================================id2own
 
 function id2own($id){
-    $own=sql_1data("SELECT own FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
+    $own=sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE id='$id'".' AND '.objt());
     if(!$own)$own=false;
     return($own);
 }
@@ -773,7 +725,7 @@ function id2own($id){
 //======================================================================================townid2xy
 
 function townid2xy($id){
-    $xy=sql_array("SELECT x,y FROM ".mpx."objects WHERE type='building' AND own='$id' AND name='".mainname()."' AND ".objt());
+    $xy=sql_array("SELECT x,y FROM `[mpx]pos_obj` WHERE type='building' AND own='$id' AND name='".mainname()."' AND ".objt());
     if(!$xy){
         $xy=false;
     }else{
@@ -799,7 +751,7 @@ function town2name($id){
 //======================================================================================name2id
 function name2id($name){
     if(!is_numeric($name)){
-        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'".' AND '.objt());
+        $id=sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE name='$name'".' AND '.objt());
     }else{
         $id=$name;
     }
@@ -808,8 +760,8 @@ function name2id($name){
 //======================================================================================id2unique
 function id2unique($id){
     if(!$id)return('');
-    $name=sql_1data("SELECT name FROM ".mpx."objects WHERE id='$id'");
-    $count=sql_1data("SELECT COUNT(1) FROM ".mpx."objects WHERE name='$name'".' AND '.objt())-1+1;
+    $name=sql_1data("SELECT name FROM `[mpx]pos_obj` WHERE id='$id'");
+    $count=sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE name='$name'".' AND '.objt())-1+1;
     if($count>1)$name.="($id)";
     return($name);
 }
@@ -822,7 +774,7 @@ function unique2id($unique){
     if($id){
         $id=trim(str_replace(')','',$id));
     }else{
-        $id=sql_1data("SELECT id FROM ".mpx."objects WHERE name='$name'".' AND '.objt());
+        $id=sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE name='$name'".' AND '.objt());
     }
     return($id);
     
@@ -831,7 +783,7 @@ function unique2id($unique){
 //======================================================================================id2info
 
 function id2info($id,$rows){
-    $info=sql_array("SELECT $rows FROM ".mpx."objects WHERE id='$id'".' AND '.objt());
+    $info=sql_array("SELECT $rows FROM `[mpx]pos_obj` WHERE id='$id'".' AND '.objt());
     foreach ($info as &$value) {
     $info = $info[0];
     }
@@ -850,7 +802,7 @@ function objects($where="",$order="",$limit=""){
     if($where){$where="WHERE ".$where.' AND '.objt();}
     if($order){$order="ORDER BY ".$order;}
     if($limit){$limit="LIMIT ".$limit;}
-    $result = sql_query("SELECT * FROM ".mpx."objects $where $order $limit");
+    $result = sql_query("SELECT * FROM `[mpx]pos_obj` $where $order $limit");
     $objects=array();
     while($object = mysql_fetch_array ($result)){
         $objects=array_merge($objects,array($object));
@@ -874,19 +826,67 @@ return(time()-600);*/
 
 
 function trackobject($id){
+    $nextid=nextid();
+    //------------------REINSERT objects
+    sql_reinsert('objects',"id='$id'",array(
+        'id' => $nextid,
+        'name' => true,
+        'type' => true,
+        'userid' => true,
+        'origin' => true,
+        'fp' => true,
+        'func' => true,
+        'hold' => true,
+        'res' => true,
+        'profile' => true,
+        'set' => true,
+        'own' => true,
+        't' => true,
+        'pt' => true
+    ));
+    //------------------REINSERT objects_tmp
+    sql_reinsert('objects_tmp',"id='$id'",array(
+        'id' => $nextid,
+        'fs' => true,
+        'fc' => true,
+        'fr' => true,
+        'fx' => true,
+        'superown' => true,
+        'expand' => true,
+        'block' => true,
+        'attack' => true,
+        'create_lastused' => true,
+        'create_lastobject' => true,
+        'create2_lastused' => true,
+        'create2_lastobject' => true,
+        'create3_lastused' => true,
+        'create3_lastobject' => true,
+        'create4_lastused' => true,
+        'create4_lastobject' => true
+    ));
+    //------------------REINSERT positions
+    sql_reinsert('positions',"id='$id' AND ".objt(),array(
+        'id' => $nextid,
+        'ww' => true,
+        'x' => true,
+        'y' => true,
+        'traceid' => $id,
+        'starttime' => true,
+        'readytime' => true,
+        'stoptime' => time()
+    ));
+    //------------------
 
-$time=time();
+    /*sql_query("
+    INSERT INTO `[mpx]pos_obj`
+    (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `readytime`, `stoptime`)
+    SELECT
+    ".nextid().", `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, `readytime`, ".$time."
+    FROM
+    `[mpx]pos_obj`
+    WHERE id='".sql($id)."' ");*/
 
-sql_query("
-INSERT INTO [mpx]objects
-(`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `stoptime`)
-SELECT
-".nextid().", `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, ".$time."
-FROM 
-[mpx]objects 
-WHERE id='".sql($id)."' ");
-
-sql_query("UPDATE [mpx]objects SET `starttime`='".$time."' WHERE id='".sql($id)."' ");
+    sql_query("UPDATE `[mpx]pos_obj` SET `starttime`='".time()."' WHERE id='".sql($id)."' ");
 
 
 
@@ -904,7 +904,7 @@ sql_query("UPDATE [mpx]objects SET `starttime`='".$time."' WHERE id='".sql($id).
 function ifobject($id){
 	$id=trim($id);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM ".mpx."objects WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.objt(),1);// OR profile LIKE '%mail=$id;%'
+    $result = sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.objt());// OR profile LIKE '%mail=$id;%'
     //r($result);
     if($result){
         return($result);
@@ -916,7 +916,7 @@ function ifobject($id){
 function topobject($id,$i=0){
     if($i>8)return(false);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT own FROM ".mpx."objects WHERE id='$id' OR name='$id' AND ".objt()." LIMIT 1");
+    $result = sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE id='$id' OR name='$id' AND ".objt()." LIMIT 1");
     //e("($i,$result)");
     if($result==$id)return($id);
     if($result){
@@ -927,10 +927,10 @@ function topobject($id,$i=0){
 }
 //======================================================================================superown
 function superown(){
-    foreach(sql_array('SELECT id FROM [mpx]objects WHERE superown IS NULL AND '.objt()) as $id){
+    foreach(sql_array('SELECT id FROM `[mpx]pos_obj` WHERE superown IS NULL AND '.objt()) as $id){
         $id=$id[0];
         $top=topobject($id);
-        sql_query('UPDATE [mpx]objects SET superown='.$top.' WHERE id='.$id.' AND '.objt());
+        sql_query('UPDATE `[mpx]pos_obj` SET superown='.$top.' WHERE id='.$id.' AND '.objt());
     }
 }
 
@@ -1027,7 +1027,7 @@ function resolve($origin){
 //======================================================================================EFFINDEX
 
 function effindex($id){
-	if($origin=sql_1data("SELECT origin FROM [mpx]objects WHERE id='$id' OR name='$id'".' AND '.objt())){
+	if($origin=sql_1data("SELECT origin FROM `[mpx]pos_obj` WHERE id='$id' OR name='$id'".' AND '.objt())){
 		$origin=explode(',',$origin);
 		$ids=resolve($origin);
 		//if(debug){print_r($ids);}

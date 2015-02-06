@@ -25,7 +25,7 @@ function writeLog($text)
     $str = '';
     $str .= date(DATE_RFC822) . ';' . time() . ';' . $text . "\n";
     $file = 'log/paypal.csv';
-    file_put_contents2($file, file_get_contents($file).$str);
+    fpc($file, file_get_contents($file).$str);
 }
     
 ?>
