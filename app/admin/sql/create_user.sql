@@ -1,0 +1,1 @@
+INSERT INTO `[mpx]objects` (`id`, `name`, `type`, `dev`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`) VALUES ('[id]', '[name]', 'user', 'T', '17', '100', '389522', '389622', 'fp=0;iron=11;fuel=6', '[func]', '[hold]', '', '', '', '0.000', '0', '0', '1', '[x]', '[y]', '1357500670');

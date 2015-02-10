@@ -1,0 +1,7 @@
+?page=html
+?page=service&action=1&wtf=a
+?page=service&action=1&wtf=b
+?page=service&action=1&wtf=c
+?page=terrainx&terrainx=1
+?page=createtmp&xc=-29&yc=0&world=world1
+?page=createglob&create=adjust&height=1080

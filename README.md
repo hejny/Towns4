@@ -1,6 +1,6 @@
 ## TOWNS 4
 
- Verze Towns 4.4.28
+ Verze Towns 4
 
 * * *
 ### Kontakt
@@ -10,48 +10,76 @@
 **Mail:** ph@towns.cz
 
 * * *
-### Intro
+### Struktura
 
 Systém je rozdělený na několik částí: 
 
-**1)Towns API** - jedná se o objekty spravující databázi a systém dotazů k nim.
 
-**2)Zobrazovací** část aplikace 
-
-**3)Administrace**
-
-**4)Editory** - Tady by se dalo najít něco, na čem by mohl někdo jiný rovnou pracovat.
+**app** Soubory Administrace, Editory, Další  pomocné aplikace 
+**core** Aktuální verze aplikace, systému a administrace
+**image** Všechny obrázky
+**lib** Knihovny: JQuery, PHP
+**tmp**
+předgenerované soubory. Sem se ukládají předgenerované obrázky budov, mapy, místa možné registrace…
+Pokud se tato složka smaže nic se nestane, jen je systém bude chvíli pomalejší, neý se soubory stihnou znovu vytvořit.
+Kvůli rychlosti doporučuju tuto složku dát na SSD disk. (v Linuxu např. pomocí symlinku)
+**index.php** Inicializační soubor
+**favicon.ico** Ikonka
+**.htaccess** Konfigurační soubor pro Apache
 
 * * *
-### Návod pro instalaci
-https://docs.google.com/document/d/1vwiY3dFt0BlcTK9EnShes5JXjdnjGkfeOILJwsNxRIo/edit?usp=sharing
+### Požadavky
 
-**Zbytek souborů** (co a jak s nima je popsané v dokumentaci):
-https://drive.google.com/folderview?id=0B6QrgeHPCY-lejFwdW93cnk1NWs&usp=sharing
-(Pokud si to přidáte do svého Google Disku, tak to jde stáhnout.)
+Apache - Allowoverride All
+PHP - Vypnutý safe mode
+CUrl
+GD
 
-Soubor, ve kterém je herní svět, je na Google disku v /app/admin/files/backup/world1.zip .
-U záloh, které používám, jsou všechna hesla xxx, abych mohl jednoduše testovat.
+
+* * *
+### Návod na instalaci
+
+**1)** Vytvořit tmp adresář (mod 0777)
+**2)** Vytvořit a nakonfigurovat index.php podle index.sample.php
+**3)** Spustit prohlížeč a jít do Towns4Admin:        (např.: http://localhost/www/small/admin/)
+	Pokud je vše správně nastaveno, tak se v databázi automaticky vytvoří první tabulka small_memory.
+**4)** Přihlásit se (jméno a heslo jsou v konfiguraci)
+**5)** Spustit import světa ze souboru do databáze. (Dump světa s aktuální strukturou je v /app/admin/files/backup/small.sql)
+	V průběhu importu se stane, že se Towns4Admin odhlásí. Je potřeba zkopírovat URL, znovu se přihlásit. A vložit URL zpět do prohlížeče. Pokud by začal import celý znovu, došlo by opět k odhlášení.
+	(To je samozřejmě BUG, ale momentálně ho neřeším)
+	Tuhle operaci je asi lepší provést přes terminál pomocí příkazu source.
+**5)** Spustit v Towns4Admin CreateTmp - trvá nějakou dobu
+**7)** Vytvořit místa pro registraci nových uživatelů
+	V administraci spustit SpawnMap a vybrat místa pro nové uživatele.
+**8)** Teď by měly Towns fungovat (např. na: http://localhost/www/small/)
+
+
 
 * * *
 ### Autoři
 
-**Pavel Hejný:** https://www.facebook.com/hejny
-
-**David Hrůša:** https://www.facebook.com/dhrusa
-
+**[PH] Pavel Hejný:** https://www.facebook.com/hejny
+**[DH] David Hrůša:** https://www.facebook.com/dhrusa
 **Přemysl Černý:** https://www.facebook.com/longhorn86
-
-**Marek Hám:** https://www.facebook.com/marek.ham
+**[MH] Marek Hám:** https://www.facebook.com/marek.ham
 
 Další se připište!
 
 * * *
-### Soubory
+### Struktura Databáze
 
-Každý soubor obsahuje hlavičku, pokud ho budete měnit, napište se do ní jako spoluautor + co jste udělali.
+Je definovaná v core/create.sql. V Towns4Admin je automatický nástroj pro její aktualizaci. Tzn. strukturu změníte v souboru a podle něj bude automaticky přetvořena tabulka v databázi.
+
+* * *
+### Commity
+
+Každý commit by měl mít označení projektu + autora např.: [WorldLayer][PH] Změny v minimenu
+
 
 * * *
 ### Soubory
 
 Všechny soubory + databáze je v UTF-8 a jako oddělovač řádků používat \n
+Psát poznámky a dokumentovat pomocí PhpDocumentator
+
+
