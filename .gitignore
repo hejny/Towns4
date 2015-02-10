@@ -1,4 +1,4 @@
-/index.php
+index.php
 /tmp
 /backup
 /other
@@ -8,6 +8,8 @@
 /app/admin/old*
 /app/admin/objects/last*.txt
 /app/admin/files/*
+!/app/admin/files/backup
+/app/admin/files/backup/*
 !/app/admin/files/backup/small.sql
 !/app/admin/files/A.png
 !/app/admin/files/B.png
