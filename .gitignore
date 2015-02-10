@@ -2,6 +2,14 @@
 /tmp
 /backup
 /other
-/app/adminer/sesssion/*
+/app/adminer/session/*
+/app/old*
+/app/admin/tmp*
+/app/admin/old*
+/app/admin/objects/last*.txt
+/app/admin/files/*
+!/app/admin/files/backup/small.sql
+!/app/admin/files/A.png
+!/app/admin/files/B.png
 /nbproject
 /.idea
