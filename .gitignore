@@ -1,2 +1,7 @@
+/index.php
+/tmp
+/backup
+/other
+/app/adminer/sesssion/*
 /nbproject
 /.idea
