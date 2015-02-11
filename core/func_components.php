@@ -105,9 +105,15 @@ if($scroll){
 -->
 </style>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#contenu").scrollbar();
-	});
+    function registerTinyScrollbar(e) {
+        $("#contenu").scrollbar({
+            taille_bouton: 100,
+            pas: 77,
+            marge_scroll_contenu: 15,
+            largeur_scrollbar: 5
+        });
+    }
+    $(document).ready(registerTinyScrollbar);
 </script>
 <?php } ?>
 <div style="width:<?php echo(contentwidth); ?>;"></div>
