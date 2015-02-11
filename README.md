@@ -69,6 +69,9 @@ Kvůli rychlosti doporučuju tuto složku dát na SSD disk. (v Linuxu např. pom
 	(To je samozřejmě BUG, ale momentálně ho neřeším)
 
 	Tuhle operaci je asi lepší provést přes terminál pomocí příkazu source.
+		mysql -u root -p
+		use towns
+		source /var/www/small/admin/files/backup/small.sql
 
 **5)** Spustit v Towns4Admin CreateTmp - trvá nějakou dobu
 
@@ -77,6 +80,8 @@ Kvůli rychlosti doporučuju tuto složku dát na SSD disk. (v Linuxu např. pom
 	V administraci spustit SpawnMap a vybrat místa pro nové uživatele.
 
 **8)** Teď by měly Towns fungovat (např. na: http://localhost/www/small/)
+
+	Můžete se přihlásit pomocí uživatele 'test' a hesla 'test'.
 
 
 

@@ -15,6 +15,8 @@ $inc=array(
     'mysql_prefix' =>'[world]_',
 
     'debug' => true,                		//Zda je povolené zapnout debug mód
+    //'timeplan' => array('sql_query','sql_1data','sql_array','sql_csv'),
+
     'lang' => 'cz',                   		//deafultní jazyk
     'wp_posts'=>'wp_posts',                	//Wordpressová tabulka s příspěvky
 
