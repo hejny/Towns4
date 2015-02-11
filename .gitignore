@@ -2,6 +2,9 @@ index.php
 /tmp
 /backup
 /other
+/admin
+/debug
+/timeplan
 /app/adminer/session/*
 /app/old*
 /app/admin/tmp*
