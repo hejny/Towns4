@@ -168,7 +168,7 @@ contenu_a();
 	}}}
 
 	br();
-	table($table);
+	array2table($table);
 	//js($script);
 
 
@@ -284,7 +284,7 @@ if($GLOBALS['ss']['use_object']->hold->testchange($price)){
 }*/
 
 
-table($table,array(20),/*array('left','middle')*/0,1);
+array2table($table,array(20),/*array('left','middle')*/0,1);
 
 
 //=======================================================================
