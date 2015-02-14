@@ -221,10 +221,10 @@ if($_GET['create']){
 
         if($_GET['createpost']==1){
             if($GLOBALS['inc']['wp_xmlrpc']){
-                $result=wpPostXMLRPC($title,$text,$GLOBALS['inc']['wp_xmlrpc'],$GLOBALS['inc']['wp_username'],$GLOBALS['inc']['wp_password'],1);
+                $result=wppost($title,$text,$GLOBALS['inc']['wp_categories_view']);
                 br();
-                e('Uloženo we WP jako příspěvek ID = ');
-                print_r($result);
+                e($result);
+                //print_r($result);
             }
         }
         

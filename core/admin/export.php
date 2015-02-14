@@ -59,7 +59,7 @@ if($_GET['export']==1){
 $file_name=adminfile."files/backup/".$nejm.".sql";
 $file_zip=adminfile."files/backup/".$nejm.".zip";
 
-require(adminroot."dumpf.php");
+require(adminroot."export_dump.php");
 echo('<b>uloženo do <a href="https://www.towns.cz/app/admin/files/backup/'.$nejm.'.zip">files/backup/'.$nejm.'.zip</a></b>');
 }
 

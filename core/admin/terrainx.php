@@ -19,7 +19,7 @@ Provést pasivní funkci terrainX<br/><br/>
 <?php
 if($_GET['terrainx']){
 
-	die('nene');
+	//die('nene');
 
 	foreach(sql_array('SELECT id,ww,x,y,func FROM `[mpx]pos_obj` WHERE ww>0 AND `func` LIKE \'%terrainx%\' AND '.objt()) as $row){
 		list($id,$ww,$x,$y,$func)=$row;

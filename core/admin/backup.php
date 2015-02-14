@@ -30,7 +30,7 @@ if($GLOBALS['inc']['backup_url'] and $GLOBALS['inc']['backup_file']){
 		br();
 		br();
 	}
-	echo('<a href="?e=page&amp;backup=1">vytvořit a stáhnout</a>');
+	echo('<a href="?page=backup&amp;backup=1">vytvořit a stáhnout</a>');
 
 }else{
 	e('!config');

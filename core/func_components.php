@@ -464,7 +464,13 @@ function aacute($word){
 	return($word);
 }
 //======================================================================================tr,te
-function tr($i,$nonl2br=false){
+/**
+* @param $i
+* @param bool $nonl2br
+* @return mixed|string
+* @see tr
+*/
+function tr_text($i,$nonl2br=false){
     $i=xx2x($i);
     $i=htmlspecialchars($i);
     if(!$nonl2br){
@@ -477,8 +483,14 @@ function tr($i,$nonl2br=false){
     //$i=str_replace(" ","&nbsp;",$i);
     return($i);
 }
+
+//----------------
+/*
+ *  Zobrazení textu
+ *
+ * */
 function te($i,$nonl2br=false){
-    echo(tr($i,$nonl2br));
+    echo(tr_text($i,$nonl2br));
 }
 //======================================================================================markdown
 function markdown($text){
@@ -897,33 +909,65 @@ function borderr2($html,$brd=1){
     return('<span style="border: '.$brd.'px solid #cccccc;z_index:1000">'.$html.'</span>');
 }
 function border2($html,$brd=1){echo( borderr2($html,$brd));}
-//======================================================================================TABLES
+
+//======================================================================================================================HTML TABLES VERZE 2011 @deprecated
+/*
+* @deprecated
+ *
+* */
 function tableabr($a,$b,$width="100%",$width2="50%"){$al=" align=\"left\"  valign=\"top\"";
     return("<table width=\"$width\" $al><tr><td width=\"$width2\" $al>".$a."</td><td $al>".$b."</td></tr></table>");
 }
+/*
+* @deprecated
+ *
+* */
 function tableab($a,$b,$width="100%",$width2="50%"){echo( tableabr($a,$b,$width,$width2));}
+/*
+* @deprecated
+*
+* */
 function tableab_a($al='left',$width="100%",$width2="50%"){
     $al=" align=\"$al\"  valign=\"top\"";
     if($width)$width="width=\"$width\"";
     if($width2)$width2="width=\"$width2\"";
     echo("<table $width $al border=\"0\" cellpadding=\"0\" cellspacing=\"0\" valign=\"middle\"><tr><td $width2 $al>");
 }
+/*
+* @deprecated
+*
+* */
 function tableab_b($al="left",$val="top"){$al=" align=\"$al\"  valign=\"$val\"";echo("</td><td $al>");}
+/*
+* @deprecated
+*
+* */
 function tableab_c(){echo("</td></tr></table>");}
-/*function mover($a,$x,$y){
-    return("<div></div>");
-}
-function move($a,$x,$y){e(mover($a,$x,$y));}*/
-//---------------------------------------------------------
-function table($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=false*/){
+
+//======================================================================================================================HTML TABLES VERZE 2014
+/*
+ * Převod pole na HTML tabulku
+ * @author PH
+ *
+ * @param array Data tabulky
+ * @param integer šířka
+ * @param array align,valign
+ * @return array cikcak barvy array(barva1,barva2) nebo 1=automaticky
+ *
+ * */
+function array2tabler($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=false*/){
 	//if(debug)print_r($table);
+
+    $buffer='';
 	if(!$width)$width='100%';
 	if(!$alignvalign)$alignvalign=array('left','top');	
 	list($align,$valign)=$alignvalign;
 	if(!$cikcak)$cikcak=array('','');
-	if($cikcak=1)$cikcak=array('rgba(30,30,30,0.2)','rgba(10,10,60,0.2)');		
+	if($cikcak==1)$cikcak=array('rgba(30,30,30,0.2)','rgba(10,10,60,0.2)');
 	$i=0;
-	e('<table border="0" cellpadding="0" cellspacing="0" '.(is_string($width)?'width="'.$width.'"':'width="100%"').'>');	
+
+
+    $buffer.=('<table border="0" cellpadding="0" cellspacing="0" '.((is_string($width) or is_numeric($width))?'width="'.$width.'"':'width="100%"').'>');
 	foreach($table as $row){
 	
 		if(($i/2)==floor($i/2)){
@@ -931,7 +975,7 @@ function table($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=fa
 		}else{
 			$color=$cikcak[1];
 		}
-		e('<tr '.($color?'style="Background-color:'.$color.';"':'').'>');
+        $buffer.=('<tr '.($color?'style="Background-color:'.$color.';"':'').'>');
 		$ii=0;
 		foreach($row as $cell){
 			if(is_array($width)){
@@ -943,17 +987,149 @@ function table($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=fa
 			}else{
 				$widthx=false;
 			}
-			e('<td align="'.$align.'" valign="'.$valign.'" '.($widthx?'width="'.$widthx.'"':'').'>');
-			e($cell);
-			e('</td>');
+
+            if(is_array($cell)){
+                list($cell,$celltag)=$cell;
+            }else{
+                $celltag='td';
+            }
+
+            $buffer.=('<'.$celltag.' align="'.$align.'" valign="'.$valign.'" '.($widthx?'width="'.$widthx.'"':'').'>');
+            $buffer.=($cell);
+            $buffer.=('</'.$celltag.'>');
 			$ii++;
 		}
-		e('</tr>');
+        $buffer.=('</tr>');
 		$i++;
 	}
-	e('</table>');
+    $buffer.=('</table>');
+    return($buffer);
 }
-//---------------------------------------------------------loadbar
+//--------------------------------
+/* @uses array2tabler
+* */
+function array2table($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=false*/){
+    e(array2tabler($table,$width,$alignvalign,$cikcak));
+}
+
+//======================================================================================================================HTML TABLES VERZE 2015 - inteligentní tabulky
+/*
+* Objekt pro inteligentní vykreslování HTML tabulky
+* @author PH
+ *
+* */
+class table
+{
+    var $tabledata = array();
+    var $rowdata = array();
+    //--------------------------------__construct
+    /*
+    * */
+    function __construct(){
+    }
+    //--------------------------------td
+    /* Odeslání buňky tabulky
+    *
+    * @param string
+    *  */
+    public function td($data = ''){
+        $this->rowdata[] = $data;
+    }
+    //--------------------------------th
+    /* Odeslání headru tabulky
+    *
+    * @param string
+    * */
+    public function th($data = ''){
+        $this->rowdata[] = array($data, 'th');
+    }
+    //--------------------------------tr
+    /* Commitnutí řádku
+    *
+    * @param string
+    * */
+    public function tr(){
+        if (count($this->rowdata)) {
+            $this->tabledata[] = $this->rowdata;
+            $this->rowdata = array();
+        }
+    }
+    //--------------------------------tabler
+    /* Vrácení tabulky
+    *
+    * @see array2tabler
+    * @return string
+    * */
+    public function tabler($width = false, $alignvalign = false, $cikcak = false){
+        return (array2tabler($this->tabledata, $width, $alignvalign, $cikcak));
+    }
+}
+//----------------------------------------------------------------Funkcionální obalení
+/*
+*  Vytvoření globální objektu $GLOBALS['table'] - pomocná funkce k td,th,tr
+* */
+function createtable(){
+    if(!isset($GLOBALS['protected']['table']) or !is_object($GLOBALS['protected']['table'])){
+        unset($GLOBALS['protected']['table']);
+        $GLOBALS['protected']['table'] = new table();
+    }
+}
+
+
+/*
+* Odeslání buňky tabulky
+* @uses table::td
+*
+* */
+function td($data){
+      createtable();
+      $GLOBALS['protected']['table']->td($data);
+}
+//--------------------------------
+/*
+* Odeslání headru tabulky
+* @uses table::th
+*
+* */
+function th($data){
+      createtable();
+      $GLOBALS['protected']['table']->th($data);
+}
+//--------------------------------
+/*
+* Commitnutí řádku tabulky
+* @uses table::tr
+* @see tr
+*
+* */
+function tr_table(){
+    createtable();
+    $GLOBALS['protected']['table']->tr();
+}
+//--------------------------------
+/*
+* Vrácení tabulky
+* @uses table::tabler
+*
+* */
+//--------------------------------
+function tabler($width=1,$alignvalign=false,$cikcak=false){
+    createtable();
+    $return=$GLOBALS['protected']['table']->tabler($width,$alignvalign,$cikcak);
+    unset($GLOBALS['protected']['table']);
+    return($return);
+}
+//--------------------------------
+/*
+* Vykreslení tabulky
+* @uses tabler
+*
+* */
+function table($width=1,$alignvalign=false,$cikcak=false){
+    e(tabler($width,$alignvalign,$cikcak));
+}
+//======================================================================================================================LOADBAR
+
 function loadbar($fp,$fs,$plus=0,$show=0,$width='0',$height='0',$color1='33cc66',$color2='aa4422'){
 	echo(loadbarr($fp,$fs,$plus,$show,$width,$height,$color1,$color2));
 }
@@ -1006,7 +1182,7 @@ if($plus and $width1<$width){
 return($html.js($script));
 }
 
-//======================================================================================
+//======================================================================================================================
 function tmpfile2($file,$ext=imgext,$cpath="main"){
     if($cpath)$cpath="/".$cpath;
     $ext=".".$ext;
@@ -2206,4 +2382,22 @@ function profiler($id="use"){
 	//----------------------------------------------------------------
 }
 function profile($id="use"){echo(profiler($id));}
+
+
+//======================================================================================================================ROZDĚLOVAČE
+/* Rozdělovač dvou nezávislých funkcí se stejným názvem
+ * zobrazení textu vs. commitnutí řádku HTML tabulky
+ *
+ * @uses tr_text
+ * @uses tr_text
+ *
+ * */
+function tr($param1=false,$param2=false){
+    if($param1) {
+        return(tr_text($param1, $param2));
+    }else{
+        return(tr_table());
+    }
+}
+
 ?>

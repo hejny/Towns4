@@ -282,7 +282,7 @@ if($error){
 Server bude fungovat do p&aacute;r minut. Str&aacute;nka se automaticky obnov&iacute;... ');
 
 
-	$restarturl=$GLOBALS['inc']['restart_url'];
+	$restarturl=$GLOBALS['inc']['server_restart_url'];
 
 	$file=root.cache.'/reboot.txt';
 	//echo($file);
@@ -563,8 +563,21 @@ function create_sql($table=false){
 
 //die(create_sql('objects'));
 
-//===============================================================================================================
-//--------------------------------------------XXX
+//======================================================================================================================Strings
+//--------------------------------------------str_remove
+/* Odstranění podřetězce
+ *
+ * @param string haystack
+ * @param string needle
+ * @return string
+ * */
+function str_remove($haystack,$needle){
+    $haystack=str_replace($needle,'',$haystack);
+    return($haystack);
+}
+
+
+//--------------------------------------------str_replace2
 function str_replace2($from,$to,$text){
     $x="nwijofnurelnr";
     $a="a".$x;
@@ -577,7 +590,7 @@ function str_replace2($from,$to,$text){
     $text=str_replace($between,$to,$text);
     return($text);
 }
-//--------------------------------------------
+//--------------------------------------------x2xx
 /**
  * @param $text
  * @return mixed
@@ -592,7 +605,7 @@ function x2xx($text){//,$vals_a=vals_a,$vals_b=vals_b
     //r($ptext." >> ".$text);
     return($text);
 }
-//--------------------------------------------
+//--------------------------------------------xx2x
  function xx2x($text){
     //$ptext=$text;
     //$text=str_replace("[star]","xxx*xxx",$text);
