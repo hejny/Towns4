@@ -349,5 +349,32 @@ LEFT JOIN [mpx]objects_tmp ON [mpx]positions.id=[mpx]objects_tmp.id
 --COMMENT = 'Spojení tabulek objects, objects_tmp a positions'
 --parametr in a hard je zatím provizorní a vždy 0
 
-#---------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------Aplikace / Projekty
+
+
+CREATE TABLE `towns_projects` (
+  `id` int(11) NOT NULL COMMENT 'ID projektu',
+  `trelloid` varchar(24) COLLATE utf8_czech_ci NOT NULL COMMENT 'Trello ID projektu',
+  `name` varchar(200) COLLATE utf8_czech_ci NOT NULL,
+  `group` varchar(200) COLLATE utf8_czech_ci NOT NULL COMMENT 'Jméno skupiny projektů',
+  `phase` smallint(6) NOT NULL COMMENT 'Etapa',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `group` (`group`),
+  KEY `phase` (`phase`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Tabulka projektů'
+
+
+
+#----------------------------------------------
+
+
+CREATE TABLE `towns_projects_tags` (
+  `projectid` int(11) NOT NULL COMMENT 'ID projektu',
+  `tag` varchar(50) COLLATE utf8_czech_ci NOT NULL COMMENT 'značka',
+  `value` text COLLATE utf8_czech_ci NOT NULL COMMENT 'hodnota',
+  `pos` decimal(10,3) NOT NULL COMMENT 'Pořadí v Trellu',
+  KEY `projectid` (`projectid`),
+  KEY `tag` (`tag`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Značky u jednotlivých projektů'
 

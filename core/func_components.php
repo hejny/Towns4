@@ -237,82 +237,8 @@ function ir($i,$q=2){
     return($ii);
 }
 function ie($i,$q=2){echo(ir($i,$q));}/**/
-//====================================================================================== LANG
-/*if(!$GLOBALS['ss']["lang"]){$GLOBALS['ss']["lang"]="cz";}
-if($GLOBALS['get']["lang"]){$GLOBALS['ss']["lang"]=$GLOBALS['get']["lang"];}
-$file=("lang/".$GLOBALS['ss']["lang"].".txt");
-$stream=file_get_contents($file);
-$GLOBALS['ss']["langdata"]=(astream($stream));
-function lr($i,$q=""){
-    if($q){$i=$i."_".$q;}
-    if($GLOBALS['ss']["langdata"][$i]){
-        return(tr($GLOBALS['ss']["langdata"][$i]));
-    }else{
-        return(tr($i));
-    }
-}*/
-//-----------------------------------------------------------------------langload
-	
-	/*if(!$lang){
-		//echo($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-            //list($tmp)=explode(",",$_SERVER['HTTP_ACCEPT_LANGUAGE']); 
-	    $tmp=substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2); 
-            $tmp=strtolower($tmp);
-		//echo($tmp);
-            if($tmp=='en'){
-                $lang='en';
-            }elseif($tmp=='cs'){
-                $lang='cz';
-            }else{
-                $lang=lang;
-            }
-        }*/
-        if($GLOBALS['ss']["lang"]){
-            $lang=$GLOBALS['ss']["lang"];
-        }else{
-            $lang=lang;
-        }
-	if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
-	if($_GET['lang']){$lang=$_GET['lang'];}
-	if($_GET['rvscgo']==1){$lang='rv';}
-	$GLOBALS['ss']["lang"]=$lang;
 
-//-------------------------------
-
-$GLOBALS['langdata']=array();
-		foreach(sql_array('SELECT `key`,`value` FROM [mpx]lang WHERE lang=\''.$GLOBALS['ss']["lang"].'\'') as $row){
-		    list($key,$value)=$row;
-		    $GLOBALS['langdata'][$key]=$value;
-		}
-    //print_r($GLOBALS['langdata']);
-//-----------------------------------------------------------------------lr,le
-function lr($key,$params=''){
-	//if($params){$params=str2list();}else{$params=array();}
-	//return('('.$key.')');
-	//print_r($GLOBALS['langdata']);
-	/*if(!strpos($GLOBALS['langdata'][$key],'[')){
-	    return($GLOBALS['langdata'][$key]);
-	}*/
-	
- 	$text=valsintext($GLOBALS['langdata'][$key],$params);
-	if(strpos($text,'{')!==false)$text=contentlang($text);
-	if(!$text){
-		$params=str2list($params);
-		if($params['alt']){
-			$text='{'.$params['alt'].'}';
-		}else{
-			$text='{'.$key.'}';
-		}		
-		sql_query("INSERT INTO `[mpx]lang` (`lang`, `key`, `value`, `font`, `author`, `description`, `time`) VALUES ('".$GLOBALS['ss']["lang"]."', '$key', '{".addslashes($key)."}', '', '', 'new', '".time()."');");
-	}
-	return($text);
-	//return("{".$i.";$params}");
-}
-function le($key,$params=''){
-	echo(lr($key,$params));
-	//echo("{".$i.";$params}");
-}
-//-----------------------------------------------------------------------contentlang
+//======================================================================================================================LANG 2013 - contentlang
 function contentlang($buffer,$rec=false){//if(rr())r();
 	
     if(1){
@@ -432,25 +358,7 @@ function contentlang($buffer,$rec=false){//if(rr())r();
 //e(contentlang('{building_master_count2;alt=building_master+}'));
 //die();
 //le("hovno");
-//======================================================================================capital
-/*function capital($word){
-	$word=iconv(mb_detect_encoding($word, mb_detect_order(), true), "UTF-8", $word);
-	$word=trim($word);
-	$word=str_split($word);
-	$word[0]=strtoupper($word[0]);
-	//return($word[0]);
-	print_r($word);
-	//$a=str_split('ěščřžýáíéúů');
-	//$b=str_split('ĚŠČŘŽÝÁÍÉÚŮ');
-	$a=str_split('ěščřžýáíéúů');
-	$b=str_split('ĚŠČŘŽÝÁÍÉÚŮ');
-	$word[0]=str_replace($a,$b,$word[0]);
-	print_r($word);
-	$word=implode('',$word);
-	//$word=strtoupper($word);
-	return($word);
-}*/
-//======================================================================================aacute
+//======================================================================================================================aacute
 function aacute($word){
 	//sql_query("INSERT INTO [mpx]lang `lang`,`va VALUES 'ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ'");
 	//$word=iconv(mb_detect_encoding($word, mb_detect_order(), true), "UTF-8", $word);

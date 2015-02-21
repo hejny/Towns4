@@ -9,30 +9,31 @@
 */
 //==============================
 
-//=============================================================facebook SDK
-/*
- *  Načtení FB API
- * @author PH
- *
- * */
+//======================================================================================================================facebook SDK
+if(!defined('noinc')){
+    /*
+     *  Načtení FB API
+     * @author PH
+     *
+     * */
 
-  require_once(root."lib/facebook_sdk/base_facebook.php");
-  require_once(root."lib/facebook_sdk/facebook.php");
+      require_once(root."lib/facebook_sdk/base_facebook.php");
+      require_once(root."lib/facebook_sdk/facebook.php");
 
-  $fb_config = array();
-  $fb_config['appId'] = fb_appid;
-  $fb_config['secret'] = fb_secret;
+      $fb_config = array();
+      $fb_config['appId'] = fb_appid;
+      $fb_config['secret'] = fb_secret;
 
-  $facebook = new Facebook($fb_config);
+      $facebook = new Facebook($fb_config);
 
 
-  $fb_config = array();
-  $fb_config['appId'] = fb_appid;
-  $fb_config['secret'] = fb_secret;
+      $fb_config = array();
+      $fb_config['appId'] = fb_appid;
+      $fb_config['secret'] = fb_secret;
 
-  $GLOBALS['facebook'] = new Facebook($fb_config);
-  
-//=============================================================fb_notify
+      $GLOBALS['facebook'] = new Facebook($fb_config);
+}
+//======================================================================================================================fb_notify
 /*
  *  Odeslání upozornění FB uživateli
  * @author PH
@@ -67,7 +68,7 @@ function fb_notify($user,$template,$print_r=0){
 }
 
 
-//==========================================================================================post_request
+//======================================================================================================================post_request
 /*
  * Odeslání HTTP POST requestu
  * @author PH
@@ -96,7 +97,7 @@ function post_request($url,$data){
 
 }
 
-//==========================================================================================mailx
+//======================================================================================================================mailx
 /*
  * Odeslání e-mailu
  * @author PH
@@ -135,7 +136,7 @@ function mailx($to,$subject,$text,$world=false){
 
 }
 
-//==========================================================================================wppost
+//======================================================================================================================wppost
 /*
  * Odeslání příspěvku do WordPressu
  * @author PH
@@ -187,6 +188,6 @@ function wppost($title,$body,$categories='',$keywords='') {
     } else { return "Article Posted Successfully"; }
 }
 
-//==========================================================================================
+//======================================================================================================================
         
 ?>

@@ -124,36 +124,7 @@ header("Connection: Keep-alive");
 //if($_GET["e"])$_GET['e']=$_GET["e"];
 list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 
-//===============================================================================timeplan
-//define("timeplan",true);
 
-define("timestart", time()+microtime());
-$GLOBALS['timeplan2sql']=array();
-
-if(timeplan or is_array($GLOBALS['inc']['timeplan'])?$GLOBALS['inc']['timeplan']!=array():$GLOBALS['inc']['timeplan']=='*'){
-    function t($key="",$text=""){
-        $time=time()+microtime()-timestart;
-        $plus=1000*round($time-$GLOBALS['lasttime'],6);
-        //$plus='0.00'.substr($plus+'',2);
-        $texte=round($time,3)."<b>(+".$plus.")</b> - ".htmlspecialchars($key).($text?' - '.$text:'');
-        
-        if(is_array($GLOBALS['inc']['timeplan'])?in_array($key,$GLOBALS['inc']['timeplan']):$GLOBALS['inc']['timeplan']=='*'){
-            $GLOBALS['timeplan2sql'][]=array($key,$text,$plus);
-        }
-        
-        
-        $GLOBALS['lasttime']=$time;
-        
-        if(timeplan){
-            echo("$texte<br/>");
-        }
-    }
-}else{
-    function t($key="",$text=""){}
-}
-t('start');
-//sleep(1);
-//t('start');
 //===============================================================================
 //error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
 define("root", "");

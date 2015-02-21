@@ -32,7 +32,12 @@ function tab($q=50){for($i=1; $i<=$q; $i++)echo(nbsp);}
 function e($a){echo($a);}
 function ebr($a){echo($a);br();}
 
-//===============================================================================================================
+
+
+
+
+
+//======================================================================================================================
 
 function s($key,$value=""){
 	if(is_array($key))$key=join('_',$key);
@@ -232,13 +237,35 @@ define("mpx",mysql_prefix);
 
 if(!debug)error_reporting(0);
 
+//======================================================================================================================timeplan
 
-//die(root.cache);
-mkdir3(root.cache);
-//mkdir2(root.'userdata');
-//mkdir2(root.'world');
+define("timestart", time()+microtime());
+$GLOBALS['timeplan2sql']=array();
 
-//print_r($GLOBALS['config']);
+if(timeplan or is_array($GLOBALS['inc']['timeplan'])?$GLOBALS['inc']['timeplan']!=array():$GLOBALS['inc']['timeplan']=='*'){
+    function t($key="",$text=""){
+        $time=time()+microtime()-timestart;
+        $plus=1000*round($time-$GLOBALS['lasttime'],6);
+        //$plus='0.00'.substr($plus+'',2);
+        $texte=round($time,3)."<b>(+".$plus.")</b> - ".htmlspecialchars($key).($text?' - '.$text:'');
+
+        if(is_array($GLOBALS['inc']['timeplan'])?in_array($key,$GLOBALS['inc']['timeplan']):$GLOBALS['inc']['timeplan']=='*'){
+            $GLOBALS['timeplan2sql'][]=array($key,$text,$plus);
+        }
+
+
+        $GLOBALS['lasttime']=$time;
+
+        if(timeplan){
+            echo("$texte<br/>");
+        }
+    }
+}else{
+    function t($key="",$text=""){}
+}
+t('start');
+//sleep(1);
+//t('start');
 
 
 //===========================================================================================================================
@@ -470,6 +497,14 @@ function sql_array($q,$w=false){
     $array = $array->fetchAll();
     return($array);
 }
+//--------------------------------------------sql_row
+function sql_row($q,$w=false){
+    if(!strpos($q,'LIMIT') and !strpos($q,'COUNT') and !strpos($q,'MAX') and !strpos($q,'MIN')){$q.=' LIMIT 1';}
+    $row=sql_array($q,$w);
+    $row=$row[0];
+    return($row);
+
+}
 //--------------------------------------------sql_csv
 function sql_csv($q,$w=false){
     $q=sql_mpx($q);
@@ -498,8 +533,51 @@ function objt($alt=false,$showtime=false){
 		return($showtime.'>='.$alt.'`starttime` AND ('.$showtime.'<'.$alt.'`stoptime` OR '.$alt.'`stoptime`=0)');
 	}
 }
+//======================================================================================================================LANG 2011
 
-//---------------------NOVe KONFIGURACE
+//-----------------------------------------------------------------------langload
+
+if($GLOBALS['ss']["lang"]){
+    $lang=$GLOBALS['ss']["lang"];
+}else{
+    $lang=lang;
+}
+if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
+if($_GET['lang']){$lang=$_GET['lang'];}
+if($_GET['rvscgo']==1){$lang='rv';}
+$GLOBALS['ss']["lang"]=$lang;
+
+//-----------------------------------------------------------------------langdata
+
+$GLOBALS['langdata']=array();
+foreach(sql_array('SELECT `key`,`value` FROM [mpx]lang WHERE lang=\''.$GLOBALS['ss']["lang"].'\'') as $row){
+    list($key,$value)=$row;
+    $GLOBALS['langdata'][$key]=$value;
+}
+
+//-----------------------------------------------------------------------lr,le
+
+
+function lr($key,$params=''){
+    $text=valsintext($GLOBALS['langdata'][$key],$params);
+    //if(strpos($text,'{')!==false)$text=contentlang($text);
+    if(!$text){
+        $params=str2list($params);
+        if($params['alt']){
+            $text='{'.$params['alt'].'}';
+        }else{
+            $text='{'.$key.'}';
+        }
+        sql_query("INSERT INTO `[mpx]lang` (`lang`, `key`, `value`, `font`, `author`, `description`, `time`) VALUES ('".$GLOBALS['ss']["lang"]."', '$key', '{".addslashes($key)."}', '', '', 'new', '".time()."');");
+	}
+    return($text);
+}
+function le($key,$params=''){
+    echo(lr($key,$params));
+}
+
+
+//======================================================================================================================-NOVe KONFIGURACE
 $array=sql_array('SELECT `key`,`value` FROM [mpx]config');
 
 if(!$array){
@@ -618,6 +696,14 @@ function x2xx($text){//,$vals_a=vals_a,$vals_b=vals_b
     //r($ptext." >> ".$text);
     return($text);
 }
-//--------------------------------------------
+//======================================================================================================================check_email
+
+function check_email($email) {
+    $atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]'; // znaky tvořící uživatelské jméno
+    $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])'; // jedna komponenta domény
+    return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
+}
+//======================================================================================================================
+
 define('dnln',debug?nln:'');
 ?>
