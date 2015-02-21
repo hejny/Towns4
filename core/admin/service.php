@@ -126,7 +126,7 @@ ebr("spadlo $tmp2 budov.");
 //=================================================Rozhození terénů
 if($_GET['wtf']=='all' or $_GET['wtf']=='b'){
 
-die('nene');
+die('nene'); //todo PH zprovoznit
 $water=(sql_1data("SELECT count(1) FROM [mpx]map WHERE $wwhere AND (`terrain`='t1' or `terrain`='t11')",2)-1+1)/(mapsize*mapsize)*100;
 if($test){success("water=$water , chaos_water=".chaos_water);br();}
 //die();
@@ -217,7 +217,7 @@ e("Provedeno $i / $limit změn terénu");br();
 //=================================================Rozhození stromů 110-tree 111-rock
 if($_GET['wtf']=='all' or $_GET['wtf']=='c'){
     
-die('nene');
+die('nene'); //todo PH zprovoznit
 foreach(array(110,111) as $origin){
 	if($origin==110){$type='tree';$terrain='t10';e('Provádím stromy...');br();}
 	if($origin==111){$type='rock';$terrain='t5';e('Provádím sklály');br();}

@@ -776,13 +776,6 @@ function extract_zip($zipfile,$to){
 
 }
 
-//==========================================================================================check_email
-
-function check_email($email) {
-    $atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]'; // znaky tvořící uživatelské jméno
-    $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])'; // jedna komponenta domény
-    return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
-}
 
 
 //==========================================================================================
