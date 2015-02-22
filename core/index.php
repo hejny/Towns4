@@ -50,12 +50,13 @@ $tmp=$_SERVER["REQUEST_URI"];
 if(strpos($tmp,'?'))$tmp=substr($tmp,0,strpos($tmp,'?'));
 $uri=explode('/',$tmp);
 //print_r($uri);
-$admin=false;$debug=false;$edit=false;$notmp=false;$timeplan=false;$onlymap=false;$speciale=false;
+$admin=false;$app=false;$debug=false;$edit=false;$notmp=false;$timeplan=false;$onlymap=false;$speciale=false;
 foreach($uri as $x){
     if($x){
-        if($x!='admin' AND $x!='debug' AND $x!='edit' AND $x!='notmp' AND $x!='timeplan' AND $x!='onlymap' AND $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
+        if($x!='admin' AND $x!='app' AND $x!='debug' AND $x!='edit' AND $x!='notmp' AND $x!='timeplan' AND $x!='onlymap' AND $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
         {$world=$x;}
         elseif($x=='admin'){$admin=true;}
+        elseif($x=='app'){$app=true;}
         elseif($x=='timeplan'){$timeplan=true;}
         elseif($x=='onlymap'){$onlymap=true;}
         elseif($x=='notmp'){$notmp=true;}
@@ -68,10 +69,10 @@ foreach($uri as $x){
             list($GLOBALS['mapgtx'],$GLOBALS['mapgty'])=explode(',',$x);
         }
         else{$speciale=true;$GLOBALS['url_param']=substr($x,1);}
-        
+
     }}
-        
-        
+
+
 //die($world);
 
 $ref=$_GET['ref']?'?ref='.$_GET['ref']:'';
@@ -88,7 +89,7 @@ if(!$world/**/ or str_replace(array('.','?'),'',$world)!=$world){header('Locatio
 $gooduri=str_replace('/'.'/','',$GLOBALS['inc']['url']);
 $gooduri=substr($gooduri,strpos($gooduri,'/'));
 //die($gooduri);
-if(!$admin and !$debug and !$edit and !$speciale and !$notmp and !$timeplan and !$onlymap and !$corex)if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
+if(!$admin and !$app and !$debug and !$edit and !$speciale and !$notmp and !$timeplan and !$onlymap and !$corex)if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
 
 $GLOBALS['inc']['default_world']=$GLOBALS['inc']['world'];
 $GLOBALS['inc']['world']=$world;
@@ -103,17 +104,32 @@ if($timeplan){define('timeplan',1);}else{define('timeplan',0);}
 if($onlymap){define('onlymap',1);}else{define('onlymap',0);}
 if($corex){define('corex',1);define('corexx','corex/');}else{define('corex',0);define('corexx','');}
 
-if(!$admin){
-	//TO JE DOLE
-	/*if(substr(core,-4)!='.php'){
-   	require(core.'/index.php');
-	}else{
-   	require(core);
-	}*/
-}else{
+if($app){
+    //@todo bezpečnost
 
-   eval("r"."equire(\$GLOBALS['inc']['core'].'/admin/index.php');");
-   exit;
+
+    /*$tmp=$_SERVER["REQUEST_URI"];
+    $tmp=explode('app/',$tmp);
+    $tmp=$tmp[1];
+    if(substr($tmp,-9)!='index.php'){
+       $tmp.='index.php';
+    }
+
+    $tmp=explode('/',$tmp);
+    list($folder,$file)=$tmp;
+
+    chdir($GLOBALS['inc']['app'].'/'.$folder);
+
+    require($file);*/
+
+    echo('APP');
+    exit;
+
+}elseif($admin){
+
+    require($GLOBALS['inc']['core'].'/admin/index.php');
+    exit;
+
 }
 
 
@@ -205,30 +221,30 @@ if($q){
     $q=valsintext($q,$_GET,true);
     if(!$post["login_permanent"])r($q);
     xquery($q);
-    
+
     //xreport();
-	//xreport();
+    //xreport();
 }
 //r('set0'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
 //r($GLOBALS['config']);
 //-------------------------- MAIN BUILDING
 
 if(!$GLOBALS['hl'] and logged()){
-if($GLOBALS['config']['register_building']){
+    if($GLOBALS['config']['register_building']){
 //if(1){
 
-	if($hl=sql_array('SELECT id,ww,x,y FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
-	 //print_r($hl);
-    list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];
-}else{//e(1);
-    $GLOBALS['hl']=0; 
-}
-}else{//e(2);
-    $GLOBALS['hl']=0; 
-}
+        if($hl=sql_array('SELECT id,ww,x,y FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']['ww'].' AND own='.$GLOBALS['ss']['useid'].' AND type=\'building\' and TRIM(name)=\''.id2name($GLOBALS['config']['register_building']).'\' LIMIT 1')){
+            //print_r($hl);
+            list($GLOBALS['hl'],$GLOBALS['hl_ww'],$GLOBALS['hl_x'],$GLOBALS['hl_y'])=$hl[0];
+        }else{//e(1);
+            $GLOBALS['hl']=0;
+        }
+    }else{//e(2);
+        $GLOBALS['hl']=0;
+    }
 }
 function mainname(){
-	return(id2name($GLOBALS['config']['register_building']));
+    return(id2name($GLOBALS['config']['register_building']));
 }
 //------------------------------------------------------------------FBLOGIN -> REDIRECT
 if($GLOBALS['url_param']=='fblogin'){
@@ -269,11 +285,11 @@ if(logged() and !$GLOBALS['ss']['useid']){//e('log1');
       setcookie('towns_login_password',$post["login_password"],cookietime);
       //die('ahoj');
     }*/
-    
-	reloc();	
-	//define('$GLOBALS['ss']['useid']',$GLOBALS['ss']['useid']);
-	//define('$GLOBALS['ss']['logid'],$GLOBALS['ss']['logid']);
-	//?PROČ//reloc();
+
+    reloc();
+    //define('$GLOBALS['ss']['useid']',$GLOBALS['ss']['useid']);
+    //define('$GLOBALS['ss']['logid'],$GLOBALS['ss']['logid']);
+    //?PROČ//reloc();
 
     //refresh("page=main");
 }
@@ -307,7 +323,7 @@ if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
     $in2=$in2["items"];
     $in2=csv2array($in2);
     //r($in2);
-        $own2=csv2array($info2["own2"]);
+    $own2=csv2array($info2["own2"]);
     //r($own2);
     //print_r($own2);
     if(!$GLOBALS['ss']['useid']){$GLOBALS['ss']['useid']=$info["id"];}
@@ -323,31 +339,31 @@ if($_GET["resetmemory"]){
     reloc();
 }
 //------------------------------------NOPASSWORD
-    /*$nofb=true;
-    $nopass=true;
-    foreach(sql_array('SELECT `method`,`key` FROM `[mpx]login` WHERE `id`=\''.($GLOBALS['ss']["log_object"]->id).'\'') as $row){
-        list($method,$key)=$row;    
-        if($key){
-            if($method=='towns')$nopass=false;
-            if($method=='facebook')$nofb=false;
-        }
+/*$nofb=true;
+$nopass=true;
+foreach(sql_array('SELECT `method`,`key` FROM `[mpx]login` WHERE `id`=\''.($GLOBALS['ss']["log_object"]->id).'\'') as $row){
+    list($method,$key)=$row;
+    if($key){
+        if($method=='towns')$nopass=false;
+        if($method=='facebook')$nofb=false;
     }
-    define('nofb',$nofb);
-    define('nopass',$nopass);*/
-    $tmp=sql_array("SELECT password,fbid FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
-    $tmp=$tmp[0];
-    define('nopass',$tmp['password']?0:1);
-    define('nofb',$tmp['fbid']?0:1);
-    
+}
+define('nofb',$nofb);
+define('nopass',$nopass);*/
+$tmp=sql_array("SELECT password,fbid FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
+$tmp=$tmp[0];
+define('nopass',$tmp['password']?0:1);
+define('nofb',$tmp['fbid']?0:1);
+
 //-----------------------------------WINDOWS
 $nwindows=$_GET["i"];
 if(logged() and $nwindows){
     //r($nwindows);
-	$nwindows=explode(";",$nwindows);
-	foreach($nwindows as $nwindow){if($nwindow){
-		list($w_name,$w_content,$w_x,$w_y)=explode(",",$nwindow);
-		//r($w_name);
-		$interface=xx2x($GLOBALS['ss']["log_object"]->set->val("interface"));
+    $nwindows=explode(";",$nwindows);
+    foreach($nwindows as $nwindow){if($nwindow){
+        list($w_name,$w_content,$w_x,$w_y)=explode(",",$nwindow);
+        //r($w_name);
+        $interface=xx2x($GLOBALS['ss']["log_object"]->set->val("interface"));
         $interface=new windows($interface);
         list($ow_content,$ow_x,$ow_y)=explode(",",$interface->val($w_name));
         if(!$w_content)$w_content=$ow_content;
@@ -365,19 +381,19 @@ if(logged() and $nwindows){
         $interface=str_replace(nln,"",$interface);
         //echo(nl2br($interface));
         $GLOBALS['ss']["log_object"]->set->add("interface",x2xx($interface));
-	}}
+    }}
 }
 //-------------------------------SET
 //r('set2'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
 $nsets=$_GET["set"];
 if(logged() and $nsets){
-	//e("alert('$nsets');");
-    	//r($nwindows);
-	$nsets=explode(";",$nsets);
-	foreach($nsets as $nset){if($nset){
-		list($s_key,$s_value)=explode(",",$nset);
-		//r($w_name);
-		$set=xx2x($GLOBALS['ss']["use_object"]->set->val("set"));
+    //e("alert('$nsets');");
+    //r($nwindows);
+    $nsets=explode(";",$nsets);
+    foreach($nsets as $nset){if($nset){
+        list($s_key,$s_value)=explode(",",$nset);
+        //r($w_name);
+        $set=xx2x($GLOBALS['ss']["use_object"]->set->val("set"));
         $set=new windows($set);
         $ss_value=$set->val($s_key);
         if(!$s_value)$s_value=$ss_value;
@@ -393,14 +409,14 @@ if(logged() and $nsets){
         $set=str_replace(nln,"",$set);
         //echo(nl2br($interface));
         $GLOBALS['ss']["use_object"]->set->add("set",x2xx($set));
-	}}
+    }}
 }
 //r($GLOBALS['ss']["use_object"]->id);
 if(logged() and $_GET['e']!="none"/**/){
     if($GLOBALS['ss']["use_object"]->loaded){
         $settings=str2list(xx2x($GLOBALS['ss']["use_object"]->set->val("set")));
         $GLOBALS['settings']=$settings;
-        
+
     }else{
         $GLOBALS['ss']['useid']=false;
         $GLOBALS['ss']['logid']=false;
@@ -409,117 +425,117 @@ if(logged() and $_GET['e']!="none"/**/){
     }
 }
 //r($settings);
- 
-	
+
+
 //-------------------------------
 
 //e(23456);
 //r('set3'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
 t("before content");
 
-		//print_r($_GET);
-		//---------------------mobil
-		if(!is_bool($GLOBALS['ss']['mobile'])){
-			
-			if($GLOBALS['mobile_detect']->isMobile() && !$GLOBALS['mobile_detect']->isTablet() ){
-				$GLOBALS['ss']['mobile']=true;
-			}else{
-				$GLOBALS['ss']['mobile']=false;
-			}
-		}
-		//---------------------mobilni zarizeni
-		if(!is_bool($GLOBALS['ss']['mobilex'])){
-			
-			if($GLOBALS['mobile_detect']->isMobile()){
-				$GLOBALS['ss']['mobilex']=true;
-			}else{
-				$GLOBALS['ss']['mobilex']=false;
-			}
-		}
-		//---------------------IE
-		if(!is_bool($GLOBALS['ss']['isie'])){
-			
-			if(ae_detect_ie()){
-				$GLOBALS['ss']['isie']=true;
-			}else{
-				$GLOBALS['ss']['isie']=false;
-			}
-		}
-		//---------------------
-		if($_GET['mobile']){
-			$GLOBALS['ss']['mobile']=true;
-			if($_GET['mobile']==2){
-				$GLOBALS['ss']['android']=true;
-			}else{
-				$GLOBALS['ss']['android']=false;
-			}
-		}
-		if($_GET['mobile']=='0'){
-			$GLOBALS['ss']['mobile']=false;
-			$GLOBALS['ss']['android']=false;
-		}
-		$GLOBALS['mobile']=$GLOBALS['ss']['mobile'];
-		$GLOBALS['mobilex']=$GLOBALS['ss']['mobilex'];
-		$GLOBALS['isie']=$GLOBALS['ss']['isie'];
-		$GLOBALS['android']=$GLOBALS['ss']['android'];
-		define('mobile',$GLOBALS['mobile']);
-		define('android',$GLOBALS['android']);
+//print_r($_GET);
+//---------------------mobil
+if(!is_bool($GLOBALS['ss']['mobile'])){
 
-		//print_r(android);
-		/*if($_GET['e']=='-html_fullscreen'){
-		print_r($_GET);
-		print_r($GLOBALS['mobile']);print_r($GLOBALS['android']);
-		die();
-		}*/
+    if($GLOBALS['mobile_detect']->isMobile() && !$GLOBALS['mobile_detect']->isTablet() ){
+        $GLOBALS['ss']['mobile']=true;
+    }else{
+        $GLOBALS['ss']['mobile']=false;
+    }
+}
+//---------------------mobilni zarizeni
+if(!is_bool($GLOBALS['ss']['mobilex'])){
+
+    if($GLOBALS['mobile_detect']->isMobile()){
+        $GLOBALS['ss']['mobilex']=true;
+    }else{
+        $GLOBALS['ss']['mobilex']=false;
+    }
+}
+//---------------------IE
+if(!is_bool($GLOBALS['ss']['isie'])){
+
+    if(ae_detect_ie()){
+        $GLOBALS['ss']['isie']=true;
+    }else{
+        $GLOBALS['ss']['isie']=false;
+    }
+}
+//---------------------
+if($_GET['mobile']){
+    $GLOBALS['ss']['mobile']=true;
+    if($_GET['mobile']==2){
+        $GLOBALS['ss']['android']=true;
+    }else{
+        $GLOBALS['ss']['android']=false;
+    }
+}
+if($_GET['mobile']=='0'){
+    $GLOBALS['ss']['mobile']=false;
+    $GLOBALS['ss']['android']=false;
+}
+$GLOBALS['mobile']=$GLOBALS['ss']['mobile'];
+$GLOBALS['mobilex']=$GLOBALS['ss']['mobilex'];
+$GLOBALS['isie']=$GLOBALS['ss']['isie'];
+$GLOBALS['android']=$GLOBALS['ss']['android'];
+define('mobile',$GLOBALS['mobile']);
+define('android',$GLOBALS['android']);
+
+//print_r(android);
+/*if($_GET['e']=='-html_fullscreen'){
+print_r($_GET);
+print_r($GLOBALS['mobile']);print_r($GLOBALS['android']);
+die();
+}*/
 
 //-------------------------------
 //==============================
 if($GLOBALS['mobile']){
-	$GLOBALS['dragdistance']=19;
+    $GLOBALS['dragdistance']=19;
 }else{
-	$GLOBALS['dragdistance']=11;
+    $GLOBALS['dragdistance']=11;
 }
 //==============================
 if(!$GLOBALS['mapzoom']){
-	if(!$GLOBALS['mobile']){
-	    $GLOBALS['mapzoom']=1;
-	}else{
-	    $GLOBALS['mapzoom']=round(pow(gr,(1/2))*100)/100;
-	}
+    if(!$GLOBALS['mobile']){
+        $GLOBALS['mapzoom']=1;
+    }else{
+        $GLOBALS['mapzoom']=round(pow(gr,(1/2))*100)/100;
+    }
 }
 //==============================
 //-------------------------------
-		//exit;
+//exit;
 //e('d');
 
 
 if($_GET['e']){
-	if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='text-email' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac'){
+    if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='text-email' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac'){
 
 
 
-	    //if($_GET["ee"]){$e=$_GET["ee"];}else{$e=$_GET['e'];}
-	    $e=$_GET['e'];
-	    define("subpage", $e);
-	
-	    //echo($e);
-	    list($dir,$e)=explode('-',$e,2);
-	    //echo($dir.','.$e);
-	    $e=str_replace('-','/',$e);
-	    if(!$e){$e=$dir;$dir='page';}
-	    if($e!="none")require(core."/$dir/".$e.".php");
+        //if($_GET["ee"]){$e=$_GET["ee"];}else{$e=$_GET['e'];}
+        $e=$_GET['e'];
+        define("subpage", $e);
+
+        //echo($e);
+        list($dir,$e)=explode('-',$e,2);
+        //echo($dir.','.$e);
+        $e=str_replace('-','/',$e);
+        if(!$e){$e=$dir;$dir='page';}
+        if($e!="none")require(core."/$dir/".$e.".php");
     }else{
-	//die('aaa');
-    	refresh();
+        //die('aaa');
+        refresh();
     }
 }else{
     define("subpage", false);
 
     //if($_GET['inframe']){
     if($GLOBALS['url_param']!='fbonly'){
-    	require(core."/html.php");
+        require(core."/html.php");
     }else{
-    	require(core."/page/frame.php");
+        require(core."/page/frame.php");
     }
 }
 
@@ -535,16 +551,16 @@ if(!debug){t("ob_end_flush");ob_end_flush();}
 if(logged() and $_GET['e']!="none"/**/){
 //e($GLOBALS['ss']["log_object"]->id.','.$GLOBALS['ss']["use_object"]->id);
 
-$GLOBALS['ss']["log_object"]->update();
+    $GLOBALS['ss']["log_object"]->update();
 
 //if(!$GLOBALS['ss']["use_object"]->loaded){$GLOBALS['ss']["use_object"]=new object($GLOBALS['ss']['useid']);}
 //$GLOBALS['ss']["use_object"]->hold->showimg();
-$GLOBALS['ss']["use_object"]->update();
-$GLOBALS['ss']["aac_object"]->update();
+    $GLOBALS['ss']["use_object"]->update();
+    $GLOBALS['ss']["aac_object"]->update();
 
-unset($GLOBALS['ss']["log_object"]);
-unset($GLOBALS['ss']["use_object"]);
-unset($GLOBALS['ss']["aac_object"]);
+    unset($GLOBALS['ss']["log_object"]);
+    unset($GLOBALS['ss']["use_object"]);
+    unset($GLOBALS['ss']["aac_object"]);
 }
 //die2();
 //cleartmp(1);
