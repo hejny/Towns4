@@ -2,11 +2,17 @@
 
 
 define('noinc',true);
-require_once('../../index.php');
-require_once('../../'.$inc['core'].'/func_vals.php');
-require_once('../../'.$inc['core'].'/func_main.php');
-require_once('../../'.$inc['core'].'/memory.php');
-require_once('../../'.$inc['core'].'/func_external.php');
+
+$aacdir=getcwd();
+chdir('../../');
+
+require_once('index.php');
+require_once($inc['core'].'/func_vals.php');
+require_once($inc['core'].'/func_main.php');
+require_once($inc['core'].'/memory.php');
+require_once($inc['core'].'/func_external.php');
+
+chdir($aacdir);
 
 //===========================================================================================
 function app_auth($perm){
@@ -28,6 +34,9 @@ function app_auth($perm){
 function aacute($text){
     $from=array('ě','š','č','ř','ž','ý','á','í','é','ú','ů');
     $to=array('&#283;','&scaron;','&#269;','&#345;','&#382;','&yacute;','&aacute;','&iacute;','&eacute;','&uacute;','&#367;');
+    $text=str_replace($from,$to,$text);
+    $from=array('Ě','Š','Č','Ř','Ž','Ý','Á','Í','É','Ú','Ů');
+    $to=array('&#282;','&Scaron;','&#268;','&#344;','&#381;','&Yacute;','&Aacute;','&Iacute;','&Eacute;','&Uacute;','&#366;');
     $text=str_replace($from,$to,$text);
     return($text);
 }
@@ -213,6 +222,12 @@ function page($title='',$description='',$startyear=false,$jquery=false,$author=f
 //---------------------------------------------
 
 function page_end(){
+    if( $GLOBALS['page_started']){
+        $GLOBALS['page_started']=false;
+    }else{
+        return;
+    }
+
     $author=$GLOBALS['page_author'];
     $links=$GLOBALS['page_links'];
     $startyear=$GLOBALS['page_startyear'];
