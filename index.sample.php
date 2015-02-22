@@ -65,6 +65,7 @@ $inc=array(
 
     //Deploy
     'git_origin' => '', //URL adresa pro remote git origin
+
     //https://username:password@bitbucket.org/towns/towns4.git
 
 	//URL pro vygenerování dumpu; URL pro stažení dumpu
