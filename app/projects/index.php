@@ -1,4 +1,15 @@
 <?php
+/*
+ * <script>
+    jQuery(document).ready(function(){
+        jQuery("#projects").load("http://localhost/towns/small/admin/app/projects/?only=1");
+        //https://www.towns.cz/app/projects/?only=1
+});
+</script>
+<div id="projects">aa</div>
+ *
+ * */
+
 require_once('../inc.php');
 
 
@@ -6,6 +17,8 @@ $alltags=array('text','startx','stopx','start','stop','private','author','inbox'
 
 
 if(!$_GET['project']){
+
+    header('Access-Control-Allow-Origin: *');
 
     $only=$_GET['only'];
 
@@ -405,6 +418,8 @@ e('</div>');
 
                     $auth = 'key=' . $GLOBALS['inc']['trello_key'] . '&token=' . $GLOBALS['inc']['trello_token'];
 
+
+                    error_reporting(0);
                     $return = post_request(
                         'https://trello.com/1/cards?' . $auth
                         ,
@@ -415,10 +430,21 @@ e('</div>');
                         )
 
                     );
+
+
+
+
                     //----------------Úspěch
 
+
                     $success=true;
-                    e('<span class="success">'.lr('app_projects_write_success').'</span>');
+
+                    if(!$return){
+                        mail($GLOBALS['inc']['log_mail'],$a,$b,'From: projects@towns.cz');
+                        e('<span class="success">' . lr('app_projects_write_success_mail') . '</span>');
+                    }else {
+                        e('<span class="success">' . lr('app_projects_write_success') . '</span>');
+                    }
 
                     //----------------
                 }
