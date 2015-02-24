@@ -95,8 +95,9 @@ function send_report($from,$to,$title="",$text="",$idle=false){
     
     
     $time=sql_1data("SELECT time FROM `[mpx]text` WHERE `to`='".$to."' AND type='report' ORDER BY time DESC LIMIT 1");
-    
-    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','report','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
+
+    $nextid=sql_1number('SELECT MAX(id) FROM `[mpx]text`')+1;
+    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES($nextid,'$idle','report','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
     
     //-----------
     
@@ -138,8 +139,8 @@ function send_message($from,$to,$title="",$text="",$idle=false){
     
     $time=sql_1data("SELECT time FROM `[mpx]text` WHERE `to`='".$to."' AND type='message' ORDER BY time DESC LIMIT 1");
     
-    
-    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES(NULL,'$idle','message','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
+    $nextid=sql_1number('SELECT MAX(id) FROM `[mpx]text`')+1;
+    sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES($nextid,'$idle','message','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
     
     //-----------
     
