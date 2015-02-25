@@ -119,7 +119,7 @@ function mailx($to,$subject,$text,$world=false){
 
 		if(!$uz){
                         $id=sql_1number('SELECT MAX(`id`) FROM `[mpx]emails`')+1;
-			sql_query("INSERT INTO `[mpx]emails` (`id`, `to`, `subject`, `text`, `world`, `key`, `start`, `try`, `stop`) VALUES (`id`, ".($to-1+1).", '".sql($subject)."', '".sql($text)."', '".sql($world)."', '".md5(rand(111111,999999))."', now(), 0, NULL);");
+			sql_query("INSERT INTO `[mpx]emails` (`id`, `to`, `subject`, `text`, `world`, `key`, `start`, `try`, `stop`) VALUES ($id, ".($to-1+1).", '".sql($subject)."', '".sql($text)."', '".sql($world)."', '".md5(rand(111111,999999))."', now(), 0, NULL);");
 
 				$url=url.'?e=text-email';
 				//e($url);
