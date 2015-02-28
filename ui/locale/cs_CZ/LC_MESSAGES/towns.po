@@ -1150,6 +1150,9 @@ msgstr "Přesunte budovu tam, kde ji chete postavit"
 msgid "create_ok_join"
 msgstr "Budova bude připojena k budově [0]"
 
+msgid "create_ok"
+msgstr "Postavit"
+
 msgid "create_remain"
 msgstr "K postavení budovy potřebujete ještě"
 
