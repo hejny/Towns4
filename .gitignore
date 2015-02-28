@@ -1,4 +1,5 @@
 *.mo
+*.pot
 
 /index.php
 /tmp
