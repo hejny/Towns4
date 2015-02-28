@@ -76,7 +76,7 @@ function modelx($res,$fpfs=1,$usercolor=false){
     model($res,0.75*gr,NULL,1.5,NULL,$fpfs,0,true,$usercolor);//1
     t('modelx - b');
     $GLOBALS['model_noimg']=false;
-    return(rebase(url.base.$GLOBALS['model_file']));
+    return(rebase(url.$GLOBALS['model_file']));
 }
 function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=0,$onlymodelfile=false,$usercolor=false){$pres=$res;
     t('model - start');
@@ -325,7 +325,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         list($res,$rot)=explode(':',$res);
         if(substr($res,0,1)=='_'){
             $res=substr($res,1);
-            $file0=root.'image/res/'.$res;
+            $file0=root.'ui/image/res/'.$res;
         }else{
             $file0=root.'userdata/res/'.$res;
         }

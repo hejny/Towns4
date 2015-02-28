@@ -107,7 +107,27 @@ if(strpos($stream,'<!--aac-->')){
 		$aac=('<a href="'.$guid.'" target="_blank">'.lr('last_aac').' '.$post_title.' ('.$post_date.')</a>');
 
 	$stream=str_replace('<!--aac-->',$aac,$stream);
-}	
+}
+//-----------------------------------------------------------------------------------Projects
+
+    if(strpos($stream,'<!--projects-->')){
+
+        $url=url.'../app/projects/?only=2&limit=2&nolink=1';
+        $projects='<a href="'.$GLOBALS['inc']['projects'].'" target="_blank"><span id="app_projects" style="" >'.lr('loading').'</span></a>';
+        $projects.=<<<EOF
+            <script>
+
+            $.get( "$url", function( data ) {
+                $( "#app_projects" ).html( data );
+            });
+
+            </script>
+
+EOF;
+
+
+        $stream=str_replace('<!--projects-->',$projects,$stream);
+    }
 
 
 //-----------------------------------------------------------------------------------External

@@ -1,3 +1,5 @@
+*.mo
+
 /index.php
 /tmp
 /backup

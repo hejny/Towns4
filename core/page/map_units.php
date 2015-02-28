@@ -281,7 +281,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
                 chmod($file,0777);
         }
         
-        $src=rebase(url.base.$file);        
+        $src=rebase(url.$file);
         $GLOBALS['area_stream'].='<div style="position:absolute;z-index:150;" id="expand'.$id.'">
         <div style="position:relative; top:'.($ry-((($s/$y/4)+htmlbgc)/$GLOBALS['mapzoom'])).'; left:'.($rx-($s/$y/2/$GLOBALS['mapzoom'])).';" >
         <img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
@@ -354,7 +354,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
                 chmod($file,0777);
         }
         
-        $src=rebase(url.base.$file);
+        $src=rebase(url.$file);
 
 
 	//die($src);    

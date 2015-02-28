@@ -82,7 +82,7 @@ foreach($masters as $group=>$row){
     
     
     $image='icons/f_create_'.$group.'.png';
-    if(!file_exists('image/'.$image)){
+    if(!file_exists('ui/image/'.$image)){
         $image='icons/f_create.png';
     }
     e('<td>'.ahrefr(imgr($image,lr('build_'.$group),20,20,NULL,NULL,$free?0:1),$href).'</td>');

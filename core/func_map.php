@@ -154,7 +154,7 @@ function map1($param,$xc=false,$yc=false,$outfile=false){
     }else{
 //echo(root."data/image/terrain/$param.png");
             //--------------------------2D
-            $tmp=imagecreatefrompng(root."image/terrain/$param.png");
+            $tmp=imagecreatefrompng(root."ui/image/terrain/$param.png");
             $tmpb=(1+(2*$t_pofb));
             $maxx=imagesx($tmp)-($t_sofb*$tmpb);
             $maxy=imagesy($tmp)-($t_sofb*$tmpb);
@@ -236,7 +236,7 @@ function t2rgb($param=0){
     
     if(!$GLOBALS['t2rgb'][$param]){
 
-        $tmp=imagecreatefrompng(root."image/terrain/$param.png");
+        $tmp=imagecreatefrompng(root."ui/image/terrain/$param.png");
 
         $r=0;$g=0;$b=0;
 
@@ -968,7 +968,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
             }
             //-----------------------
             
-            $datastream=rebase(url.base.str_replace('../','',$outimg).'?'.filemtime($outimg));
+            $datastream=rebase(url.str_replace('../','',$outimg).'?'.filemtime($outimg));
             //$datastream='data:image/png;base64,'.base64_encode(file_get_contents($outimg));
             if($w==0)$html.=$clvla.'<img src="'.$datastream.'" border="'.$border.'" width="'.(ceil($width/$zoom)).'" height="'.(ceil($width/424*212*$clvlh/$zoom)).'" style="z-index:1;" "/>'.$clvlb;//class="clickmap"   usemap="#x'.$gx.'y'.$gy.'"
             else     $html.=$clvla.'<img src="'.$datastream.'" border="'.$border.'" width="'.(1+ceil($width/$zoom)).'" height="'.(1+ceil($width/424*212*$clvlh/$zoom)).'" />'.$clvlb;            
@@ -1012,7 +1012,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
 			imagealphablending($model_tree,true); 
 			                        
                         imagecopyresized($model_rock,$model_tree,0,0,0,0,imagesx($model_rock),imagesy($model_rock),imagesx($model_rock),imagesy($model_rock));*/
-			$treerock=imagecreatefrompng(root.'image/design/treerock.png');
+			$treerock=imagecreatefrompng(root.'ui/image/design/treerock.png');
                         
                         
                         
@@ -1055,7 +1055,7 @@ function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$
             }
             //-----------------------
             if(filesize($outimgunits)>1){
-                $datastream=rebase(url.base.str_replace('../','',$outimgunits).'?'.filemtime($outimgunits));
+                $datastream=rebase(url.str_replace('../','',$outimgunits).'?'.filemtime($outimgunits));
                 //$datastream='data:image/png;base64,'.base64_encode(file_get_contents($outimg));
                 if($w==0)$html.='<span style="position:absolute;width:0px;z-index:2;"><img src="'.$datastream.'" style="position:relative;left:-'.round(($width+htmlunitc)/$zoom).'px;z-index:2;" class="clickmap" width="'.ceil($width/$zoom).'" height="'.(ceil($width/424*212/$zoom)).'" border="'.$border.'"/></span>';//class="clickmap"   usemap="#x'.$gx.'y'.$gy.'"
                 else     $html.='<img src="'.$datastream.'" width="'.(1+ceil($width/$zoom)).'" height="'.(1+ceil($width/424*212/$zoom)).'" class="clickmap" border="'.$border.'"/>';
@@ -1129,7 +1129,7 @@ function mapgrid(){
     return(array($r,$g,$b));
 }*/
 function terraincolor($terrain){
-    $tmp=imagecreatefrompng(root."image/terrain/$terrain.png");
+    $tmp=imagecreatefrompng(root."ui/image/terrain/$terrain.png");
     $rgb = imagecolorat($tmp,round(imagesx($tmp)/2),round(imagesy($tmp)/2));
     $r = (($rgb >> 16) & 0xFF);
     $g = (($rgb >> 8) & 0xFF);

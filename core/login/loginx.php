@@ -67,7 +67,7 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
 <?php }
 
 
-    $GLOBALS['ss']["helppage"]='about_'.w;
+    $GLOBALS['ss']["helppage"]='about';
     $GLOBALS['nowidth']=true;
     eval(subpage('help'));
     br(1);

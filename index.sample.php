@@ -22,7 +22,8 @@ $inc=array(
     'debug' => true,                		    //Zda je povolené zapnout debug mód; Tabulky pro time debug
     //'timeplan' => array('sql_query','sql_1data','sql_array','sql_csv'),
 
-    'lang' => 'cz',                             //deafultní jazyk
+    'lang' => 'cs_CZ',                          //deafultní jazyk
+    //'lang_record' => true,                    //Vytváření .pot souboru
     //'wp_posts'=>'wp_posts',                   //Wordpressová tabulka s příspěvky
 
 
@@ -45,12 +46,13 @@ $inc=array(
     'google_page' => '101630931721695253050',   //ID stránky na Google+
     'twitter_page' => 'townsgame',              //ID stránky na Twitter
     'forum' =>'http://forum.towns.cz/',         //URL nápovědy a fóra
+    'projects' =>'http://forum.towns.cz/vyvoj/',//URL stránky vývoje a projektů
 
     //Administrátorské účty Towns4Admin
     'admin' => array(
-            'x' => 	array('password' => 'x', 'permissions' => '*', 'tlang' => array('cz','czx')),
-            'y' => 	array('password' => 'y', 'permissions' => 'html', 'tlang' => array('cz','czx')),
-            'public' =>	array( 'permissions' => array('unique'), 'tlang' => array('cz','czx')) //public=bez přihlášení
+            'x' => 	array('password' => 'x', 'permissions' => '*'),
+            'y' => 	array('password' => 'y', 'permissions' => 'html'),
+            'public' =>	array( 'permissions' => array('unique')) //public=bez přihlášení
 
     ),
 
