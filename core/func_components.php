@@ -223,7 +223,7 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
     
     
 }
-//======================================================================================
+//======================================================================================ir
 function ir($i,$q=2){
     $i=round($i,$q);
     $i=array_reverse(str_split($i));
@@ -238,126 +238,6 @@ function ir($i,$q=2){
 }
 function ie($i,$q=2){echo(ir($i,$q));}/**/
 
-//======================================================================================================================LANG 2013 - contentlang
-function contentlang($buffer,$rec=false){//if(rr())r();
-	
-    if(1){
-	
-	//$buffer=xx2x($buffer);
-        /*$file=("data/lang/".$GLOBALS['ss']["lang"].".txt");
-        $stream=file_get_contents($file);
-        $GLOBALS['ss']["langdata"]=(astream($stream));*/
-        $buffer=str_replace(array("{0}","{}"),"",$buffer);
-        $buffer=str_replace("x{","languageprotectiona",$buffer);
-        $buffer=str_replace("}x","languageprotectionb",$buffer);
-        //if(edit)$addtoend='<table>';
-	//if(edit){$addtoend='<iframe src="admin/index.php?page=lang" width="100%" height="100%"></iframe>';}
-        //-------------
-	for($i=0;($tmp=substr2($buffer,"{","}",$i) and $i<200);$i++){
-            if(rr())r($tmp);
-	    
-      	    /*if(!$langdata){
-		$langdata=array();
-		foreach(sql_array('SELECT `key`,`value` FROM [mpx]lang WHERE lang=\''.$GLOBALS['ss']["lang"].'\'') as $row){
-		    list($key,$value)=$row;
-		    $langdata[$key]=$value;
-		}
-            }*/
-
-            list($key,$params)=explode(";",$tmp,2);
-	    $no=0;	
-	    if(strpos($key,'"'))$no=1;
-	    if(strlen($key)>100)$no=1;
-            if($GLOBALS['langdata'][$key] and substr($GLOBALS['langdata'][$key],0,1)!=='{' and !$no){//e(1);
-              
-				$text=valsintext($GLOBALS['langdata'][$key],$params);
-				//$text=$key;//$GLOBALS['langdata'][$key];
-
-                /*$size=strlen($text);
-                $text=$text;
-		$text=str_replace(array('{','}'),array('languageprotectiona','languageprotectionb'),$text);
-                if(rr())r($text);
-                if(rr())r($buffer);
-                if(rr())r();*/
-            }elseif(!$no){//e(2);
-		
-					$params=str2list($params);
-					//print_r($params);
-					if($params['alt']){
-						$l1=strlen($params['alt']);
-						$params['alt']=str_replace('+','',$params['alt']);
-						$l=$l1-strlen($params['alt']);
-						if($l<3){
-							$plus='';$ii=1;while($ii<=$l){$plus.='+';$ii++;}
-							$krat='';
-						}else{
-							$plus='';
-							$krat=($l+1).'x';							
-						}
-						$params['alt']=$params['alt'];
-						$text=$krat."languageprotectiona".$params['alt']."languageprotectionb".$plus;
-						if(!$rec){
-						if(strpos($text,'languageprotectionb')!==false){
-							//$text='hovno';
-							$text=str_replace("languageprotectiona","{",$text);
-							$text=str_replace("languageprotectionb","}",$text);
-							//die('123');
-							$text=contentlang($text,true);
-						}
-						}
-			
-						//$text=('alternative');
-					}else{
-						$text="languageprotectiona".$key.($params?';'.$params:'')."languageprotectionb";
-						//$text=('noalt');
-					}
-                $size=5;
-                
-                
-		$pdo = new PDO('mysql:host='.mysql_host.';dbname='.mysql_db, mysql_user, mysql_password, array(PDO::ATTR_PERSISTENT => false));
-		$pdo->exec("set names utf8");
-		$q=("INSERT INTO `[mpx]lang` (`lang`, `key`, `value`, `font`, `author`, `description`, `time`) VALUES ('".$GLOBALS['ss']["lang"]."', '$key', '{".addslashes($key)."}', '', '', 'new', '".time()."');");
-		$response=$pdo->exec($q);
-		unset($pdo);
-		
-                /*$add='//'.$key.'=;';
-                if(!strpos($stream,$add) and !strpos($addtoend,$add))$addtoend.=nln.$add;*/
-                
-            }
-            /*if(edit){
-		if(strpos($text,nln)){
-			$form='<input type="input" name="'.$key.'" value="'.$text.'" size="'.$size.'"/>';
-		}else{
-			$form='<textarea name="promenna" cols="40" rows="3">'.$text.'</textarea>';	
-		}
-		
-                $addtoend.="<tr><td><b>{$key}</b></td><td>$form</td></tr>";
-                //$text='<a href="lem.php" target="_blank">#</a>'.$text;
-                //$text='<input type="input" name="move_y" value="'.$text.'" size="'.$size.'"  style="border:  1px solid #333333; background-color: #000000; color: #ffffff;" onBlur="" />';
-                //<form id="form" name="form" method="POST" action="http://localhost/4/?w=228720"><input type="input" name="move_y" value="" /></form>
-            }*/
-            $buffer=substr2($buffer,"{","}",$i,$text);
-        }
-        $buffer=str_replace(array("{",";}","}"),"",$buffer);
-        $buffer=str_replace("languageprotectiona","{",$buffer);
-        $buffer=str_replace("languageprotectionb","}",$buffer);
-	//if(edit)$addtoend.='</table>';
-	//if($GLOBALS['ss']["logged_new"]!=true){};
-	//if(edit)$buffer.=$addtoend;
-        //if($addtoend)file_put_contents2($file,file_get_contents($file).$addtoend);
-    }else{
-        //$buffer="contentlang".$buffer;
-        $buffer=str_replace("{","{",$buffer);
-        $buffer=str_replace("}","}",$buffer);
-    }
-    return($buffer);
-}
-
-
-//e(contentlang('{bhwjebrfdljznsfrkgjdn}'));
-//e(contentlang('{building_master_count2;alt=building_master+}'));
-//die();
-//le("hovno");
 //======================================================================================================================aacute
 function aacute($word){
 	//sql_query("INSERT INTO [mpx]lang `lang`,`va VALUES 'ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ'");
@@ -553,7 +433,7 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
 		                $html='border="'.($style==3?2:'0').'"';
 		        }
 
-		        $stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.base.str_replace('../','',$file))/*$file*/.'" width="'.intval(($orient?$height:$width)/$supersize).'" height="'.intval(($orient?$width:$height)/$supersize).'" alt="'.$word.'" '.$html.'/>';
+		        $stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.str_replace('../','',$file))/*$file*/.'" width="'.intval(($orient?$height:$width)/$supersize).'" height="'.intval(($orient?$width:$height)/$supersize).'" alt="'.$word.'" '.$html.'/>';
 		        $space=$orient?'<br/>'.imgr('design/blank.png','',7,7).'<br/>':' ';
 			//-------------------------------------------------------------------------------------------
 			}else{
@@ -564,7 +444,7 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
 				if(!$red){
 					$red=255;$green=255;$blue=255;
 				}
-				$stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.base.str_replace('../','',rvscgo($word,70,5,$red, $green, $blue))).'" '.($orient?'height':/*'width'*/'height').'="'.intval($hh/*$supersize*/).'" alt="'.$word.'" '.$html.'/>';
+				$stream.=$space.'<'.$tag.' '.($tag=='input'?'type="image"':'').' src="'.rebase(url.str_replace('../','',rvscgo($word,70,5,$red, $green, $blue))).'" '.($orient?'height':/*'width'*/'height').'="'.intval($hh/*$supersize*/).'" alt="'.$word.'" '.$html.'/>';
 				$space=' ';
 		        //$space=$orient?'<br/>'.imgr('design/blank.png','',7,7).'<br/>':' ';
 
@@ -652,14 +532,14 @@ if(!file_exists($file)){
 	$bg = imagecolorallocate($img, 255, 255, 255);
 	imagefill($img, 0, 0, $bg);
 	$l=array();
-	$l["i"][0] = imagecreatefromjpeg("image/rvscgo/l0001.jpg");
-	$l["y"][0] = imagecreatefromjpeg("image/rvscgo/l0002.jpg");
-	$l["s"][0] = imagecreatefromjpeg("image/rvscgo/l0003.jpg");
-	$l["o"][0] = imagecreatefromjpeg("image/rvscgo/l0004.jpg");
-	$l["i"][1] = imagecreatefromjpeg("image/rvscgo/l0005.jpg");
-	$l["y"][1] = imagecreatefromjpeg("image/rvscgo/l0006.jpg");
-	$l["s"][1] = imagecreatefromjpeg("image/rvscgo/l0007.jpg");
-	$l["o"][1] = imagecreatefromjpeg("image/rvscgo/l0008.jpg");
+	$l["i"][0] = imagecreatefromjpeg("ui/image/rvscgo/l0001.jpg");
+	$l["y"][0] = imagecreatefromjpeg("ui/image/rvscgo/l0002.jpg");
+	$l["s"][0] = imagecreatefromjpeg("ui/image/rvscgo/l0003.jpg");
+	$l["o"][0] = imagecreatefromjpeg("ui/image/rvscgo/l0004.jpg");
+	$l["i"][1] = imagecreatefromjpeg("ui/image/rvscgo/l0005.jpg");
+	$l["y"][1] = imagecreatefromjpeg("ui/image/rvscgo/l0006.jpg");
+	$l["s"][1] = imagecreatefromjpeg("ui/image/rvscgo/l0007.jpg");
+	$l["o"][1] = imagecreatefromjpeg("ui/image/rvscgo/l0008.jpg");
 	//bool imagecopyresampled ( resource $dst_image , resource $src_image , int $dst_x , int $dst_y , int $src_x , int $src_y , int $dst_w , int $dst_h , int $src_w , int $src_h )
 	$q=1;$i=0;
 	foreach(str_split($text) as $ch){
@@ -1131,7 +1011,7 @@ function imageurl($file,$rot=1,$grey=false){
 	$ext=$ext[count($ext)-1];
 	
     $file2=tmpfile2($file.','.$rot.','.$grey,$ext,"image");
-    $file1="image/".$file;
+    $file1="ui/image/".$file;
     if(!file_exists($file2) or filemtime($file1)>filemtime($file2) or notmpimg /** or true/**/){
         t('imageurl - startcreating');
         if(str_replace("id_","",$file)==$file){
@@ -1153,7 +1033,7 @@ function imageurl($file,$rot=1,$grey=false){
                 chmod($file2,0777);
             }else{
             	if(!file_exists($file1)){
-            		$file1="image/design/blank.png";
+            		$file1="ui/image/design/blank.png";
             	}
                 copy($file1,$file2);
                 chmod($file2,0777);
@@ -1172,7 +1052,7 @@ function imageurl($file,$rot=1,$grey=false){
                 $profile=$profile->vals2list();
                 $icon=$profile["image"];
                 if($icon and false){//BEZ UžIATELSKýCH PROFILOVEK
-                    $contents=root."image/".$icon.".jpg";//sql_1data("SELECT res FROM objects WHERE id='".$icon."' OR name='".$icon."'");
+                    $contents=root."ui/image/".$icon.".jpg";//sql_1data("SELECT res FROM objects WHERE id='".$icon."' OR name='".$icon."'");
                 }else{
                 //'hybrid','nature','message','hero','unit','building','item','terrain','image'
                     $res=sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE id='".$file."' OR name='".$file."'");
@@ -1188,7 +1068,7 @@ function imageurl($file,$rot=1,$grey=false){
                         $contents=file_get_contents($contents);
                     }else{
                         $type=sql_1data("SELECT type FROM `[mpx]pos_obj` WHERE id='".$file."'");
-                        $contents=("image/types/$type.png");
+                        $contents=("ui/image/types/$type.png");
                         //r("image/types/$type.png");
                     }
                 }
@@ -1219,7 +1099,7 @@ function imageurl($file,$rot=1,$grey=false){
         }
         t('imageurl - stopcreating');
         }
-        $stream=rebase(url.base.$file2);//=$GLOBALS['ss']["url"].$file2;
+        $stream=rebase(url.$file2);//=$GLOBALS['ss']["url"].$file2;
         return($stream);
     
 }

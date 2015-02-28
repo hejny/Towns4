@@ -42,7 +42,7 @@ $groupx=$group;
 
 $GLOBALS['groupby']='';
 if($group){
-	infob(contentlang(lr('unique_from',$object->name)));
+	infob(contentlang($object->name));
 	
 	if($groupx!='extended'){
 	    $group="func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'";//" AND name!='".$object->name."'";

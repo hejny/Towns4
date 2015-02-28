@@ -535,7 +535,7 @@ function objt($alt=false,$showtime=false){
 }
 //======================================================================================================================LANG 2011
 
-//-----------------------------------------------------------------------langload
+//----------------------------------------------------------------langload
 
 if($GLOBALS['ss']["lang"]){
     $lang=$GLOBALS['ss']["lang"];
@@ -545,36 +545,122 @@ if($GLOBALS['ss']["lang"]){
 if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
 if($_GET['lang']){$lang=$_GET['lang'];}
 if($_GET['rvscgo']==1){$lang='rv';}
+if($lang=='cz'){$lang='cs_CZ';}
 $GLOBALS['ss']["lang"]=$lang;
 
-//-----------------------------------------------------------------------langdata
+//----------------------------------------------------------------langinit gettext
 
-$GLOBALS['langdata']=array();
-foreach(sql_array('SELECT `key`,`value` FROM [mpx]lang WHERE lang=\''.$GLOBALS['ss']["lang"].'\'') as $row){
-    list($key,$value)=$row;
-    $GLOBALS['langdata'][$key]=$value;
-}
+setlocale(LC_ALL, $lang.'.UTF-8');
+setlocale(LC_NUMERIC, 'en_US.UTF-8');
 
-//-----------------------------------------------------------------------lr,le
+bindtextdomain('towns', $GLOBALS['inc']['base'].'ui/locale');
+//bind_textdomain_codeset("towns", 'UTF-8');
+textdomain("towns");
+
+//----------------------------------------------------------------lr
+
 
 
 function lr($key,$params=''){
-    $text=valsintext($GLOBALS['langdata'][$key],$params);
-    //if(strpos($text,'{')!==false)$text=contentlang($text);
-    if(!$text){
-        $params=str2list($params);
-        if($params['alt']){
-            $text='{'.$params['alt'].'}';
+    //----------------
+    if($GLOBALS['inc']['lang_record']){
+
+
+        $file=$GLOBALS['inc']['base'].'ui/locale/towns.pot';
+        if(!file_exists($file)){
+            $contents=<<<EOF
+msgid ""
+msgstr ""
+"Project-Id-Version: Towns\\n"
+"POT-Creation-Date: 2015-02-24 08:33+0100\\n"
+"PO-Revision-Date: 2015-02-26 00:39+0100\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"Language: cs\\n"
+"X-Generator: Towns lr()\\n"
+EOF;
+
+
         }else{
-            $text='{'.$key.'}';
+            $contents=file_get_contents($file);
         }
-        sql_query("INSERT INTO `[mpx]lang` (`lang`, `key`, `value`, `font`, `author`, `description`, `time`) VALUES ('".$GLOBALS['ss']["lang"]."', '$key', '{".addslashes($key)."}', '', '', 'new', '".time()."');");
+
+        $msgidx='msgid "'.addslashes($key).'"';
+
+        if(!strpos($contents,$msgidx)) {
+
+            $plus = <<<EOF
+\n
+$msgidx
+msgstr ""
+EOF;
+
+            $contents .= $plus;
+
+            file_put_contents($file, $contents);
+            chmod($file,0777);
+        }
+
+    }
+    //----------------
+
+    $text=gettext($key);
+
+
+    if($text==$key){
+        $params=str2list($params);
+        //print_r($params);
+        if($params['alt']){
+
+            $altplus=$params['alt'];
+            $alt=str_replace('+','',$altplus);
+
+            $plus=substr($altplus,strlen($alt));
+
+            $text=lr($alt).$plus;
+        }
 	}
+
+
+    $text=valsintext($text,$params);
     return($text);
+    //return(nl2br(htmlspecialchars($text)));
 }
-function le($key,$params=''){
-    echo(lr($key,$params));
+
+
+//----------------------------------------------------------------le
+
+function le($key){
+    echo(lr($key));
 }
+
+//----------------------------------------------------------------contentlang
+
+function contentlang($buffer){//if(rr())r();
+
+    $buffer=str_replace(array("{0}","{}"),"",$buffer);
+    $buffer=str_replace("x{","languageprotectiona",$buffer);
+    $buffer=str_replace("}x","languageprotectionb",$buffer);
+    //-------------
+    for($i=0;($tmp=substr2($buffer,"{","}",$i) and $i<200);$i++){
+
+        list($key,$params)=explode(";",$tmp,2);
+
+
+        $text=lr($key,$params);
+
+        $buffer=substr2($buffer,"{","}",$i,$text);
+
+    }
+    $buffer=str_replace(array("{",";}","}"),"",$buffer);
+    $buffer=str_replace("languageprotectiona","{",$buffer);
+    $buffer=str_replace("languageprotectionb","}",$buffer);
+
+
+    return($buffer);
+}
+
 
 
 //======================================================================================================================-NOVe KONFIGURACE

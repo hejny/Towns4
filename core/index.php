@@ -182,17 +182,10 @@ require(root.core."/hold/func_core.php");
 require(root.core."/quest/func_core.php");
 
 
-/*$text=valsintext("[0]oo[a_name_]","a_name=budova {building_expand_tower};a_name_={building_expand_tower};b_name=budova {building_expand_tower};b_name_={building_expand_tower};b_name4=budova {building_expand_tower};attackname=Obsadil;q=poÅ¡kozenÃ­ nepÅ™Ã¡telskÃ© budovy;time=40;a_fp2=28305.8;b_fp2=25232;a_tah=40;b_tah=40;a_atf=25.8;b_atf=10.53;a_seed=60;b_seed=39;a_fp=28727;b_fp=26264;a_at=55;b_at=55;a_cnt=40;b_cnt=40;a_de=28;b_de=12;a_att=(0);b_att=1;price=palivo: 13 Å¾elezo: 7 ;steal=(0)");
-e($text);
-die();*/
 
-
-/*e(contentlang('{towns}'));
-exit;*/
 //--------------------------------------------
 define("single", true);
-//--------------------------------------------
-//if(debug)print_r($_GET);
+
 //------------------------------------------------------------------
 if(defined('service') and service==1)die(lr('world_in_service'));
 if(defined('service') and service==2 and !debug)die(lr('world_in_service'));

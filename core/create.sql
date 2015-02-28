@@ -24,20 +24,6 @@ CREATE TABLE `[mpx]users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='Uživatelské účty' ;
 
 
-#----------------------------------------------
-
-
-CREATE TABLE `[mpx]lang` (
- `lang` varchar(10) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL COMMENT 'Zkratka jakyka' , 
- `key` varchar(200) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL , 
- `value` text CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL , 
- `font` varchar(100) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL COMMENT '?experimentální' , 
- `author` int(11) NOT NULL , 
- `description` text CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL , 
- `time` int(11) NOT NULL , 
- UNIQUE KEY `langkey` (`lang`,`key`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='Tabulka všech textů aplikace' ;
-
 
 #----------------------------------------------
 
@@ -225,7 +211,7 @@ CREATE TABLE `[mpx]log` (
  `user_agent` text COLLATE utf8_czech_ci NOT NULL , 
  `townssessid` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'moje ID session' ,
  `uri` text COLLATE utf8_czech_ci NOT NULL COMMENT 'HTTP URI' ,
- `lang` varchar(4) COLLATE utf8_czech_ci NOT NULL ,
+ `lang` varchar(9) COLLATE utf8_czech_ci NOT NULL ,
  `adminname` varchar(20) NOT NULL ,
  `userid` int(20) NOT NULL ,
  `logid` int(20) NOT NULL , 
