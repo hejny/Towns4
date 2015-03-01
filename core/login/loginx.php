@@ -127,10 +127,7 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
 
 
 
-eval(subpage('login-buttons'));
-
-
-
+//eval(subpage('login-buttons'));
 
 
 

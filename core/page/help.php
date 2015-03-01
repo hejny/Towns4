@@ -128,6 +128,18 @@ EOF;
 
         $stream=str_replace('<!--projects-->',$projects,$stream);
     }
+//-----------------------------------------------------------------------------------Projects
+
+    if(strpos($stream,'<!--buttons-->')){
+
+		ob_start();
+        eval(subpage('login-buttons'));
+		$contents=ob_get_contents();
+		ob_end_clean();
+
+        $stream=str_replace('<!--buttons-->',$contents,$stream);
+    }
+
 
 
 //-----------------------------------------------------------------------------------External
