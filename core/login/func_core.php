@@ -385,7 +385,7 @@ function register_on_world($userid,$username){
                     'x' => $xf,
                     'y' => $yf,
                     'traceid' => true,
-                    'starttime' => time()-300,
+                    'starttime' => time(),
                     'readytime' => time(),
                     'stoptime' => 0
                 ),$showsql);
