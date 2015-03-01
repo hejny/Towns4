@@ -348,7 +348,7 @@ function register_on_world($userid,$username){
                     'type' => true,
                     'userid' => 0,
                     'origin' => true,
-                    'fp' => true,
+                    'fp' => 200,
                     'func' => true,
                     'hold' => true,
                     'res' => true,
@@ -385,7 +385,7 @@ function register_on_world($userid,$username){
                     'x' => $xf,
                     'y' => $yf,
                     'traceid' => true,
-                    'starttime' => time(),
+                    'starttime' => time()-200,
                     'readytime' => time(),
                     'stoptime' => 0
                 ),$showsql);
