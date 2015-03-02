@@ -81,8 +81,8 @@ $inc=array(
     //'wp_xmlrpc' => 'http://.../xmlrpc.php',
     //'wp_username' => '',
     //'wp_password' => '',
-    //'wp_categories_view' => array('Místa na mapě')	//Do které rubriky ve WP se odesílají pohledy z mapy.
-
+    //'wp_categories_view' => array('Místa na mapě'),	//Do které rubriky ve WP se odesílají pohledy z mapy.
+	//'wp_categories_news' => array('novinky')
 
 );
 
