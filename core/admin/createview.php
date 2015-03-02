@@ -128,7 +128,7 @@ if($_GET['create']){
                 $terrain='t'.$terrains[0];
                 list(list($x,$y,$terrain))=sql_array("SELECT x,y,terrain FROM [mpx]map WHERE ww='".$GLOBALS['ss']['ww']."' AND terrain='$terrain' ORDER BY rand() LIMIT 1",3);
 				if($newtexts){
-					$title=implode(',',$newtexts);//vývojová novinka
+					$title=implode(', ',$newtexts).nln;//vývojová novinka
 				}else{
                 	$title=lr('terrain_'.$terrain);//Jméno terénu
 				}
