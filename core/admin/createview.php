@@ -148,7 +148,7 @@ if($_GET['create']){
     //------
     }
 
-	if($_GET['createpost']){
+	if($_GET['createpost']=='test'){
 		hr();
 		die($title);
 	}
@@ -185,11 +185,6 @@ if($_GET['create']){
     $yc=intval($yc)-$tmp;
     //---------------------------------------
     
-	if($_GET['createpost']=='test'){
-		echo($title);
-		die();
-	}
-
     $size=424;//424
 
     
