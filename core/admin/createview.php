@@ -39,14 +39,45 @@ require2("/func_map.php");
 if($_GET['create']){
     
     if($_GET['createpost']){
+		//---------------------------------------------------Zjištění, zda není něco nového v GITu
+
+	    $file=adminfile.'objects/lasttexts.txt';
+	    $lasttexts=unserialize(file_get_contents($file));
+		if(!is_array($lasttexts))$lasttexts=array();
+		$newtexts=array();
+
+		$commits=shell_exec('git log 2>&1;');
+		$commits=explode('commit',$commits);
+
+		foreach($commits as $commit){
+			if(strpos($commit,'text:')){
+				$commit=explode('text:',$commit);
+				$commit=trim($commit[1]);
+				if(!in_array($commit,$lasttexts)){
+
+					$newtexts[]=$commit;
+				}
+			}
+		}
+
+		fpc($file,serialize(array_merge($lasttexts,$newtexts)));
+
         //---------------------------------------------------Zjištění, co se posílalo naposledy a co se bude posílat teď?
-        $file=adminfile.'objects/lastposttype.txt';
-        $lastposttype=file_get_contents($file);
-        $posttype=$lastposttype;
-        while($posttype==$lastposttype){
-            $posttype=rand(1,7);   
-        }
-        fpc($file,$posttype);
+
+
+		if(!$newtexts){//Herní novinky
+			$categories=$GLOBALS['inc']['wp_categories_view'];
+		    $file=adminfile.'objects/lastposttype.txt';
+		    $lastposttype=file_get_contents($file);
+		    $posttype=$lastposttype;
+		    while($posttype==$lastposttype){
+		        $posttype=rand(1,7);   
+		    }
+		    fpc($file,$posttype);
+		}else{//Jsou vývojové novinky
+			$categories=array_merge($GLOBALS['inc']['wp_categories_news'],$GLOBALS['inc']['wp_categories_view']);
+			$posttype=3;
+		}
         //---------------------------------------------------Zjištění, kdy se posílalo naposledy?
         $file=adminfile.'objects/lastview'.$posttype.'.txt';
         $time=time()-strtotime(file_get_contents($file));
@@ -86,7 +117,7 @@ if($_GET['create']){
 
             //--------------------------------------
         }elseif($posttype>=3 and $posttype<=7){
-            //--------------------------------------Náhodné místo na mapě              
+            //--------------------------------------Náhodné místo na mapě nebo vývojová novinka            
 
                 //$x=rand(0,mapsize);
                 //$y=rand(0,mapsize);
@@ -96,7 +127,11 @@ if($_GET['create']){
                 shuffle($terrains);
                 $terrain='t'.$terrains[0];
                 list(list($x,$y,$terrain))=sql_array("SELECT x,y,terrain FROM [mpx]map WHERE ww='".$GLOBALS['ss']['ww']."' AND terrain='$terrain' ORDER BY rand() LIMIT 1",3);
-                $title=lr('terrain_'.$terrain);
+				if($newtexts){
+					$title=implode(',',$newtexts);//vývojová novinka
+				}else{
+                	$title=lr('terrain_'.$terrain);//Jméno terénu
+				}
                 
                 //$title=lr('view3_title',array('terrain'=>$terrain));
 
@@ -112,6 +147,11 @@ if($_GET['create']){
         $y=rand(0,mapsize);
     //------
     }
+
+	if($_GET['createpost']){
+		hr();
+		die($title);
+	}
 
     //$id=13889641;
     $xsize=3;
@@ -145,6 +185,10 @@ if($_GET['create']){
     $yc=intval($yc)-$tmp;
     //---------------------------------------
     
+	if($_GET['createpost']=='test'){
+		echo($title);
+		die();
+	}
 
     $size=424;//424
 
@@ -221,7 +265,7 @@ if($_GET['create']){
 
         if($_GET['createpost']==1){
             if($GLOBALS['inc']['wp_xmlrpc']){
-                $result=wppost($title,$text,$GLOBALS['inc']['wp_categories_view']);
+                $result=wppost($title,$text,$categories);
                 br();
                 e($result);
                 //print_r($result);
@@ -243,64 +287,4 @@ if($_GET['create']){
 
 }
 
-
-//----------------------------------------------------------NEWOLD
-
-/*$screen=1270;
-$ym=11;
-$xm=8;
-
-$xmp=1;
-//echo($xm);
-$ym=$ym-1;$xm=$xm-1;$xm=$xm/2;
-$size=$screen/($xm+$xm+1);//750;
-
-$width=$xm*424;
-$height=$xm*212;
-$img=  imagecreatetruecolor($width, $height);
-foreach(array(1,2) as $type){
-    $y=0;
-    for($y=$yc; $y<=$ym+$yc; $y++){
-        $x=0;
-        for ($x=-$xm+$xc; $x<=$xm+$xc+$xmp; $x++) {
-
-
-                $width=round(424/$zoom);
-                $height=round(211/$zoom);
-
-                if($type=1){
-                    $file=htmlmap($x,$y,1,true);
-
-                }else{
-                    $file=htmlmap($x,$y,2,true);
-                }
-                if(strpos($file,'.png')){
-                    $part=imagecreatefrompng($file);
-                }else{
-                    $part=imagecreatefromjpeg($file);
-                }
-                e($file);
-                r($part);
-                imagecopy($img, $part, $x*424, $y*212, 0, 0, 424, 212);
-                imagedestroy($part);
-                //echo($file);
-                //br();
-                
-            $x++;
-        }
-        $y++;
-    }
-}*/
-
-//----------------------------------------------------------
-
-
-/*mkdir(adminfile.'files/glob');
-chmod(adminfile.'files/glob',0777);
-$file=adminfile.'files/glob/'.w.'_ww'.$GLOBALS['ss']["ww"].'_'.$sf.'_'.time().'_'.date('j_n_Y').'.png';
-
-imagepng($img,$file,png_quality,png_filters);
-chmod($file,0777);
-imagedestroy($img);
-echo('<br/><b>uloženo do <a href="../../'.$file.'" target="_blank">'.$file.'</a></b>');*/
 ?>
