@@ -1104,7 +1104,7 @@ function name_error($id){
     if(str_replace(str_split('`!@#$%^&*()+{}[]=:"|<>?;\'¨\\,/;=´§,'),'',$id)!=$id){
             return(lr('name_error_specialchars'));//"Jméno by nemělo nesmí speciální znaky.");
     }
-    if(ifobject($id)){
+    if($ifobject=ifobject($id) and $ifobject!=$GLOBALS['ss']['logid'] and $ifobject!=$GLOBALS['ss']['useid']){
             return(lr('name_error_used'));//"Jméno je už obsazené.");
     }
     if(($id-1+1).""==$id){

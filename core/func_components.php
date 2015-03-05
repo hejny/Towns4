@@ -249,6 +249,9 @@ function aacute($word){
 	//$b=str_split('escrzyaieuuESCRZYAIEUU');
 	$b=explode('-','&#283;-&scaron;-&#269;-&#345;-&#382;-&yacute;-&aacute;-&iacute;-&eacute;-&uacute;-&#367;-&nbsp;'/*'-&#282;-&Scaron;-&#268;-&#344;-&#381;-&Yacute;-&Aacute;-&Iacute;-&Eacute;-&Uacute;-&#366;'*/);
 	$word=str_replace($a,$b,$word);
+	//$a=str_split('ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ');
+	//$b=explode('-','&#283;-&scaron;-&#269;-&#345;-&#382;-&yacute;-&aacute;-&iacute;-&eacute;-&uacute;-&#367;-&#282;-&Scaron;-&#268;-&#344;-&#381;-&Yacute;-&Aacute;-&Iacute;-&Eacute;-&Uacute;-&#366;');
+	//$word=str_replace($a,$b,$word);
 	return($word);
 }
 //======================================================================================tr,te

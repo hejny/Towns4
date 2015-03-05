@@ -1505,17 +1505,35 @@ msgstr "Towns.cz (Testovací svět) <world1@towns.cz>"
 msgid "email_from_world2"
 msgstr "Towns.cz <world2@towns.cz>"
 
+
+msgid "email_unsubscribed"
+msgstr "Váš E-mail byl odhlášen..."
+
+msgid "email_news"
+msgstr "Ve hře se za poslední dobu nahromadily následující změny:"
+
+
+msgid "email_news_title"
+msgstr "Herní novinky ze dne [0]"
+
+msgid "goto_towns"
+msgstr "Přejít na Towns"
+
 # new
 msgid "email_header"
 msgstr " "
 
 # new
 msgid "email_news_reply"
-msgstr "<br/><br/"
+msgstr "<br/><br/>"
+"Na tuto zprávu můžete odpovědět na <a href=\"[0]\">[0]</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
 
 # new
 msgid "email_signature"
-msgstr "<br/><br/"
+msgstr "<br/><br/>"
+"Tento e-mail byl odeslán na základě Vaší registrace na Towns.cz. Pokud si už nepřejete dostávat žádné maily, klikněte na:"
+"<br/>"
+"<a href=\"[0]\">[0]</a>"
 
 # new
 msgid "email_title"
@@ -2088,9 +2106,7 @@ msgstr "Máte novou zprávu od uživatele [0]:"
 # mail
 msgid "mail_new_message_body4"
 msgstr ""
-"Na tuto zprávu můžete odpovědět na <a href=\"http://towns.cz/\">Towns.cz</"
-"a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail "
-"odpovědět."
+"Na tuto zprávu můžete odpovědět na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
 
 # mail
 msgid "mail_new_report"
@@ -2104,7 +2120,9 @@ msgstr "Máte novou událost od uživatele [0]:"
 msgid "mail_new_report_body4"
 msgstr ""
 "Další upozornění na nové události vám budeme posílat až za pár hodin, "
-"abychom zbytečně nepřetěžovali váš mail.<hr"
+"abychom zbytečně nepřetěžovali váš mail.<hr/>"
+"Na tuto událost můžete reagovat na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
+
 
 msgid "male"
 msgstr "muž"
