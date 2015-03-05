@@ -48,11 +48,23 @@ CREATE TABLE `[mpx]emails` (
  `text` text COLLATE utf8_czech_ci NOT NULL , 
  `world` text COLLATE utf8_czech_ci NOT NULL , 
  `key` varchar(64) COLLATE utf8_czech_ci NOT NULL , 
- `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Kdy bylo vloženo do DB',
+ `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Kdy bylo vloženo do DB',
  `try` int(5) NOT NULL COMMENT 'Počet pokusů?' , 
- `stop` timestamp NULL DEFAULT NULL COMMENT 'Odesláno' , 
+ `stop` timestamp NULL DEFAULT NULL COMMENT 'Odesláno',
  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='Všechny odeslané e-maily' ;
+
+
+#----------------------------------------------
+
+
+CREATE TABLE `[mpx]emails_activity` (
+`id` int(11) NOT NULL,
+`key` varchar(64) COLLATE utf8_czech_ci NOT NULL COMMENT 'Typ kliknutí' , 
+`url` text COLLATE utf8_czech_ci NOT NULL  COMMENT 'URL odkazu, na který uživatel kliknul', 
+ `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Čas kliknutí',
+ KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='Aktivita lidí k odeslaným e-mailům' ;
 
 
 
