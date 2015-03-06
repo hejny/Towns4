@@ -319,7 +319,7 @@ class func{
          if(!isset($tmp['stat']))$this->add('stat','stat');
          if(!isset($tmp['text']))$this->add('text','text');
          if(!isset($tmp['use']))$this->add('use','use');
-         if(!isset($tmp['leave']))$this->add('leave','leave');
+         if(!isset($tmp['finish']))$this->add('finish','finish');
          if(!isset($tmp['dismantle']))$this->add('dismantle','dismantle');
          if(!isset($tmp['repair']))$this->add('repair','repair');
          if(!isset($tmp['upgrade']))$this->add('upgrade','upgrade');

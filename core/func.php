@@ -378,10 +378,13 @@ function subjsr($sub,$buffer=false,$plus=false,$alert=false){
      if($alert)$return.=('alert("'.$sub.'");');
      if($alert)$return.=('alert($("#'.$sub.'").html());');
      if($alert)$return.=('alert(tmp);');
-     $return.=($plus?'tmp=$("#'.$sub.'").html()+tmp;':'');
-     if($alert)$return.=('alert(tmp);');
-     $return.=('$("#'.$sub.'").html(tmp);}');
-     
+     //$return.=($plus?'tmp=$("#'.$sub.'").html()+tmp;':'');
+     //if($alert)$return.=('alert(tmp);');
+	 if($plus){
+     	$return.=('$("#'.$sub.'").append(tmp);}');
+     }else{
+		$return.=('$("#'.$sub.'").html(tmp);}');
+	 }
      return($return);
 }
 //--------
