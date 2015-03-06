@@ -201,6 +201,15 @@ if($sql and $id?ifobject($id):true){
             if($timetoready) {
                 e("<div style=\"position: relative;top: -15px;left: 0px;height:4px;width:100%;Background-color:#000000;z-index:1;\">");
                 e("<div style=\"height:4px;width:".($readypp)."%;Background-color:#ffffff;z-index:3;\"></div></div>");
+
+				$building_count=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE own='.$GLOBALS['ss']['useid'].' AND type=\'building\' AND readytime<'.time().' AND'.objt())-1;
+
+				
+				if(defined('finish_free') and finish_free>=$building_count){
+					ahref(buttonr(lr('finish_immediately',$building_count.'/'.finish_free),15),js2("qbuffer='$id.finish';"));
+					br(2);
+				}
+				
             }
             //----------------------------
 

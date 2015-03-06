@@ -3738,3 +3738,8 @@ msgstr "neznámé&nbsp;město"
 
 msgid "xtype_own"
 msgstr "vaše&nbsp;město"
+
+msgid "finish_immediately"
+msgstr "Dokončit okamžitě [0]"
+
+

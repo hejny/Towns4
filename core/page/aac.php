@@ -109,6 +109,12 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 <?php
 
 //------------------------------------------------Při dotzu do API
+//---------------------------Obnovení něčeho po provedení api dotazu
+if($GLOBALS['ui']['click']){
+	url($GLOBALS['ui']['click']);
+}
+//---------------------------Mapa - jednotky jednotlivě
+
 if($_GET['q'] and !$_GET['onlyc']){
 	//e('alert("...");');
 	subjs('quest-mini');
@@ -128,11 +134,11 @@ if($_GET['q'] and !$_GET['onlyc']){
 		}
 		//e('alert(1);');
 		if(!defined('onlyremove')){
-			//e('alert(2);');
 			subexec('map_units');		
 			subjs('units_stream',$GLOBALS['units_stream'],true);
 			subjs('expandarea',$GLOBALS['area_stream'],true);
 			echo('$(\'#units_new\').html("");');
+			e('aac_clickset();');
 		}
 	}
 
@@ -158,15 +164,15 @@ if($_GET['q'] and !$_GET['onlyc']){
 		    if($onclick){e($onclick);}
 		    
 		}
-if(!$_GET['onlyc']){
+/*if(!$_GET['onlyc']){
 ?>
 aac_clickset();
 <?php
+}*/
+
+
 }
- /*
-setTimeout(function(){
-    urlpart='?e=aac&i='+windows;windows='';
-    $(function(){$.get(urlpart, function(vystup){eval(vystup);});});
-},(connectfps*1000));
-*/ ?>
-<?php } ?>
+
+?>
+
+
