@@ -41,11 +41,14 @@ if($_GET['action']){
 
 	foreach($commits as $commit){
 		if(strpos($commit,'text:')){
-			$commit=explode('text:',$commit);
-			$commit=trim($commit[1]);
-			if(!in_array($commit,$lasttexts)){
+			$commits=explode('text:',$commit);
+			$commit=trim($commits[1]);
+			$commit=explode(nln,$commit);
+			foreach($commit as $message){
+				if(!in_array($message,$lasttexts)){
 
-				$newtexts[]=$commit;
+					$newtexts[]=trim($message);
+				}
 			}
 		}
 	}

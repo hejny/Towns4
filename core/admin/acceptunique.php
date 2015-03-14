@@ -33,7 +33,7 @@ if($_GET['reject']=='alles'){
 
 
 $all='';
-foreach(sql_array('SELECT id,name,origin,res,profile,own FROM '.mpx.'objects WHERE ww=-1 AND name NOT LIKE \'{register_%\' ORDER BY id') as $row){
+foreach(sql_array('SELECT id,name,origin,res,profile,own FROM [mpx]pos_obj WHERE ww=-1 AND name NOT LIKE \'{register_%\' ORDER BY id') as $row){
 	list($id,$name,$origin,$res,$profile,$own)=$row;
 	e('<tr><td valign="top">');
 

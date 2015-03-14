@@ -111,7 +111,34 @@ $i++;
 function tags2time($tags){
 $time=0;
 
-//print_r($tags);
+$lasttime=0;
+$lastype='stop';
+
+foreach($tags as $tag){
+    list($tag,$value)=$tag;
+    $value=strtotime($value);
+    if($tag=='startx' or $tag=='start'){
+	if($value<=time() and $value>$lasttime){
+		$lasttime=$value;
+		$lastype='start';
+	}
+    }
+    if($tag=='stopx' or $tag=='stop'){
+	if($value<=time() and $value>$lasttime){
+		$lasttime=$value;
+		$lastype='stop';
+	}
+    }
+}
+
+
+if($lastype=='start'){
+	return($lasttime);
+}
+
+//---------------
+
+
 foreach($tags as $tag){
     list($tag,$value)=$tag;
     //e($tag);
@@ -119,7 +146,7 @@ foreach($tags as $tag){
 
         $tmptime=strtotime($value);
         //e("($tmptime<$time or $time==0)");
-        if($tmptime<$time or $time==0) {
+        if($tmptime>time() and ($tmptime<$time or $time==0)) {
             $time = $tmptime;
         }
     }

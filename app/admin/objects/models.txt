@@ -144,7 +144,7 @@ id=113;
 type=prime;
 description=_;
 group__group=prime;
-create_cooldown=900;
+create_cooldown=30;
 create_eff=0.62;
 create__group=master;
 [-1,-1,0]
@@ -418,7 +418,7 @@ terrainx_distance=1;
 
 {building_main}:
 id=1000001;
-origin=expand,expand,expand,mine_tree,mine_rock,holdx_wood,holdx_stone,holdx_iron,holdx_fuel,defence,create_master,create_master,create_master,create_master,create_master,create_master,create_master,create_master,change,xfs,xfs;
+origin=expand,expand,expand,mine_tree,mine_rock,holdx_wood,holdx_stone,holdx_iron,holdx_fuel,defence,create_master,change,xfs,xfs;
 group__group=xmain;
 description={building_description_main};
 replace=1;
@@ -877,3 +877,6 @@ description={building_description_expand_tower};
  
    
 
+ 
+ 
+ 

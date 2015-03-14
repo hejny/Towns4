@@ -103,7 +103,7 @@ if(!$join){
         $first=true;$i=0;
         foreach($join as $id){
 
-            $row=sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'objects WHERE id=\''.$id.'\' ');
+            $row=sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'pos_obj WHERE id=\''.$id.'\' ');
             list($id,$name,$type,$origin,$profile,$res,$func)=$row[0];
             $profile=str2list($profile);
             $description=($profile['description']);
@@ -151,7 +151,7 @@ if(!$join){
             foreach($join as $id){
                 e('<td align="center">');
                 
-                $row=sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'objects WHERE id=\''.$id.'\' ');
+                $row=sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'pos_obj WHERE id=\''.$id.'\' ');
                 list($id,$name,$type,$origin,$profile,$res,$func)=$row[0];
                 $modelurl=modelx($res.$rr,$dd,$usercolor);
                 
@@ -283,10 +283,12 @@ $groups=array('master','main'/*,'wall','bridge','path','terrain'*/);
 
 $groups=implode("%' OR func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group",$groups);
 $groups="( func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]".$groups."%' )";
+/*'.(defined('owner'?' AND '.owner:'')).'
+AND '.$groups.'*/
 
 $i=0;
 e('<table border="0"><tr>');
-foreach(sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'objects WHERE ww=0 AND `type`=\'building\' AND '.$groups.' ORDER BY id') as $row){
+foreach(sql_array('SELECT id,name,type,origin,profile,res,func FROM '.mpx.'pos_obj WHERE ww=0 AND `type`=\'building\' AND '.$groups.' ORDER BY id',3) as $row){
     e('<td align="center">');
     
     list($id,$name,$type,$origin,$profile,$res,$func)=$row;

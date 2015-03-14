@@ -167,7 +167,7 @@ function wppost($title,$body,$categories='',$keywords='') {
     $content = array(
         'title'=>$title,
         'description'=>$body,
-        'mt_allow_comments'=>0, // 1 to allow comments
+        'mt_allow_comments'=>1, // 1 to allow comments
         'mt_allow_pings'=>1, // 1 to allow trackbacks
         'post_type'=>'post',
         'mt_keywords'=>$keywords,

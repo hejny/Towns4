@@ -357,10 +357,14 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         $src=rebase(url.$file);
 
 
+
+
+
+
 	//die($src);    
         $GLOBALS['attack_stream'].='<div style="position:absolute;z-index:150;" id="attack'.$id.'">
         <div style="position:relative; top:'.($ry-((($s/$y/4)+htmlbgc)/$GLOBALS['mapzoom'])).'; left:'.($rx-($s/$y/2/$GLOBALS['mapzoom'])).';" >'./*$attackx.*/'       	
-	<img src="'.$src.'" widht="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
+	<img src="'.$src.'"width="'.($s/$y/$GLOBALS['mapzoom']).'" height="'.($s/$y/2/$GLOBALS['mapzoom']).'"  class="clickmap" border="0" />
         </div></div>';
         } 
 
@@ -397,8 +401,29 @@ foreach($array as $row){//WHERE res=''//modelnamape//
 
         if($res and (/*$own==$GLOBALS['ss']['useid'] or */$time>$mapunitstime)){
 
+	//---------------------------------First Buildings for help
+	//$yourid=id2name($own)."-$own=sagfdr=".$GLOBALS['ss']['useid'];
+	$yourid='';
+	if($own==$GLOBALS['ss']['useid']){
+		$specialname=$row[5];
+		$specialname=str_replace(array('{','}'),'',$specialname);
+		$yourid='id="first_'.$specialname.'"';
+		//if(in_array($specialname,array('building_name'))){
+			if(!isset($GLOBALS['first'])){$GLOBALS['first']=array();}
+			if(!isset($GLOBALS['first'][$specialname])){
+				$GLOBALS['first'][$specialname]=true;
+				$yourid='id="first_'.$specialname.'"';
+			}
+		//}
+
+		
+	}
+	//---------------------------------
+
+
+
 	$GLOBALS['units_stream'].='
-        <img src="'.($modelurl).'" width="'.(round(82/$GLOBALS['mapzoom'])).'" class="clickmap" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'"/>
+        <img src="'.($modelurl).'"   width="'.(round(82/$GLOBALS['mapzoom'])).'" class="clickmap" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'"/>
 	';
         
 	}else{r('!res');}
@@ -411,7 +436,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         if($onmap){
             $GLOBALS['units_stream'].='
             <div style="position:absolute;z-index:'.($ry+2000).';" >
-            <div title="'.aacute(($name)).'" style="position:relative; top:'.($ry+round((-132-40+157)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+7)/$GLOBALS['mapzoom'])).';">
+            <div title="'.aacute(($name)).'" style="position:relative; top:'.($ry+round((-132-40+157)/$GLOBALS['mapzoom'])).'; left:'.($rx+round((-43+7)/$GLOBALS['mapzoom'])).';" '.$yourid.'>
             <img src="'.imageurl('design/blank.png').'" class="unit" id="'.($id).'" border="0" alt="'.aacute(aacute($name)).'" title="'.(aacute($name)).'" width="'.(round(70/$GLOBALS['mapzoom'])).'" height="'.(round(35/$GLOBALS['mapzoom'])).'"/>
             </div>    
             </div>';

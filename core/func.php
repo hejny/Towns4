@@ -720,8 +720,8 @@ if(!$GLOBALS['mobile']){
 }}
 //==========================================================================================building
 
- function building($name){
-    $q=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND name=\''.$name.'\' AND '.objt())-1+1;
+ function building($name,$onlyready=0){
+    $q=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE own=\''.$GLOBALS['ss']['useid'].'\' AND name=\''.$name.'\' AND '.objt().($onlyready?' AND readytime<='.time():''))-1+1;
     return($q);
 }
 //==========================================================================================rand_color

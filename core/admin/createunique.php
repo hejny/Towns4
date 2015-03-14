@@ -158,21 +158,45 @@ if($_POST['filename']){
 			
 
 			if(/*$id==register_building*/$type=='building'){
-				//$objectx=new object($object->id);
-				$upd_name=$object->name;
 				$upd_origin=implode(',',$object->origin);
 				$upd_func=$object->func->vals2str();
-				$upd_fs=$object->fs;
-				//$reg_fp=$object->fp;
-				$upd_fr=$object->fr;
-				$upd_fc=$object->fc;
-				$upd_fx=$object->fx;
-				$upd_hard=$object->hard;
-				$upd_expand=$object->expand_;
-				$upd_block=$object->block_;
+	
+				textb('updating:');br();
+				foreach(sql_array("SELECT id FROM [mpx]objects WHERE name='$object->name'".($_POST['brutal']?'':"AND origin='$upd_origin'")) as $row){
+					list($idx)=$row;
+					//------------------UPDATE objects
+					sql_update('objects',"id='$idx'",array(
+					    'name' => $object->name,
+					    'type' => $object->type,
+					    //Sporné 'origin' => $upd_origin,
+					    //'fp' => '',
+					    'func' => $upd_func
+					    //'hold' => '',
+					    //'res' => '',
+					    //'profile' => '',
+					    //'set' => '',
+					    //'own' => '',
+					    ///'t' => '',
+					    //'pt' => ''
+					));
+					//------------------UPDATE objects_tmp
+					sql_update('objects_tmp',"id='$idx'",array(
+					    'fs' => $object->fs,
+					    'fc' => $object->fc,
+					    'fr' => $object->fr,
+					    'fx' => $object->fx,
+					    'expand' => $object->expand_,
+					    'block' => $object->block_,
+					    'attack' => $object->attack_
+					));
+					//------------------
+					e($idx.', ');
 
 
-				$aff=sql_query("UPDATE `[mpx]pos_obj` SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', hard='$upd_hard', expand='$upd_expand', block='$upd_block' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') ".($_POST['brutal']?'':"AND origin='$upd_origin'")." AND ww!=0",2);br();
+				}
+
+
+				//$aff=sql_query("UPDATE `[mpx]objects` SET name='$upd_name' ,func='$upd_func', fs='$upd_fs', fp='$upd_fs', fr='$upd_fr', fc='$upd_fc', fx='$upd_fx', expand='$upd_expand', block='$upd_block' WHERE (name='$upd_name' OR name='$upd_name (1)' OR name='$upd_name (2)' OR name='$upd_name (3)' OR name='$upd_name (4)') ".($_POST['brutal']?'':"AND origin='$upd_origin'")." AND ww!=0",2);br();
 				//die();
 				//echo(' - '.$aff);
 			}
@@ -180,8 +204,10 @@ if($_POST['filename']){
 				
 
 			if($id/* and $object->id!=$id*/){
-				sql_query('DELETE FROM `[mpx]pos_obj` WHERE id='.$id,1);
-				sql_query('UPDATE `[mpx]pos_obj` SET id='.$id.' WHERE id='.$object->id,2);br();
+				foreach(array('positions','objects','objects_tmp') as $table){
+					sql_query('DELETE FROM `[mpx]'.$table.'` WHERE id='.$id,3);
+					sql_query('UPDATE `[mpx]'.$table.'` SET id='.$id.' WHERE id='.$object->id,3);
+				}
 				r('reid: '.$object->id.' >>> '.$id);
 			}
 
@@ -209,7 +235,7 @@ if($_POST['filename']){
 		}*/
 
 
-		sql_query("UPDATE `[mpx]pos_obj` SET fp=fs WHERE ww='0'");
+		sql_query("UPDATE `[mpx]pos_obj` SET fp=fs WHERE ww='0'",3);
 		br();echo('<b>hotovo</b>');
 	}else{
 		echo('Soubor neexistuje!');
