@@ -15,7 +15,7 @@ $inc=array(
     'mysql_password' => '',
     'mysql_db' => 'towns',
     //Tabulky s globálním prefixem
-    'mysql_global' => array('lang','key','users','emails'),
+    'mysql_global' => array('lang','key','users','emails','projects','projects_tags','quest'),
     'mysql_global_prefix' => 'towns_',
     'mysql_prefix' =>'[world]_',
 

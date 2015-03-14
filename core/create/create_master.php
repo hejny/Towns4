@@ -85,8 +85,11 @@ foreach($masters as $group=>$row){
     if(!file_exists('ui/image/'.$image)){
         $image='icons/f_create.png';
     }
-    e('<td>'.ahrefr(imgr($image,lr('build_'.$group),20,20,NULL,NULL,$free?0:1),$href).'</td>');
-    e('<td>'.ahrefr(nbsp3.trr(lr('build_'.$group),14),$href).'</td>');
+
+    e('<td>'.ahrefr(imgr($image,lr('build_'.$group),20,20,NULL,NULL,$free?0:1),$href/*,NULL,NULL,'build_'.$group*/).'</td>');
+    e('<td>'.ahrefr(nbsp3.trr(lr('build_'.$group),14),$href,NULL,NULL,'build_'.$group).'</td>');
+
+
     if($total==0){
         e('<td>&nbsp;</td></tr><tr>');
         e('<td colspan="3">');

@@ -30,9 +30,6 @@ msgstr "Přidat [0]x"
 msgid "admin_mail_send"
 msgstr "Odesláno [0]"
 
-# new
-msgid "admin_mail_test_send"
-msgstr "{admin_mail_test_send}"
 
 # new
 msgid "admin_page_app-projects-frame"
@@ -58,12 +55,12 @@ msgid "app_projects_group"
 msgstr "Skupina"
 
 # new
-msgid "app_projects_month_10"
-msgstr "Říjen"
+msgid "app_projects_month_1"
+msgstr "Leden"
 
 # new
-msgid "app_projects_month_11"
-msgstr "Listopad"
+msgid "app_projects_month_2"
+msgstr "Únor"
 
 # new
 msgid "app_projects_month_3"
@@ -93,6 +90,19 @@ msgstr "Srpen"
 msgid "app_projects_month_9"
 msgstr "Září"
 
+
+# new
+msgid "app_projects_month_10"
+msgstr "Říjen"
+
+# new
+msgid "app_projects_month_11"
+msgstr "Listopad"
+
+# new
+msgid "app_projects_month_12"
+msgstr "Prosinec"
+
 # new
 msgid "app_projects_month_aac"
 msgstr "Aktuální"
@@ -119,19 +129,19 @@ msgstr "Spustit"
 
 # new
 msgid "app_projects_write_email"
-msgstr "Váš E-mail:"
+msgstr "Tvůj E-mail:"
 
 # new
 msgid "app_projects_write_error_email"
-msgstr "Zadejte prosím svůj e-mail ve tvaru jmeno@neco.cz"
+msgstr "Zadej prosím svůj e-mail ve tvaru jmeno@neco.cz"
 
 # new
 msgid "app_projects_write_error_notext"
-msgstr "Nenapsali jste žádný text!"
+msgstr "Nenapsal jsi žádný text!"
 
 # new
 msgid "app_projects_write_noinbox"
-msgstr "Pokud máte k tomuto projektu nápad, pošlete ho na ph@towns.cz."
+msgstr "Pokud máš k tomuto projektu nápad, pošli mi ho na ph@towns.cz."
 
 # new
 msgid "app_projects_write_ok"
@@ -140,19 +150,19 @@ msgstr "Odeslat"
 # new
 msgid "app_projects_write_placeholder"
 msgstr ""
-"Pokud máte k tomuto projektu návrh, nápad, připomínku,... tak nám napište."
+"Napiš nám, pokud máš k naší hře nápad, připomínku, návrh nebo zajímavý postřeh!"
 
 # new
 msgid "app_projects_write_success"
-msgstr "Děkujeme za Váš návrh..."
+msgstr "Děkujeme za Tvůj návrh..."
 
 # new
 msgid "app_projects_write_success_mail"
-msgstr "Děkujeme za Váš návrh...."
+msgstr "Děkujeme za Tvůj návrh...."
 
 # app
 msgid "application_aac"
-msgstr "Hra byla aktualizována, klikněte sem pro načtení nové verze."
+msgstr "Hra byla aktualizována, klikni sem pro načtení nové verze."
 
 # app
 msgid "application_aac_short"
@@ -199,10 +209,10 @@ msgid "attack_error_block_rock"
 msgstr "V cestě mezi útočící budovou a cílem stojí skály."
 
 msgid "attack_error_distance"
-msgstr "Na tuto budovu nemáte dosah!"
+msgstr "Na tuto budovu nemáš dosah!"
 
 msgid "attack_error_mainlast"
-msgstr "Na Hlavní budovu můžete útočit až po obsazení celého města."
+msgstr "Na Hlavní budovu můžeš útočit až po obsazení celého města."
 
 msgid "attack_error_price"
 msgstr "Nedostatek zdrojů k útoku!"
@@ -214,23 +224,20 @@ msgid "attack_expected"
 msgstr "Očekávaný výsledek"
 
 msgid "attack_expected_a"
-msgstr "váš konečný počet životů"
+msgstr "Tvůj konečný počet životů"
 
 msgid "attack_expected_b"
 msgstr "soupeřův k. počet životů"
 
-# new
-msgid "attack_limit_building"
-msgstr "{attack_limit_building}"
 
 msgid "attack_limit_rock"
-msgstr "Pomocí této funkce můžete těžit pouze skály!"
+msgstr "Pomocí této funkce můžeš těžit pouze skály!"
 
 msgid "attack_limit_tree"
-msgstr "Pomocí této funkce můžete těžit pouze stromy!"
+msgstr "Pomocí této funkce můžeš těžit pouze stromy!"
 
 msgid "attack_lock"
-msgstr "Útok na jiné uživatele je zamčený."
+msgstr "Útok na jiné hráče je zamčený."
 
 msgid "attack_no_rock"
 msgstr "Není žádná skála v okolí, která by se dala vytěžit!"
@@ -243,7 +250,7 @@ msgstr "Chyba: Neznámý cíl"
 
 # attack
 msgid "attack_nomaster"
-msgstr "Zatím nemáte žádnou budovu, ze které by se dalo útočit."
+msgstr "Zatím nemáš žádnou budovu, ze které bys mohl útočit."
 
 msgid "attack_on"
 msgstr "Útok na"
@@ -261,7 +268,7 @@ msgid "attack_q2"
 msgstr "poškození nepřátelské budovy"
 
 msgid "attack_q3"
-msgstr "poškození váší budovy"
+msgstr "poškození Tvé budovy"
 
 msgid "attack_q4"
 msgstr "vzájemné poškození"
@@ -270,7 +277,7 @@ msgid "attack_q5"
 msgstr "zničení nepřátelské budovy"
 
 msgid "attack_q6"
-msgstr "zničení vaší budovy"
+msgstr "zničení Tvé budovy"
 
 msgid "attack_q7"
 msgstr "vzájemné zničení"
@@ -328,10 +335,10 @@ msgstr "Vytěžil"
 # attack
 msgid "attack_same_logid"
 msgstr ""
-"Tato budova patří vašemu jinému městu, pravděpodobně nemá smysl útočit na ni."
+"Tato budova patří tvému jinému městu, pravděpodobně nemá smysl útočit na ni."
 
 msgid "attack_self"
-msgstr "Nemůžete útočit sami na sebe."
+msgstr "Nemůžeš útočit sám na sebe."
 
 msgid "attack_steal"
 msgstr "kořist"
@@ -342,7 +349,7 @@ msgstr "Budova byla obsazena!"
 
 # attack
 msgid "attack_success_conq"
-msgstr "Anektovali jste si nové město"
+msgstr "Anektoval jsi nové město"
 
 msgid "attack_tree"
 msgstr "Pokácet"
@@ -363,21 +370,21 @@ msgid "attack_user2"
 msgstr "Zaútočil"
 
 msgid "attack_warning_total_kill"
-msgstr "Varování: S největší pravděpodobností bude vaše budova zničena!"
+msgstr "Varování: S největší pravděpodobností bude Tvá budova zničena!"
 
 msgid "attack_wtf"
-msgstr "Musíte označit útok na budově, ze které budete útočit."
+msgstr "Musíš označit útok na budově, ze které budeš útočit."
 
 msgid "author"
 msgstr "Autor"
 
 # -
 msgid "author_edited"
-msgstr "Vaše vlastní verze"
+msgstr "Tvá vlastní verze"
 
 # -
 msgid "author_logid"
-msgstr "Vaše verze(schválená)"
+msgstr "Tvá verze(schválená)"
 
 # -
 msgid "author_towns"
@@ -386,8 +393,8 @@ msgstr "Automatická kombinace"
 # repair
 msgid "auto_repair_info"
 msgstr ""
-"Zde můžete nastavit, zda a které budovy opravovat automaticky. Pokud "
-"automatické opravy vypnete, budovy postupně zchátrají. Cena u každé budovy "
+"Zde můžeš nastavit, zda a které budovy opravovat automaticky. Pokud "
+"automatické opravy vypneš, budovy postupně zchátrají. Cena u každé budovy "
 "jsou náklady za jeden den. Pokud se na budovy utočí, budou náklady na opravy "
 "dražší!"
 
@@ -435,15 +442,15 @@ msgstr "Stavitel"
 
 # create
 msgid "build_nomaster_bridge"
-msgstr "Nejdříve postavte Stavitele mostů."
+msgstr "Nejdříve postav Stavitele mostů."
 
 # create
 msgid "build_nomaster_extended"
-msgstr "Nejdříve postavte Rozšířeného stavitele."
+msgstr "Nejdříve postav Rozšířeného stavitele."
 
 # create
 msgid "build_nomaster_main"
-msgstr "Nejdříve postavte Stavitele."
+msgstr "Nejdříve postav Stavitele."
 
 # create
 msgid "build_nomaster_master"
@@ -451,15 +458,15 @@ msgstr "Chyba"
 
 # create
 msgid "build_nomaster_path"
-msgstr "Nejdříve postavte Stavitele cest."
+msgstr "Nejdříve postav Stavitele cest."
 
 # create
 msgid "build_nomaster_terrain"
-msgstr "Nejdříve postavte Stavitele terénů."
+msgstr "Nejdříve postav Stavitele terénů."
 
 # create
 msgid "build_nomaster_wall"
-msgstr "Nejdříve postavte Stavitele hradeb."
+msgstr "Nejdříve postav Stavitele hradeb."
 
 # create
 msgid "build_path"
@@ -539,6 +546,9 @@ msgstr "Most"
 msgid "building_cannon"
 msgstr "Dělo"
 
+msgid "building_catapult"
+msgstr "Katapult"
+
 msgid "building_catapult4"
 msgstr "Katapult"
 
@@ -559,12 +569,9 @@ msgstr "Obrannou věž"
 
 msgid "building_description_aqueduct"
 msgstr ""
-"Díky akvaduktu můžete expandovat přes vodní plochy, oproti mostu je akvadukt "
-"mnohem odolnější vůči útokům a chrání vaše město před nepřátelskou expanzí."
+"Díky akvaduktu můžeš expandovat přes vodní plochy, oproti mostu je akvadukt "
+"mnohem odolnější vůči útokům a chrání Tvé město před nepřátelskou expanzí."
 
-# oldv
-msgid "building_description_attack_tower"
-msgstr "Zastaralá budova určená k utočení"
 
 # building
 msgid "building_description_big_cascade"
@@ -572,47 +579,36 @@ msgstr ""
 "Velká kaskáda slouží podobným způsobem jako hradba. Na kaskádu lze však "
 "přistavovat budovy. Velká a malá kaskáda se dají spojit vedle sebe."
 
-# oldv
-msgid "building_description_big_lumberjack"
-msgstr "Těžba dřeva (stará verze)"
 
 # building
 msgid "building_description_big_temple"
 msgstr "Chrám slouží k ochraně města."
 
 msgid "building_description_big_tower_wall"
-msgstr ""
-"Spojení hradby a věží poskytuje ochranu města před nepřátelskou expanzí a "
-"zároveň může sloužit k útoku na nepřátelská města."
+msgstr "Spojení hradby a věží poskytuje ochranu města před nepřátelskou expanzí a "
+"zárove&#328; může sloužit k útoku na nepřátelská města."
 
 msgid "building_description_big_wall"
 msgstr "Velká kamenná slouží ochraně města před nepřátelskou expanzí."
 
 # building
 msgid "building_description_big_warehouse"
-msgstr "{building_description_big_warehouse}"
+msgstr "Ve skladu uchová všechny suroviny, ve skladu můžeš uskladnit 6000 surovin od každé."
 
 msgid "building_description_bridge"
-msgstr "Díky mostu můžete expandovat přes vodní plochy."
+msgstr "Díky mostu můžeš expandovat přes vodní plochy."
 
 msgid "building_description_cannon"
-msgstr "Pomocí děla můžete ničit neprátelské budovy na velkou vzdálenost."
+msgstr "Pomocí děla můžeš ničit neprátelské budovy na velkou vzdálenost."
 
 msgid "building_description_catapult"
-msgstr "Pomocí katapultu můžete ničit neprátelské budovy velkou silou."
+msgstr "Pomocí katapultu můžeš ničit neprátelské budovy velkou silou."
 
 msgid "building_description_dark_wall"
 msgstr ""
-"Temná hradba slouží ochraně města před nepřátelskou expanzí, zároveň slouží "
+"Temná hradba slouží ochraně města před nepřátelskou expanzí, zárove&#328; slouží "
 "k rozšiřování vlastního města."
 
-# oldv
-msgid "building_description_defence_tower"
-msgstr "Ochrana města (stará verze)"
-
-# oldv
-msgid "building_description_embassy"
-msgstr "Něco jako Tržiště+ (stará verze)"
 
 # building
 msgid "building_description_expand_tower"
@@ -621,29 +617,25 @@ msgstr "Expanzní věž slouží k rychlému obsazování nepřátelských budov
 msgid "building_description_flag"
 msgstr "Vlajka je nejlevnější a nejmenší budova, slouží k záboru malého území."
 
-# oldv
-msgid "building_description_hide"
-msgstr "Slouží k rozšiřování města (stará verze)"
 
 msgid "building_description_lumberjack"
 msgstr "Těžba dřeva slouží k získávání surovin ze stromů - dřeva a paliva."
 
 msgid "building_description_main"
-msgstr ""
-"Hlavní budova je součástí každého města. Jako jediná budova se nedá zbořit "
-"ani opustit. Pomocí Hlavní budovy stavíte stavitele."
+msgstr "Hlavní budova je součástí každého města. Jako jediná budova se nedá zbořit "
+"ani opustit. Pomocí Hlavní budovy stavíš stavitele."
 
 msgid "building_description_market"
-msgstr "Na tržišti můžete měnit suroviny v poměru 10:1."
+msgstr "Na tržišti můžeš měnit suroviny v poměru 10:1."
 
 msgid "building_description_master"
-msgstr "Pomocí stavitele můžete stavět základní budovy."
+msgstr "Pomocí stavitele můžeš stavět základní budovy."
 
 msgid "building_description_master_bridge"
-msgstr "Pomocí stavitele můžete stavět mosty."
+msgstr "Pomocí stavitele můžeš stavět mosty."
 
 msgid "building_description_master_extended"
-msgstr "Pomocí stavitele mapy můžete klonovat vaše už existující budovy."
+msgstr "Pomocí stavitele mapy můžeš klonovat Tvé už existující budovy."
 
 # building
 msgid "building_description_master_path"
@@ -651,11 +643,11 @@ msgstr "Rozšiřování a budování turistických tras po okolí"
 
 msgid "building_description_master_terrain"
 msgstr ""
-"Pomocí stavitele mapy můžete měnit terén mapy tzn. vytvářet nové ostrovy, "
+"Pomocí stavitele mapy můžeš měnit terén mapy tzn. vytvářet nové ostrovy, "
 "řeky, moře, lesy, hory..."
 
 msgid "building_description_master_wall"
-msgstr "Pomocí stavitele můžete stavět zdi a hradby."
+msgstr "Pomocí stavitele můžeš stavět zdi a hradby."
 
 # building
 msgid "building_description_master2"
@@ -683,81 +675,75 @@ msgid "building_description_small_temple"
 msgstr "Chrám slouží k ochraně města."
 
 msgid "building_description_small_tower_wall"
-msgstr ""
-"Spojení hradby a věží poskytuje ochranu města před nepřátelskou expanzí a "
-"zároveň může sloužit k útoku na nepřátelská města."
+msgstr "Spojení hradby a věží poskytuje ochranu města před nepřátelskou expanzí a "
+"zárove&#328; může sloužit k útoku na nepřátelská města."
 
 msgid "building_description_small_wall"
 msgstr "Malá kamenná slouží ochraně města před nepřátelskou expanzí."
 
-# oldv
-msgid "building_description_statue"
-msgstr "okrasa města"
-
 msgid "building_description_terrainx_t0"
-msgstr "Místo, na které postavíte tuto budovu, za nějakou dobu zmizí."
+msgstr "Místo, na které postavíš tuto budovu, za nějakou dobu zmizí."
 
 msgid "building_description_terrainx_t1"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu moře."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu moře."
 
 msgid "building_description_terrainx_t10"
-msgstr "Na místě, kde postavíte tuto budovu, vyroste za nějakou dobu les."
+msgstr "Na místě, kde postavíš tuto budovu, vyroste za nějakou dobu les."
 
 msgid "building_description_terrainx_t11"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu řeka."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu řeka."
 
 msgid "building_description_terrainx_t12"
-msgstr "Na místě, kde postavíte tuto budovu, vyroste za nějakou dobu tráva."
+msgstr "Na místě, kde postavíš tuto budovu, vyroste za nějakou dobu tráva."
 
 msgid "building_description_terrainx_t13"
-msgstr "Na místě, kde postavíte tuto budovu, vyroste za nějakou dobu tráva."
+msgstr "Na místě, kde postavíš tuto budovu, vyroste za nějakou dobu tráva."
 
 msgid "building_description_terrainx_t2"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu dlažba."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu dlažba."
 
 msgid "building_description_terrainx_t3"
-msgstr "Na místě, kde postavíte tuto budovu, za nějakou dobu nasněží."
+msgstr "Na místě, kde postavíš tuto budovu, za nějakou dobu nasněží."
 
 msgid "building_description_terrainx_t4"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu písek."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu písek."
 
 msgid "building_description_terrainx_t5"
-msgstr "Na místě, kde postavíte tuto budovu, vzniknou za nějakou dobu skály."
+msgstr "Na místě, kde postavíš tuto budovu, vzniknou za nějakou dobu skály."
 
 msgid "building_description_terrainx_t6"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu hlína."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu hlína."
 
 msgid "building_description_terrainx_t7"
-msgstr "Na místě, kde postavíte tuto budovu, vznikne za nějakou dobu písek."
+msgstr "Na místě, kde postavíš tuto budovu, vznikne za nějakou dobu písek."
 
 msgid "building_description_terrainx_t8"
-msgstr "Na místě, kde postavíte tuto budovu, vyroste za nějakou dobu tráva."
+msgstr "Na místě, kde postavíš tuto budovu, vyroste za nějakou dobu tráva."
 
 msgid "building_description_terrainx_t9"
-msgstr "Na místě, kde postavíte tuto budovu, vyroste za nějakou dobu tráva."
+msgstr "Na místě, kde postavíš tuto budovu, vyroste za nějakou dobu tráva."
 
 msgid "building_description_tower"
 msgstr "Věž ve spojení s určitou budovou značně zvýší její obranu."
 
 msgid "building_description_warehouse"
 msgstr ""
-"Ve skladu uchováváte všechny suroviny, ve skladu můžete uskladnit 1000 "
-"surovin od každé."
+"Ve skladu uchová všechny suroviny, ve skladu můžeš uskladnit 1000 surovin od každé."
 
 msgid "building_description_warehouse_fuel"
 msgstr ""
-"V tomto skladu uchováváte palivo, ve skladu můžete uskladnit 1000 paliva"
+"V tomto skladu uchová palivo, ve skladu můžeš uskladnit 1000 paliva"
 
 msgid "building_description_warehouse_iron"
 msgstr ""
-"V tomto skladu uchováváte železo, ve skladu můžete uskladnit 1000 železa"
+"V tomto skladu uchová železo, ve skladu můžeš uskladnit 1000 železa"
 
 msgid "building_description_warehouse_stone"
 msgstr ""
-"V tomto skladu uchováváte kámen, ve skladu můžete uskladnit 1000 kamene"
+"V tomto skladu uchová kámen, ve skladu můžeš uskladnit 1000 kamene"
 
 msgid "building_description_warehouse_wood"
-msgstr "V tomto skladu uchováváte dřevo, ve skladu můžete uskladnit 1000 dřeva"
+msgstr "V tomto skladu uchová dřevo, ve skladu můžeš uskladnit 1000 dřeva"
 
 msgid "building_embassy"
 msgstr "Ambasáda"
@@ -765,9 +751,6 @@ msgstr "Ambasáda"
 msgid "building_embassy4"
 msgstr "Ambasádu"
 
-# oldv
-msgid "building_empty"
-msgstr "Staveniště (stará verze)"
 
 msgid "building_empty4"
 msgstr "Staveniště"
@@ -877,9 +860,6 @@ msgstr "Malá kamenná hradba"
 msgid "building_small_wall4"
 msgstr "Malou kamennou hradbu"
 
-# oldv
-msgid "building_statue"
-msgstr "Pomník"
 
 msgid "building_statue4"
 msgstr "Sochu filozofa"
@@ -1009,40 +989,40 @@ msgstr "Postavit budovu"
 
 # create
 msgid "create_building_info"
-msgstr "Vyberte, který typ budovy chcete postavit:"
+msgstr "Vyber, který typ budovy chceš postavit:"
 
 
 # create
 msgid "create_error_block_building"
-msgstr "Nemůžete stavět přes nepřátelské území."
+msgstr "Nemůžeš stavět přes nepřátelské území."
 
 # create
 msgid "create_error_block_object"
-msgstr "Nemůžete stavět přes nepřátelské území."
+msgstr "Nemůžeš stavět přes nepřátelské území."
 
 # create
 msgid "create_error_block_rock"
-msgstr "Nemůžete stavět přes skály."
+msgstr "Nemůžeš stavět přes skály."
 
 # create
 msgid "create_error_block_t0"
-msgstr "Nemůžete stavět přes temnotu."
+msgstr "Nemůžeš stavět přes temnotu."
 
 # create
 msgid "create_error_block_t1"
-msgstr "Nemůžete stavět přes vodu."
+msgstr "Nemůžeš stavět přes vodu."
 
 # create
 msgid "create_error_block_t11"
-msgstr "Nemůžete stavět přes vodu."
+msgstr "Nemůžeš stavět přes vodu."
 
 # create
 msgid "create_error_block_tree"
-msgstr "Nemůžete stavět přes les."
+msgstr "Nemůžeš stavět přes les."
 
 # new
 msgid "create_error_building_distance"
-msgstr "Nemůžete stavět v blízkosti nepřátelských hradeb."
+msgstr "Nemůžeš stavět v blízkosti nepřátelských hradeb."
 
 msgid "create_error_collapse"
 msgstr "Toto místo už zabírá neprátelská budova."
@@ -1051,41 +1031,40 @@ msgid "create_error_duplicite"
 msgstr "Na tomto místě už něco stojí!"
 
 msgid "create_error_expand"
-msgstr "Vaše město sem nemá dosah!"
+msgstr "Tvé město sem nemá dosah!"
 
 msgid "create_error_join_fsfp"
-msgstr "Nemžete přistavovat poškozené budovy."
+msgstr "Nemůžeš přistavovat poškozené budovy."
 
 msgid "create_error_join_main"
-msgstr "Ke Hlavní budově se nadá nic přistavovat."
+msgstr "Ke Hlavní budově se nedá nic přistavovat."
 
 msgid "create_error_join_noorigin"
 msgstr "Tato budova nepodporuje připojování."
 
 # create
 msgid "create_error_join_noown"
-msgstr "Nemůžete přistavovat budovy, které nejsou vaše."
+msgstr "Nemůžeš přistavovat budovy, které nejsou Tvé."
 
 msgid "create_error_join_self"
-msgstr "Nemůžete přistavovat budovu pomocí té samé budovy."
+msgstr "Nemůžeš přistavovat budovu pomocí té samé budovy."
 
 msgid "create_error_join_type1"
-msgstr ""
-"Tuto budovu musíte nejdříve postavit na prázné políčko a až potom k ní něco "
+msgstr "Tuto budovu musíš nejdříve postavit na prázné políčko a až potom k ní něco "
 "připojovat."
 
 msgid "create_error_join_type2"
-msgstr "Tuto budovu musíte k něčemu připojit."
+msgstr "Tuto budovu musíš k něčemu připojit."
 
 msgid "create_error_join_type3"
-msgstr "Postavte tuto budovu vedle."
+msgstr "Postav tuto budovu vedle."
 
 msgid "create_error_join_type3x"
-msgstr "Postavte tuto budovu vedle."
+msgstr "Postav tuto budovu vedle."
 
 # create
 msgid "create_error_join_type4"
-msgstr "Přistavte tuto budovu na jiný článek."
+msgstr "Přistav tuto budovu na jiný článek."
 
 msgid "create_error_price"
 msgstr "Nedostatek zdrojů!"
@@ -1093,29 +1072,26 @@ msgstr "Nedostatek zdrojů!"
 msgid "create_error_resistance"
 msgstr "Na tomto místě se nedá stavět."
 
-# new
-msgid "create_error_resistance_1"
-msgstr "{create_error_resistance_1}"
 
 # create
 msgid "create_error_resistance_t0"
-msgstr "Na temnotě se nadá stavět."
+msgstr "Na temnotě se nedá stavět."
 
 # create
 msgid "create_error_resistance_t1"
-msgstr "Na vodě můžete stavět pouze mosty."
+msgstr "Na vodě můžeš stavět pouze mosty."
 
 # create
 msgid "create_error_resistance_t11"
-msgstr "Na vodě můžete stavět pouze mosty."
+msgstr "Na vodě můžeš stavět pouze mosty."
 
 # new
 msgid "create_error_rock_distance"
-msgstr "Nemůžete stavět na skalách."
+msgstr "Nemůžeš stavět na skalách."
 
 # create
 msgid "create_error_wall_distance"
-msgstr "Nemůžete stavět tak blízko nepřátelských budov."
+msgstr "Nemůžeš stavět tak blízko nepřátelských budov."
 
 # primes
 msgid "create_extended"
@@ -1145,7 +1121,7 @@ msgid "create_master_surkey"
 msgstr "Suroviny"
 
 msgid "create_move"
-msgstr "Přesunte budovu tam, kde ji chete postavit"
+msgstr "Přesunˇ budovu tam, kde ji chceš postavit"
 
 msgid "create_ok_join"
 msgstr "Budova bude připojena k budově [0]"
@@ -1154,7 +1130,7 @@ msgid "create_ok"
 msgstr "Postavit"
 
 msgid "create_remain"
-msgstr "K postavení budovy potřebujete ještě"
+msgstr "K postavení budovy potřebuješ ještě"
 
 # primes
 msgid "create_terrain"
@@ -1168,7 +1144,7 @@ msgid "defence"
 msgstr "Obrana"
 
 msgid "delete_message_prompt"
-msgstr "Opravdu chcete tuto zprávu smazat?"
+msgstr "Opravdu chceš tuto zprávu smazat?"
 
 # repair
 msgid "demaged"
@@ -1179,7 +1155,7 @@ msgstr "Popis"
 
 # -
 msgid "discard_edited"
-msgstr "Chcete zrušit vlastní změny, které jste na budově provedli?"
+msgstr "Chceš zrušit vlastní změny, které jsi na budově provedl?"
 
 msgid "dist_a"
 msgstr "Dosah"
@@ -1195,18 +1171,17 @@ msgstr "Jednoduchý editor"
 
 msgid "easyeditor_description"
 msgstr ""
-"Jednoduchý editor pomocí kterého si můžete vytvořit vlastní vzhled budovy za "
-"pár minut.<br>Bude přemazán původní vzhled budovy!"
+"Jednoduchý editor pomocí kterého si můžeš vytvořit vlastní vzhled budovy za pár minut.<br>"
+"Bude přemazán původní vzhled budovy!"
 
 msgid "editor"
 msgstr "3D editor"
 
 msgid "editor_description"
-msgstr "Pokročilý editor pomocí kterého můžete vytvořit vlastní budovu."
+msgstr "Pokročilý editor pomocí kterého můžeš vytvořit vlastní budovu."
 
 msgid "editor_info"
-msgstr ""
-"Změna vzhledu se projeví až po obnovení mapy (například posunutím mapy)."
+msgstr "Změna vzhledu se projeví až po obnovení mapy (například posunutím mapy)."
 
 msgid "editor_l2a1"
 msgstr "Towns 3D editor 5.4"
@@ -1221,7 +1196,7 @@ msgid "editor_l2a4"
 msgstr "stáhnout .exe verzi"
 
 msgid "editor_l2b1"
-msgstr "model"
+msgstr "Model"
 
 msgid "editor_l2ba1"
 msgstr "zdroj"
@@ -1410,7 +1385,7 @@ msgid "editor_l2be1"
 msgstr "Smazání modelu"
 
 msgid "editor_l2be2"
-msgstr "Chcete model doopravdy smazat?"
+msgstr "Chceš model doopravdy smazat?"
 
 msgid "editor_l2be3"
 msgstr "Smazat"
@@ -1491,7 +1466,7 @@ msgstr "Towns.cz <ph@towns.cz>"
 
 # new
 msgid "email_from_"
-msgstr "{email_from_}"
+msgstr "Towns.cz <info@towns.cz>"
 
 # new
 msgid "email_from_forum"
@@ -1507,7 +1482,7 @@ msgstr "Towns.cz <world2@towns.cz>"
 
 
 msgid "email_unsubscribed"
-msgstr "Váš E-mail byl odhlášen..."
+msgstr "Tvůj E-mail byl odhlášen..."
 
 msgid "email_news"
 msgstr "Ve hře se za poslední dobu nahromadily následující změny:"
@@ -1526,26 +1501,22 @@ msgstr " "
 # new
 msgid "email_news_reply"
 msgstr "<br/><br/>"
-"Na tuto zprávu můžete odpovědět na <a href=\"[0]\">[0]</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
+"Na tuto zprávu můžeš odpovědět na: <br/><a href=\"[0]\">[0]</a><br/> Pokud máš technické připomínky nebo nějaký dotaz, můžeš na tento mail odpovědět přímo."
 
 # new
 msgid "email_signature"
 msgstr "<br/><br/>"
-"Tento e-mail byl odeslán na základě Vaší registrace na Towns.cz. Pokud si už nepřejete dostávat žádné maily, klikněte na:"
+"Tento e-mail byl odeslán na základě Tvé registrace na Towns.cz. Pokud si už nepřeješ dostávat žádné maily, klikni na:"
 "<br/>"
 "<a href=\"[0]\">[0]</a>"
 
 # new
 msgid "email_title"
-msgstr "Towns - Vytvořte si vlastní svět!"
+msgstr "Towns - Vytvářej vlastní svět!"
 
 # new
 msgid "email_top"
 msgstr "Towns.cz"
-
-# system
-msgid "escrzyaieuu"
-msgstr "ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ"
 
 msgid "expand"
 msgstr "Expanze"
@@ -1663,7 +1634,7 @@ msgid "f_dismantle"
 msgstr "Rozebrat budovu"
 
 msgid "f_dismantle_prompt"
-msgstr "Opravdu chcete rozebrat budovu?"
+msgstr "Opravdu chceš rozebrat tuto budovu?"
 
 msgid "f_expand"
 msgstr "Expanze"
@@ -1677,11 +1648,6 @@ msgstr "Obchod"
 msgid "f_change_eff"
 msgstr "Efektivita"
 
-msgid "f_leave"
-msgstr "Opustit budovu"
-
-msgid "f_leave_prompt"
-msgstr "Opravdu chcete opustit budovu?"
 
 msgid "f_login_createpass"
 msgstr "Heslo bylo vytvořeno!"
@@ -1689,9 +1655,6 @@ msgstr "Heslo bylo vytvořeno!"
 msgid "f_login_changepass"
 msgstr "Heslo změněno"
 
-# new
-msgid "f_login_method_wtf"
-msgstr "{f_login_method_wtf}"
 
 msgid "f_login_nofblogin"
 msgstr "Chyba přihlašování přes Facebook"
@@ -1740,8 +1703,7 @@ msgstr "Odpojit"
 
 # fb
 msgid "fb_form_warning"
-msgstr ""
-"Připojování / Odpojování účtů obnoví stránku a zruší neuložená data na této "
+msgstr "Připojování / Odpojování účtů obnoví stránku a zruší neuložená data na této "
 "stránce!"
 
 msgid "fb_login_button"
@@ -1749,22 +1711,12 @@ msgstr "Přihlásit se přes Facebook"
 
 # messages
 msgid "fb_new_message"
-msgstr "Máte novou zprávu od uživatele [0]."
+msgstr "Máš novou zprávu od hráče [0]."
 
 # messages
 msgid "fb_new_report"
-msgstr "Máte nové upozornění od uživatele [0]."
+msgstr "Máš nové upozornění od hráče [0]."
 
-# fb
-msgid "fb_select"
-msgstr "Vyberte uživatele"
-
-# fb
-msgid "fb_select_question"
-msgstr "Na tento FB účet je registrováno více uživatelů:"
-
-msgid "female"
-msgstr "žena"
 
 msgid "fp"
 msgstr "Život"
@@ -1775,11 +1727,6 @@ msgstr "Celá obrazovka"
 msgid "fx_center"
 msgstr "Vycentrovat mapu"
 
-msgid "fx_tab"
-msgstr "Přidat záložku"
-
-msgid "gender"
-msgstr "Pohlaví"
 
 # repair
 msgid "global_repair_off"
@@ -1813,7 +1760,7 @@ msgstr "Předchozí"
 msgid "helphtml_about"
 msgstr ""
 "<div align=\"center\"><span style=\"font-size: 15px\"><div style=\"width:100%[semicolon]background: rgba(30,20,70,0.44)[semicolon]border: 2px solid rgba(40,40,70,0.44)[semicolon]padding: 3px[semicolon]\" >"
-"Vytvářejte si vlastní originální město. Na rozdíl od jiných online strategií si v Towns můžete sami navrhnout rozložení měst, realisticky expandovat po mapě, a dokonce vytvářet <b>vlastní druhy budov!</b> a to od vzhledu až po jejich funkce."
+"Vytvoř si vlastní originální město. Na rozdíl od jiných online strategií si v Towns můžeš sám navrhnout rozložení měst, realisticky expandovat po mapě, a dokonce vytvářet <b>vlastní druhy budov!</b> a to od vzhledu až po jejich funkce."
 ""
 "</div></span></div>"
 ""
@@ -1823,7 +1770,7 @@ msgstr ""
 "</div></span></div>"
 ""
 "<div align=\"justify\"><span style=\"font-size: 15px\"><div style=\"width:100%[semicolon]background: rgba(70,70,30,0.44)[semicolon]border: 2px solid rgba(50,50,50,0.44)[semicolon]padding: 3px[semicolon]\" >"
-"Podívejte se, na čem pracujeme a napište nám názor:<br/><br/>"
+"Podívej se, na čem pracujeme a napiš nám názor:<br/><br/>"
 "<div align=\"center\">"
 "<!--projects-->"
 "</div></div></span></div>"
@@ -1833,74 +1780,19 @@ msgstr ""
 msgid "helphtml_copy"
 msgstr "Testovací verze |  www.towns.cz |  © 2015"
 
-# new
-msgid "helphtml_https://www.towns.cz/world2/"
-msgstr "{helphtml_https://www.towns.cz/world2/}"
-
-msgid "helphtml_tutorial"
-msgstr ""
-"<title>Úvod</title>  <p>  <span style=\"font-"
-"size:16px[semicolon]\"><strong><u>Towns</u></strong> vá[semicolon]m "
-"prá[semicolon]vě otevřelo svoje brá[semicolon]ny. Ví[semicolon]tejte ve "
-"světě, kde vá[semicolon]&scaron[semicolon] ú[semicolon]spěch "
-"zá[semicolon]visí[semicolon] pouze na va&scaron[semicolon]í[semicolon] "
-"strategii.</span></p>  <p>  <span style=\"font-"
-"size:16px[semicolon]\"><strong>1)</"
-"strong> [semicolon]Nejdůležitěj&scaron[semicolon]í[semicolon] budova "
-"va&scaron[semicolon]eho města je <strong>hlavní[semicolon] budova</strong>, "
-"pomocí[semicolon] ní[semicolon] můžete postavit <strong>stavitele</strong>. "
-"Označte hlavní[semicolon] budovu(pod ná[semicolon]pisem "
-"va&scaron[semicolon]e město) a klikněte na čtvrtou ikonku.</span><br />  "
-" [semicolon]</p>  <p>    <hr/>    <span style=\"font-"
-"size:16px[semicolon]\"><strong>2) </strong>Ze stavitele můžete stavět "
-"dal&scaron[semicolon]í[semicolon] budovy. Pomocí[semicolon] "
-"dal&scaron[semicolon]í[semicolon]ch budov můžete těžit, měnit suroviny, "
-"ú[semicolon]točit,... Čí[semicolon]m ví[semicolon]ce stavitelů "
-"má[semicolon]te, tí[semicolon]m rychleji můžete své[semicolon] město "
-"rozví[semicolon]jet.</span></p>  <p>      <hr/>      <strong style=\"font-"
-"size: 16px[semicolon]\">3) </strong><span style=\"font-size: "
-"16px[semicolon]\">Každá[semicolon] budova stojí[semicolon] určitý[semicolon] "
-"počet surovin. V Towns existuje celkem pět zá[semicolon]kladní[semicolon]ch "
-"druhů surovin. Těmito surovinami jsou:</span></p>  <p>  <span style=\"font-"
-"size:16px[semicolon]\"><img height=\"15\" src=\"icons/res_wood.png\" style="
-"\"font-size: 16px[semicolon]\" width=\"15\" /><strong style=\"font-size: "
-"16px[semicolon]\">dřevo</strong>, [semicolon]<img height=\"15\" src=\"icons/"
-"res_stone.png\" style=\"font-size: 16px[semicolon]\" width=\"15\" /><strong "
-"style=\"font-size: 16px[semicolon]\">kamení[semicolon]</"
-"strong>, [semicolon]<img height=\"15\" src=\"icons/res_iron.png\" style="
-"\"font-size: 16px[semicolon]\" width=\"15\" /><strong style=\"font-size: "
-"16px[semicolon]\">železo</strong>, [semicolon]<img height=\"15\" src=\"icons/"
-"res_fuel.png\" style=\"font-size: 16px[semicolon]\" width=\"15\" /><strong "
-"style=\"font-size: 16px[semicolon]\">palivo</"
-"strong> [semicolon]a [semicolon]<img height=\"15\" src=\"icons/res_gold.png"
-"\" style=\"font-size: 16px[semicolon]\" width=\"15\" /><strong style=\"font-"
-"size: 16px[semicolon]\">zlato</strong></span></p>  <p>  <span style=\"font-"
-"size:16px[semicolon]\">Pomocí čtvrté ikonky v horním menu můžete automaticky "
-"vytěžit všechny stromy a ská[semicolon]ly v okolí všech svých budov.</span></"
-"p>  <p>   [semicolon]</p>  <p>      <hr/>      <span style=\"font-"
-"size:16px[semicolon]\">  Omluvte prosí[semicolon]m nedostatky a chyby, "
-"které[semicolon] se postupně odstraňují[semicolon]. Towns se "
-"zatí[semicolon]m pouze vyví[semicolon]jí[semicolon] a proto budeme "
-"rá[semicolon]di, pokud ná[semicolon]m dá[semicolon]te tipy na "
-"vylep&scaron[semicolon]ení[semicolon], nebo nahlá[semicolon]sí[semicolon]te "
-"chyby, které[semicolon] při hraní[semicolon] objeví[semicolon]te.<br />  </"
-"span></p>  <h3>  <span style=\"font-size:16px[semicolon]\"><a href=\"http://"
-"docs.google.com/forms/d/1KMrozY_orpSsChgglPLcTTg4MM8_IdoZCYHu9p345zc/viewform"
-"\">Nahlá[semicolon]sit chybu / Ná[semicolon]pad na "
-"vylep&scaron[semicolon]ení[semicolon]</a></span></h3>"
 
 msgid "helphtml_unique"
 msgstr "<title>Postavit budovu</title>"
 
 msgid "helphtml_upgrade"
-msgstr "<b>Vyberte verzi této budovy:</b><br/"
+msgstr "<b>Vyber verzi této budovy:</b><br/"
 
 msgid "helphtml_upgrade_start"
 msgstr ""
-"<b>Právě jste postavili zcela novou kombinaci budov!</b> <br>  Této budově "
+"<b>Právě jsi postavili zcela novou kombinaci budov!</b> <br>  Této budově "
 "byl vytvořen automatický alternativní název a vzhled. Pomocí záložek "
-"\"Upravit profil\" a \"Změnit vzhled\" ji můžete upravit. Pokud bude váš "
-"návrh dobrý, dostanete odměnu.<br>"
+"\"Upravit profil\" a \"Změnit vzhled\" ji můžeš upravit. Pokud bude Tvůj "
+"návrh dobrý, dostaneš odměnu.<br>"
 
 # primes
 msgid "holdx_fuel"
@@ -1918,9 +1810,6 @@ msgstr "Skladování kamene"
 msgid "holdx_wood"
 msgstr "Skladování dřeva"
 
-msgid "hybrid"
-msgstr "hybrid"
-
 # primes
 msgid "change"
 msgstr "Výměna surovin"
@@ -1935,7 +1824,7 @@ msgid "change_error_price"
 msgstr "Nedostatek zdrojů!"
 
 msgid "change_error_same"
-msgstr "Zadejte dvě různé suroviny!"
+msgstr "Zadej dvě různé suroviny!"
 
 msgid "change_from"
 msgstr "Vyměnit"
@@ -1954,42 +1843,36 @@ msgstr "id"
 
 msgid "info"
 msgstr ""
-"Toto je pouze testovací verze hry. Omluvte prosím nedostatky a chyby, které "
-"se postupně odstraňují."
+"Toto je pouze testovací verze hry. Omluv prosím nedostatky a chyby, které "
+"se postupně odstra&#328;ují."
 
 msgid "info_ie"
 msgstr ""
 "Omlouváme se, ale hra zatím není optimalizovaná pro všechny webové "
-"prohlížeče, proto vám pravděpodobně nebudou Towns v Internet Exploreru zcela "
-"správně fungovat. Doporučujeme použít jiný prohlížeč například Google Chrome "
-"nebo Mozilla Firefox"
+"prohlížeče, proto Ti pravděpodobně nebudou Towns v Internet Exploreru zcela "
+"správně fungovat. Doporučujeme použít jiný prohlížeč například Mozilla Firefox nebo Google Chrome "
 
 msgid "info_mobile"
 msgstr ""
-"Na verzi pro mobilní prohlížeče se stále pracuje, proto vám Towns na mobilu "
+"Na verzi pro mobilní prohlížeče se stále pracuje, proto Ti Towns na mobilu "
 "nebo tabletu možná nebudou fungovat zcela správně."
 
 # fb
 msgid "invite_button"
-msgstr "Pozvat přátele"
+msgstr "Pozvat přátele z FB"
 
 # fb
 msgid "invite_error"
 msgstr "Někde nastala chyba!"
 
 # fb
-msgid "invite_info"
-msgstr "{invite_info}"
-
-# fb
 msgid "invite_message"
-msgstr "Vytvářejte vlastní svět!"
+msgstr "Vytvářej vlastní svět!"
 
 # fb
 msgid "invite_success"
 msgstr ""
-"Pozvánky jsou odeslané, bylo vám připsáno [0] zlata! Děkujeme, že sdílíte "
-"Towns."
+"Pozvánky jsou odeslané, bylo Ti připsáno [0] zlata! Děkujeme, že sdílíš Towns."
 
 # fb
 msgid "invite_title"
@@ -1998,32 +1881,28 @@ msgstr "Towns.cz"
 # fb
 msgid "invite_xerror"
 msgstr ""
-"Všechny označené přátele jste už pozval, pokud chcete dostat odměnu musíte "
-"vybrat jiné."
+"Všechny označené přátele jsi jednou už pozval, pokud chceš dostat odměnu musíš vybrat jiné."
 
 # fb
 msgid "invite_xsuccess"
-msgstr "Některé přátele jste už pozval."
+msgstr "Některé přátele jsi už jednou pozval."
 
-# fb
-msgid "invitesuccess"
-msgstr "{invitesuccess}"
 
 msgid "key_error_none"
 msgstr ""
-"Tento kód bohužel neexistuje. Zkontrolujte, zda jste ho napsali správně."
+"Tento kód bohužel neexistuje. Zkontroluj, zda jsi ho napsal správně."
 
 msgid "key_error_used"
 msgstr "Tento kód už použil uživatel [0]."
 
 msgid "key_error_usedx"
-msgstr "Tento kód jste už použili."
+msgstr "Tento kód jsi už použil."
 
 msgid "key_ok"
 msgstr "Uplatnit kód"
 
 msgid "key_success"
-msgstr "Bylo vám připsáno:"
+msgstr "Bylo Ti připsáno:"
 
 msgid "lang_cz"
 msgstr "Čeština"
@@ -2066,23 +1945,17 @@ msgstr "OK"
 msgid "login_password"
 msgstr "Heslo"
 
-msgid "login_permanent"
-msgstr "Zůstat přihlášen"
 
-# new
-msgid "login_select"
-msgstr "{login_select}"
-
-# new
+# login
 msgid "login_select_question"
-msgstr "{login_select_question}"
+msgstr "Vyber účet:"
 
 msgid "login_username"
 msgstr "Jméno"
 
 # new
 msgid "loginname"
-msgstr "{loginname}"
+msgstr "Přihlašovací jméno"
 
 msgid "logout"
 msgstr "Odhlásit se"
@@ -2101,12 +1974,12 @@ msgstr "Nová zpráva"
 
 # mail
 msgid "mail_new_message_body1"
-msgstr "Máte novou zprávu od uživatele [0]:"
+msgstr "Máš novou zprávu od hráče [0]:"
 
 # mail
 msgid "mail_new_message_body4"
 msgstr ""
-"Na tuto zprávu můžete odpovědět na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
+"Na tuto zprávu můžeš odpovědět na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máš technické připomínky nebo nějaký dotaz, můžeš na tento mail odpovědět přímo."
 
 # mail
 msgid "mail_new_report"
@@ -2114,18 +1987,15 @@ msgstr "Nová událost"
 
 # mail
 msgid "mail_new_report_body1"
-msgstr "Máte novou událost od uživatele [0]:"
+msgstr "Máš novou událost od hráče [0]:"
 
 # mail
 msgid "mail_new_report_body4"
 msgstr ""
-"Další upozornění na nové události vám budeme posílat až za pár hodin, "
-"abychom zbytečně nepřetěžovali váš mail.<hr/>"
-"Na tuto událost můžete reagovat na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máte technické připomínky nebo nějaký dotaz, můžete na tento mail odpovědět přímo."
+"Další upozornění na nové události Ti budeme posílat až za pár hodin, "
+"abychom zbytečně nepřetěžovali Tvůj mail.<hr/>"
+"Na tuto událost můžeš reagovat na <a href=\"http://towns.cz/\">Towns.cz</a>. Pokud máš technické připomínky nebo nějaký dotaz, můžeš na tento mail odpovědět přímo."
 
-
-msgid "male"
-msgstr "muž"
 
 msgid "mdlrot"
 msgstr "Otočit"
@@ -2155,20 +2025,19 @@ msgstr "Zobrazit"
 # text
 msgid "mesage_forum_info"
 msgstr ""
-"Pokud chcete napsat komentář do diskuse, klikněte na <a href=\"http://forum."
-"towns.cz/\" target=\"_blank\">forum.towns.cz</a>."
+"Pokud chceš napsat komentář do diskuse, klikni na <a href=\"http://forum.towns.cz/\" target=\"_blank\"><u>forum.towns.cz</u></a>."
 
 # text
 msgid "mesage_markdown_info"
 msgstr ""
-"Zprávy můžete formátovat pomocí <a href=\"http://cs.wikipedia.org/wiki/"
-"Markdown\" target=\"_blank\">Markdown</a>."
+"Zprávy můžeš formátovat pomocí <a href=\"http://cs.wikipedia.org/wiki/"
+"Markdown\" target=\"_blank\"><u>Markdown</u></a>."
 
 msgid "message_back"
 msgstr "Zpět"
 
 msgid "message_limit"
-msgstr "Posíláte zprávy přiliš rychle."
+msgstr "Posíláš zprávy přiliš rychle."
 
 msgid "message_reply"
 msgstr "Odpovědět"
@@ -2179,9 +2048,6 @@ msgstr "Předmět"
 msgid "message_to"
 msgstr "Komu"
 
-msgid "message_to_info"
-msgstr ""
-"Pokud chcete napsat novou zprávu do diskuse, napište do políčka komu 0."
 
 msgid "messages"
 msgstr "Zprávy"
@@ -2196,7 +2062,7 @@ msgid "messages_chat"
 msgstr "Chat"
 
 msgid "messages_chatinfo"
-msgstr "Pokud chcete napsat zprávu, napiště ji do okna chatu."
+msgstr "Pokud chceš napsat zprávu, napiště ji do okna chatu."
 
 msgid "messages_new"
 msgstr "Nová zpráva"
@@ -2241,16 +2107,16 @@ msgid "name_error_maxchars"
 msgstr "Jméno nesmí mít víc než [0] znaků."
 
 msgid "name_error_minchars"
-msgstr "Jméno musí mít alespoň [0] znaky."
+msgstr "Jméno musí mít alespo&#328; [0] znaky."
 
 msgid "name_error_noname"
-msgstr "Musíte zadat jméno."
+msgstr "Musíš zadat jméno."
 
 msgid "name_error_number"
 msgstr "Jméno nesmí být pouze číslo."
 
 msgid "name_error_same"
-msgstr "Toto jméno právě používáte."
+msgstr "Toto jméno právě používáš."
 
 msgid "name_error_space"
 msgstr "Jméno nesmí začínat ani končit mezerou."
@@ -2260,9 +2126,6 @@ msgstr "Jméno nesmí obsahovat speciální znaky."
 
 msgid "name_error_used"
 msgstr "Jméno je už obsazené."
-
-msgid "namecreated"
-msgstr "Uživatelské jméno bylo vytvořeno!"
 
 # new
 msgid "nameonworld"
@@ -2290,7 +2153,7 @@ msgid "newpass2"
 msgstr "Nové heslo znovu"
 
 msgid "no_message"
-msgstr "Musíte napsat předmět i text zprávy."
+msgstr "Musíš napsat předmět i text zprávy."
 
 msgid "noeditor"
 msgstr ""
@@ -2315,7 +2178,7 @@ msgstr "Vlastník"
 
 # profile
 msgid "pass_info"
-msgstr "Pokud nechcete měnit heslo, tak do políček níže nic nepište."
+msgstr "Pokud nechceš měnit heslo, tak do políček níže nic nepiš."
 
 # new
 msgid "password"
@@ -2324,27 +2187,9 @@ msgstr "Heslo"
 msgid "password_edit"
 msgstr "Změnit heslo"
 
-# new
-msgid "password_change_newpass2_error"
-msgstr "{password_change_newpass2_error}"
 
 msgid "password_change_no_error"
-msgstr "Musíte zadat heslo!"
-
-# new
-msgid "password_change_noall_error"
-msgstr "{password_change_noall_error}"
-
-# new
-msgid "password_change_oldpass_error"
-msgstr "{password_change_oldpass_error}"
-
-msgid "password_change_use_warning"
-msgstr "Heslo se bude měnit pro přihlášeného uživatele [0]."
-
-# new
-msgid "password_changed"
-msgstr "{password_changed}"
+msgstr "Musíš zadat heslo!"
 
 msgid "paypal_account"
 msgstr "Účet na PayPalu"
@@ -2363,84 +2208,78 @@ msgstr "Kredit"
 
 msgid "paypal_fail"
 msgstr ""
-"Objednávka nebyla zpracována. Kontaktujte zákaznický servis nebo podporu "
-"PayPalu."
+"Objednávka nebyla zpracována. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_amount"
 msgstr ""
-"Zaplatili jste odlišnou částku. Nesme způsobilí zpracovat takovou "
-"objednávku. Kontaktujte zákaznický servis nebo podporu PayPalu."
+"Zaplatil jsi odlišnou částku. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_currency"
 msgstr ""
-"Zaplatili jste nám odlišnou měnou. Nesme způsobilí zpracovat takovou "
-"objednávku. Kontaktujte zákaznický servis nebo podporu PayPalu."
+"Zaplatil jsi odlišnou měnou. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_email"
 msgstr ""
-"Položka byla zakoupena na špatné stránce. Nesme způsobilí zpracovat takovou "
-"objednávku. Kontaktujte zákaznický servis nebo podporu PayPalu."
+"Objednávka nebyla zpracována. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_line"
 msgstr ""
 "Tato položka neexistuje. Nejsme způsobilí zpracovat takovou objednávku. "
-"Kontaktujte zákaznický servis nebo podporu PayPalu."
+"Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_session"
 msgstr ""
-"Položka byla zakoupena, ale session vypršela. Prosím kontaktujte nás na "
-"info@towns.cz pro dokončení vaší objednávky."
+"Položka byla zakoupena, ale session vypršela. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_token"
-msgstr "Položka byla zakoupena, ale session vypršela."
+msgstr "Položka byla zakoupena, ale session vypršela. Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_hack_user"
-msgstr ""
-"Uživatel neexistuje. Nesme způsobilí zpracovat takovou objednávku. "
-"Kontaktujte zákaznický servis nebo podporu PayPalu."
+msgstr "Hráč neexistuje. Nesme způsobilí zpracovat takovou objednávku. "
+"Kontaktuj mě prosím na ph@towns.cz ."
 
 msgid "paypal_noresult"
 msgstr ""
-"Internetové připojení během procesu selhalo. Obnovte webovou stránku nebo "
-"kontaktujte náš zákaznický servis či podporu PayPalu."
+"Internetové připojení během procesu selhalo. Obnov webovou stránku nebo "
+"mě kontaktuj na ph@towns.cz ."
 
 msgid "paypal_o_assoc"
-msgstr "byla připojena k uživatelskému účtu"
+msgstr "byla připojena k hráčskému účtu"
 
 msgid "paypal_o_completed"
-msgstr "Objednávka byla dokončena uživatelem"
+msgstr "Objednávka byla dokončena hráčem"
 
 msgid "paypal_o_login1"
-msgstr "Můžete se přihlásit do vašeho PayPal účtu na"
+msgstr "Můžeš se přihlásit do Tvého PayPal účtu na"
 
 msgid "paypal_o_login2"
 msgstr "pro shlédnutí detailů transakce."
 
 msgid "paypal_o_paid"
-msgstr "Zaplatili jste"
+msgstr "Zaplatil jsi"
 
 msgid "paypal_o_receipt"
-msgstr "Potvrzení o nákupu vám bylo zasláno na vaši e-mailovou adresu."
+msgstr "Potvrzení o nákupu Ti bylo zasláno na tvou e-mailovou adresu."
 
 msgid "paypal_p_amount"
 msgstr "Částka"
 
 msgid "paypal_p_check"
 msgstr ""
-"Prosím zkontrolujte objednávku. Poté klikněte na tlačítko \"Potvrdit\" a "
-"vyčkejte na její dokončení."
+"Prosím Zkontroluj objednávku. Poté klikni na tlačítko \"Potvrdit\" a "
+"vyčkej na její dokončení."
 
 msgid "paypal_p_payer"
 msgstr "Plátce"
 
 msgid "paypal_p_user"
-msgstr "Uživatel"
+msgstr "Hráč"
 
 msgid "paypal_purchased"
 msgstr "Položka byla úspěšně zakoupena."
 
 msgid "paypal_thanks"
-msgstr "Děkujeme za vaši objednávku!"
+msgstr "Děkujeme za Tvou objednávku!"
 
 msgid "paypal_the"
 msgstr "Položka"
@@ -2450,15 +2289,15 @@ msgstr "za"
 
 msgid "plus_info"
 msgstr ""
-"<b>Podpořte nás a získejte zlato!</b><br>  Pokud se vám líbí Towns a chtěli "
-"byste nám pomoci v jeho dalším vývoji a vylepšování, můžete nás podpořit a "
-"za odměnu získat zlato do hry, které můžete následně vyměnit za klasické "
+"<b>Podpoř nás a získej zlato!</b><br>  Pokud se Ti líbí Towns a chtěl "
+"bys nám pomoci v jeho dalším vývoji a vylepšování, můžeš nás podpořit a "
+"za odměnu získat zlato do hry, které můžeš následně vyměnit za klasické "
 "suroviny - dřevo, kámen, železo a palivo v poměru 1:1.<br>  Další funkce, "
 "které se budou dát za zlato koupit, připravujeme.<br><br>  Vzhledem k tomu, "
 "že je celý systém v testovacím módu, je zatím bohužel možné platit pouze "
 "přes PayPal v USD.<br>  Další možnosti platby připravujeme.<br><br>  Víme, "
 "že se Towns potřebuje neustále zlepšovat a opravovat své chyby. Za každou "
-"podporu vám budeme nesmírně vděčni, děkujeme!<br><br>  Suroviny se dají "
+"podporu Ti budeme nesmírně vděčni, děkujeme!<br><br>  Suroviny se dají "
 "vyměnit kliknutím na ikonku obchodu:"
 
 msgid "plus_infob"
@@ -2466,17 +2305,17 @@ msgstr "Koupit zlato pro město [0]"
 
 # fb
 msgid "plus_invite"
-msgstr "Pozvěte přátele na FB"
+msgstr "Pozvi přátele na FB"
 
 # fb
 msgid "plus_invite_info"
-msgstr "<b>Podpořte nás a získejte zlato!</b><br/"
+msgstr "<b>Podpoř nás a získej zlato!</b><br/"
 
 msgid "plus_key"
 msgstr "Zadat kód"
 
 msgid "plus_key_info"
-msgstr "Zde můžete uplatnit bonusový kód:"
+msgstr "Zde můžeš uplatnit bonusový kód:"
 
 msgid "plus_offer1"
 msgstr "Zlato 1"
@@ -2492,16 +2331,16 @@ msgstr "Sdílet"
 
 msgid "plus_share_info"
 msgstr ""
-"<b>Podpořte nás a získejte zlato!</b><br>  Pokud nám pomůžete hru "
-"propagovat, získáte drobnou odměnu. Další způsob je sdílet odkaz na "
-"Facebooku. Za to dostanete <b>6000</b> zlata. To můžete vyměnit v poměru 1:1 "
+"<b>Podpoř nás a získej zlato!</b><br>  Pokud nám pomůžeš hru "
+"propagovat, získáš drobnou odměnu. Další způsob je sdílet odkaz na "
+"Facebooku. Za to dostaneš <b>6000</b> zlata. To můžeš vyměnit v poměru 1:1 "
 "za jakoukoliv surovinu. Sdílení našeho odkazu za odměnu je možné maximálně "
 "jednou za 4 dny."
 
 msgid "plus_shareo_info"
 msgstr ""
-"Pokud naši hru propagujete jinde, zadejte sem URL stránky (text z horního "
-"políčka prohlížeče) a my vám zlato připíšeme ručně. Dostanete minimálně "
+"Pokud naši hru propaguješ jinde, zadej sem URL stránky (text z horního "
+"políčka prohlížeče) a my Ti zlato připíšeme ručně. Dostaneš minimálně "
 "<b>3000</b> zlata, může to však být i mnohem víc, záleží na individuálním "
 "zhodnocení."
 
@@ -2523,7 +2362,7 @@ msgid "profile_mail"
 msgstr "E-mail"
 
 msgid "profile_name"
-msgstr "Uživatelské jméno"
+msgstr "Hráčské jméno"
 
 msgid "profile_public"
 msgstr "Otevřeno"
@@ -2534,19 +2373,19 @@ msgstr "Odesílání e-mailů"
 
 # mail
 msgid "profile_sendmail2"
-msgstr "Upozorňování na nové zprávy"
+msgstr "Upozor&#328;ování na nové zprávy"
 
 # mail
 msgid "profile_sendmail3"
-msgstr "Upozorňování na nové události"
+msgstr "Upozor&#328;ování na nové události"
 
 # profile
 msgid "profile_sendmail4"
-msgstr "Upozorňování na nové zprávy přes Facebook"
+msgstr "Upozor&#328;ování na nové zprávy přes Facebook"
 
 # profile
 msgid "profile_sendmail5"
-msgstr "Upozorňování na nové události přes Facebook"
+msgstr "Upozor&#328;ování na nové události přes Facebook"
 
 msgid "profile_town"
 msgstr "Profil města"
@@ -2575,25 +2414,23 @@ msgid "public_chy"
 msgstr "otevřít"
 
 msgid "public_info"
-msgstr ""
-"Každou vlastní budovu můžete \"otevřít\" pro ostatní uživatele - umožníte "
-"jim stavět její kopie."
+msgstr "Každou vlastní budovu můžeš \"otevřít\" pro ostatní hráče - umožníš jim stavět její kopie."
 
 msgid "public_unique"
 msgstr "Odeslat"
 
 msgid "public_unique_info"
 msgstr ""
-"Vytvořili jste vlastní verzi této budovy. Pokud je to finální verze, "
-"odešlete ji. Pokud bude lepší než stávající, budou všechny nové budovy "
-"tohoto typu vypadat podle vašeho návrhu a vy dostanete 10% z ceny každé nově "
+"Vytvořil jsi vlastní verzi této budovy. Pokud je to finální verze, "
+"odešli ji. Pokud bude lepší než stávající, budou všechny nové budovy "
+"tohoto typu vypadat podle Tvého návrhu a Ty dostaneš 10% z ceny každé nově "
 "postavené + odměnu v podobě zlata."
 
 msgid "public_unique_ok"
-msgstr "Děkujeme za váš návrh nové budovy."
+msgstr "Děkujeme za Tvůj návrh nové budovy."
 
 msgid "public_unique_ok2"
-msgstr "Váš návrh čeká na schválení..."
+msgstr "Tvůj návrh čeká na schválení..."
 
 msgid "public_y"
 msgstr "Tato budova je otevřená pro ostatní."
@@ -2601,33 +2438,31 @@ msgstr "Tato budova je otevřená pro ostatní."
 msgid "quest_1_1_description"
 msgstr ""
 "<img src=\"http://forum.towns.cz/wp-content/uploads/2014/12/50xB.png\" width="
-"\"15\" height=\"15\" /> &nbsp;<strong><u>Towns</u></strong> vám právě "
-"otevřelo svoje brány. Vítejte ve světě, kde váš úspěch závisí pouze na vaší "
-"strategii a kreativitě. Tento průvodce vás provede od stavění základních "
-"budov až po vytváření vlastních.<br />  Základem celé hry je mapa, tu můžete "
-"\"tahat\" pomocí kurzoru, nebo šipek. Pokud se na mapě ztratíte, klikněte na "
-"ikonku města v horní liště, ta vás vycentruje zpět do vašeho města"
+"\"15\" height=\"15\" /> &nbsp;<strong><u>Towns</u></strong> Ti právě "
+"otevřelo své brány. Vítej ve světě, kde Tvůj úspěch závisí pouze na Tvé "
+"strategii a kreativitě. Tento průvodce Tě provede od stavění základních "
+"budov až po vytváření vlastních.<br/>  Základem celé hry je mapa, tu můžeš "
+"\"tahat\" pomocí kurzoru, nebo šipek. Pokud se na mapě ztratíš, klikni na "
+"tlačítko \"Vycentrovat mapu\"."
 
 msgid "quest_1_1_title"
-msgstr "Vítejte v Towns"
+msgstr "Vítej v Towns"
 
 msgid "quest_1_10_description"
 msgstr ""
-"Najděte v blízkosti své hlavní budovy vlajku a postavte v její blízkosti "
-"katapult. Katapult slouží k ničení nepřátelských budov na relativně malou "
+"Najdi v blízkosti své hlavní budovy vlajku a postav v její blízkosti "
+"katapult. <br/>"
+"Katapult slouží k ničení nepřátelských budov na relativně malou "
 "vzdálenost"
 
 msgid "quest_1_10_title"
 msgstr "Útoky"
 
-# new
-msgid "quest_1_11_title"
-msgstr "{quest_1_11_title}"
 
 msgid "quest_1_12_description"
 msgstr ""
-"Pro obsazení nepřátelské vlajky označte ikonku útoku v menu katapultu, "
-"následně označte vlajku a klikněte na ikonku meče."
+"Pro obsazení nepřátelské vlajky označ ikonku útoku v menu katapultu, "
+"následně označ vlajku a klikni na ikonku meče."
 
 msgid "quest_1_12_task"
 msgstr "Obsadit vlajku"
@@ -2637,10 +2472,10 @@ msgstr "Obsazení vlajky"
 
 msgid "quest_1_13_description"
 msgstr ""
-"Nyní je vlajka vaše. Vlajka vám ale bude k ničemu. Aby nezabírala místo, "
-"rozeberte ji. Nemusíte rozebírat všechny budovy, co obsadíte, rozmyslete si "
-"však, zda budovu opravdu potřebujete. Pokud ji rozeberete, dostanete část "
-"surovin, které stála. Pokud si ji necháte, měli byste si ji opravit."
+"Nyní je vlajka Tvá. Vlajka Ti ale bude k ničemu. Aby nezabírala místo, "
+"rozeber ji. Nemusíš rozebírat všechny budovy, co obsadíš, rozmysli si "
+"však, zda budovu opravdu potřebuješ. Pokud ji rozebereš, dostaneš část "
+"surovin, které stála. Pokud si ji necháš, měl bysis ji opravit."
 
 msgid "quest_1_13_task"
 msgstr "Rozebrat vlajku"
@@ -2650,23 +2485,21 @@ msgstr "Rozebrání vlajky"
 
 msgid "quest_1_14_description"
 msgstr ""
-"Pokud ke katapultu přistavíte dělo a věž, získáte expanzní věž - velmi "
-"efektivní budovu na útočení."
+"Pokud ke katapultu přistavíš dělo a věž, získáš expanzní věž - velmi efektivní budovu na útočení."
 
 msgid "quest_1_14_title"
 msgstr "Expanzní věž"
 
 msgid "quest_1_15_description"
 msgstr ""
-"Abyste mohli efektivně chránít vaše město, potřebujete kolem něj postavit "
-"hradby. Hradby jsou zcela nový typ budov, nestaví se volně, ale jsou vzájemě "
-"propojení mřížkou."
+"Abys mohl efektivně chránít své město, potřebuješ kolem něj postavit hradby. "
+"Hradby jsou zcela nový typ budov, nestavíš je volně, ale jsou vzájemně propojené mřížkou."
 
 msgid "quest_1_15_title"
 msgstr "Stavitel hradeb"
 
 msgid "quest_1_16_description"
-msgstr "Postavte kolem části vašeho města palisádu."
+msgstr "Postav kolem části Tvého města palisádu."
 
 msgid "quest_1_16_title"
 msgstr "Zabezpečení města"
@@ -2674,27 +2507,25 @@ msgstr "Zabezpečení města"
 msgid "quest_1_17_description"
 msgstr ""
 "Většinou bývá mnohem efektivnější určitou budovu rozšířit a ne ji postavit "
-"několikrát. Pokud spojíte dvě budovy stejného typu, vytvoříte její větší a "
-"silnější verzi. Pokud však spojíte dvě různé budovy, můžete získat zajímavé, "
-"užitečné a nové kombinace."
+"několikrát. Pokud spojíš dvě budovy stejného typu, vytvoříš její větší a "
+"silnější verzi. Pokud však spojíš dvě různé budovy, můžeš získat zajímavé, užitečné a nové kombinace."
 
 msgid "quest_1_17_title"
 msgstr "Spojování budov"
 
 msgid "quest_1_18_description"
 msgstr ""
-"Pokud se vám povede spojit dvě budovy, které ještě nikdo předtím nespojil, "
-"vytvoří se automatická kombinace těchto dvou budov, té můžete dát vlastní "
-"název a vzhled."
+"Pokud se Ti povede spojit dvě budovy, které ještě nikdo předtím nespojil, "
+"vytvoří se automatická kombinace těchto dvou budov, té můžeš dát vlastní název, popis a vzhled."
 
 msgid "quest_1_18_title"
 msgstr "Vlastní kombinace"
 
 msgid "quest_1_19_description"
 msgstr ""
-"Jakmile vytvoříte vlastní zajímavou kombinaci, můžete ji odeslat, tím získá "
-"každá stejná kombinace budov váš název a vzhled, tím můžete značně ovlivnit "
-"charakter celé hry a navíc dostanete odměnu v podobě zlata + 10% z ceny "
+"Jakmile vytvoříš vlastní zajímavou kombinaci, můžeš ji odeslat, tím získá "
+"každá stejná kombinace budov Tvůj název a vzhled, tím můžeš značně ovlivnit "
+"charakter celé hry a navíc dostaneš odměnu v podobě zlata + 10% z ceny "
 "každé nově postavené budovy."
 
 msgid "quest_1_19_title"
@@ -2702,123 +2533,85 @@ msgstr "Odeslání budovy"
 
 msgid "quest_1_2_description"
 msgstr ""
-"V Towns existují celkem čtyři základní druhy surovin, které vám umožní "
-"stavět a rozšiřovat své město. Těmito surovinami jsou:<br />    <img src="
-"\"../tmp/world1/image/138/235/286486.jpg\" width=\"15\" height=\"15\" /"
-"><strong>dřevo</strong>, <img src=\"../tmp/world1/image/127/137/302581.jpg\" "
-"width=\"15\" height=\"15\" /><strong>kamení</strong>, <img src=\"../tmp/"
-"world1/image/4/163/288837.jpg\" width=\"15\" height=\"15\" /><strong>železo</"
-"strong>, <img src=\"../tmp/world1/image/139/234/257509.jpg\" width=\"15\" "
-"height=\"15\" /><strong>palivo</strong><br/><br/>   + jedna bonusová "
-"surovina <img src=\"../tmp/world1/image/160/208/306603.jpg\" width=\"15\" "
-"height=\"15\" /><strong>zlato</strong><br />"
+"V Towns existují celkem čtyři základní druhy surovin, které Ti umožní "
+"stavět a rozšiřovat Tvé město. Těmito surovinami jsou:<br/><br/>    <strong>dřevo</strong>, <strong>kámen</strong>, <strong>železo</strong>, <strong>palivo</strong><br/>"
+" + jedna bonusová surovina <strong>zlato</strong><br/>"
 
 msgid "quest_1_2_title"
 msgstr "Suroviny"
 
 msgid "quest_1_20_description"
 msgstr ""
-"Někdy nemáte správnou kombinaci surovin pro stavění. Na tržišti můžete měnit "
-"suroviny 1:10 (tzn. například za 100 kamene dostanete 10 dřeva). Pokud "
-"budete chtít větší efektivitu, můžete tržiště několikrát spojit."
+"Někdy nemáš správnou kombinaci surovin pro stavění. Na tržišti můžeš měnit "
+"suroviny 1:10 (tzn. například za 100 kamene dostaneš 10 dřeva). Pokud "
+"budeš chtít větší efektivitu, můžeš tržiště několikrát spojit."
 
 msgid "quest_1_20_title"
 msgstr "Tržiště"
 
-# new
-msgid "quest_1_21_title"
-msgstr "{quest_1_21_title}"
-
-# new
-msgid "quest_1_22_title"
-msgstr "{quest_1_22_title}"
 
 msgid "quest_1_23_description"
 msgstr ""
-"Pomocí skladu můžete měnit terén (podklad mapy). Změna terénu se chová "
-"stejně jako stavění budov, postavená budova je však pouze provizorní - do "
-"jednoho dne zmizí a zanechá pod sebou příslušný terén."
+"Pomocí stavitele terénu můžeš měnit terén (podklad mapy)."
+" Změna terénu se chová stejně jako stavění budov, postavená budova je však pouze provizorní"
+" - do jednoho dne zmizí a zanechá pod sebou příslušný terén."
 
 msgid "quest_1_23_task"
-msgstr "Změňte libovoně terén"
+msgstr "Změ&#328; libovoně terén"
 
 msgid "quest_1_23_title"
 msgstr "Změny terénu"
 
-# new
-msgid "quest_1_24_title"
-msgstr "{quest_1_24_title}"
-
-# new
-msgid "quest_1_25_title"
-msgstr "{quest_1_25_title}"
-
 msgid "quest_1_26_description"
 msgstr ""
-"Pokud potřebujete své město rozšiřovat přes vodní plochy, použijte Stavitele "
-"mostů."
+"Pokud potřebuješ své město rozšiřovat přes vodní plochy, použij Stavitele mostů."
 
 msgid "quest_1_26_title"
 msgstr "Mosty"
 
-# new
-msgid "quest_1_27_title"
-msgstr "{quest_1_27_title}"
-
-# new
-msgid "quest_1_28_title"
-msgstr "{quest_1_28_title}"
-
 msgid "quest_1_29_description"
 msgstr ""
-"Gratulujeme, základy hry jste zvládli skvěle. Pokud si pořád nevíte rady "
-"navštivte naše forum:<br />  <a href=\"http://forum.towns.cz/\" target="
-"\"_blank\"><b><u>forum.towns.cz</u></b></a><br />  Omluvte prosím nedostatky "
-"a chyby, které se postupně odstranují. Towns se zatím pouze vyvíjí a proto "
-"budeme rádi, pokud nám dáte tipy na vylepšení, nebo nahlásíte chyby, které "
-"při hraní objevíte. <br />  <a href=\"http://docs.google.com/forms/"
-"d/1KMrozY_orpSsChgglPLcTTg4MM8_IdoZCYHu9p345zc/viewform\" target=\"_blank"
-"\"><b><u>Nahlásit chybu / Nápad na vylepšení</u></b></a>"
+"Gratulujeme, základy hry jsi zvládnul skvěle. Pokud si pořád nevíš rady "
+"navštiv naše forum:<br/>  <a href=\"http://forum.towns.cz/\" target="
+"\"_blank\"><b><u>forum.towns.cz</u></b></a><br/>  Omluv prosím nedostatky "
+"a chyby, které postupně odstra&#328;ujeme. Towns je česko-slovenská nezávislá hra a proto "
+"budeme rádi, pokud nám dáš tipy na vylepšení, nebo nahlásíš chyby, které při hraní objevíš."
 
 msgid "quest_1_29_title"
-msgstr "Přihlášení"
+msgstr ":-)"
 
 msgid "quest_1_3_description"
 msgstr ""
-"Základní budovu, kterou musíte postavit je stavitel. Klikněte na tlačítko "
-"Postavit budovu -&gt; Stavitel -&gt; Stavitel . Následně tažením umístěte "
-"budovu tam, kde ji chcete postavit. Budova musí stát v černém kruhu kolem "
-"vaší hlavní budovy."
+"Základní budovu, kterou musíš postavit je stavitel.<br/>"
+"Klikni na tlačítko Postavit budovu -&gt; Stavitel -&gt; Stavitel . Následně tažením umísti "
+"budovu tam, kde ji chceš postavit. "
 
 msgid "quest_1_3_title"
 msgstr "Stavitel"
 
 msgid "quest_1_4_description"
 msgstr ""
-"V Towns se vše točí kolem budov, nové budovy stavíte pomocí budov, útočíte "
-"pomocí budov, suroviny těžíte a měníte pomocí budov,... Hlavní budova slouží "
-"k základní těžbě a uskladnění surovin a hlavně ke stavbě stavitelů. Stavitel "
-"je nejdůležitější budova pro další rozvoj, pomocí ní můžete stavět vše "
-"ostatní."
+"V Towns se vše točí kolem budov, každou akci provádí Tvé budovy... <br/>"
+"<b><u>Hlavní budova</u></b> slouží k základní těžbě a uskladnění surovin a hlavně ke stavbě stavitelů.  <br/>"
+"<b><u>Stavitel</u></b> je nejdůležitější budova pro další rozvoj, pomocí ní můžeš stavět vše ostatní."
 
 msgid "quest_1_4_title"
 msgstr "Budovy"
 
 msgid "quest_1_5_description"
 msgstr ""
-"Pomocí stavitele postavte těžbu dřeva. Klikněte na Postavit budovu -&gt; "
-"Základní budovy. Vyberte ze seznamu těžbu dřeva a postavte ji.<br />  pro co "
-"největší efektivitu je dobré stavět těžbu dřeva co nejblíže co největšímu "
-"počtu stromů. Jakmile těžbu dřeva postavíte, zrychlí se vám produkce dřeva a "
-"paliva"
+"Pomocí stavitele Postav těžbu dřeva. <br/>"
+"Klikni na Postavit budovu -&gt; "
+"Základní budovy. <br/>"
+"Pro co největší efektivitu je dobré stavět těžbu dřeva co nejblíže co největšímu počtu stromů."
 
 msgid "quest_1_5_title"
 msgstr "Těžba dřeva"
 
 msgid "quest_1_6_description"
 msgstr ""
-"Nyní je potřeba vytěžené suroviny někam umistovat, postavte proto sklad. K "
-"tomu abyste ho postavili budete potřebovat ještě jednoho stavitele."
+"Nyní je potřeba vytěžené suroviny umístit do skladu.<br/>"
+"K tomu, abys ho postavil, budeš potřebovat ještě jednoho stavitele."
 
 msgid "quest_1_6_task"
 msgstr "Vytěžit dřevo"
@@ -2828,29 +2621,28 @@ msgstr "Sklad"
 
 msgid "quest_1_7_description"
 msgstr ""
-"Každou budovu můžete mít postavenou kolikrát chcete(kromě Hlavní budovy). "
-"Pro rychlí rozvoj vašeho města je dobré postavit několik rozšířených "
-"stavitelů. Rozšířeného stavitele postavíte tak, že spojíte dva stavitele "
-"dohromady. (Otevřete stavění stejným způsobem jako doposud, jen budovu "
-"přesunete nad jinou.)"
+"Každou budovu můžeš mít postavit kolikrát chceš. <br/>"
+"Pro rychlý rozvoj Tvého města je dobré postavit několik rozšířených "
+"stavitelů. Rozšířeného stavitele postavíš tak, že spojíš dva stavitele "
+"dohromady. Otevři stavění stejným způsobem jako doposud, <b>jen budovu "
+"přesu&#328; na stavitele</b>."
 
 msgid "quest_1_7_title"
 msgstr "Více stavitelů"
 
 msgid "quest_1_8_description"
-msgstr "Postavte těžbu kamene co nejblíže co největšímu počtu skal."
+msgstr "Postav těžbu kamene co nejblíže co největšímu počtu skal. <br/>"
+"Pokud to chceš udělat okamžitě, postav dalšího stavitele."
 
 msgid "quest_1_8_title"
 msgstr "Těžba kamene"
 
 msgid "quest_1_9_description"
-msgstr ""
-"Jistě jste si všimli, že můžete stavět pouze v černém okruhu vašich budov, "
-"ten se nazývá expanzní. Existuje také červený kruh kolem nepřátelských "
-"hradeb."
+msgstr "<u><b>Skvěle!</b></u> Zvládl jsi základy hry, abychom tě zbytečně neotravovali, bude dál pouze textová nápověda. Je pouze na tobě, zda se ji chceš řídit nebo se vydáš vlastní cestou. <hr/>"
+"Jistě jsi si všiml, že můžeš stavět pouze v černém okruhu Tvých budov, ten se nazývá expanzní. Existuje také červený kruh kolem nepřátelských hradeb."
 
 msgid "quest_1_9_title"
-msgstr "Expanze"
+msgstr "Pokračování tutorialu & Expanze"
 
 msgid "quest_build"
 msgstr "Postavit"
@@ -2873,8 +2665,12 @@ msgstr "Zatím nedokončeno"
 msgid "quest_previous"
 msgstr "<<< Předchozí"
 
+msgid "click_here"
+msgstr "Klikni sem!"
+
+
 msgid "feedback"
-msgstr "Podívejte se, na čem pracujeme a napište nám názor!"
+msgstr "Podívej se, na čem pracujeme a napiš nám svůj názor!"
 
 msgid "realname"
 msgstr "Skutečné jméno"
@@ -2883,15 +2679,15 @@ msgid "register"
 msgstr "Registrace"
 
 msgid "register_block_error"
-msgstr "Registrace je zablokovaná, zkuste obnovit stránku pomocí F5."
+msgstr "Registrace je zablokovaná, zkus obnovit stránku pomocí F5."
 
 # register
 msgid "register_error_email_none"
-msgstr "Zadejte prosím svůj e-mail."
+msgstr "Zadej prosím svůj e-mail."
 
 # register
 msgid "register_error_email_wtf"
-msgstr "Zadejte prosím svůj e-mail ve tvaru jméno@něco.cz"
+msgstr "Zadej prosím svůj e-mail ve tvaru jméno@něco.cz"
 
 # register
 msgid "register_error_email_you"
@@ -2899,18 +2695,18 @@ msgstr "Pro tento mail už existuje uživatelský účet."
 
 # register
 msgid "register_error_nonear"
-msgstr "Hráč, vedle kterého jste chtěli začít, neexistuje!"
+msgstr "Hráč, vedle kterého jsi chtěl začít, neexistuje!"
 
 msgid "register_error_nospace"
 msgstr "Omlouváme se, ale na mapě nezbývá místo!"
 
 # register
 msgid "register_error_password_empty"
-msgstr "Prosím zadejte heslo."
+msgstr "Prosím zadej heslo."
 
 # register
 msgid "register_error_username_none"
-msgstr "Zadejte prosím svoje jméno."
+msgstr "Zadej prosím Tvé hráčské jméno."
 
 # register
 msgid "register_finish"
@@ -2922,13 +2718,7 @@ msgstr "Změna registračních údajů proběhla úspěšně."
 
 # register
 msgid "register_info"
-msgstr "Vyberte si, kde byste chtěli začít."
-
-msgid "register_info1"
-msgstr "Nemáte ještě účet? začněte hrát ihned!"
-
-msgid "register_info2"
-msgstr "Jméno a heslo vyplníte později."
+msgstr "Vyber si, kde bys chtěl začít."
 
 # register
 msgid "register_infox"
@@ -2940,7 +2730,7 @@ msgstr "Vedle hráče"
 
 # register
 msgid "register_near_info"
-msgstr "Napište jméno hráče, vedle kterého chcete začít:"
+msgstr "Napiš jméno hráče, vedle kterého chceš začít:"
 
 # register
 msgid "register_near_ok"
@@ -2950,13 +2740,6 @@ msgstr "OK"
 msgid "register_nochange_info"
 msgstr "Registrační údaje zůstaly stejné."
 
-msgid "register_nopassword"
-msgstr ""
-"Ještě potřebujete dokončit registraci nastavením jména a hesla, abyste se "
-"mohli přihlásit i příště."
-
-msgid "register_nopassword_short"
-msgstr "Dokončení registrace"
 
 msgid "register_ok"
 msgstr "Začít&nbsp;hrát"
@@ -2967,7 +2750,7 @@ msgstr "Náhodně"
 
 # register
 msgid "register_random_info"
-msgstr "Pro vaše město bude vybrána pozice zcela náhodně..."
+msgstr "Pro Tvé město bude vybrána pozice zcela náhodně..."
 
 # register
 msgid "register_success"
@@ -3036,7 +2819,7 @@ msgid "res_iron2"
 msgstr "železa"
 
 msgid "res_no"
-msgstr "{null}"
+msgstr "nic"
 
 # surkey
 msgid "res_per_hour"
@@ -3071,7 +2854,7 @@ msgid "rotate_right"
 msgstr "Otočit doprava"
 
 msgid "same_message"
-msgstr "Nemůžete poslat tu samou zprávu 2x."
+msgstr "Nemůžeš poslat tu samou zprávu 2x."
 
 # message
 msgid "send_message"
@@ -3090,8 +2873,7 @@ msgstr "Chci dostávat novinky a aktualizace"
 
 # register
 msgid "sendmail_info"
-msgstr ""
-"Upozorňování na konkrétní události si můžete jednoduše měnit v nastavení."
+msgstr "Upozor&#328;ování na konkrétní události si můžeš jednoduše měnit v nastavení."
 
 # settings
 msgid "sendmail2"
@@ -3099,16 +2881,15 @@ msgstr "Upozornit na novou zprávu e-mailem."
 
 # settings
 msgid "sendmail3"
-msgstr ""
-"Upozornit na novou událost e-mailem.<br>(např. při útoku na vaše město)"
+msgstr "Upozornit na novou událost e-mailem.<br>(např. při útoku na Tvé město)"
 
 # profile
 msgid "sendmail4"
-msgstr "Upozorňovat na novou zprávu na Facebooku."
+msgstr "Upozor&#328;ovat na novou zprávu na Facebooku."
 
 # profile
 msgid "sendmail5"
-msgstr "Upozorňovat na novou událost na Facebooku."
+msgstr "Upozor&#328;ovat na novou událost na Facebooku."
 
 # settings
 msgid "settings_created"
@@ -3134,7 +2915,7 @@ msgstr "Tato nastavení se týkají aktuálně zvoleného města:"
 
 # settings
 msgid "settings_user"
-msgstr "Nastavení uživatele"
+msgstr "Nastavení hráče"
 
 msgid "share_button"
 msgstr "Sdílet&nbsp;na&nbsp;Facebooku"
@@ -3143,13 +2924,13 @@ msgid "share_error"
 msgstr "Do dalšího sdílení za odměnu"
 
 msgid "share_success"
-msgstr "Děkujeme, přidali jsme vám 6000 zlata."
+msgstr "Děkujeme, přidali jsme Ti 6000 zlata."
 
 msgid "shareo_ok"
 msgstr "OK"
 
 msgid "shareo_success"
-msgstr "Děkujeme, až odkaz prověříme dostanete zlato!"
+msgstr "Děkujeme, až odkaz prověříme dostaneš zlato!"
 
 # stat
 msgid "stat"
@@ -3227,7 +3008,7 @@ msgstr "Změnit nastavení města"
 
 # submit
 msgid "submit_user_settings"
-msgstr "Změnit nastavení uživatele"
+msgstr "Změnit nastavení hráče"
 
 # profile
 msgid "superowner"
@@ -3235,7 +3016,7 @@ msgstr "^Vlastník"
 
 # surkey
 msgid "surkey_info"
-msgstr "Zdroje vašeho města:"
+msgstr "Zdroje Tvého města:"
 
 msgid "tday1"
 msgstr "den"
@@ -3293,62 +3074,6 @@ msgstr "Tráva"
 
 msgid "terrain_t9"
 msgstr "Tráva"
-
-# terrrain
-msgid "terrainx_t0"
-msgstr "{terrainx_t0}"
-
-# terrrain
-msgid "terrainx_t1"
-msgstr "{terrainx_t1}"
-
-# terrrain
-msgid "terrainx_t10"
-msgstr "{terrainx_t10}"
-
-# terrrain
-msgid "terrainx_t11"
-msgstr "{terrainx_t11}"
-
-# terrrain
-msgid "terrainx_t12"
-msgstr "{terrainx_t12}"
-
-# terrrain
-msgid "terrainx_t13"
-msgstr "{terrainx_t13}"
-
-# terrrain
-msgid "terrainx_t2"
-msgstr "{terrainx_t2}"
-
-# terrrain
-msgid "terrainx_t3"
-msgstr "{terrainx_t3}"
-
-# terrrain
-msgid "terrainx_t4"
-msgstr "{terrainx_t4}"
-
-# terrrain
-msgid "terrainx_t5"
-msgstr "{terrainx_t5}"
-
-# terrrain
-msgid "terrainx_t6"
-msgstr "{terrainx_t6}"
-
-# terrrain
-msgid "terrainx_t7"
-msgstr "{terrainx_t7}"
-
-# terrrain
-msgid "terrainx_t8"
-msgstr "{terrainx_t8}"
-
-# terrrain
-msgid "terrainx_t9"
-msgstr "{terrainx_t9}"
 
 msgid "text_toall"
 msgstr "Další..."
@@ -3446,7 +3171,7 @@ msgstr "Profil"
 
 # rating
 msgid "title_rating"
-msgstr "Vaše hodnocení Towns"
+msgstr "Tvé hodnocení Towns"
 
 # -
 msgid "title_repair"
@@ -3464,7 +3189,7 @@ msgstr "Vylepšit budovu"
 
 # write
 msgid "title_write"
-msgstr "Napište názor"
+msgstr "Napiš názor"
 
 msgid "title2"
 msgstr "Testovací verze systému"
@@ -3476,32 +3201,32 @@ msgid "tleft"
 msgstr "zbývá"
 
 msgid "tminute1"
-msgstr "minuta"
+msgstr "Minuta"
 
 msgid "tminute2"
-msgstr "minuty"
+msgstr "Minuty"
 
 msgid "tminute5"
-msgstr "minut"
+msgstr "Minut"
 
 msgid "tminutex"
 msgstr "m"
 
 msgid "tmonth1"
-msgstr "měsíc"
+msgstr "Měsíc"
 
 msgid "tmonth2"
-msgstr "měsíce"
+msgstr "Měsíce"
 
 msgid "tmonth5"
-msgstr "měsíců"
+msgstr "Měsíců"
 
 # time
 msgid "tmonthx"
 msgstr "m"
 
 msgid "town"
-msgstr "město"
+msgstr "Město"
 
 msgid "town_count"
 msgstr "Počet měst"
@@ -3516,7 +3241,7 @@ msgstr "Město"
 
 # type
 msgid "town4"
-msgstr "městu"
+msgstr "Městu"
 
 msgid "towns"
 msgstr "Towns"
@@ -3593,28 +3318,28 @@ msgid "unique_profile"
 msgstr "Zobrazit profil"
 
 msgid "unique_user"
-msgstr "Uživatelské"
+msgstr "Hráčské"
 
 msgid "unit4"
 msgstr "jednotku"
 
 # new
 msgid "unknown"
-msgstr "Neznámí hráč"
+msgstr "Neznámý hráč"
 
 # -
 msgid "unknown_logr"
-msgstr "Tento uživatel bohužel neexistuje!"
+msgstr "Tento hráč bohužel neexistuje!"
 
 msgid "unknown_user"
-msgstr "Neexistující uživatel"
+msgstr "Neexistující hráč"
 
 msgid "upgrade_error_price"
 msgstr "Nedostatek zdrojů!"
 
 # upgrade
 msgid "upgrade_error_price2"
-msgstr "K vylepšení této funkce nemáte dostatek surovin."
+msgstr "K vylepšení této funkce nemáš dostatek surovin."
 
 msgid "upgrade_free"
 msgstr "zadarmo"
@@ -3633,8 +3358,8 @@ msgstr "K vylepšení této funkce budou proměněny některé suroviny."
 msgid "upgrade_info"
 msgstr ""
 "Každá budova se skládá s mnoha funkcí - například schopnost skladovat dřevo, "
-"či vzdálenost útoku, atd. Pokud dvě budovy spojíte, vznikne nová, které "
-"funce jsou součtem funkcí budov původních. Zde však můžete vylepšovat "
+"či vzdálenost útoku, atd. Pokud dvě budovy spojíš, vznikne nová, které "
+"funce jsou součtem funkcí budov původních. Zde však můžeš vylepšovat "
 "jednotlivé funkce zvlášt..."
 
 msgid "upgrade_noupgrade"
@@ -3659,16 +3384,16 @@ msgid "upgrade_success"
 msgstr "Budova byla vylepšena!"
 
 msgid "upgrade_title"
-msgstr "Zde můžete vylepšit jednotlivé parametry budovy:"
+msgstr "Zde můžeš vylepšit jednotlivé parametry budovy:"
 
 msgid "user"
 msgstr "hráč"
 
 msgid "user1"
-msgstr "uživatel"
+msgstr "hráč"
 
 msgid "user4"
-msgstr "uživatele"
+msgstr "hráče"
 
 # register
 msgid "username"
@@ -3690,7 +3415,7 @@ msgid "web"
 msgstr "Web"
 
 msgid "welcome"
-msgstr "Vytvářejte vlastní svět!"
+msgstr "Vytvářej vlastní svět!"
 
 msgid "world_in_service"
 msgstr ""
@@ -3705,15 +3430,17 @@ msgstr "Testovací svět"
 msgid "world_world2"
 msgstr "Herní svět"
 
+# world
+msgid "world_small"
+msgstr "Malý svět"
+
 # write
 msgid "write_description"
-msgstr ""
-"Máte nějaký zajímavý postřeh ze hry, připomínku, nápád na zlepšení, našli "
-"jste chybu, nebo něco jiného? Napište to sem!"
+msgstr "Máš nějaký zajímavý postřeh ze hry, připomínku, nápád na zlepšení, našel jsi chybu, nebo něco jiného? Napiš to sem!"
 
 # write
 msgid "write_next_description"
-msgstr "Pokud vás ještě něco napadne, napište ještě jednou."
+msgstr "Pokud Tě ještě něco napadne, napiš sem ještě jednou. :-) "
 
 # write
 msgid "write_send"
@@ -3721,7 +3448,7 @@ msgstr "Odeslat"
 
 # write
 msgid "write_success"
-msgstr "Děkujeme za vaši zpětnou vazbu..."
+msgstr "Děkujeme za Tvou zpětnou vazbu!"
 
 # surkey
 msgid "xfs"
@@ -3737,7 +3464,7 @@ msgid "xtype_noreg"
 msgstr "neznámé&nbsp;město"
 
 msgid "xtype_own"
-msgstr "vaše&nbsp;město"
+msgstr "Tvé&nbsp;město"
 
 msgid "finish_immediately"
 msgstr "Dokončit okamžitě [0]"

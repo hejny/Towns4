@@ -2,7 +2,8 @@
 require_once('../inc.php');
 page(lr('app_projects_trelloimporter'),lr('app_projects_trelloimporter_description'));
 
-app_auth('projects/trelloimport');
+//Není potřeba autorizace
+//app_auth('projects/trelloimport');
 
 
 //<a onclick="window.open('', '', 'width=600, height=500');">Start</a>

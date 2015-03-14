@@ -19,9 +19,9 @@ function questtask($name,$q){
 	tee($name,13);
 	br();
 }
-function questbuilding($building,$qq=1){
+function questbuilding($building,$qq=1,$onlyready=0){
 	$building4=str_replace('}','4}',$building);
-	$q=building($building)-1+1;
+	$q=building($building,$onlyready)-1+1;
 	questtask(lr('quest_build').' '.($qq==1?'':$qq.'x ').$building4.(($qq!=1 and $q>0 and $q<$qq)?'  '.lr('quest_left',"$q;$qq"):''),$q>=$qq);
 }
 }
@@ -34,7 +34,7 @@ if($GLOBALS['get']['quest'])$GLOBALS['ss']['quest']=$GLOBALS['get']['quest'];
 if($GLOBALS['get']['questi'])$GLOBALS['ss']['questi']=$GLOBALS['get']['questi'];
 
 //echo('questi='.$GLOBALS['ss']['questi']);br();
-$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".$GLOBALS['ss']['useid']." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi DESC,time1 LIMIT 1");
+$quests=sql_array("SELECT `quest`,`questi`,`time1`,`time2` FROM [mpx]questt WHERE `id`=".$GLOBALS['ss']['useid']." AND ".($GLOBALS['ss']['questi']?' `quest`='.$GLOBALS['ss']['quest'].' AND `questi`<='.$GLOBALS['ss']['questi']:"!time2")." ORDER BY questi DESC,time1 LIMIT 1");
 $quest=$quests[0];
 $time2=$quest[3];
 
@@ -46,9 +46,12 @@ if($quest){
 	
 	//print_r($quest);
 
-	list($quest)=sql_array("SELECT `name`,`quest`,`questi`,`limit`,`cond1`,`cond2`,`description`,`image`,`author`,`reward` FROM [mpx]quest WHERE quest=".$quest['quest']." AND questi=".$quest['questi']);
+	list($quest)=sql_array("SELECT `name`,`quest`,`questi`,`limit`,`cond1`,`cond2`,`description`,`helpids`,`image`,`author`,`reward` FROM [mpx]quest WHERE quest=".$quest['quest']." AND questi=".$quest['questi']);
 
-	list($name,$id,$i,$limit,$cond1,$cond2,$description,$image,$author,$reward)=$quest;
+	list($name,$id,$i,$limit,$cond1,$cond2,$description,$helpids,$image,$author,$reward)=$quest;
+
+
+
 
 	$GLOBALS['questq']=true;
 
@@ -121,6 +124,7 @@ if($quest){
 
 		//echo($cond2);
 		eval($cond2);//echo(1);
+		
 		$infob='';
 
 		$next=sql_1data('SELECT questi FROM [mpx]quest WHERE quest=\''.$id.'\' and questi>=\''.($i+1).'\' ORDER BY questi LIMIT 1');
@@ -128,11 +132,11 @@ if($quest){
 
 
 		if($previous){
-			$infob.=ahrefr(textbr(lr('quest_previous')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($previous).';');
+			$infob.=ahrefr(textbr(lr('quest_previous')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($previous).';'.js2('removeallhelp()'));
 			//e(nbspo);
 		}
 		if($time2){//e(1);
-			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($next).';');
+			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($next).';'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
 		}
 
 		//echo($time2);
@@ -140,9 +144,9 @@ if($quest){
 		if($GLOBALS['questq'] and !$time2){
 			
 			if($next){
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
 			}else{
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
 			}
 
 
@@ -161,7 +165,7 @@ if($quest){
 					},10);
 					</script>
 					<?php*/
-					click('e=quest-mini;quest='.$id.';questi='.$next);
+					click('e=quest-mini;quest='.$id.';questi='.$next.';'.js2('removeallhelp()'));
 				}
 			}
 
@@ -188,6 +192,273 @@ if($quest){
 	
 
 <?php
+
+
+
+	//---------------------------------------------------------------------------------------
+	?>
+	<style type="text/css">
+	<!--
+	.helpnumber {
+		
+		width:30px;
+		height:30px;
+		border:#ff0000 2px solid;
+		border-radius: 22px;
+		background-color: #000000;
+		padding: 4px 4px 4px 4px;
+		text-align:center;
+	}
+	-->
+	</style>
+	<?php
+	$helpidsp=$helpids;
+	$helpids=explode(',',$helpids);	
+	$offset_number=0;
+
+	if($time2 or $GLOBALS['questq']){
+		$snumber=count($helpids)+1;
+		$helpids=array();
+	}else{
+		$snumber=1;
+		if($helpid){//$helpid může být definované v cond2
+			$offset_number=$helpid-1;	
+		}
+	}
+	
+	if($helpidsp!==''){
+		$helpids=array_merge($helpids,array('quest_finish'));
+	}
+
+	//print_r($helpids);
+	//-----------
+	e('<script>
+		alerthelp=false		
+
+		if(typeof removeallhelp != "undefined")removeallhelp();
+		setTimeout(function() {');
+	
+	//-------------removeallhelp
+	e('removeallhelp = function(){');
+	e('if(alerthelp)alert("remove");');
+	$number=$snumber;
+	foreach($helpids as $helpid){$helpid=trim($helpid);if($helpid){
+		e('clearInterval(interval_'.$number.');');
+		e('$(\'#helpnumber_'.$number.'\').remove();');
+		e('$(\''.($helpid).'\').unbind(\'mousedown\');');
+	$number++;}}
+	e('
+	document.aachelp='.($snumber+$offset_number).';
+	document.aachelpp=0;
+	}
+	removeallhelp();');
+	//-------------
+
+ 	$rand=rand(1,999);
+	//e('alert("create");');
+	$number=$snumber;
+	foreach($helpids as $helpid){if($helpid){
+	
+		//var position = $('#<?php e($helpid); ? >').position();
+		//alert(position.top);
+		//$('#helpnumber_<?php e($helpid); ? >').css('left',position.left);
+		//$('#helpnumber_<?php e($helpid); ? >').css('top',position.top);
+		?>
+
+		html='<div id="helpnumber_<?php e($number); ?>" baseid="<?php e($helpid); ?>" class="helpnumber" style="position:absolute;left:100px;top:100px;z-index:<?php e(100000-$number); ?>" lr="-1" dragging="2" lasttime="0" ><?php /*tee($number,30);*/imge('icons/click.png',lr('click_here'),40); ?></div>';
+		$('#windows').append(html);
+
+
+
+		$('#helpnumber_<?php e($number); ?>').draggable(
+			{
+				start: function() {
+					$('#helpnumber_<?php e($number); ?>').attr('dragging','1');
+				},
+				stop: function() {
+					$('#helpnumber_<?php e($number); ?>').attr('dragging','2');
+				}
+			}
+		);
+		var interval_<?php e($number); ?>=setInterval(function() {
+			
+			if($('#helpnumber_<?php e($number); ?>').attr('dragging')=='2'){
+
+				/*console.log('<?=$rand ?>_<?=$number ?> <?=$helpid ?>');*/
+				
+				/*display=$('#helpnumber_<?php e($number); ?>').css('display');
+				visibility=$('#helpnumber_<?php e($number); ?>').css('visibility');
+				position && position.left!=0 && display!=='none' && visibility!=='hidden'*/
+				
+
+				baseid=$('#helpnumber_<?php e($number); ?>').attr('baseid');
+
+				if(<?php e($number); ?>==document.aachelp){
+					
+					
+
+					if($('#'+baseid).length==0){
+
+						/*setTimeout(function(){*/
+
+							if(<?php e($number); ?>==document.aachelp)
+							if($('#'+baseid).length==0){
+							    	if(alerthelp)alert(baseid+' not exist '+document.aachelp);
+								if(document.aachelp==<?php e($number); ?> && document.aachelpp==document.aachelp){
+									document.aachelp--;
+									if(alerthelp)alert(document.aachelp+'--');
+								}
+							}else{
+							    	if(alerthelp)alert(baseid+' už exists!');
+							}
+
+						/*},4000);*/
+
+
+
+					}else{
+
+
+						if(document.aachelpp!=<?php e($number); ?>){
+							if(alerthelp)alert('set p <?php e($number); ?>');
+							document.aachelpp=<?php e($number); ?>;
+						}
+						
+						var position = $('#'+baseid).offset();
+
+						/*if($('#helpnumber_<?php e($number); ?>').attr('not')==1){
+							//alert('ok');
+							clearInterval(interval_<?php e($number-1); ?>);
+							$('#helpnumber_<?php e($number-1); ?>').remove();
+							$('#helpnumber_<?php e($number); ?>').attr('not',0);
+						}*/
+
+
+						/*------------------------------------------------------------------------------Click Bind----*/
+						/*setInterval(function(){*/
+
+						if($('#<?php e($helpid); ?>').length>0){
+						if($('#<?php e($helpid); ?>').attr('binded')!=1){
+
+
+							if(alerthelp)alert('binding to <?php e($number); ?> <?php e($helpid); ?>');
+
+							/*$('#<?php e($helpid); ?>').draggable();
+							console.log($('#<?php e($helpid); ?>'));*/
+
+							if(alerthelp)
+							$('#<?php e($helpid); ?>').append('click');
+
+
+							$('#<?php e($helpid); ?>').bind('mousedown', function() {
+
+								if(alerthelp)alert('click'+document.aachelp+'==<?php e($number); ?>');
+								if(document.aachelp==<?php e($number); ?>){
+									document.aachelp++;
+									if(alerthelp)alert(document.aachelp+'++');
+								}else{
+									if(alerthelp)alert(document.aachelp+' - teď ne');
+								}
+
+
+							});
+							/*$('#<?php e($helpid); ?>').bind('mouseenter', function() {
+
+								if(alerthelp)alert('hoover'+document.aachelp+'==<?php e($number); ?>');
+
+
+							});*/
+
+
+
+							$('#<?php e($helpid); ?>').attr('binded',1);
+						}}
+
+						/*},500);*/
+						/*-------------------------------------------------------------------------------*/
+
+						lasttime=parseFloat($('#helpnumber_<?php e($number); ?>').attr('lasttime'));
+
+						aactime = new Date();
+						aactime = aactime.getTime();
+
+						/*alert(aactime+' , '+lasttime);*/
+						if(lasttime+(1000/fps_quick)<aactime){
+							ax=position.left-30;
+							ay=position.top-30;
+
+							if(ax==-30 && ay==-30){
+								
+							}else{
+				
+
+								x=parseFloat($('#helpnumber_<?php e($number); ?>').css('left'))-ax;
+								y=parseFloat($('#helpnumber_<?php e($number); ?>').css('top'))-ay;
+								lr=parseFloat($('#helpnumber_<?php e($number); ?>').attr('lr'));
+
+								/*if(Math.sqrt(Math.abs(x)+Math.abs(y))<7){
+									xm+=(1-2*Math.random())*20;
+									ym+=(1-2*Math.random())*20;
+								}*/
+
+								q=0.985+(Math.sqrt(Math.abs(x)+Math.abs(y))/200);
+								k=8/(q*q*q);
+
+				
+								x=(x/q)+((lr*y)/k);
+								y=(y/q)+((-lr*x)/k);
+
+								x=x+ax;
+								y=y+ay;
+
+								b=20;
+
+								if(x<0){x=0;lr=-lr;}
+								if(y<0){y=0;lr=-lr;}
+								if(x><?= $GLOBALS['ss']['screenwidth'] ?>-b){x=<?= $GLOBALS['ss']['screenwidth'] ?>-b;lr=-lr;}
+								if(y><?= $GLOBALS['ss']['screenheight'] ?>-b){y=<?= $GLOBALS['ss']['screenheight'] ?>-b;lr=-lr;}
+
+								$('#helpnumber_<?php e($number); ?>').css('left',(x)+'px');
+								$('#helpnumber_<?php e($number); ?>').css('top',(y)+'px');
+								$('#helpnumber_<?php e($number); ?>').attr('lr',lr);
+							}
+
+							$('#helpnumber_<?php e($number); ?>').attr('lasttime',aactime);
+						}
+
+
+					}
+				}else{
+					$('#helpnumber_<?php e($number); ?>').css('left',-100);
+					$('#helpnumber_<?php e($number); ?>').css('top',500);
+					$('#helpnumber_<?php e($number); ?>').attr('not',1);
+				}
+
+			}
+		},10);
+
+		<?php
+	
+		$number++;
+
+	}}
+
+
+
+	e('	},200);
+	</script>');
+
+	//---------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 	if(!$GLOBALS['mobile'])e('</div>');
 
 	if($GLOBALS['mobile']){

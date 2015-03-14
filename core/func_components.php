@@ -353,8 +353,8 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
         }
         $supersize=gr;
         $fontfile = root.'lib/font/Trebuchet MS.ttf';
+	//$fontfile = root.'lib/font/ShragScript.otf';
         $fontsize=1;
-        //$fontfile = root.'lib/font/WC_RoughTrad.ttf';
         //$fontsize=1;
         $fn="-$size-$ga-$k-$gb-$ab-$supersize-$fontfile-$fontsize-$color-$html-$tracetext-$orient";
         $size=intval($size*$supersize*$fontsize);
@@ -700,6 +700,16 @@ function borderr2($html,$brd=1){
     return('<span style="border: '.$brd.'px solid #cccccc;z_index:1000">'.$html.'</span>');
 }
 function border2($html,$brd=1){echo( borderr2($html,$brd));}
+//======================================================================================================================IDčka
+
+
+function spanidr($html,$id){
+    return('<span id="'.$id.'">'.$html.'</span>');
+}
+
+function spanid($html,$id){
+    echo(spanidr($html,$id));
+}
 
 //======================================================================================================================HTML TABLES VERZE 2011 @deprecated
 /*
@@ -1663,14 +1673,20 @@ function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclic
     if(!$data){$data=$GLOBALS['ss'];}
     if($nol!="x"){ if(!$nol){$text=lr($text);}else{$text=tr($text);}}
     //if(str_replace($data[$id],"",$url)==$url){r();}
-    if($id?(str_replace($id."=".$data[$id],"",$url)==$url):true or !$textd){
-        if(!$textd){$textd="none";}
-        $add1="<span style=\"text-decoration:$textd;\">";
-        $add2="</span>";
+
+
+    if($id){
+	//e('-idtag-'.$id);
+	$idtag='id="'.$id.'"';
     }else{
-        $add1="<span style=\"color: #FF7733;text-decoration:$textd;\">";
-        $add2="</span>";
+	$idtag='';
     }
+
+
+	if(!$textd){$textd="none";}
+	$add1="<span style=\"text-decoration:$textd;\">";
+	$add2="</span>";
+
     //if($textd=="none"){$add1="";$add2="";}
 	 if(strpos("x".$url,"menu:")){$class='href="#menu" class="menu" id="menu_'.str_replace('menu:','',$url).'"';$url='';}
     $tmp=urlr($url);
@@ -1688,7 +1704,7 @@ function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclic
     if($url){$url="href=\"".$tmp."\"";}
     if($onclick){$onclick="onclick=\"$onclick\"";}
 	//e($url);
-    return("<a $url $onclick $class $target >$add1$text$add2</a>");
+    return("<a $url $idtag $onclick $class $target >$add1$text$add2</a>");
 }
 function ahref($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclick=""){echo(ahrefr($text,$url,$textd,$nol,$id,$data,$onclick));}
 //==========================================================================================
