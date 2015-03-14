@@ -338,7 +338,7 @@ function sql_mpx($text){
         
         $prefix=mpx;
         foreach($GLOBALS['inc']['mysql_global'] as $gtable){
-            if(in_array(substr($array[$i],0,strlen($gtable)+1),array($gtable.' ',$gtable.'`'))){
+            if(in_array(substr($array[$i],0,strlen($gtable)+1),array($gtable.' ',$gtable.'`',$gtable.'.'))){
                 $prefix=$GLOBALS['inc']['mysql_global_prefix'];
                 break;
             }
