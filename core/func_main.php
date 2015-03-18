@@ -789,6 +789,30 @@ function check_email($email) {
     $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])'; // jedna komponenta domény
     return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
 }
+//======================================================================================================================Načtení knihoven
+
+function script_($script){
+   e('<script type="text/javascript">');
+   readfile($script);
+   e('</script>');
+}
+function css_($css){
+   e('<style>');
+   readfile($css);
+   e('</style>');
+}
+
+function htmllibs(){
+	script_('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
+	script_('lib/jquery/jquery-ui.min.js');
+
+	script_('lib/jquery/plugins/fullscreen-min.js');//Funkce plné obrazovky, která neblbne
+	script_('lib/jquery/plugins/mousewheel.js');//Potřeba pro mousewheel
+	script_('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
+	script_('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
+	script_('lib/jquery/plugins/colorpicker/colorpicker.js');
+	css_('lib/jquery/plugins/colorpicker/colorpicker.css');
+}
 //======================================================================================================================
 
 define('dnln',debug?nln:'');
