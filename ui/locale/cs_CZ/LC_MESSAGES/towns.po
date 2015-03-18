@@ -3469,4 +3469,155 @@ msgstr "Tvé&nbsp;město"
 msgid "finish_immediately"
 msgstr "Dokončit okamžitě [0]"
 
+#administrace
+msgid "admin_group_ai"
+msgstr "Automatická Inteligence"
+
+msgid "admin_group_building"
+msgstr "Budovy"
+
+msgid "admin_group_cache"
+msgstr "Cache soubory"
+
+msgid "admin_group_create"
+msgstr "Vytvoření vrstvy"
+
+msgid "admin_group_data"
+msgstr "Data světa"
+
+msgid "admin_group_deploy"
+msgstr "Aktualizace"
+
+msgid "admin_group_develop"
+msgstr "Generátor PHP kódu"
+
+msgid "admin_group_main"
+msgstr "Základní"
+
+msgid "admin_group_news"
+msgstr "Novinky"
+
+msgid "admin_group_spawn"
+msgstr "Pozice"
+
+msgid "admin_group_surkey"
+msgstr "Suroviny"
+
+msgid "admin_page_ai-botx"
+msgstr "Boti"
+
+msgid "admin_page_ai-cronbot"
+msgstr "Spustit"
+
+msgid "admin_page_ai-mainres"
+msgstr "Změnit RES"
+
+msgid "admin_page_ai-multibuild"
+msgstr "Hromadné stavění"
+
+msgid "admin_page_ai-service"
+msgstr "Chaos"
+
+msgid "admin_page_ai-terrainx"
+msgstr "Terén"
+
+msgid "admin_page_building-acceptunique"
+msgstr "Schválit budovy"
+
+msgid "admin_page_building-createunique"
+msgstr "Vytvořit z textu"
+
+msgid "admin_page_building-object"
+msgstr "Objekt"
+
+msgid "admin_page_building-showunique"
+msgstr "Zobrazit Budovy"
+
+msgid "admin_page_building-unique"
+msgstr "Simulátor spojování"
+
+msgid "admin_page_building-unique_text"
+msgstr "Změnit text"
+
+msgid "admin_page_cache-createtmp"
+msgstr "Vytvořit mapový podklad"
+
+msgid "admin_page_cache-deletetmp"
+msgstr "Smazat cache"
+
+msgid "admin_page_cache-update"
+msgstr "Aktualizovat FS"
+
+msgid "admin_page_create-createimg"
+msgstr "Vytvořit průvodní podklad"
+
+msgid "admin_page_create-createmap"
+msgstr "Vytvořit mapu"
+
+msgid "admin_page_data-backup"
+msgstr "Stáhnout zálohu"
+
+msgid "admin_page_data-backup_test"
+msgstr "Otestovat zálohu"
+
+msgid "admin_page_data-config"
+msgstr "Konfigurace"
+
+msgid "admin_page_data-export"
+msgstr "Export"
+
+msgid "admin_page_data-import"
+msgstr "Import"
+
+msgid "admin_page_deploy-git_pull"
+msgstr "Aktualizovat"
+
+msgid "admin_page_deploy-locale"
+msgstr "Lokalizovat"
+
+msgid "admin_page_deploy-sql_structure"
+msgstr "SQL struktura"
+
+msgid "admin_page_develop-phpgen_sql"
+msgstr "Generovar SQL"
+
+msgid "admin_page_main-adminer"
+msgstr "Adminer"
+
+msgid "admin_page_main-html"
+msgstr "Statistika"
+
+msgid "admin_page_main-info"
+msgstr "Info"
+
+msgid "admin_page_main-phpinfo"
+msgstr "PHP Info"
+
+msgid "admin_page_main-users"
+msgstr "Hráči"
+
+msgid "admin_page_news-createglob"
+msgstr "Globální mapa"
+
+msgid "admin_page_news-createnews"
+msgstr "Novinky"
+
+msgid "admin_page_news-createview"
+msgstr "Náhled"
+
+msgid "admin_page_news-mail"
+msgstr "Odeslat e-maily"
+
+msgid "admin_page_spawn-register"
+msgstr "Pozice"
+
+msgid "admin_page_spawn-registermap"
+msgstr "Mapa"
+
+msgid "admin_page_surkey-addsurkey"
+msgstr "Přidat suroviny"
+
+msgid "admin_page_surkey-key"
+msgstr "Bonusové kódy"
+
 
