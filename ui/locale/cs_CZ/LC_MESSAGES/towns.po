@@ -12,6 +12,52 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "Language: cs_CZ\n"
 
+
+
+# SEO, Meta - title
+msgid "app_title"
+msgstr "TOWNS - strategická kreativní online hra"
+
+
+# SEO, Meta - description
+msgid "app_description"
+msgstr "TOWNS je nový typ strategické online hry založené na vytváření vlastního města. Zažijte zbrusu novou atmosféru stavění města na různých terénech v doprovodu s elegantní grafikou. Bojujte a domlouvejte se se spoluhráči, získávejte suroviny, stavějte a dokonce si vytvářejte vlastní budovy!"
+
+
+# Share, Meta - Name
+msgid "app_og_name"
+msgstr "Towns"
+
+# Share, Meta - Title
+msgid "app_og_title"
+msgstr "Towns - Vytvářej vlastní svět!"
+
+# Share, Meta - Description
+msgid "app_og_description"
+msgstr "TOWNS je nový typ strategické hry založené na vytváření vlastního města. Zažijte zbrusu novou atmosféru stavění města na různých terénech v doprovodu s elegantní grafikou. Bojujte a domlouvejte se se spoluhráči, získávejte suroviny, stavějte a dokonce si vytvářejte vlastní budovy!"
+
+
+# Email - Title
+msgid "email_title"
+msgstr "Towns - Vytvářej vlastní svět!"
+
+# Invite message
+msgid "invite_message"
+msgstr "Vytvářej vlastní svět!"
+
+# SEO - Main page title
+msgid "welcome"
+msgstr "Vytvářej vlastní svět!"
+
+
+
+
+
+
+
+
+
+
 # profile
 msgid "editted"
 msgstr "změněno"
@@ -1510,9 +1556,6 @@ msgstr "<br/><br/>"
 "<br/>"
 "<a href=\"[0]\">[0]</a>"
 
-# new
-msgid "email_title"
-msgstr "Towns - Vytvářej vlastní svět!"
 
 # new
 msgid "email_top"
@@ -1865,9 +1908,6 @@ msgstr "Pozvat přátele z FB"
 msgid "invite_error"
 msgstr "Někde nastala chyba!"
 
-# fb
-msgid "invite_message"
-msgstr "Vytvářej vlastní svět!"
 
 # fb
 msgid "invite_success"
@@ -3414,8 +3454,6 @@ msgstr "Město, které obsazuje nejvíce budov je [name]"
 msgid "web"
 msgstr "Web"
 
-msgid "welcome"
-msgstr "Vytvářej vlastní svět!"
 
 msgid "world_in_service"
 msgstr ""
