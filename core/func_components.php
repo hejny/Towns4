@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
    core/func_components.php
    HTML komponenty
@@ -16,12 +16,12 @@ echo('<script language="javascript">
 function reloc($brutal=false){
     if(!debug or true){
 	if($brutal){
-            header("location: ".url.'?y='.$_GET['y']);
+            header("location: ".url.'?token='.$_GET['token']);
 	}else{
 	    echo('<script language="javascript">reloc();</script>');
 	}
     }else{
-    echo('<a href="'.url.'">location: '.url.'?y='.$_GET['y'].'</a>');
+    echo('<a href="'.url.'">location: '.url.'?token='.$_GET['token'].'</a>');
     }
     exit2;
 }
@@ -317,8 +317,10 @@ function inteligentparse($text){
 function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$splitspace=true){
     
     t('trr - start');
-    $fileX=tmpfile2("$text,$size,$style,$html,$tracetext,$tag,$img,$splitspace",'txt','word');
+    $fileX=tmpfile2(array($text,$size,$style,$html,$tracetext,$tag,$img,$splitspace),'txt','word');
     //die($fileX);
+
+
     if(!file_exists($fileX)/** or 1 /**/){
         
         $stream='';
@@ -337,6 +339,8 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
             if($green>255){$green=255;}if($green<1){$green=1;}
             if($blue>255){$blue=255;}if($blue<1){$blue=1;}
         }else{$color='none';}
+
+
         if($size<0){$size=-$size;$orient=1;}else{$orient=0;}
         if(!$size){
             $size=11;
@@ -356,7 +360,7 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
 	//$fontfile = root.'lib/font/ShragScript.otf';
         $fontsize=1;
         //$fontsize=1;
-        $fn="-$size-$ga-$k-$gb-$ab-$supersize-$fontfile-$fontsize-$color-$html-$tracetext-$orient";
+        $fn="-$size-$style-$ga-$k-$gb-$ab-$supersize-$fontfile-$fontsize-$color-$html-$tracetext-$orient";
         $size=intval($size*$supersize*$fontsize);
         $ttfbox=imagettfbbox($size ,0, $fontfile, $tracetext);
         $hh=$ttfbox[1]-$ttfbox[5];
@@ -395,7 +399,24 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
 		           //$glow=imagecolorallocatealpha($img, 255, 255, 255,0);
 		           if($red)$glow=imagecolorallocatealpha($img, $red, $green, $blue,$ab);
 		           if(!$red)$glow=imagecolorallocatealpha($img, $gb, $gb, $gb,$ab);
-		           $ellipse=imagecolorallocate($img, 20, 20, 20);
+
+
+
+                    if(is_array($style)){
+                        list($style,$color_)=$style;
+                        $red_=hexdec(substr($color_,0,2));
+                        $green_=hexdec(substr($color_,2,2));
+                        $blue_=hexdec(substr($color_,4,2));
+                        if($red_>255){$red_=255;}if($red_<1){$red_=1;}
+                        if($green_>255){$green_=255;}if($green_<1){$green_=1;}
+                        if($blue_>255){$blue_=255;}if($blue_<1){$blue_=1;}
+                        $ellipse=imagecolorallocate($img, $red_, $green_, $blue_);
+                    }else{
+                        $ellipse=imagecolorallocate($img, 20, 20, 20);
+                    }
+
+
+
 		           imagefill($img,0,0,$fill);
 		           imagefill($img2,0,0,$fill2);
 		           imagettftext($img2, $size ,0, 0, -$ttfbox[5], $color2,$fontfile, $word);
@@ -694,7 +715,7 @@ function borderjs($id,$sendid="",$category="",$brd=1,$q=true){
     $style_a="'".$brd."px solid #cccccc'";
     $style_b="'0px solid #cccccc'";
     return("\$('#border_".$category."_".$id."').css('border',$style_a);$('#border_".$category."_".$id."').css('z-index',z_index);if(typeof border_".$category."!='undefined')if('#border_".$category."_".$id."'!=border_".$category.")$(border_".$category.").css('border',$style_b);border_".$category."='#border_".$category."_".$id."';z_index++;".($q?"setset='$category,$sendid';map_units_time=1;":''));
-/*"$(function(){\$.get('?y=".$_GET['y']."&e=aac&set=".$category.",".$sendid."');});"*/
+/*"$(function(){\$.get('?token=".$_GET['token']."&e=aac&set=".$category.",".$sendid."');});"*/
 }
 function borderr2($html,$brd=1){
     return('<span style="border: '.$brd.'px solid #cccccc;z_index:1000">'.$html.'</span>');
@@ -987,6 +1008,8 @@ return($html.js($script));
 function tmpfile2($file,$ext=imgext,$cpath="main"){
     if($cpath)$cpath="/".$cpath;
     $ext=".".$ext;
+    if(is_array($file)){$file=serialize($file);}
+
     $md5=md5($file.$ext);
     $md52=md52($file.$ext);
     list($a,$b)=str_split($md5,2);
@@ -1286,8 +1309,8 @@ if($script)e('<script>');
 //$( document ).ready(function() {
 //alert("#<?php e($GLOBALS['formid']); ?>");
 $("#<?php e($GLOBALS['formid']); ?>").submit(function() {
-    //alert('send'+'<?php e($url.'&y='.$_GET['y']); ?>');
-    $.post('<?php e($url.'&y='.$_GET['y']); ?>',
+    //alert('send'+'<?php e($url.'&token='.$_GET['token']); ?>');
+    $.post('<?php e($url.'&token='.$_GET['token']); ?>',
         {
         <?php
             $q=false;
@@ -1314,7 +1337,7 @@ function input_textr($name,$value=false,$max=100,$cols="",$style='border: 2px so
     $stream="<input type=\"input\" name=\"$name\" id=\"$name\" value=\"$value\" size=\"$cols\"  maxlength=\"$max\" style=\"$style\"/>";
     return($stream);
 }
-function input_text($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){echo(input_textr($name,$value,$max,$cols));}
+function input_text($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){echo(input_textr($name,$value,$max,$cols,$style));}
 //--------------------------------------------
 /*function input_colorr($name,$value='000000'){
     //echo(xsuccess());
@@ -1489,8 +1512,7 @@ function infobb($text,$tr=false,$nbsp=false){
 }
 //======================================================================================
 //report
-function xr($text="",$tr=true){
-$q=3;
+function xr($text="",$tr=true,$q=3){
 //alert(gettype($text),$q,$tr);
 switch (gettype($text)) {
     case "NULL":
@@ -1555,17 +1577,17 @@ switch (gettype($text)) {
                                     if(!is_array($value)){
                                         $iii=1;$sp="";
                                         while($iii<sizeof($sub)){$iii++;
-                                            $sp=$sp."_|_";
+                                            $sp=$sp."__";
                                         }
                                         //echo($sp.$value.br);
-                                        alert($sp.$key."' => ".$value,$q,$tr);
+                                        alert($sp.'['.$key."] = ".$value,$q,$tr);
                                         $sub[sizeof($sub)-1]++;
                                     }else{
                                         $iii=1;$sp="";
                                         while($iii<sizeof($sub)){$iii++;
-                                            $sp=$sp."_|_";
+                                            $sp=$sp.nbsp2;
                                         }
-                                        alert($sp.$key." =>> ",$q,$tr);
+                                        alert($sp.'['.$key."] => ",$q,$tr);
                 
                                         $sub[sizeof($sub)]=0;
                                     }

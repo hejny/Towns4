@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/index.php
@@ -37,23 +37,37 @@ ini_set("register_globals","off");
 ini_set("display_errors","on");
 
 //===============================================================================INC
-//error_reporting(E_ALL);
-//print_r($_SERVER);
-//print_r($_GET);
-//parse_str($_SERVER['REDIRECT_QUERY_STRING'], $_GET);
-//parse_str($_SERVER['REDIRECT_REQUEST_METHOD'], $_POST);
+// @todo Vyřešit URL parametry
 
 $tmp=$_SERVER["REQUEST_URI"];
 
 
-
 if(strpos($tmp,'?'))$tmp=substr($tmp,0,strpos($tmp,'?'));
 $uri=explode('/',$tmp);
-//print_r($uri);
-$admin=false;$app=false;$debug=false;$edit=false;$notmp=false;$timeplan=false;$onlymap=false;$speciale=false;
+
+$admin=false;
+$app=false;
+$debug=false;
+$edit=false;
+$notmp=false;
+$timeplan=false;
+$onlymap=false;
+$api=false;
+$speciale=false;
+
+
 foreach($uri as $x){
     if($x){
-        if($x!='admin' AND $x!='app' AND $x!='debug' AND $x!='edit' AND $x!='notmp' AND $x!='timeplan' AND $x!='onlymap' AND $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
+        if(
+            $x!='admin' AND
+            $x!='app' AND
+            $x!='api' AND
+            $x!='debug' AND
+            $x!='edit' AND
+            $x!='notmp' AND
+            $x!='timeplan' AND
+            $x!='onlymap' AND
+            $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
         {$world=$x;}
         elseif($x=='admin'){$admin=true;}
         elseif($x=='app'){$app=true;}
@@ -63,6 +77,7 @@ foreach($uri as $x){
         elseif($x=='edit'){$edit=true;}
         elseif($x=='corex'){$corex=true;}
         elseif($x=='debug'){$debug=true;}
+        elseif($x=='api'){$api=true;}
         elseif(is_numeric(substr($x,0,1))){
             $speciale=true;
             //$x=str_replace(array('[',']'),'',$x);
@@ -89,7 +104,17 @@ if(!$world/**/ or str_replace(array('.','?'),'',$world)!=$world){header('Locatio
 $gooduri=str_replace('/'.'/','',$GLOBALS['inc']['url']);
 $gooduri=substr($gooduri,strpos($gooduri,'/'));
 //die($gooduri);
-if(!$admin and !$app and !$debug and !$edit and !$speciale and !$notmp and !$timeplan and !$onlymap and !$corex)if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
+if(!$admin and
+    !$app and
+    !$debug and
+    !$api and
+    !$edit and
+    !$speciale and
+    !$notmp and
+    !$timeplan and
+    !$onlymap and
+    !$corex)
+    if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
 
 $GLOBALS['inc']['default_world']=$GLOBALS['inc']['world'];
 $GLOBALS['inc']['world']=$world;
@@ -105,7 +130,7 @@ if($onlymap){define('onlymap',1);}else{define('onlymap',0);}
 if($corex){define('corex',1);define('corexx','corex/');}else{define('corex',0);define('corexx','');}
 
 if($app){
-    //@todo bezpečnost
+    //@todo spouštění aplikací přes core + bezpečnost
 
 
     /*$tmp=$_SERVER["REQUEST_URI"];
@@ -123,6 +148,11 @@ if($app){
     require($file);*/
 
     echo('APP');
+    exit;
+
+}elseif($api){
+
+    require($GLOBALS['inc']['core'].'/api.php');
     exit;
 
 }elseif($admin){
@@ -143,7 +173,7 @@ list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 
 //===============================================================================
 //error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
-define("root", "");
+define("root", "");//todo: PH - je to divné
 //--------------------------------------------
 require(root.core."/func_main.php");
 require(root.core."/func_vals.php");
@@ -203,7 +233,7 @@ if(!$GLOBALS['ss']['useid'])$GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
 //PH// Už nepoužívat - define("$GLOBALS['ss']['logid']", $GLOBALS['ss']['logid']);
 
 ////if($GLOBALS['ss']['logid'] and $GLOBALS['ss']['useid']){
-//if(!$GLOBALS['ss']["log_object"]->loaded/* or !$GLOBALS['ss']["use_object"]->loaded*/){session_destroy();refresh();}}
+//if(!$GLOBALS['ss']['log_object']->loaded/* or !$GLOBALS['ss']['use_object']->loaded*/){session_destroy();refresh();}}
 
 
 //------------------------------------------------------------------QUERY
@@ -218,7 +248,7 @@ if($q){
     //xreport();
     //xreport();
 }
-//r('set0'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
+//r('set0'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
 //r($GLOBALS['config']);
 //-------------------------- MAIN BUILDING
 
@@ -288,6 +318,9 @@ if(logged() and !$GLOBALS['ss']['useid']){//e('log1');
 }
 //---------------------------------------------------------------------------------------------
 if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
+
+    $GLOBALS['ss']['terminal_nolog']=true;
+
     //r("t");
     t("xxx");
     $info=xquery("info");//Udělat přímo přes OBJECT
@@ -309,22 +342,17 @@ if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
     $info2["set"]=new set($info2["set"]);
     $info2["profile"]=new profile($info2["profile"]);
     $info2["hold"]=new hold($info2["hold"]);
-    //r($info2["own2"]);
-    //$info2["own2"]=xx2x($info2["own2"]);
-    //r($info2["own2"]);
-    $in2=xquery("items");
-    $in2=$in2["items"];
-    $in2=csv2array($in2);
-    //r($in2);
     $own2=csv2array($info2["own2"]);
     //r($own2);
     //print_r($own2);
     if(!$GLOBALS['ss']['useid']){$GLOBALS['ss']['useid']=$info["id"];}
     if(!$GLOBALS['ss']['logid']){$GLOBALS['ss']['logid']=$info2["id"];}
+
+    $GLOBALS['ss']['terminal_nolog']=false;
 }
 //-------------------------------RESETS
 if($_GET["resetwindow"]){
-    $GLOBALS['ss']["log_object"]->set->delete("interface");
+    $GLOBALS['ss']['log_object']->set->delete("interface");
     reloc();
 }
 if($_GET["resetmemory"]){
@@ -334,7 +362,7 @@ if($_GET["resetmemory"]){
 //------------------------------------NOPASSWORD
 /*$nofb=true;
 $nopass=true;
-foreach(sql_array('SELECT `method`,`key` FROM `[mpx]login` WHERE `id`=\''.($GLOBALS['ss']["log_object"]->id).'\'') as $row){
+foreach(sql_array('SELECT `method`,`key` FROM `[mpx]login` WHERE `id`=\''.($GLOBALS['ss']['log_object']->id).'\'') as $row){
     list($method,$key)=$row;
     if($key){
         if($method=='towns')$nopass=false;
@@ -356,7 +384,7 @@ if(logged() and $nwindows){
     foreach($nwindows as $nwindow){if($nwindow){
         list($w_name,$w_content,$w_x,$w_y)=explode(",",$nwindow);
         //r($w_name);
-        $interface=xx2x($GLOBALS['ss']["log_object"]->set->val("interface"));
+        $interface=xx2x($GLOBALS['ss']['log_object']->set->val("interface"));
         $interface=new windows($interface);
         list($ow_content,$ow_x,$ow_y)=explode(",",$interface->val($w_name));
         if(!$w_content)$w_content=$ow_content;
@@ -373,11 +401,11 @@ if(logged() and $nwindows){
         $interface=$interface->vals2str($interface);
         $interface=str_replace(nln,"",$interface);
         //echo(nl2br($interface));
-        $GLOBALS['ss']["log_object"]->set->add("interface",x2xx($interface));
+        $GLOBALS['ss']['log_object']->set->add("interface",x2xx($interface));
     }}
 }
 //-------------------------------SET
-//r('set2'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
+//r('set2'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
 $nsets=$_GET["set"];
 if(logged() and $nsets){
     //e("alert('$nsets');");
@@ -386,7 +414,7 @@ if(logged() and $nsets){
     foreach($nsets as $nset){if($nset){
         list($s_key,$s_value)=explode(",",$nset);
         //r($w_name);
-        $set=xx2x($GLOBALS['ss']["use_object"]->set->val("set"));
+        $set=xx2x($GLOBALS['ss']['use_object']->set->val("set"));
         $set=new windows($set);
         $ss_value=$set->val($s_key);
         if(!$s_value)$s_value=$ss_value;
@@ -401,13 +429,13 @@ if(logged() and $nsets){
         $set=$set->vals2str();//$interface
         $set=str_replace(nln,"",$set);
         //echo(nl2br($interface));
-        $GLOBALS['ss']["use_object"]->set->add("set",x2xx($set));
+        $GLOBALS['ss']['use_object']->set->add("set",x2xx($set));
     }}
 }
-//r($GLOBALS['ss']["use_object"]->id);
+//r($GLOBALS['ss']['use_object']->id);
 if(logged() and $_GET['e']!="none"/**/){
-    if($GLOBALS['ss']["use_object"]->loaded){
-        $settings=str2list(xx2x($GLOBALS['ss']["use_object"]->set->val("set")));
+    if($GLOBALS['ss']['use_object']->loaded){
+        $settings=str2list(xx2x($GLOBALS['ss']['use_object']->set->val("set")));
         $GLOBALS['settings']=$settings;
 
     }else{
@@ -423,7 +451,7 @@ if(logged() and $_GET['e']!="none"/**/){
 //-------------------------------
 
 //e(23456);
-//r('set3'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
+//r('set3'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
 t("before content");
 
 //print_r($_GET);
@@ -516,7 +544,16 @@ if($_GET['e']){
         //echo($dir.','.$e);
         $e=str_replace('-','/',$e);
         if(!$e){$e=$dir;$dir='page';}
-        if($e!="none")require(core."/$dir/".$e.".php");
+        if($e!="none"){
+            $file=core."/$dir/".$e.".php";
+            if(file_exists($file)){
+                require($file);
+            }else{
+                refresh();
+            }
+        }
+
+
     }else{
         //die('aaa');
         refresh();
@@ -542,18 +579,18 @@ if(!debug){t("ob_end_flush");ob_end_flush();}
 //e('a');
 
 if(logged() and $_GET['e']!="none"/**/){
-//e($GLOBALS['ss']["log_object"]->id.','.$GLOBALS['ss']["use_object"]->id);
+//e($GLOBALS['ss']['log_object']->id.','.$GLOBALS['ss']['use_object']->id);
 
-    $GLOBALS['ss']["log_object"]->update();
+    $GLOBALS['ss']['log_object']->update();
 
-//if(!$GLOBALS['ss']["use_object"]->loaded){$GLOBALS['ss']["use_object"]=new object($GLOBALS['ss']['useid']);}
-//$GLOBALS['ss']["use_object"]->hold->showimg();
-    $GLOBALS['ss']["use_object"]->update();
-    $GLOBALS['ss']["aac_object"]->update();
+//if(!$GLOBALS['ss']['use_object']->loaded){$GLOBALS['ss']['use_object']=new object($GLOBALS['ss']['useid']);}
+//$GLOBALS['ss']['use_object']->hold->showimg();
+    $GLOBALS['ss']['use_object']->update();
+    $GLOBALS['ss']['aac_object']->update();
 
-    unset($GLOBALS['ss']["log_object"]);
-    unset($GLOBALS['ss']["use_object"]);
-    unset($GLOBALS['ss']["aac_object"]);
+    unset($GLOBALS['ss']['log_object']);
+    unset($GLOBALS['ss']['use_object']);
+    unset($GLOBALS['ss']['aac_object']);
 }
 //die2();
 //cleartmp(1);

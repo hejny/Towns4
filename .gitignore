@@ -1,12 +1,16 @@
 *.mo
 *.pot
 
+ *(copy)*
+*.old.*
+
 /index.php
 /tmp
 /backup
 /other
 /admin
 /debug
+/api
 /timeplan
 /app/adminer/session/*
 /app/old*

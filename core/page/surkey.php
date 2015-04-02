@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/surkey.php
@@ -84,7 +84,7 @@ menu_open=function(){
 
 }*/
 //---------------------------------------center
-if(!$GLOBALS['ss']["log_object"]->set->val('map_xc')){
+if(!$GLOBALS['ss']['log_object']->set->val('map_xc')){
 	
 	$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);
 	//js('alert("'.$url.'")');

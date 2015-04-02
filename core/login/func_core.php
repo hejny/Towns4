@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/login/func_core.php
@@ -407,21 +407,21 @@ function register_on_world($userid,$username){
                 sql_query("INSERT INTO `[mpx]login` (`id`,`method`,`key`,`text`,`time_create`,`time_change`,`time_use`) VALUES ('".($id)."','facebook','".$fbid."','".serialize($GLOBALS['user_profile'])."','".time()."','".time()."','".time()."')");
         }*/
         //------LOGIN                
-        /*$GLOBALS['ss']["query_output"]->add("1",1);
-        $GLOBALS['ss']["log_object"]=new object($id);
-        $GLOBALS['ss']["log_object"]->func->delete('login');
-        $GLOBALS['ss']["log_object"]->func->add('login','login');
-        $GLOBALS['ss']["log_object"]->update();           
-        $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
+        /*$GLOBALS['ss']['query_output']->add("1",1);
+        $GLOBALS['ss']['log_object']=new object($id);
+        $GLOBALS['ss']['log_object']->func->delete('login');
+        $GLOBALS['ss']['log_object']->func->add('login','login');
+        $GLOBALS['ss']['log_object']->update();
+        $GLOBALS['ss']['logid']=$GLOBALS['ss']['log_object']->id;
         a_use($id2);*/
         
         return($id);
         
     }else{
-        $GLOBALS['ss']["query_output"]->add("error",lr('register_error_nospace')); 
+        $GLOBALS['ss']['query_output']->add('error',lr('register_error_nospace'));
     }
     }else{
-        $GLOBALS['ss']["query_output"]->add("error",lr('config_error')); 
+        $GLOBALS['ss']['query_output']->add('error',lr('config_error'));
     }
 }
 //======================================================================================REGISTER
@@ -446,11 +446,11 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
             if(!$tmp or md5($oldpass)==$tmp){
                 $passwordx=$password;
                 $password=md5($password);
-                $GLOBALS['ss']["query_output"]->add("success",(lr('password_changed')));
+                $GLOBALS['ss']['query_output']->add("success",(lr('password_changed')));
                 $q=0;
                 
             }else{
-                $GLOBALS['ss']["query_output"]->add("error",(lr('password_change_oldpass_error')));
+                $GLOBALS['ss']['query_output']->add('error',(lr('password_change_oldpass_error')));
                 return(lr('password_change_oldpass_error'));
             }
         }
@@ -466,26 +466,26 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
 	   
 	
     if(!$fbdata and (!$email or $email=='@')){
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_none')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_none')));
 		return(lr('register_error_email_none'));
     }elseif(!$fbdata and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `email`='".sql($email)."' AND aac=1 ".$wu)){
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_you')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_you')));
 		return(lr('register_error_email_you'));
     }elseif(!$username){
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_username_none')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_username_none')));
 		return(lr('register_error_username_none'));
     }elseif(!$fbdata and /*$username!='new' and*/ $error=name_error($username)){
-        $GLOBALS['ss']["query_output"]->add("error",($error));
+        $GLOBALS['ss']['query_output']->add('error',($error));
 		return($error);
     }elseif(!$fbdata and /*$username!='new' and*/ sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `name`='".sql($username)."' AND aac=1 ".$wu)){
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_username_blocked')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_username_blocked')));
 		return(lr('register_error_username_blocked'));
     }elseif(!$fbdata and !check_email($email)){
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_email_wtf')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_wtf')));
 		return(lr('register_error_email_wtf'));
     }elseif(!$fbdata and $password==md5('')){
 		print_r($fbdata);br(3);
-        $GLOBALS['ss']["query_output"]->add("error",(lr('register_error_password_empty')));
+        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_password_empty')));
 		return(lr('register_error_password_empty'));
     }else{
         
@@ -501,7 +501,7 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
             if($username_p==$username and $password_p==$password and $email_p==$email and $sendmail_p==$sendmail and $fbdata_p==($fbdata['id']?serialize($fbdata):'')){
                 
                 
-                if($q)$GLOBALS['ss']["query_output"]->add("info",(lr('register_nochange_info')));
+                if($q)$GLOBALS['ss']['query_output']->add("info",(lr('register_nochange_info')));
                 return;
                 
             }
@@ -532,7 +532,7 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
         if(!$onlychanging){
             
             
-            //PH - Dočasně pozastaveno, než vyřeším hlášky na hl. straně if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_success')));
+            //PH - Dočasně pozastaveno, než vyřeším hlášky na hl. straně if($q)$GLOBALS['ss']['query_output']->add("success",(lr('register_success')));
             
             //e("a_login($username,'towns',$passwordx);");
 			if(!$fbdata){
@@ -543,7 +543,7 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
             
            	return(lr('register_success'));
         }else{
-            if($q)$GLOBALS['ss']["query_output"]->add("success",(lr('register_change_success')));
+            if($q)$GLOBALS['ss']['query_output']->add("success",(lr('register_change_success')));
 
 			return(lr('register_change_success'));
         }
@@ -572,7 +572,7 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
         $where2='`fbid`=\''.sql($param3).'\'';;
 
     }else{
-        $GLOBALS['ss']["query_output"]->add("error",lr('f_login_method_wtf')); 
+        $GLOBALS['ss']['query_output']->add('error',lr('f_login_method_wtf'));
     }
     
     $userid=sql_1data('SELECT `id` FROM `[mpx]users` WHERE ('.$where.') AND ('.$where2.') AND aac=1 LIMIT 1');
@@ -628,9 +628,9 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
         }
         
         if($log){
-            $GLOBALS['ss']["log_object"] = new object($log);
-            $use=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE `own`=\''.($GLOBALS['ss']["log_object"]->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());
-            $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
+            $GLOBALS['ss']['log_object'] = new object($log);
+            $use=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE `own`=\''.($GLOBALS['ss']['log_object']->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());
+            $GLOBALS['ss']['logid']=$GLOBALS['ss']['log_object']->id;
             a_use($use); 
         }
         
@@ -638,7 +638,7 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
 
     }else{
 
-        $GLOBALS['ss']["query_output"]->add("error",lr('f_login_nologin'));
+        $GLOBALS['ss']['query_output']->add('error',lr('f_login_nologin'));
 
     }
             
@@ -650,9 +650,9 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
 define("a_login_help","user,method,password[,newpassword,newpassword2]");
 function force_login($param1){
 	$param1=sql($param1);
-        $GLOBALS['ss']["log_object"] = new object(NULL,"type='user' AND (id='$param1' OR name='$param1')");
-        $use=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE `own`=\''.($GLOBALS['ss']["log_object"]->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());
-        $GLOBALS['ss']['logid']=$GLOBALS['ss']["log_object"]->id;
+        $GLOBALS['ss']['log_object'] = new object(NULL,"type='user' AND (id='$param1' OR name='$param1')");
+        $use=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE `own`=\''.($GLOBALS['ss']['log_object']->id).'\' AND (`type`=\'town\' OR `type`=\'town2\') AND '.objt());
+        $GLOBALS['ss']['logid']=$GLOBALS['ss']['log_object']->id;
         a_use($use);/**/     
 }
 //======================================================================================LOGOUT
@@ -677,14 +677,14 @@ function a_logout(){
 define("a_use_help","user");
 function a_use($param1){
     //echo("use($param1)");
-    $GLOBALS['ss']["use_object"] = new object($param1);
-    //$GLOBALS['ss']["use_object"]->xxx();
-    //$GLOBALS['ss']["query_output"]->add("1",1);
-    $GLOBALS['ss']['useid']=$GLOBALS['ss']["use_object"]->id;
-    if($GLOBALS['ss']["use_object"]->own!=$GLOBALS['ss']['logid'] and $GLOBALS['ss']['logid']!=$GLOBALS['ss']['useid']){
-        $GLOBALS['ss']["query_output"]->add("error","Tento objekt vám nepatří!");
+    $GLOBALS['ss']['use_object'] = new object($param1);
+    //$GLOBALS['ss']['use_object']->xxx();
+    //$GLOBALS['ss']['query_output']->add("1",1);
+    $GLOBALS['ss']['useid']=$GLOBALS['ss']['use_object']->id;
+    if($GLOBALS['ss']['use_object']->own!=$GLOBALS['ss']['logid'] and $GLOBALS['ss']['logid']!=$GLOBALS['ss']['useid']){
+        $GLOBALS['ss']['query_output']->add('error',"Tento objekt vám nepatří!");
         $GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
-        unset($GLOBALS['ss']["use_object"]);
+        unset($GLOBALS['ss']['use_object']);
         
     }
 }/**/

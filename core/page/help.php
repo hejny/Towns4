@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/help.php
@@ -29,9 +29,9 @@ if($GLOBALS['get']["page"]){
 
 if(logged()){
 if($GLOBALS['ss']["helpanchor"]=='x'){
-	$GLOBALS['ss']["helpanchor"]=$GLOBALS['ss']["log_object"]->set->ifnot('help_'.$GLOBALS['ss']["helppage"].'_anchor',1);
+	$GLOBALS['ss']["helpanchor"]=$GLOBALS['ss']['log_object']->set->ifnot('help_'.$GLOBALS['ss']["helppage"].'_anchor',1);
 }
-$GLOBALS['ss']["log_object"]->set->add('help_'.$GLOBALS['ss']["helppage"].'_anchor',$GLOBALS['ss']["helpanchor"]);
+$GLOBALS['ss']['log_object']->set->add('help_'.$GLOBALS['ss']["helppage"].'_anchor',$GLOBALS['ss']["helpanchor"]);
 }else{
 $GLOBALS['ss']["helpanchor"]=1;
 }

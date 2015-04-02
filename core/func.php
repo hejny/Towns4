@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/func.php
@@ -225,7 +225,7 @@ if(typeof event === 'undefined'){1;}else{
     
     
     if(!$noi){$inter="&i=$sub,$ee";}else{$inter="";}
-    $bpart=("\$(function(){\$.get('?y=".$_GET['y']."&e=$ee$w$q$rot$inter$set', function(vystup){\$('#$sub').html(vystup);$iv});$vi});");
+    $bpart=("\$(function(){\$.get('?token=".$_GET['token']."&e=$ee$w$q$rot$inter$set', function(vystup){\$('#$sub').html(vystup);$iv});$vi});");
     if($cache){
         $bpart="if(ifcache('$cache')){ \$('#$sub').html(cache('$cache')); $bpart }else{ $bpart }";
         
@@ -248,9 +248,9 @@ if(typeof event === 'undefined'){1;}else{
     }
 }
 //---------------------------------------------------------
-function subempty($sub,$html=''){
+function subempty($sub,$html='',$style=''){
     if(!$html)$html=nbsp;
-    echo('<span id="'.$sub.'">'.$html.'</span>');
+    echo('<span id="'.$sub.'" '.($style?'style="'.$style.'"':'').'>'.$html.'</span>');
 }
 //---------------------------------------------------------
 
@@ -432,7 +432,7 @@ function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
         if(!$prompt)$prompt='';        
         if(!$e and !$js and !$ref){
             //r("outling(!$e and !$js  and !$ref)");
-            return(/*$GLOBALS['ss']["url"]*/url."?y=".$_GET['y']."&amp;w=".$md5.$q.$rot.$i.$set);//.$tmpx
+            return(/*$GLOBALS['ss']["url"]*/url."?token=".$_GET['token']."&amp;w=".$md5.$q.$rot.$i.$set);//.$tmpx
         }else{
             if($e=="s"){$e=$GLOBALS['ss']["page"];}
             if($ee=="s"){$ee=$GLOBALS['ss']["page"];}
@@ -576,6 +576,12 @@ function part3($input,$aa,$bb){
     }
 }
 //print_r(part3("-sfd6sf8d-","6","8"));
+//--------------------------------------------
+function params($params){
+    $params=preg_split('~(?<!\\\)' . preg_quote(',', '~') . '~', $params);
+    $params=str_replace('\,',',',$params);
+    return($params);
+}
 //--------------------------------------------
 //define("vals_a",array("*",",",";",":","=","(","[","{","}","]",")","\"","\'","\\"," ",nln));
 //define("vals_b",array("[star]","[comma]","[semicolon]","[colon]","[equate]","[aabracket]","[babracket]","[cabracket]","[babracket]","[bbbracket]","[cbbracket]","[doublequote]","[quote]","[slash]","[space]","[nln]"));

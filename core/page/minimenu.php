@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/minimenu.php
@@ -82,7 +82,7 @@ if($_GET["xc"] and $_GET["yc"]){
         $id=$GLOBALS['get']["contextid"];
     }else{
         
-        $id=$GLOBALS['ss']["use_object"]->set->ifnot('contextid',$GLOBALS['hl']);
+        $id=$GLOBALS['ss']['use_object']->set->ifnot('contextid',$GLOBALS['hl']);
     }
 
     t("minimenu - A2,2");
@@ -215,7 +215,7 @@ if($sql and $id?ifobject($id):true){
 
 
 
-            $GLOBALS['ss']["use_object"]->set->add('contextid',$id);
+            $GLOBALS['ss']['use_object']->set->add('contextid',$id);
 
             t("minimenu - E");
 

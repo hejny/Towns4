@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/map.php
@@ -33,7 +33,7 @@ if(!$zoom)$zoom=1;
 //==============================
 
 
-//r('setx'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
+//r('setx'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
 //Dropbox
 if(!defined("func_map"))require(root.core."/func_map.php");
 ?>
@@ -49,10 +49,10 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 
 
     if(logged()){
-        $xc=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",1);
-        $yc=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",1);
-        $xx=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",0);
-        $yy=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",0);    
+        $xc=$GLOBALS['ss']['log_object']->set->ifnot("map_xc",1);
+        $yc=$GLOBALS['ss']['log_object']->set->ifnot("map_yc",1);
+        $xx=$GLOBALS['ss']['log_object']->set->ifnot("map_xx",0);
+        $yy=$GLOBALS['ss']['log_object']->set->ifnot("map_yy",0);
     }else{
         //$xc=1;
         //$yc=1;
@@ -142,18 +142,18 @@ if(!defined("func_map"))require(root.core."/func_map.php");
     $GLOBALS['yy']=$yy;
     //------------------------------
     if(logged() and $set==1){
-        $GLOBALS['ss']["log_object"]->set->add("map_xc",$xc);
-        $GLOBALS['ss']["log_object"]->set->add("map_yc",$yc);
-        $GLOBALS['ss']["log_object"]->set->add("map_xx",$xx);
-        $GLOBALS['ss']["log_object"]->set->add("map_yy",$yy);
+        $GLOBALS['ss']['log_object']->set->add("map_xc",$xc);
+        $GLOBALS['ss']['log_object']->set->add("map_yc",$yc);
+        $GLOBALS['ss']['log_object']->set->add("map_xx",$xx);
+        $GLOBALS['ss']['log_object']->set->add("map_yy",$yy);
     }
     
     
     if(logged()){
-	$xc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",false);
-	$yc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",false);
-	$xx_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",false);
-	$yy_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",false);
+	$xc_=$GLOBALS['ss']['log_object']->set->ifnot("map_xc",false);
+	$yc_=$GLOBALS['ss']['log_object']->set->ifnot("map_yc",false);
+	$xx_=$GLOBALS['ss']['log_object']->set->ifnot("map_xx",false);
+	$yy_=$GLOBALS['ss']['log_object']->set->ifnot("map_yy",false);
 	//e("$xc_,$yc_,$xx_,$yy_");
 	if($xc_===false or $yc_===false or $xx_===false or $yy_===false){//e('888');
 		//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww']);
@@ -301,8 +301,8 @@ if(!defined("func_map"))require(root.core."/func_map.php");
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		//alert('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		//alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -338,8 +338,8 @@ if(!defined("func_map"))require(root.core."/func_map.php");
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&y='+yyc);*/
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&token='+yyc);*/
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -357,7 +357,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
                 $('#map_context').css('display','block');
                 $('#map_context').html('...');
 		name=$(this).attr('id');
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
             }
         });
 
@@ -388,7 +388,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 		
 		
                  <?php if(logged){ ?>
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });/**/
@@ -410,7 +410,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
         $('#map_context').css('left',645<?php if($GLOBALS['get']['center']){e('-'.$GLOBALS['get']['posuv']);} ?>);
         $('#map_context').css('top',195);
         $('#map_context').css('display','block');
-        $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
+        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
 		}
 		);
         },23);/**/
@@ -461,7 +461,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
                     
                     
                     $('#create-build_message').html(nacitacihtml);
-                    $.get('?y=<?php e($_GET['y']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
+                    $.get('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
                 });
 		        
 		   
@@ -479,7 +479,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 		    
 		        //alert(2);
 		        /*alert('?e=object_build&master='+master+'&id='+id);*/
-                $.get('?y=<?php e($_GET['y']); ?>&e=create-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#create-build').html(vystup);});
+                $.get('?token=<?php e($_GET['token']); ?>&e=create-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#create-build').html(vystup);});
 		        $('#create-build').html(nacitacihtml);
 		        
 		   
@@ -492,7 +492,7 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 
 	    buildx = function(master,id,func,build_x,build_y,_rot) {
 		/*alert(_rot);*/
-		/*$.get('?y=<?php e($_GET['y']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
+		/*$.get('?token=<?php e($_GET['token']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
 		qbuffer=master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot;
 		//prompt('qbuffer',master);
 		//prompt('qbuffer',qbuffer);
@@ -558,7 +558,7 @@ if(defined('object_hybrid')){
                     tbuild_x=xxc;
                     tbuild_y=yyc;
                 });
-                $.get('?y=<?php e($_GET['y']); ?>&e=terrain-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#terrain-build').html(vystup);});
+                $.get('?token=<?php e($_GET['token']); ?>&e=terrain-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#terrain-build').html(vystup);});
 		
             }
             <?php
@@ -734,17 +734,17 @@ e('<div style="position:absolute;width:0px;height:0px;"><div style="position:rel
 }
 /*echo('<script type="text/javascript">'.nln);
 $d=17;
-$xa=intval($GLOBALS['ss']["use_object"]->x-$d);
-$xb=intval($GLOBALS['ss']["use_object"]->x+$d);
-$ya=intval($GLOBALS['ss']["use_object"]->y-$d);
-$yb=intval($GLOBALS['ss']["use_object"]->y+$d);
+$xa=intval($GLOBALS['ss']['use_object']->x-$d);
+$xb=intval($GLOBALS['ss']['use_object']->x+$d);
+$ya=intval($GLOBALS['ss']['use_object']->y-$d);
+$yb=intval($GLOBALS['ss']['use_object']->y+$d);
 if($xa<1){$xa=1;$xb=1+$d+$d;}
 if($ya<1){$ya=1;$yb=1+$d+$d;}
 if($xb>mapsize){$xb=mapsize;}
 if($yb>mapsize){$yb=mapsize;}
 echo('area_x='.$xa.';'.nln);
 echo('area_y='.$ya.';'.nln);
-//e('alert('.$GLOBALS['ss']["use_object"]->x.');');
+//e('alert('.$GLOBALS['ss']['use_object']->x.');');
 echo('area=['.nln);
 foreach(sql_array("SELECT x,y,hard FROM `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
     list($area_x,$area_y,$area_hard)=$row;

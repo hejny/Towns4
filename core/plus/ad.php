@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný, Přemysl Černý | 2011-2013
+   © Pavel Hejný, Přemysl Černý | 2011-2015
    _____________________________
 
    core/plus/ad.php

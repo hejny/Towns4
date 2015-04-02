@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/plus/index.php
@@ -42,11 +42,11 @@ $q=submenu(array("content","plus-index"),array(/*"plus_pay",*/'plus_invite','plu
 
     <tr style="<?php e(($i%2)?'background: rgba(0,0,0,0.4)':'') ?>">
     <td width="100" align="left" valign="center">
-    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
+    <a href="#" onclick="window.open('<?php e($wurl); ?>?token=<?php e($_GET['token']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
     <h3><?php e($title); ?></h3>
     </a>
     </td><td align="left" valign="center">
-    <a href="#" onclick="window.open('<?php e($wurl); ?>?y=<?php e($_GET['y']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
+    <a href="#" onclick="window.open('<?php e($wurl); ?>?token=<?php e($_GET['token']); ?>&amp;e=plus-paypal_psend&amp;first=<?php e($id); ?>&amp;second=<?php e($GLOBALS['ss']['useid']); ?>', '_blank', 'resizable=yes');">
     <?php ie($credit); ?> {res_<?php e(plus_res); ?>2} {plus_fromto} $<?php e($amount); ?>
     </a>
     </td>
@@ -103,7 +103,7 @@ br();le('plus_invite_info');br(2);
 		br();
 		
 		//$GLOBALS['ss']['use_object']->hold->add(plus_res,plus_share-1+1);
-		//$GLOBALS['ss']["use_object"]->set->add("share_time",time());
+		//$GLOBALS['ss']['use_object']->set->add("share_time",time());
 		//js(subjsr('towns'));
 	}
 
@@ -266,8 +266,8 @@ FB.ui({
     br();e(lr('plus_share_info'));
     br();br();
 
-//$GLOBALS['ss']["use_object"]->set->add("share_time",time());
-$cooldown=-(time()-$GLOBALS['ss']["use_object"]->set->ifnot("share_time",0)-(3600*24*4));
+//$GLOBALS['ss']['use_object']->set->add("share_time",time());
+$cooldown=-(time()-$GLOBALS['ss']['use_object']->set->ifnot("share_time",0)-(3600*24*4));
 if($cooldown>0){
 
 
@@ -285,7 +285,7 @@ if($cooldown>0){
 		send_message($GLOBALS['ss']['logid'],$GLOBALS['inc']['write_id'],'Towns shared FB','user: '.id2name($GLOBALS['ss']['logid']).nln.'townid: '.$GLOBALS['ss']['useid']);
 		
 		$GLOBALS['ss']['use_object']->hold->add(plus_res,plus_share-1+1);
-		$GLOBALS['ss']["use_object"]->set->add("share_time",time());
+		$GLOBALS['ss']['use_object']->set->add("share_time",time());
 		js(subjsr('towns'));
 	}
 
@@ -339,7 +339,7 @@ br();
 <script>
 $("#shareo").submit(function() {
     //alert(1);
-    $.post('?y=<?php e($_GET['y']); ?>&e=plus-index',
+    $.post('?token=<?php e($_GET['token']); ?>&e=plus-index',
         { url: $('#url').val()},
         function(vystup){/*alert(2);*/$('#content').html(vystup);}
     );
@@ -417,7 +417,7 @@ contenu_b();}elseif($q==3){contenu_a();
 <script>
 $("#keyform").submit(function() {
     //alert(1);
-    $.post('?y=<?php e($_GET['y']); ?>&e=plus-index',
+    $.post('?token=<?php e($_GET['token']); ?>&e=plus-index',
         { key: $('#key').val()},
         function(vystup){/*alert(2);*/$('#content').html(vystup);}
     );

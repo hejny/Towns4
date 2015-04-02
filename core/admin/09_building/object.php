@@ -130,7 +130,7 @@ foreach($funcs as $name=>$func){
     $edit_profile=x2xx(xxx2conf($profile));
     //$name2=str_replace($class,"",$name);
     //if($name2){$name2="$class#$name2";}else{$name2=$class;}
-    //r($GLOBALS['ss']["use_object"]->func->func($name));
+    //r($GLOBALS['ss']['use_object']->func->func($name));
     echo("<b>$name ($class)</b>&nbsp;&nbsp;&nbsp;");
     echo("<a href=\"?edit=1&amp;edit_func=$name&amp;edit_class=$class&amp;edit_params=$edit_params&amp;edit_profile=$edit_profile\">Upravit</a>&nbsp;&nbsp;&nbsp;");
     echo("<a href=\"?delete=1&amp;delete_func=$name\">Smazat</a>&nbsp;&nbsp;&nbsp;");

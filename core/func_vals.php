@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/func_vals.php
@@ -310,8 +310,11 @@ class func{
          $tmp=$this->funcs->vals2list();
 	//r($tmp);
          //if(isset($tmp['login'])){
+
+         //todo: Vytřídit fuknkce a udělat lepší všechnofunkce
          if(!isset($tmp['chat']))$this->add('chat','chat');
          if(!isset($tmp['info']))$this->add('info','info');
+         if(!isset($tmp['list']))$this->add('list','list');
          if(!isset($tmp['logout']))$this->add('logout','logout');
          if(!isset($tmp['login']))$this->add('login','login');
          if(!isset($tmp['profile_edit']))$this->add('profile_edit','profile_edit');

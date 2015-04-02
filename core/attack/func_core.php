@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/attack/func_core.php
@@ -18,40 +18,40 @@ function a_attack($id,$lowed=false){
     if($lowed)$lowed=1/gr; else $lowed=1;
     r($id);
     //$id=sg("id");
-    if(!$id){$GLOBALS['ss']["query_output"]->add("error",lr('attack_noid'));}
-    elseif($id==$GLOBALS['ss']['useid']){$GLOBALS['ss']["query_output"]->add("error",lr('attack_self'));}
+    if(!$id){$GLOBALS['ss']['query_output']->add('error',lr('attack_noid'));}
+    elseif($id==$GLOBALS['ss']['useid']){$GLOBALS['ss']['query_output']->add('error',lr('attack_self'));}
     else{
     $attacked=new object($id);
-    if(!$attacked->loaded){$GLOBALS['ss']["query_output"]->add("error",lr('attack_unknown'));
-        }/*elseif($attacked->ww!=$GLOBALS['ss']["ww"]){$GLOBALS['ss']["query_output"]->add("error","{attack_ww}");}*/else{
+    if(!$attacked->loaded){$GLOBALS['ss']['query_output']->add('error',lr('attack_unknown'));
+        }/*elseif($attacked->ww!=$GLOBALS['ss']["ww"]){$GLOBALS['ss']['query_output']->add('error',"{attack_ww}");}*/else{
         
         $attack_type=$GLOBALS['ss']["aac_func"]["name"];
         $attacked=new object($id);
         $type=$attacked->type;
         //-------
-        $a_name=lr($GLOBALS['ss']["aac_object"]->type).' '.$GLOBALS['ss']["aac_object"]->name;
-        $a_name_=$GLOBALS['ss']["aac_object"]->name;
+        $a_name=lr($GLOBALS['ss']['aac_object']->type).' '.$GLOBALS['ss']['aac_object']->name;
+        $a_name_=$GLOBALS['ss']['aac_object']->name;
         $b_name=lr($type).' '.$attacked->name;
         $b_name_=$attacked->name;
         $b_name4=lr($type,4).' '.$attacked->name;
         $attackname=lr('attack_'.$type.'2');
-        $a_fp=$GLOBALS['ss']["aac_object"]->fp;
+        $a_fp=$GLOBALS['ss']['aac_object']->fp;
         $b_fp=$attacked->fp;
-        $a_at=$GLOBALS['ss']["aac_object"]->supportF($attack_type,"attack");
+        $a_at=$GLOBALS['ss']['aac_object']->supportF($attack_type,"attack");
         $b_at=$attacked->supportF("attack");
         //NOTOTAL
         if($type=='tree' or $type=='rock'){
-            $a_att=$GLOBALS['ss']["aac_object"]->supportF($attack_type,"total");
+            $a_att=$GLOBALS['ss']['aac_object']->supportF($attack_type,"total");
             $b_att=$attacked->supportF("attack","total");//r($b_att);
         }else{
             $a_att=false;
             $b_att=true;
         }
-        $a_cnt=$GLOBALS['ss']["aac_object"]->supportF($attack_type,"count");
+        $a_cnt=$GLOBALS['ss']['aac_object']->supportF($attack_type,"count");
         $b_cnt=$attacked->supportF("attack","count");//r($b_att);
-        $a_de=$GLOBALS['ss']["aac_object"]->supportF("defence");
+        $a_de=$GLOBALS['ss']['aac_object']->supportF("defence");
         $b_de=$attacked->supportF("defence");
-        $xeff=$GLOBALS['ss']["aac_object"]->supportF($attack_type,"xeff");
+        $xeff=$GLOBALS['ss']['aac_object']->supportF($attack_type,"xeff");
 	//echo($xeff);
 	
         $steal=clone $attacked->hold;
@@ -62,33 +62,33 @@ function a_attack($id,$lowed=false){
         
 	//echo($steal->textr());
         //-------LIMIT
-        $limit=$GLOBALS['ss']["aac_object"]->func->profile($attack_type,'limit');
+        $limit=$GLOBALS['ss']['aac_object']->func->profile($attack_type,'limit');
         if($limit and $limit!=$attacked->type){
-            $GLOBALS['ss']["query_output"]->add("error",lr('attack_limit_'.$limit));
+            $GLOBALS['ss']['query_output']->add('error',lr('attack_limit_'.$limit));
             return;
         } 
       
         //-------NON SAME WORLD
-        if($GLOBALS['ss']["aac_object"]->ww!=$attacked->ww){
-            $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_ww'));
+        if($GLOBALS['ss']['aac_object']->ww!=$attacked->ww){
+            $GLOBALS['ss']['query_output']->add('error',lr('attack_error_ww'));
             return;
         }           
         
         //-------DISTANCE
     
-        $a_dist=$GLOBALS['ss']["aac_object"]->supportF($attack_type,"distance");
-        list($ax,$ay)=$GLOBALS['ss']["aac_object"]->position();
+        $a_dist=$GLOBALS['ss']['aac_object']->supportF($attack_type,"distance");
+        list($ax,$ay)=$GLOBALS['ss']['aac_object']->position();
         list($bx,$by)=$attacked->position();
         $dist=sqrt(pow($ax-$bx,2)+pow($ay-$by,2));
         //r($bx,$by,$dist,$a_dist);
         if($dist>$a_dist){
-            $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_distance',$a_dist));
+            $GLOBALS['ss']['query_output']->add('error',lr('attack_error_distance',$a_dist));
             return;
         }
 		//-------BLOCK
 
-		if(block2test('A',$GLOBALS['ss']["aac_object"]->x,$GLOBALS['ss']["aac_object"]->y,$attacked->x,$attacked->y,$attacked->id)){
-            $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_block'));
+		if(block2test('A',$GLOBALS['ss']['aac_object']->x,$GLOBALS['ss']['aac_object']->y,$attacked->x,$attacked->y,$attacked->id)){
+            $GLOBALS['ss']['query_output']->add('error',lr('attack_error_block'));
             return;
 		}
         
@@ -97,8 +97,8 @@ function a_attack($id,$lowed=false){
         list($q,$time,$a_fp2,$b_fp2,$a_tah,$b_tah,$a_atf,$b_atf)=attack_count(50,50,$a_fp,$b_fp,$a_at,$b_at,$a_cnt,$b_cnt,$a_de,$b_de,$a_att,$b_att);
         //e($a_tah);        
         $price=use_price("attack",array("time"=>$a_tah),$support[$attack_type]["params"],2);
-        if(!$GLOBALS['ss']["use_object"]->hold->testchange($price)){
-            $GLOBALS['ss']["query_output"]->add("error",lr('attack_error_price'));
+        if(!$GLOBALS['ss']['use_object']->hold->testchange($price)){
+            $GLOBALS['ss']['query_output']->add('error',lr('attack_error_price'));
             return;
         }
     
@@ -111,7 +111,7 @@ function a_attack($id,$lowed=false){
 			if(sql_1data('SELECT type FROM `[mpx]pos_obj` WHERE id='.$attacked->own.' AND '.objt())=='town2'){
 				$conqueror=true;
 			}else{
-            		$GLOBALS['ss']["query_output"]->add("error",lr('attack_error_mainlast'));
+            		$GLOBALS['ss']['query_output']->add('error',lr('attack_error_mainlast'));
 					//xerror(lr('attack_error_mainlast'));
             		return;
 			}			
@@ -120,14 +120,14 @@ function a_attack($id,$lowed=false){
 	}
         //-------
 
-	$a_pos=sql_array('SELECT x,y FROM `[mpx]pos_obj` WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$GLOBALS['ss']["aac_object"]->own.' AND '.objt());
+	$a_pos=sql_array('SELECT x,y FROM `[mpx]pos_obj` WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$GLOBALS['ss']['aac_object']->own.' AND '.objt());
 	$b_pos=sql_array('SELECT x,y FROM `[mpx]pos_obj` WHERE `name`=\''.id2name($GLOBALS['config']['register_building']).'\' AND `own`='.$attacked->own.' AND '.objt());
 	
-	$a_hlvz=sqrt(pow($a_pos[0][0]-$GLOBALS['ss']["aac_object"]->x,2)+pow($a_pos[0][1]-$GLOBALS['ss']["aac_object"]->y,2));
+	$a_hlvz=sqrt(pow($a_pos[0][0]-$GLOBALS['ss']['aac_object']->x,2)+pow($a_pos[0][1]-$GLOBALS['ss']['aac_object']->y,2));
 	$b_hlvz=sqrt(pow($b_pos[0][0]-$attacked->x,2)+pow($b_pos[0][1]-$attacked->y,2));
 
 
-	$a_buildingsfs=sql_1data('SELECT count(fs) FROM `[mpx]pos_obj` WHERE own='.$GLOBALS['ss']["aac_object"]->own.' AND res NOT LIKE \'%{%\''.' AND '.objt(),1)-1+1;
+	$a_buildingsfs=sql_1data('SELECT count(fs) FROM `[mpx]pos_obj` WHERE own='.$GLOBALS['ss']['aac_object']->own.' AND res NOT LIKE \'%{%\''.' AND '.objt(),1)-1+1;
 	$b_buildingsfs=sql_1data('SELECT count(fs) FROM `[mpx]pos_obj` WHERE own='.$attacked->own.' AND res NOT LIKE \'%{%\''.' AND '.objt(),1)-1+1;
 
 	r($a_buildingsfs,$b_buildingsfs);
@@ -164,10 +164,10 @@ function a_attack($id,$lowed=false){
         //textab("soupeřův k. počet životů:",$b_fp2);
         
         
-        $GLOBALS['ss']["aac_object"]->fp=$a_fp2;
+        $GLOBALS['ss']['aac_object']->fp=$a_fp2;
         $attacked->fp=$b_fp2;
         
-		$GLOBALS['ss']["use_object"]->hold->takehold($price);
+		$GLOBALS['ss']['use_object']->hold->takehold($price);
 		//use_hold($price);
 
         if(!$b_fp2){
@@ -189,10 +189,10 @@ function a_attack($id,$lowed=false){
                 changemap($bx,$by,true);
         }
         //-----
-        if($a_fp==0 and $type!='user' and $type!='unit' and (id2name($GLOBALS['config']['register_building'])!=$GLOBALS['ss']["aac_object"]->name)){
-             $GLOBALS['ss']["aac_object"]->deletex();
+        if($a_fp==0 and $type!='user' and $type!='unit' and (id2name($GLOBALS['config']['register_building'])!=$GLOBALS['ss']['aac_object']->name)){
+             $GLOBALS['ss']['aac_object']->deletex();
             //Už ne//changemap($bx,$by);
-            if($GLOBALS['ss']["aac_object"]->type=='building')
+            if($GLOBALS['ss']['aac_object']->type=='building')
                 changemap($bx,$by,true);//XXX
             else
                 changemap($bx,$by,true);
@@ -205,14 +205,14 @@ function a_attack($id,$lowed=false){
 
 			if($conqueror){
 				$owner_id=sql_query('UPDATE `[mpx]pos_obj` SET own='.$GLOBALS['ss']['logid'].' WHERE type=\'town2\' AND id='.$attacked->own.' AND '.objt());
-				$GLOBALS['ss']["query_output"]->add("success",lr('attack_success_conq'));
+				$GLOBALS['ss']['query_output']->add("success",lr('attack_success_conq'));
 				click('e=login-use');
 		
 			}else{
 				if($attacked->name!=id2name($GLOBALS['config']['register_building'])){
-						$GLOBALS['ss']["query_output"]->add("success",lr('attack_success'));
-				    	$attacked->own=$GLOBALS['ss']["aac_object"]->own;
-						$attacked->superown=$GLOBALS['ss']["aac_object"]->superown;
+						$GLOBALS['ss']['query_output']->add("success",lr('attack_success'));
+				    	$attacked->own=$GLOBALS['ss']['aac_object']->own;
+						$attacked->superown=$GLOBALS['ss']['aac_object']->superown;
 				}else{
 				    
 					list($x,$y,$q)=register_positiont();
@@ -229,7 +229,7 @@ function a_attack($id,$lowed=false){
         $attacked->update();
         //-----
         /*if($a_fp2==1){
-             $GLOBALS['ss']["aac_object"]->own->$attacked->own;
+             $GLOBALS['ss']['aac_object']->own->$attacked->own;
         }*/  
         //-----
         
@@ -256,7 +256,7 @@ function a_attack($id,$lowed=false){
 
 
         $GLOBALS['ss']['attack_report']='{'.('attack_report'.';'.$info.'}');
-        $GLOBALS['ss']["query_output"]->add("1",1);
+        $GLOBALS['ss']['query_output']->add("1",1);
         //--------------------------------------
     
     
@@ -339,14 +339,14 @@ function attack_count($a_seed,$b_seed,$a_fp,$b_fp,$a_at,$b_at,$a_cnt,$b_cnt,$a_d
     }
 //======================================================
 //towns 4 A_ctl function core
-//$GLOBALS['ss']["query_output"]->add("1",1);
-//$GLOBALS['ss']["query_output"]->add("error","");
+//$GLOBALS['ss']['query_output']->add("1",1);
+//$GLOBALS['ss']['query_output']->add('error',"");
 
 
 
 function a_xmine($func1name){
 	//r("xmine $func1name");
-	$object=$GLOBALS['ss']["aac_object"];
+	$object=$GLOBALS['ss']['aac_object'];
         $x=$object->x;$y=$object->y;$ww=$object->ww;
         $func=$object->func->func($func1name);
         //r($func);
@@ -372,7 +372,7 @@ function a_xmine($func1name){
     if($attack_id){
 	//e($object->id.'.'.$func1name.' '.$attack_id);
 	$response=query($object->id.'.'.$func1name.' '.$attack_id);
-	$GLOBALS['ss']["query_output"]=$response;
+	$GLOBALS['ss']['query_output']=$response;
 	//xreport();
     }
 

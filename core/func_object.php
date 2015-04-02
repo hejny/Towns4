@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/func_object.php
@@ -1085,7 +1085,7 @@ function repair_fuel($id){
  */
 function name_error($id){
     /*$id=xx2x($id);
-    if($GLOBALS['ss']["use_object"]->name==$id){
+    if($GLOBALS['ss']['use_object']->name==$id){
             return(lr('name_error_same'));//"Toto jméno právě používáte.");
     }*/
     

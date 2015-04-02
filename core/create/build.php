@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/create/build.php
@@ -62,7 +62,7 @@ if($id and $GLOBALS['ss']['master']){//e(1);
     //model($res,$s=1,$rot=0,$slnko=1,$ciary=1,$zburane=0,$hore=0)
     //r($res);
     //e($GLOBALS['ss']['master']);
-    //$js="\$.get('?y=".$_GET['y']."&e=map&q=".$GLOBALS['ss']['master'].".".$GLOBALS['ss']["object_build_func"]." $id,'+build_x+','+build_y+','+_rot, function(vystup){\$('#map').html(vystup);});";
+    //$js="\$.get('?token=".$_GET['token']."&e=map&q=".$GLOBALS['ss']['master'].".".$GLOBALS['ss']["object_build_func"]." $id,'+build_x+','+build_y+','+_rot, function(vystup){\$('#map').html(vystup);});";
     if(substr($res,0,1)!='{' and (substr($res,0,1)!='(' or strpos($res,'1.png'))){$q=true;}else{$q=false;}
 
     $js="buildx('".$GLOBALS['ss']['master']."','$id','".$GLOBALS['ss']["object_build_func"]."',build_x,build_y,".($q?('_rot'):(0)).");";
