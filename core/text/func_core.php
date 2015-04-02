@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/text/func_core.php
@@ -16,7 +16,7 @@
 //======================================================================================
 define("a_text_help","action{list,send,delete}[idle][idle,to,title,text][,id]");
 function a_text($action,$idle,$to="",$title="",$text=""){
-    //$add="(SELECT 1 FROM `[mpx]textqw` WHERE `[mpx]textqw`.`textclass`=`[mpx]text`.`class` AND `[mpx]textqw`.`object`='".($GLOBALS['ss']["log_object"]->id)."')";
+    //$add="(SELECT 1 FROM `[mpx]textqw` WHERE `[mpx]textqw`.`textclass`=`[mpx]text`.`class` AND `[mpx]textqw`.`object`='".($GLOBALS['ss']['log_object']->id)."')";
     $add1='(`to`='.$GLOBALS['ss']['logid'].' OR `from`='.$GLOBALS['ss']['logid'].' OR `to`='.$GLOBALS['ss']['useid'].' OR `from`='.$GLOBALS['ss']['useid'].') AND `to`!=0';
     $add2="`type`='message'";
     if($action=="list"){
@@ -31,7 +31,7 @@ function a_text($action,$idle,$to="",$title="",$text=""){
                 sql_query("UPDATE `[mpx]text` SET `new`='0' WHERE `idle`='$idle' AND ($add1) AND ($add2)");
             }
             //print_r($array);
-            $GLOBALS['ss']["query_output"]->add("list",$array);
+            $GLOBALS['ss']['query_output']->add("list",$array);
         }else{
             if($idle=='new'){$add3='`new`=1 AND (`from`!='.$GLOBALS['ss']['useid'].' AND `from`!='.$GLOBALS['ss']['logid'].')';$add2.=" OR `type`='report'";/*$add3='`time`>'.(time()-(3600*24*7));*/}else{$add3='1';}
             if($idle=='public'){$add1='`to`=0';}
@@ -39,7 +39,7 @@ function a_text($action,$idle,$to="",$title="",$text=""){
 	  
             $array=sql_array("SELECT `id` ,`idle` ,`type` ,`new` ,`from` ,`to` ,`title` ,`text` ,MAX(`time`) ,`timestop`, COUNT(`idle`) FROM `[mpx]text` WHERE ($add1) AND ($add2) AND ($add3) GROUP BY `idle` ORDER BY `time` DESC ".($GLOBALS['limit']?'LIMIT '.$GLOBALS['limit']:'')."");
             //print_r($array);            
-            $GLOBALS['ss']["query_output"]->add("list",$array);
+            $GLOBALS['ss']['query_output']->add("list",$array);
         }
     }elseif($action=="send"){
         if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
@@ -58,23 +58,23 @@ function a_text($action,$idle,$to="",$title="",$text=""){
 
 
                     if($to_==$to){
-                        $GLOBALS['ss']["query_output"]->add("success",lr('send_success'));
+                        $GLOBALS['ss']['query_output']->add("success",lr('send_success'));
                     }else{
-                        $GLOBALS['ss']["query_output"]->add("success",lr('send_success_to',id2name($to_)));   
+                        $GLOBALS['ss']['query_output']->add("success",lr('send_success_to',id2name($to_)));
                     }
-                    $GLOBALS['ss']["query_output"]->add('1',1);
+                    $GLOBALS['ss']['query_output']->add('1',1);
                     //js(target('aa',"e=content;ee=text-messages;submenu=1").'alert(1);');
                     }else{
-                        $GLOBALS['ss']["query_output"]->add("error",lr('message_limit'));
+                        $GLOBALS['ss']['query_output']->add('error',lr('message_limit'));
                     }
                 }else{
-                    $GLOBALS['ss']["query_output"]->add("error",lr('same_message'));
+                    $GLOBALS['ss']['query_output']->add('error',lr('same_message'));
                 }
             }else{
-                $GLOBALS['ss']["query_output"]->add("error",lr('unknown_logr'));
+                $GLOBALS['ss']['query_output']->add('error',lr('unknown_logr'));
             }
         }else{
-            $GLOBALS['ss']["query_output"]->add("error",lr('no_message'));
+            $GLOBALS['ss']['query_output']->add('error',lr('no_message'));
         }
    
     }elseif($action=="delete"){  

@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/chat.php
@@ -47,7 +47,7 @@ eval(subpage("chat_aac"));
 <script>
 /*$("#form_chat").submit(function() {
    alert('hovno');
-    $.post('?y=<?php e($_GET['y']); ?>&e=chat_text',
+    $.post('?token=<?php e($_GET['token']); ?>&e=chat_text',
         { say: $('#say').val() },
         function(vystup){$('#chat_text').html(vystup);}
     );

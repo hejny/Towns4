@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/settings.php
@@ -128,24 +128,24 @@ if($q==1){
     //e($GLOBALS['ss']['useid'].','.$GLOBALS['ss']['logid']);
     
         //---------------------------------------------------------------------------------------------USER on World
-	if($_POST["name"] AND $GLOBALS['ss']["log_object"]->name!=$_POST["name"]){
+	if($_POST["name"] AND $GLOBALS['ss']['log_object']->name!=$_POST["name"]){
 		$q=name_error($_POST["name"]);
                 //e($info["name"].'!='.$_POST["name"].' '.$q);
 		if(!$q){
-		    $GLOBALS['ss']["log_object"]->name=$_POST["name"];
-		    $GLOBALS['ss']["log_object"]->update();
+		    $GLOBALS['ss']['log_object']->name=$_POST["name"];
+		    $GLOBALS['ss']['log_object']->update();
 		    
 			success(lr('profile_username').' '.lr('settings_changed')); 
-			if(is_numeric($GLOBALS['ss']["use_object"]->name)){
+			if(is_numeric($GLOBALS['ss']['use_object']->name)){
 	
                                 //e($_POST["name"]);
-				$GLOBALS['ss']["use_object"]->name=$_POST["name"];
-				$GLOBALS['ss']["use_object"]->update();
+				$GLOBALS['ss']['use_object']->name=$_POST["name"];
+				$GLOBALS['ss']['use_object']->update();
 				success(lr('profile_townname').' '.lr('settings_created')); 
 			}
 		   	
 		}else{
-                   //if($GLOBALS['ss']["use_object"]->name!=$_POST["name"]){
+                   //if($GLOBALS['ss']['use_object']->name!=$_POST["name"]){
                         error($q);
                    //}
 		}        
@@ -154,7 +154,7 @@ if($q==1){
 		//xquery("profile_edit",$GLOBALS['ss']['logid'],"name",$_POST["name"]);
 		xreport();
 	}else{
-		if(is_numeric($GLOBALS['ss']["log_object"]->name)){
+		if(is_numeric($GLOBALS['ss']['log_object']->name)){
 			$q=true;
 		}else{
 			$q=false;
@@ -191,8 +191,8 @@ if($q==1){
 	//print_r($_POST);
 	if($_POST["email"]){
 		    //e(111);
-		    //$GLOBALS['ss']["log_object"]->profile->add('mail',$_POST["mail"]);
-		    //$GLOBALS['ss']["log_object"]->profile->add('sendmail',$_POST["sendmail"]);
+		    //$GLOBALS['ss']['log_object']->profile->add('mail',$_POST["mail"]);
+		    //$GLOBALS['ss']['log_object']->profile->add('sendmail',$_POST["sendmail"]);
 		    xquery("register",$_POST["username"],'',$_POST["email"],$_POST["sendmail"]?1:0);
 			xreport();
 		    //xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail",$_POST["sendmail"]?'1':'0');
@@ -200,7 +200,7 @@ if($q==1){
 		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail3",$_POST["sendmail3"]?'1':'0');
 		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail4",$_POST["sendmail4"]?'1':'0');
 		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail5",$_POST["sendmail5"]?'1':'0');
-		    //$GLOBALS['ss']["log_object"]->update();
+		    //$GLOBALS['ss']['log_object']->update();
 		   //success(lr('namecreated')); 
 		}      
 
@@ -221,20 +221,20 @@ if($q==1){
 	<table>
 
 
-	<?php /*if(true/*is_numeric($GLOBALS['ss']["log_object"]->name)* /){*/ ?>
+	<?php /*if(true/*is_numeric($GLOBALS['ss']['log_object']->name)* /){*/ ?>
         <tr><td><b><?php e('*');le('loginname'); ?>:</b></td><td><?php input_text("username",$username); ?></td></tr>
-	<tr><td><b><?php e('*');le('nameonworld'); ?>:</b></td><td><?php input_text("name",$_POST["name"]?$_POST["name"]:(!is_numeric($GLOBALS['ss']["log_object"]->name)?$GLOBALS['ss']["log_object"]->name:'')); ?></td></tr>
+	<tr><td><b><?php e('*');le('nameonworld'); ?>:</b></td><td><?php input_text("name",$_POST["name"]?$_POST["name"]:(!is_numeric($GLOBALS['ss']['log_object']->name)?$GLOBALS['ss']['log_object']->name:'')); ?></td></tr>
 
         <tr><td><b><?php le("email"); ?>:</b></td><td><?php input_text("email",$email); ?></td></tr>
 	
 	
 	<tr><td colspan="2"><?php input_checkbox("sendmail",$sendmail); ?><b><?php le("sendmail"); ?></b></td></tr>
-	<tr><td colspan="2"><?php input_checkbox("sendmail2",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail2','1')); ?><b><?php le("sendmail2"); ?></b></td></tr>
-	<tr><td colspan="2"><?php input_checkbox("sendmail3",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail3','1')); ?><b><?php le("sendmail3"); ?></b></td></tr>
+	<tr><td colspan="2"><?php input_checkbox("sendmail2",$GLOBALS['ss']['log_object']->profile->ifnot('sendmail2','1')); ?><b><?php le("sendmail2"); ?></b></td></tr>
+	<tr><td colspan="2"><?php input_checkbox("sendmail3",$GLOBALS['ss']['log_object']->profile->ifnot('sendmail3','1')); ?><b><?php le("sendmail3"); ?></b></td></tr>
 	
-	<?php if(!is_numeric($GLOBALS['ss']["log_object"]->name)){ ?>
-	<tr><td colspan="2"><?php input_checkbox("sendmail4",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail4','1')); ?><b><?php le("sendmail4"); ?></b></td></tr>
-	<tr><td colspan="2"><?php input_checkbox("sendmail5",$GLOBALS['ss']["log_object"]->profile->ifnot('sendmail5','1')); ?><b><?php le("sendmail5"); ?></b></td></tr>
+	<?php if(!is_numeric($GLOBALS['ss']['log_object']->name)){ ?>
+	<tr><td colspan="2"><?php input_checkbox("sendmail4",$GLOBALS['ss']['log_object']->profile->ifnot('sendmail4','1')); ?><b><?php le("sendmail4"); ?></b></td></tr>
+	<tr><td colspan="2"><?php input_checkbox("sendmail5",$GLOBALS['ss']['log_object']->profile->ifnot('sendmail5','1')); ?><b><?php le("sendmail5"); ?></b></td></tr>
 	
 	
 	<tr><td colspan="2"><?php br();info(lr("pass_info")); ?></td></tr>
@@ -258,14 +258,14 @@ if($q==1){
 	
 	$("#changepass").submit(function() {
 	    //alert(1);
-	    $.post('?y=<?php e($_GET['y']); ?>&e=settings&submenu=2',
+	    $.post('?token=<?php e($_GET['token']); ?>&e=settings&submenu=2',
 		{   username: $('#username').val(),
                     name: $('#name').val(),
 		    email: $('#email').val(),
 		    sendmail: $('input[name=sendmail]').attr('checked'), 
 		    sendmail2: $('input[name=sendmail2]').attr('checked'),
 		    sendmail3: $('input[name=sendmail3]').attr('checked'), 
-		    <?php if(!is_numeric($GLOBALS['ss']["log_object"]->name)){ ?>
+		    <?php if(!is_numeric($GLOBALS['ss']['log_object']->name)){ ?>
     		    sendmail4: $('input[name=sendmail4]').attr('checked'), 
     		    sendmail5: $('input[name=sendmail5]').attr('checked'), 
 		    <?php }else{ ?>
@@ -283,7 +283,7 @@ if($q==1){
 	</script>
 
 	<?php
-	//if(!is_numeric($GLOBALS['ss']["log_object"]->name)){
+	//if(!is_numeric($GLOBALS['ss']['log_object']->name)){
     	if($GLOBALS['get']['fb_disconnect']){
     		a_register('','','','','',array());
     	}
@@ -306,7 +306,7 @@ if($q==1){
 
 
 <?php
-    if(!is_numeric($GLOBALS['ss']["log_object"]->name)){
+    if(!is_numeric($GLOBALS['ss']['log_object']->name)){
     	//------------------------------------------------description
     	hr();
     	    $info=array();

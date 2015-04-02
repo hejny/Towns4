@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/login/use.php
@@ -28,8 +28,8 @@ if($_GET['e']=='-html_fullscreen'/**/ or 1/**/){
     $centerurl=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
     
     //click($centerurl,-1);
-    //js('alert("'.$GLOBALS['ss']["log_object"]->set->val('map_xc').'")');
-	if(!$GLOBALS['ss']["log_object"]->set->val('map_xc')){
+    //js('alert("'.$GLOBALS['ss']['log_object']->set->val('map_xc').'")');
+	if(!$GLOBALS['ss']['log_object']->set->val('map_xc')){
 		
 		$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],true);
 		//js('alert("'.$url.'")');
@@ -53,7 +53,7 @@ if($_GET['e']=='-html_fullscreen'/**/ or 1/**/){
     $( "#cache_loading" ).hide();
     setTimeout(function() {
         $( "#cache_loading" ).show();
-        $.get(\'?y=&e=cache\', function(vystup){
+        $.get(\'?token=&e=cache\', function(vystup){
             //$( "#cache_loading" ).slideUp();
             $( "#cache_loading" ).hide();
             $(\'#cache\').html(vystup);

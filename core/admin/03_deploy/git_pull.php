@@ -28,7 +28,6 @@ Stažení a nasazení aktuální verze kódu na tento server<br/>
 //chdir('/var/www/towns_cz/wwwww/')
 //;
 
-
 if($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
    error('Z bezpečtnostních důvodů je tato funkce znemožněna na localhostu.');
    die();
@@ -95,6 +94,8 @@ if($GLOBALS['inc']['git_origin']) {
       </div>
    <?php
 
+
+       require(core.'/admin/03_deploy/locale.php');//Po deploy je potřeba aktualizovat jazykové soubory
 
    }
 }else{

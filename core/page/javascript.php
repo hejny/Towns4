@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/javascript.php
@@ -110,14 +110,14 @@
 					*/
 		    /*if(typeof aacparsejsget!="undefined")aacparsejsget.abort();    */    
 		    
-		            //alert('?y=<?php e($_GET['y']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>');
+		            //alert('?token=<?php e($_GET['token']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>');
                     /*$(function(){aacparsejsget=*/
                     
                     //alert(document.parseMapxloading);
 
                     //alert(document.parseMapxloading);
                     document.parseMapxloading=true;
-                    document.maploader = $.get('?y=<?php e($_GET['y']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>',    function(vystup){
+                    document.maploader = $.get('?token=<?php e($_GET['token']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>',    function(vystup){
 			    
                            
                             //alert(vystup.url);
@@ -346,10 +346,10 @@ $(document).ready(function(){
                 
                 if(playing){
 					if(nmr){
-                    	urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
+                    	urlpart='?token=<?php e($_GET['token']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
 						nmr=false;
 					}else{
-                    	urlpart='?y=<?php e($_GET['y']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+                    	urlpart='?token=<?php e($_GET['token']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
 					}
     		    qbuffer=''
                     windows='';
@@ -360,7 +360,7 @@ $(document).ready(function(){
             }/*else{
 		qii=qii+1;
 		if(qii>10){qii=0;
-		urlpart='?y=<?php e($_GET['y']); ?>&e=aac&onlyc=1';
+		urlpart='?token=<?php e($_GET['token']); ?>&e=aac&onlyc=1';
 		}
                 //rvrao=false;
             }*/
@@ -448,6 +448,7 @@ $(document).ready(function(){
                 //--------------------------
                 if ( e.which ==80){ shortcut_pl=1; }
                 else if ( e.which ==76 && shortcut_pl==1){ <?php urlx('e=play;noi=1;',false); ?>;shortcut_pl=0; }
+                else if ( e.which ==84 && shortcut_pl==1){ <?php urlx('e=terminal;noi=1;',false); ?>;shortcut_pl=0; }
                 else{shortcut_pl=0;}
                 //-------------------------
                 
@@ -631,7 +632,7 @@ $(document).ready(function(){
         if(!ww)ww=0;
         if(!hh)hh=0;
         /*r(w_name+","+w_content+","+xx+","+yy);*/
-		url="?y=<?php e($_GET['y']); ?>&e="+w_content+w_urlpart+"&i="+w_name+","+w_content+","+xx+","+yy;
+		url="?token=<?php e($_GET['token']); ?>&e="+w_content+w_urlpart+"&i="+w_name+","+w_content+","+xx+","+yy;
 		/*--------*/
 			stream=$('#window').html();
 			stream=stream.split("window_name").join("window_"+w_name);

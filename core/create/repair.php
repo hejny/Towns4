@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/create/upgrade.php
@@ -18,7 +18,7 @@ $fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `
 }elseif($GLOBALS['get']["id"]){
     $id=$GLOBALS['get']["id"];
 }else{
-    $id=$GLOBALS['ss']["use_object"]->set->ifnot('upgradetid',0);
+    $id=$GLOBALS['ss']['use_object']->set->ifnot('upgradetid',0);
 }*/
 sg("id");
 //echo($id);
@@ -31,7 +31,7 @@ if($id?ifobject($id):false){
 
  
     if($own==$GLOBALS['ss']['useid'] or $own==$GLOBALS['ss']['logid']){
-        //$GLOBALS['ss']["use_object"]->set->add('upgradetid',$id);
+        //$GLOBALS['ss']['use_object']->set->add('upgradetid',$id);
         //--------------------------
         if($fs==$fp){
 		success(lr('repaired'));

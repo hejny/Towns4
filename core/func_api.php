@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/func_query.php
@@ -9,65 +9,72 @@
 */
 //==============================
 
+unset($GLOBALS['ss']['use_object']);
+unset($GLOBALS['ss']['log_object']);
+
+//======================================================================================================================townsfunction
 
 
-//======================================================================================townsfunction
+/* Interní část TOWNS API
+ * @param array(string function, array params)
+ * @param string prefix
+ * @author
+ *
+ * */
+function townsfunction($query,$q='a'){
 
-unset($GLOBALS['ss']["use_object"]);
-unset($GLOBALS['ss']["log_object"]);
-//r($GLOBALS['ss']['useid']);
-//r($GLOBALS['ss']['logid']);
-function townsfunction($query,$q){$queryp=$query;
-	
-    //r($query);
-    //print_r($query);
-    //if(is_string($query)){echo($query);
-	if(is_string($query)){
-		die('!querystring');        
-		/*$query=str_replace(' ',',',$query);
-        $query=explode(",",$query,2);
-		list($func,$params)=$query;*/
+
+    $queryp=$query;
+
+	if(!is_array($query)){
+        trigger_error("Query in townsfunction must be array!", E_USER_ERROR);
 	}else{
 		list($func,$params)=$query;
 	}
-	//if(debug)print_r($query);
-    //}
+
     
-    $GLOBALS['ss']["query_output"]= new vals();
+    $GLOBALS['ss']['query_output']= new vals();
     
     if(strstr($func,'.')){list($remoteobject,$func)=explode('.',$func,2);}else{$remoteobject=false;}
     
-    //r("$remoteobject , $func , $params");
-    //$params=str_replace(" ",",",$params);
-    //$params=explode(",",$params);
+
     if($GLOBALS['ss']['useid'] and $GLOBALS['ss']['logid']){
         if($remoteobject){
             $aid=$remoteobject;
+            if(!ifobject($aid)){
+                $GLOBALS['ss']['query_output']->add('error',lr('api_unknown_object'));
+                return;
+            }
         }else{
             $aid=$GLOBALS['ss']['useid'];
         }
     }
-	//r($aid);
 
+
+
+    $noregister=true;//Bude nastavený aac object
 	
-    if($func=="login"){//list($aid)
-        $aid=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE (`userid`=\''.sql($params[0]).'\' ) AND '.objt());//explode(",",$params);
-		//if(debug){br();print_r($params);br();e($aid);}
-		//("($aid)");
+    if($func=="login"){
+        $aid=sql_1data('SELECT `id` FROM `[mpx]pos_obj` WHERE (`userid`=\''.sql($params[0]).'\' ) AND '.objt());
+
 		$aid=xx2x($aid);
         if(!($aid=ifobject($aid))){
 			//br();e($aid);
             $aid=false;
-            $GLOBALS['ss']["query_output"]->add("error","Tento uživatel neexistuje.");
+            $GLOBALS['ss']['query_output']->add('error',lr('api_unknown_user'));
         }
-    }
-    if($func=="register"){
-        //print_r($params);
-        $aid='new';/*$params[0]*/;//explode(",",$params);
-        $funcname='register';
-        $noregister=false;
-    }else{
-        $noregister=true;
+    }elseif($func=="list"){
+
+        $noregister=false;//Nebude nastavený aac object
+        $aid='none';//Proto se musí nastavit domělé aid
+        $funcname=$func;// + Třída volané funkce
+
+    }elseif($func=="register"){
+
+        $noregister=false;//Nebude nastavený aac object
+        $aid='new';//Proto se musí nastavit domělé aid
+        $funcname=$func;// + Třída volané funkce
+
     }
     
     
@@ -77,42 +84,45 @@ function townsfunction($query,$q){$queryp=$query;
             if($noregister){
 
                 t("obj>>");
-                //if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']['useid']){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']['useid']);}
-                //if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']['logid']){;$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']['logid']);}
-                if(!$GLOBALS['ss']["aac_object"] and $remoteobject){$GLOBALS['ss']["aac_object"]= new object($remoteobject);} 
-                if($GLOBALS['ss']["aac_object"] and $remoteobject){
-			$GLOBALS['ss']["aac_object"]->update();
-			unset($GLOBALS['ss']["aac_object"]);
-			$GLOBALS['ss']["aac_object"]= new object($remoteobject);    
+                //if(!$GLOBALS['ss']['use_object'] and $GLOBALS['ss']['useid']){$GLOBALS['ss']['use_object']= new object($GLOBALS['ss']['useid']);}
+                //if(!$GLOBALS['ss']['log_object'] and $GLOBALS['ss']['logid']){;$GLOBALS['ss']['log_object']= new object($GLOBALS['ss']['logid']);}
+                if(!$GLOBALS['ss']['aac_object'] and $remoteobject){$GLOBALS['ss']['aac_object']= new object($remoteobject);}
+                if($GLOBALS['ss']['aac_object'] and $remoteobject){
+			$GLOBALS['ss']['aac_object']->update();
+			unset($GLOBALS['ss']['aac_object']);
+			$GLOBALS['ss']['aac_object']= new object($remoteobject);
 		}
 		t("obj - a");
-                if(!$GLOBALS['ss']["use_object"] and $GLOBALS['ss']['useid']){$GLOBALS['ss']["use_object"]= new object($GLOBALS['ss']['useid']);}
+                if(!$GLOBALS['ss']['use_object'] and $GLOBALS['ss']['useid']){$GLOBALS['ss']['use_object']= new object($GLOBALS['ss']['useid']);}
 		t("obj - b");        
-                if(!$GLOBALS['ss']["log_object"] and $GLOBALS['ss']['logid']){$GLOBALS['ss']["log_object"]= new object($GLOBALS['ss']['logid']);}
+                if(!$GLOBALS['ss']['log_object'] and $GLOBALS['ss']['logid']){$GLOBALS['ss']['log_object']= new object($GLOBALS['ss']['logid']);}
 		t("obj - c");
-                if(!$GLOBALS['ss']["aac_object"])$GLOBALS['ss']["aac_object"]=$GLOBALS['ss']["use_object"];
+                if(!$GLOBALS['ss']['aac_object'])$GLOBALS['ss']['aac_object']=$GLOBALS['ss']['use_object'];
                 t("<<obj");
                 //r($aid);
-                if($aid==$remoteobject){$aid_object=$GLOBALS['ss']["aac_object"];}
-                if($aid==$GLOBALS['ss']['useid']){$aid_object=$GLOBALS['ss']["use_object"];}
+                if($aid==$remoteobject){$aid_object=$GLOBALS['ss']['aac_object'];}
+                if($aid==$GLOBALS['ss']['useid']){$aid_object=$GLOBALS['ss']['use_object'];}
                 if(!$aid_object){$aid_object=new object($aid);}
                 
                 
                 
-                //$GLOBALS['ss']["use_object"]->xxx();
+                //$GLOBALS['ss']['use_object']->xxx();
                 //r($aid_object->loaded);
                 //r(true);
                 //if($GLOBALS['ss']['useid']){$id}
 				
                 $GLOBALS['ss']["aac_func"]=$aid_object->support();////func->vals2list();
-		//r($aid_object->id);
-		//r($GLOBALS['ss']['aac_func']);
+
                 $GLOBALS['ss']["aac_func"]=$GLOBALS['ss']["aac_func"][$func];
-                $GLOBALS['ss']["aac_func"]["name"]=$func;
-            
-		
-                $funcname=$GLOBALS['ss']['aac_func']['class'];
-                //r($GLOBALS['ss']['aac_func']);
+
+                if($GLOBALS['ss']["aac_func"]){
+                    $GLOBALS['ss']["aac_func"]["name"]=$func;
+                    $funcname=$GLOBALS['ss']['aac_func']['class'];
+                }else{
+                    $GLOBALS['ss']['query_output']->add('error',lr('api_unknown_function',array($func,id2unique($aid_object->id))));
+                    return;
+                }
+
                 //-------------COOLDOWN
 
 
@@ -164,42 +174,14 @@ function townsfunction($query,$q){$queryp=$query;
 		                        
 		                    }
 		                    //-------------------------------------------------------------------
-			    }           
-                            /*if($time>0){
-                                $countdown=$time;
-                            }*/
-                    /*$cooldown=$GLOBALS['ss']['aac_func']['params']['cooldown'][0]*$GLOBALS['ss']['aac_func']['params']['cooldown'][1];
-                    if(!$cooldown)$cooldown=$GLOBALS['config']['f']['default']['cooldown'];
-                    $lastused=$GLOBALS['ss']['aac_object']->set->ifnot("lastused_$func",1);
-    
-                    //r($cooldown.' / '.$lastused);*/
+			    }
                 }
-
-
-
-                //r($GLOBALS['ss']['aac_func']);
-                //r($GLOBALS['config']);
-                //-------------
-                
-                /*r($GLOBALS['ss']["aac_object"]->func->vals2list()); 
-                $a=($GLOBALS['ss']["aac_object"]->func->vals2list());     
-                $a=new func($a);
-                hr();
-                r($a->vals2list());        
-                hr();hr();*/
-                
             }
-            //r($GLOBALS['ss']["aac_func"]);
-            
-            
-            //r($GLOBALS['ss']["aac_func"]);
-            //----------------
 
         $funcname_=$funcname;
         $funcname=$q."_".($funcname);
-        
-        if(/*$func=="login" or */$GLOBALS['ss']["aac_func"] or !$noregister){
-		
+
+
             if(function_exists($funcname)){
                         
                 if(!defined("a_".$funcname_.'_cooldown') or /*$cooldown<=(time()-$lastused)*/$time<=0){
@@ -208,26 +190,26 @@ function townsfunction($query,$q){$queryp=$query;
 
                     
                     
-                    /*$tmp=($GLOBALS['ss']["aac_object"]->func->vals2list());
+                    /*$tmp=($GLOBALS['ss']['aac_object']->func->vals2list());
                     $tmp[$funcname_]['params']['lastused']=time();
-                    $GLOBALS['ss']["aac_object"]->func=new func($tmp);*/
-                    
-                    $paramsx=implode(',',$params);
-                    $paramsx=str_replace(",","\",\"",$paramsx);
-                    $paramsx="\"$paramsx\"";
-                    
-                    if($noregister){
+                    $GLOBALS['ss']['aac_object']->func=new func($tmp);*/
+                    $paramsx=implode("','",$params);
+                    $paramsx="'$paramsx'";
+
+                    /*if($noregister){
                         $paramsx=str_replace(",\"\"","",$paramsx);//Prázdné parametry
                         $paramsx=str_replace("\"\",","",$paramsx);
-                    }
+                    }*/
                     
-                    if($paramsx=="\"\""){$paramsx="";}
+                    if($paramsx=="''"){$paramsx="";}
                     $funceval="$funcname($paramsx);";
-                    //r($funceval);
-					//e('eval');
+
+
+					//e($funceval);
                     eval($funceval);
+                    //$GLOBALS['ss']['query_output']->add('error',$funceval);
                     
-                    if($GLOBALS['ss']["query_output"]->val("1") and !$GLOBALS['ss']["query_output"]->val("nocd")){
+                    if($GLOBALS['ss']['query_output']->val("1") and !$GLOBALS['ss']['query_output']->val("nocd")){
                         if(defined("a_".$funcname_.'_cooldown')){
                             //e($GLOBALS['ss']['aac_object']->name);
                             $GLOBALS['ss']['aac_object']->set->add("lastused_".$func,time());
@@ -236,27 +218,24 @@ function townsfunction($query,$q){$queryp=$query;
                     
                 
                 }else{
-                    $GLOBALS['ss']["query_output"]->add("error",'Tuto funkci lze použít za '.timesr($cooldown-time()+$lastused).'.');
+                    $GLOBALS['ss']['query_output']->add('error',lr('api_cooldown_error',timesr($cooldown-time()+$lastused)));
                 }
                 
             }else{
-                //r($GLOBALS['ss']["aac_func"]);
-                if($funcname!='a_')$GLOBALS['ss']["query_output"]->add("error","tato funkce je pasivní - $funcname");
+                if($funcname!='a_'){
+                    $GLOBALS['ss']['query_output']->add('error',lr('api_function_passive',$funcname));
+                }
             }
-        }else{
-            //echo($func);
-            $GLOBALS['ss']["query_output"]->add("error","$queryp: neexistující funkce u tohoto objektu($aid) $func");
-        }
         }else{
             if($func!="login" and $func!="register"){
-                $GLOBALS['ss']["query_output"]->add("error","nepřihlášený uživatel");
+                $GLOBALS['ss']['query_output']->add('error',lr('api_no_user'));
             }
        }
-	
-	//qlog($logid,$useid,$aacid,$function,$params,$output)
+
+    //------------------------------------------------------------------------Logování
 	if($funcname_!='' and $funcname_!='info'){
 		//$params=explode(',',$params);
-		$output=$GLOBALS['ss']["query_output"]->vals2list();
+		$output=$GLOBALS['ss']['query_output']->vals2list();
 		if($funcname_=='login'){
 			$params['2']='*****';
 			$params['3']='*****';
@@ -264,9 +243,9 @@ function townsfunction($query,$q){$queryp=$query;
 		}
 		qlog($funcname_,$GLOBALS['ss']['aac_object']->id,implode(',',$params),$output);
 	}
-	//r($GLOBALS['ss']["query_output"]->vals2str());
-	
-    return($GLOBALS['ss']["query_output"]/*->vals2str()*/);
+    //------------------------------------------------------------------------
+
+    return($GLOBALS['ss']['query_output']/*->vals2str()*/);
 }
 //----------------
 function use_param($p){//konstanty
@@ -276,57 +255,98 @@ function use_param($p){//konstanty
 /*function use_price($hold){
     //r(abc,$GLOBALS['ss']["aac_func"]["class"],$GLOBALS['config']["fur"][$GLOBALS['ss']["aac_func"]["class"]]);
     $resource=$GLOBALS['config']["f"]["use"]["w"][$GLOBALS['ss']["aac_func"]["class"]];
-    if(!$GLOBALS['ss']["use_object"]->hold->take($resource,$hold)){
-        $GLOBALS['ss']["query_output"]->add("error","Potřebujete alespoň {q_".$resource.";$hold}.");
+    if(!$GLOBALS['ss']['use_object']->hold->take($resource,$hold)){
+        $GLOBALS['ss']['query_output']->add('error',"Potřebujete alespoň {q_".$resource.";$hold}.");
         return(false);
     }else{return(true);}
 }*/
-//======================================================================================API
+//======================================================================================================================TOWNS API
 
-function api($query){
+/* VEŘEJNÁ část TOWNS API
+ * @param string or array query
+ * @return array
+ *
+ * */
+function townsapi($query){
+    //@todo PH mělo by fungovat zadávání přes více parametrů
+
 	if(is_string($query)){
-		//echo($query);
+
+        //@todo PH při vstupu do api přes string by mělo správně fungovat escapování
 		$query=str_replace(' ',',',$query);
 		list($function,$params)=explode(',',$query,2);
-		$params=explode(',',$params);		
-	}else{
-		$function=$query['function'];
-		$params=$query['params'];
+
+
+        $params=params($params);
+		//$params=explode(',',$params);
+
+
+	}elseif(is_array($query)){
+
+
+		$function=array_shift($query);
+		$params=$query;
+
 	}
+
 	$query=array($function,$params);
-	//e('a');
-	townsfunction($query,"a");
-	//e('b');
-	$output=$GLOBALS['ss']["query_output"]->vals2list();
+	townsfunction($query,'a');
+	$output=$GLOBALS['ss']['query_output']->vals2list();
     return($output);
+
+
 
 }
 
-//======================================================================================XAPI
-//-----------------------------------------------------xapi
-/*function xapi($function,$params){
-    $query=array('function'=>$function,'params'=>$params);
-	$output=api($query);
-    if($output['success']){
-		success($output['success']);
-	}
-    if($output['error']){
-		error($output['error']);
-	}
-	return($output['1']);
-
-}*/
-//-----------------------------------------------------xquery
+//======================================================================================================================APP API
+/*Funkce ke grafickému používání API v Aplikaci
+Tyto funkce se nepoužívají v externích aplikacích*/
 $GLOBALS['ss']["xresponse"]='';
+
+if(!isset($GLOBALS['ss']['terminal'])){
+    $GLOBALS['ss']['terminal']=array();
+}
+
+//-------------------------------------------------------------------------xquery
+
+
 function xquery($a,$b='',$c='',$d='',$e='',$f='',$g='',$h='',$i=''){
 	if($b){
-    	$query=array('function'=>$a,'params'=>array($b,$c,$d,$e,$f,$g,$h,$i));    
+    	$query=array($a,$b,$c,$d,$e,$f,$g,$h,$i);
     }else{
-		//die('nob');
 		$query=$a;
 	}
 
-    $response=api($query);
+    $response=townsapi($query);
+
+    //----------------Zapsání do terminálu
+
+    if($query) {
+
+
+        if(is_array($query)) {
+            $querystring = array_shift($query);
+            $querystring .= ' ';
+            $querystring .= implode(',', $query);//@todo PH escapování
+        }else{
+            $querystring=$query;
+        }
+        //success($querystring);
+
+        /*     if(substr($querystring,0,5)=='items') {
+
+        }elseif(substr($querystring,0,4)=='info') {
+
+        }else{*/
+
+        if(!$GLOBALS['ss']['terminal_nolog']) {
+            $GLOBALS['ss']['terminal'][] = array($querystring, $response);
+        }
+
+
+    }
+    //----------------
+
 	//print_r($response);
 
 	//if(debug){br();print_r($response);}
@@ -347,7 +367,9 @@ function xquery($a,$b='',$c='',$d='',$e='',$f='',$g='',$h='',$i=''){
 }
 $GLOBALS['ss']["xsuccess"]=0;
 $GLOBALS['ss']["xresponse"]=array();
-//-----------------------------------------------------xreport
+
+//-------------------------------------------------------------------------xreport
+
 function xreport(){
     $response=$GLOBALS['ss']["xresponse"];
 
@@ -389,37 +411,34 @@ function xreport(){
     }
     }
 }
-//-----------------------------------------------------xqr
+//-------------------------------------------------------------------------xqr
+
 function xqr($query){
 	xquery($query);
 	xreport();
 	return(xsuccess());
 }
-//-----------------------------------------------------xerror
+//-------------------------------------------------------------------------xerror
 
 function xerror($text){
-	$GLOBALS['ss']["query_output"]->add("error",$text);
+	$GLOBALS['ss']['query_output']->add('error',$text);
     //if(!$GLOBALS['ss']["xresponse"]){$GLOBALS['ss']["xresponse"]=array();}
     //if(!$GLOBALS['ss']["xresponse"]['error']){$GLOBALS['ss']["xresponse"]['error']=array();}
     //$GLOBALS['ss']["xresponse"]['error'][count($GLOBALS['ss']["xresponse"]['error'])]=$text;
 }
-//-----------------------------------------------------xsuccess
+//-------------------------------------------------------------------------xsuccess
 function xsuccess(){
     return($GLOBALS['ss']["xsuccess"]);
 }
-//-----------------------------------------------------xsuccessalert
+//-------------------------------------------------------------------------xsuccessalert
 function xsuccessalert($text){
 if(xsuccess()){alert($text,1);}
 }
-//=========================================================================================OLD query
 
-function query($query){
-	die('OLD!-query');
-    //r($query);
-    return(townsfunction($query,"a"));
-}
+//======================================================================================================================Pomocné funkce pro funkce API
 
-//=========================================================================================use price
+//-------------------------------------------------------------------------use price
+
 function use_price($func,$params,$constants=false,$mode=0){//0=take, 1=test, 2=hold
     if(!$constants)$constants=$GLOBALS['ss']["aac_func"]["params"];
     foreach($constants as &$value_c)$value_c=$value_c[0]*$value_c[1];
@@ -467,11 +486,11 @@ function use_price($func,$params,$constants=false,$mode=0){//0=take, 1=test, 2=h
         $resource=$value[1];
         $hold=ceil($price*$value[0]/$count);
         //r($resource.": $hold");
-        if(!$GLOBALS['ss']["use_object"]->hold->test($resource,$hold)){
+        if(!$GLOBALS['ss']['use_object']->hold->test($resource,$hold)){
             $q=false;
 
 			//je to blbost 
-			//$GLOBALS['ss']["query_output"]->add('error','Potřebujete alespoň '.lr('q_'.$resource,$hold));
+			//$GLOBALS['ss']['query_output']->add('error','Potřebujete alespoň '.lr('q_'.$resource,$hold));
 
         }
         //$hold->add($value[1],ceil($price*$value[0]/$count));
@@ -490,7 +509,7 @@ function use_price($func,$params,$constants=false,$mode=0){//0=take, 1=test, 2=h
             foreach($c2 as &$value){
                 $resource=$value[1];
                 $hold=ceil($price*$value[0]/$count);
-                $GLOBALS['ss']["use_object"]->hold->take($resource,$hold);
+                $GLOBALS['ss']['use_object']->hold->take($resource,$hold);
             }
         }
         return(true);
@@ -508,114 +527,20 @@ function use_price($func,$params,$constants=false,$mode=0){//0=take, 1=test, 2=h
     //r($constants);
     
 }
-//=========================================================================================use,test hold
+//-------------------------------------------------------------------------use,test hold
 function use_hold($hold){
 //$hold->showimg();
-//$GLOBALS['ss']["use_object"]->hold->showimg();
-$q=($GLOBALS['ss']["use_object"]->hold->takehold($hold));
-//$GLOBALS['ss']["use_object"]->hold->showimg();
+//$GLOBALS['ss']['use_object']->hold->showimg();
+$q=($GLOBALS['ss']['use_object']->hold->takehold($hold));
+//$GLOBALS['ss']['use_object']->hold->showimg();
 return($q);
 }
 //------
 function test_hold($hold){
-return($GLOBALS['ss']["use_object"]->hold->testhold($hold));  
+return($GLOBALS['ss']['use_object']->hold->testhold($hold));
 }
-//==========================================================================================OLD xquery
-/*$GLOBALS['ss']["xresponse"]='';
-function xquery($a,$b="",$c="",$d="",$e="",$f="",$g="",$h="",$i=""){
-	r('OLD!-xquery');
-    xreport();
-    $b=x2xx($b);$c=x2xx($c);$d=x2xx($d);$e=x2xx($e);$f=x2xx($f);$g=x2xx($g);$h=x2xx($h);$i=x2xx($i);
-    /*$query=$a;
-    if($b){$query="$a $b";}
-    if($c){$query="$a $b $c";}
-    if($d){$query="$a $b $c $d";}
-    if($e){$query="$a $b $c $d $e";}
-    if($f){$query="$a $b $c $d $e $f";}
-    if($g){$query="$a $b $c $d $e $f $g";}
-    if($h){$query="$a $b $c $d $e $f $g $h";}
-    if($i){$query="$a $b $c $d $e $f $g $h $i";}
-    //r($query);* /
-    //$query=array($a,$b,$c,$d,$e,$f,$g,$h,$i);
-    //$query=implode(',',$query);
-    $query=("$a $b,$c,$d,$e,$f,$g,$h,$i");    
-    
-    $response=query($query);
-  
-    if($response->val("1")=='1')
-    $GLOBALS['ss']["xsuccess"]=($response->val("1"));
-    //e($query.' - '.$GLOBALS['ss']["xsuccess"]);br();
-    $response=$response->vals2list();
-    //print_r($response);
-    if($GLOBALS['ss']["xresponse"]=='')$GLOBALS['ss']["xresponse"]=$response;
-    return($response);
-    
-}
-$GLOBALS['ss']["xsuccess"]=0;
-$GLOBALS['ss']["xresponse"]=array();
-//-----------------------------------------------------OLD
-function xreport(){
-	r('OLD!-xreport');
-    //r('xreport');
-    $response=$GLOBALS['ss']["xresponse"];
-    $GLOBALS['ss']["xresponse"]='';
-    if($response!=''){//r($response);
-    //r($response);
-    //$response=new vals($response);
-    $error=$response['error'];
-    if($error){
-        if(!is_array($error)){//print_r($error);
-            alert($error,2);
-        }else{//print_r($error);
-            foreach($error as $tmp){
-                alert($tmp,2);
-            }
-        }
-    }
 
-    $success=$response['success'];
-    if($success){
-        if(!is_array($success)){
-            alert($success,1);
-        }else{
-            foreach($success as $tmp){
-                alert($tmp,1);
-            }
-        }
-    }
-    //r($response->own2);
-    //$response->func=new func($response->func);
-    //$response->res=new res($response->res);
-    //$response->profile=new profile($response->profile);
-    //$response->hold=new hold($response->hold);
-    }
-}
-//-----------------------------------------------------OLD
-function xqr($query){
-	r('OLD!-xqr');
-	xquery($query);
-	xreport();
-	return(xsuccess());
-}
-//-----------------------------------------------------OLD
-
-function xerror($text){//echo($text);
-	r('OLD!-xerror');
-    if(!$GLOBALS['ss']["xresponse"]){$GLOBALS['ss']["xresponse"]=array();}
-    if(!$GLOBALS['ss']["xresponse"]['error']){$GLOBALS['ss']["xresponse"]['error']=array();}
-    $GLOBALS['ss']["xresponse"]['error'][count($GLOBALS['ss']["xresponse"]['error'])]=$text;
-}
-//-----------------------------------------------------OLD
-function xsuccess(){
-	r('OLD!-xsuccess');
-    return($GLOBALS['ss']["xsuccess"]);
-}
-//-----------------------------------------------------OLD
-function xsuccessalert($text){
-r('OLD!-xsuccessalert');
-if(xsuccess()){alert($text,1);}
-}*/
-//=================================================================================================blocktest
+//-------------------------------------------------------------------------blocktest
 function block1test($type,$x,$y){
 
 	$x=round($x);
@@ -637,7 +562,9 @@ function block1test($type,$x,$y){
 return(0);
 
 }
-//-----------------------------------------------------
+//-------------------------------------------------------------------------block2test
+
+
 function block2test($type,$x1,$y1,$x2=false,$y2=false,$noid=false){
 //e('block2test');
 
@@ -709,15 +636,17 @@ if(count($ccc)==0){
 	return($ccc);
 }
 }
-//-------------------------------------------------mostnear
+//-------------------------------------------------------------------------mostnear
 function mostnear($x,$y){
 	$array=sql_array("SELECT x,y FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND (`type`='building') ORDER BY POW($x-x,2)+POW($y-y,2) LIMIT 1");
 	return($array[0]);
 
 }
-//===================================================================================================qlog
+//======================================================================================================================LOGOVÁNÍ
+
+//---------------------------------------------------------------qlog
 /* *
- * Logovíní do tabulky log
+ * Logování do tabulky log
  *
  * @param název aktivní nebo virtuální funkce
  * @param id objektu
@@ -763,27 +692,9 @@ function qlog($function,$aacid=0,$params='',$output=''){
     ));
     //------------------
 
-
-	/*sql_query("INSERT INTO `[mpx]log` (`time`, `ip`, `user_agent`, `townssessid`,`uri`, `lang`, `logid`, `useid`, `aacid`, `function`, `params`, `output`) VALUES (
-	'".time()."',
-	'".sql($_SERVER["REMOTE_ADDR"])."',
-	'".sql($_SERVER["HTTP_USER_AGENT"])."',
-	'".sql($_COOKIE['TOWNSSESSID'])."',
-    '".sql($_SERVER['REQUEST_URI'])."',
-	'".sql($GLOBALS['ss']["lang"])."',
-	'".sql($logid)."',
-	'".sql($useid)."',
-	'".sql($aacid)."',
-	'".sql($function)."',
-	'".sql($params)."',
-	'".sql($output)."'
-	);");*/
-
-
-
 }
 
-//---------------------------------------------------------------
+//---------------------------------------------------------------xlog
 /* *
  * Testování a logování do tabulky log
  *
@@ -806,6 +717,8 @@ function xlog($wtf,$value=false){
         return($count);
     }
 }
-//===================================================================================================
+
+
+//======================================================================================================================
 
 ?>

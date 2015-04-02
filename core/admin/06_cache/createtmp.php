@@ -91,7 +91,7 @@ $xm=ceil(($mapsize/5-1)/2);
 $img=imagecreatetruecolor(($xm+$xm+1)*$size,($ym+1)*$size*0.5);
 for($y=0; $y<=$ym; $y++){
     for ($x=-$xm; $x<=$xm; $x++) {
-        $file="http://localhost/4/?e=map_image&x=$x&y=$y";
+        $file="http://localhost/4/?e=map_image&x=$x&token=$y";
         //echo($file."<br>");
         //$file=file_get_contents($file);
         $part=imagecreatefrompng($file);

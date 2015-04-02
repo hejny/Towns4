@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/map.php
@@ -29,7 +29,7 @@ if(!$zoom)$zoom=1;
 //==============================
 
 
-//r('setx'.$GLOBALS['ss']["use_object"]->x.','.$GLOBALS['ss']["use_object"]->y);
+//r('setx'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
 //Dropbox
 if(!defined("func_map"))require(root.core."/func_map.php");
 ?>
@@ -45,10 +45,10 @@ if(!defined("func_map"))require(root.core."/func_map.php");
 
 
     if(logged()){
-        $xc=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",1);
-        $yc=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",1);
-        $xx=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",0);
-        $yy=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",0);    
+        $xc=$GLOBALS['ss']['log_object']->set->ifnot("map_xc",1);
+        $yc=$GLOBALS['ss']['log_object']->set->ifnot("map_yc",1);
+        $xx=$GLOBALS['ss']['log_object']->set->ifnot("map_xx",0);
+        $yy=$GLOBALS['ss']['log_object']->set->ifnot("map_yy",0);
     }else{
         //$xc=1;
         //$yc=1;
@@ -138,18 +138,18 @@ if(!defined("func_map"))require(root.core."/func_map.php");
     $GLOBALS['yy']=$yy;
     //------------------------------
     if(logged() and $set==1){
-        $GLOBALS['ss']["log_object"]->set->add("map_xc",$xc);
-        $GLOBALS['ss']["log_object"]->set->add("map_yc",$yc);
-        $GLOBALS['ss']["log_object"]->set->add("map_xx",$xx);
-        $GLOBALS['ss']["log_object"]->set->add("map_yy",$yy);
+        $GLOBALS['ss']['log_object']->set->add("map_xc",$xc);
+        $GLOBALS['ss']['log_object']->set->add("map_yc",$yc);
+        $GLOBALS['ss']['log_object']->set->add("map_xx",$xx);
+        $GLOBALS['ss']['log_object']->set->add("map_yy",$yy);
     }
     
     
     if(logged()){
-	$xc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xc",false);
-	$yc_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yc",false);
-	$xx_=$GLOBALS['ss']["log_object"]->set->ifnot("map_xx",false);
-	$yy_=$GLOBALS['ss']["log_object"]->set->ifnot("map_yy",false);
+	$xc_=$GLOBALS['ss']['log_object']->set->ifnot("map_xc",false);
+	$yc_=$GLOBALS['ss']['log_object']->set->ifnot("map_yc",false);
+	$xx_=$GLOBALS['ss']['log_object']->set->ifnot("map_xx",false);
+	$yy_=$GLOBALS['ss']['log_object']->set->ifnot("map_yy",false);
 	//e("$xc_,$yc_,$xx_,$yy_");
 	if($xc_===false or $yc_===false or $xx_===false or $yy_===false){//e('888');
 		//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww']);
@@ -258,7 +258,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
     $xu=($ycu+$xcu)*5+1;
     $yu=($ycu-$xcu)*5+1;
 	if(!mobile){
-	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+	$range="(x-y)>($xu-$yu)-".((!$_GET['first'])?20:26)." AND (x+y)>($xu+$yu)+".((!$_GET['first'])?5:2)." AND (x-y)<($xu-$yu)+".((!$_GET['first'])?35:22)." AND (x+y)<($xu+$yu)+".((!$_GET['first'])?60:55)."";
 	}else{
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	}
@@ -306,11 +306,47 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 <?php
 //if(nothing){e('nothing=1');}else{e('nothing=0');}
-//if(logged()){e('logged=1');}else{e('logged=0');}
+//if((!$_GET['first'])){e('logged=1');}else{e('logged=0');}
 
 	if(!$nothing/** and true/**/){
-    if(logged()){
-?>
+
+
+
+
+        if($_GET['first']){ ?>
+
+            <script type="text/javascript">
+                $(function() {
+
+                    $('#draglayer').css({
+                        //'-webkit-filter': 'blur(13px)',
+                        //'-moz-filter': 'blur(13px)',
+                        'filter': 'blur(13px)'
+
+                    });
+
+                    /*$('#draglayer').attr('blur',30);
+
+                    setInterval(function() {
+
+                        blur=parseInt($('#draglayer').attr('blur'));
+                        blur=blur-0.1;
+                        $('#draglayer').attr('blur',blur);
+
+                        $('#draglayer').css({
+                            '-webkit-filter': 'blur('+blur+'px)',
+                            '-moz-filter': 'blur('+blur+'px)',
+                            'filter': 'blur('+blur+'px)'
+
+                        });
+                    },100);*/
+                });
+                </script>
+
+        <?php }
+
+        if(logged()){ ?>
+
 <script type="text/javascript">
 
 	<?php /*if($_GET['q'] and true){subjs('quest-mini');}*/ ?>
@@ -340,6 +376,8 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 				   '-webkit-user-select':'none',/* and add the CSS class here instead */
 				   '-ms-user-select':'none',
 				   'user-select':'none'
+
+
 			 }).bind('selectstart', function(){ return false; });
         /*---------------------------------DRAG*/
         drag=0;
@@ -347,7 +385,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
       
 
-		$('#draglayer').draggable({ disabled: false, distance:<?php e($GLOBALS['dragdistance']); ?> });
+		$('#draglayer').draggable({ disabled: <?php e($_GET['first']?'true':'false') ?>, distance:<?php e($GLOBALS['dragdistance']); ?> });
         $( "#draglayer" ).bind( "dragstart", function(event, ui){
 	    /*alert('startdrag');*/
             drag=1;
@@ -416,8 +454,8 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		//alert('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		//alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -453,8 +491,8 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&y='+yyc);*/
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&token='+yyc);*/
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -472,7 +510,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 $('#map_context').css('display','block');
                 $('#map_context').html('...');
 		name=$(this).attr('id');
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
             }
         }).addClass("x-menu-registered");
 
@@ -503,7 +541,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		
 		
                  <?php if(logged){ ?>
-                $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         }).addClass("x-unit-minimenu-registered");/**/
@@ -525,7 +563,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
         $('#map_context').css('left',645<?php if($GLOBALS['get']['center']){e('-'.$GLOBALS['get']['posuv']);} ?>);
         $('#map_context').css('top',195);
         $('#map_context').css('display','block');
-        $(function(){$.get('?y=<?php e($_GET['y']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
+        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
 		}
 		);
         },23);/**/
@@ -585,7 +623,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                         if(substr($res,0,1)=='{' or strpos($res,'{}')){           
                         $x=round($x);
                         $y=round($y);
-                        $GLOBALS['ss']["query_output"]->add("nocd",1);
+                        $GLOBALS['ss']['query_output']->add("nocd",1);
                         }
                         $rx=round($x);
                         $ry=round($y);    
@@ -616,7 +654,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
                                 $fc=new hold(sql_1data("SELECT fc FROM `[mpx]pos_obj` WHERE id='$id' AND ".objt()));
-                                if((!$test)?($GLOBALS['ss']["use_object"]->hold->takehold($fc)):($GLOBALS['ss']["use_object"]->hold->testchange($fc))){
+                                if((!$test)?($GLOBALS['ss']['use_object']->hold->takehold($fc)):($GLOBALS['ss']['use_object']->hold->testchange($fc))){
 
                                     if($rot and strpos($res,'/1.png'))$res=str_replace('1.png',(($rot/15)+1).'.png',$res);
 
@@ -639,7 +677,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                         if($func['join']['profile']['type']==2){
                                                 define('object_build',true);
                                                 define('create_error',lr('create_error_join_type2'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr("create_error_join_type2"));
+                                                $GLOBALS['ss']['query_output']->add('error',lr("create_error_join_type2"));
                                                 return;
                                         }else{
 
@@ -651,7 +689,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                         SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `[mpx]pos_obj` WHERE id='$id'");
                                         }
 
-                                        $GLOBALS['ss']["query_output"]->add("1",1);
+                                        $GLOBALS['ss']['query_output']->add("1",1);
 
                                         }
                                         //define('create_ok','{create_ok_place}');
@@ -664,47 +702,47 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                         if($func['join']['profile']['type']==3){
                                                 define('object_build',true);//die(1);
                                                 define('create_error',lr('create_error_join_type3'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type3'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type3'));
                                                 return;
                                         }elseif($jfunc['join']['profile']['type']==3){
                                                 define('object_build',true);//die(2);
                                                 define('create_error',lr('create_error_join_type3x'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type3x'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type3x'));
                                                 return;
                                         }elseif($func['join']['profile']['type']==1 or $func['join']['profile']['type']==4){
                                                 define('object_build',true);//die(3);
                                                 define('create_error',lr('create_error_join_type1'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type1'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type1'));
                                                 return;
                                         }elseif($jfunc['join']['profile']['type']==4 and strpos($jres,'[-4,-4,')===false){
                                                 define('object_build',true);//die(4);
                                                 define('create_error',lr('create_error_join_type4'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_type4'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type4'));
                                                 return;
                                         }elseif(!$jorigin){
                                                 define('object_build',true);//die(5);
                                                 define('create_error',lr('create_error_join_noorigin'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_noorigin'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_noorigin'));
                                                 return;
                                         }elseif($jown!=$GLOBALS['ss']['useid']){
                                                 define('object_build',true);
                                                 define('create_error',lr('create_error_join_noown'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_noown'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_noown'));
                                                 return;
                                         }elseif($jname==id2name($GLOBALS['config']['register_building'])){
                                                 define('object_build',true);
                                                 define('create_error',lr('create_error_join_main'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_main'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_main'));
                                                 return;
-                                        }elseif($tmaster?$jid==$tmaster:$jid==$GLOBALS['ss']["aac_object"]->id){
+                                        }elseif($tmaster?$jid==$tmaster:$jid==$GLOBALS['ss']['aac_object']->id){
                                                 define('object_build',true);
                                                 define('create_error',lr('create_error_join_self'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_self'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_self'));
                                                 return;
                                         }elseif($jfs!=$jfp){
                                                 define('object_build',true);
                                                 define('create_error',lr('create_error_join_fsfp'));
-                                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_join_fsfp'));
+                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_fsfp'));
                                                 return;
                                         }else{
 
@@ -723,7 +761,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                                         $joint->update(true,true);
                                                         unset($joint);
                                                 }
-                                                $GLOBALS['ss']["query_output"]->add("1",1);
+                                                $GLOBALS['ss']['query_output']->add("1",1);
 
 
 
@@ -743,37 +781,37 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                                  }else{
                                     define('object_build',true);
                                     define('create_error',lr('create_error_price'));
-                                    $GLOBALS['ss']["query_output"]->add("error",lr('create_error_price'));
+                                    $GLOBALS['ss']['query_output']->add('error',lr('create_error_price'));
                                 }
                             }else{
                                 define('object_build',true);
                                 define('create_error',lr('create_error_expand'));
-                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_expand'));
+                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_expand'));
                             }
                                 }else{
                                 define('object_build',true);
                                         if(is_numeric($blocktest))$blocktest='object';
                                 define('create_error',lr('create_error_block_'.$blocktest));
-                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_block_'.$blocktest));
+                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_block_'.$blocktest));
                             }}else{
                                 define('object_build',true);
                                 //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `[mpx]map`  WHERE `[mpx]map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `[mpx]map`.`x`=$y AND `[mpx]map`.`y`=$x)+(SELECT SUM(`[mpx]pos_obj`. `hard`) FROM `[mpx]pos_obj` WHERE `[mpx]pos_obj`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`[mpx]pos_obj`.`x`)=$y AND ROUND(`[mpx]pos_obj`.`y`)=$x)";
                                 //$hard=sql_1data($sql);// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
                                 define('create_error',lr('create_error_resistance_'.$blocktest));
-                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_resistance_'.$blocktest));
+                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_resistance_'.$blocktest));
                             }}else{
                                 define('object_build',true);
                                 define('create_error',lr('create_error_'.$walltype.'_distance'));
-                                $GLOBALS['ss']["query_output"]->add("error",lr('create_error_wall_distance'));
+                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_wall_distance'));
                             }
                     */ ?>
                             
                     //======================================================================================================================END OF MEGATEST
                     
                     
-                    //alert('?y=<?php e($_GET['y']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y);
+                    //alert('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y);
                     
-                    $.get('?y=<?php e($_GET['y']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
+                    $.get('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
                     
                     
                     
@@ -794,7 +832,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		    
 		        //alert(2);
 		        /*alert('?e=object_build&master='+master+'&id='+id);*/
-                $.get('?y=<?php e($_GET['y']); ?>&e=create-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#create-build').html(vystup);});
+                $.get('?token=<?php e($_GET['token']); ?>&e=create-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#create-build').html(vystup);});
 		        $('#create-build').html(nacitacihtml);
 		        
 		   
@@ -807,7 +845,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 	    buildx = function(master,id,func,build_x,build_y,_rot) {
 		/*alert(_rot);*/
-		/*$.get('?y=<?php e($_GET['y']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
+		/*$.get('?token=<?php e($_GET['token']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
 		qbuffer=master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot;
 		//prompt('qbuffer',master);
 		//prompt('qbuffer',qbuffer);
@@ -873,7 +911,7 @@ if(defined('object_hybrid')){
                     tbuild_x=xxc;
                     tbuild_y=yyc;
                 });
-                $.get('?y=<?php e($_GET['y']); ?>&e=terrain-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#terrain-build').html(vystup);});
+                $.get('?token=<?php e($_GET['token']); ?>&e=terrain-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#terrain-build').html(vystup);});
 		
             }
             <?php
@@ -906,7 +944,7 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
  onmousedown="key_left=true" onmouseup="key_left=false" onmouseout="key_left=false"
 */ ?>
 
-<?php if(logged() and !$GLOBALS['mobile'] and false){ ?>
+<?php if((!$_GET['first']) and !$GLOBALS['mobile'] and false){ ?>
 <div style="position:absolute;top:<?php e(!$GLOBALS['mobile']?40:60) ?>px;left:0px;width:100%;height:27px;z-index:550;">
 <a onclick="key_up=true;key_count=key_count+2;">
 <img src="<?php imageurle('design/blank.png'); ?>" id="navigation_up" border="0" alt="<?php le('navigation_up'); ?>" title="<?php le('navigation_up'); ?>" width="100%" height="100%">
@@ -934,12 +972,12 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
 </div></div>
 
 <?php /*<script type="text/javascript" >
-        /*----------------------------------------------------------NAVIGATOR---/        
+        /*----------------------------------------------------------NAVIGATOR---/
         //$('#navigation_up').mousedown(function() {key_up=true;});
-        $('#navigation_down').mousedown(function() {key_down=true;});  
-        $('#navigation_left').mousedown(function() {key_left=true;});  
-        $('#navigation_right').mousedown(function() {key_right=true;});  
-        
+        $('#navigation_down').mousedown(function() {key_down=true;});
+        $('#navigation_left').mousedown(function() {key_left=true;});
+        $('#navigation_right').mousedown(function() {key_right=true;});
+
         $(document).mouseup(function(e) {
             /*---------UP,DOWN,LEFT,RIGHT/
             //key_up=false;
@@ -947,8 +985,8 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
             key_left=false;
             key_right=false;
             /*---------/
-        });  
-        /*------------------------------------/    
+        });
+        /*------------------------------------/
 </script>*/ ?>
 
 
@@ -999,7 +1037,7 @@ for($y=$yc; $y<=$ym+$yc; $y++){
 	//$stream1.="($x,$y)";
 
 	$q=1;
-	if($GLOBALS['mobile']/* and logged()*/){
+	if($GLOBALS['mobile']/* and (!$_GET['first'])*/){
 		//if($y<$yc)$q=0;
 		if($y>$yc+4)$q=0;
 		//if($x<$xc)$q=0;
@@ -1023,7 +1061,7 @@ $ad=("</table>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;/**/
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:100;">'.$stream1.'</div></div>');
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:200;">');
 
-if(/*logged() and */true){
+if(/*(!$_GET['first']) and */true){
     subexec('map_units');
     e('<div id="expandarea" style="display:none;z-index:210;">'.$GLOBALS['area_stream'].'</div>');
     e('<div id="attackarea" style="display:none;z-index:220;">'.$GLOBALS['attack_stream'].'</div>');
@@ -1034,7 +1072,7 @@ if(/*logged() and */true){
     $GLOBALS['attack_stream']='&nbsp;';
 }
 
-/*if(logged()){
+/*if((!$_GET['first'])){
     $GLOBALS['units_stream']=$GLOBALS['ss']['units_stream'];
 }else{
     $GLOBALS['units_stream']='';
@@ -1053,17 +1091,17 @@ e('<div style="position:absolute;width:0px;height:0px;"><div style="position:rel
 
 /*echo('<script type="text/javascript">'.nln);
 $d=17;
-$xa=intval($GLOBALS['ss']["use_object"]->x-$d);
-$xb=intval($GLOBALS['ss']["use_object"]->x+$d);
-$ya=intval($GLOBALS['ss']["use_object"]->y-$d);
-$yb=intval($GLOBALS['ss']["use_object"]->y+$d);
+$xa=intval($GLOBALS['ss']['use_object']->x-$d);
+$xb=intval($GLOBALS['ss']['use_object']->x+$d);
+$ya=intval($GLOBALS['ss']['use_object']->y-$d);
+$yb=intval($GLOBALS['ss']['use_object']->y+$d);
 if($xa<1){$xa=1;$xb=1+$d+$d;}
 if($ya<1){$ya=1;$yb=1+$d+$d;}
 if($xb>mapsize){$xb=mapsize;}
 if($yb>mapsize){$yb=mapsize;}
 echo('area_x='.$xa.';'.nln);
 echo('area_y='.$ya.';'.nln);
-//e('alert('.$GLOBALS['ss']["use_object"]->x.');');
+//e('alert('.$GLOBALS['ss']['use_object']->x.');');
 echo('area=['.nln);
 foreach(sql_array("SELECT x,y,hard FROM `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND x>=$xa AND y>=$ya AND x<=$xb AND y<=$yb ORDER BY y,x") as $row){
     list($area_x,$area_y,$area_hard)=$row;

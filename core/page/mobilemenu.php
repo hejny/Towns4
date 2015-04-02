@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/mobilemenu.php
@@ -84,7 +84,7 @@ e(nbsp2);ahref(trr(lr('title_plus'),$textsize,1),$url);
 br();imge('design/blank.png','',$spacesize,$spacesize);br();
 
 
-//$cooldown=-(time()-$GLOBALS['ss']["use_object"]->set->ifnot("automine_time",0)-(600));
+//$cooldown=-(time()-$GLOBALS['ss']['use_object']->set->ifnot("automine_time",0)-(600));
 //border(iconr("e=mine;ee=attack-automine;ref=towns","fx_automine","{automine}",$iconsize),$border2,$iconsize,NULL,NULL,($cooldown>0)?$cooldown:false);
 //e(space);
 

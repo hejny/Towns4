@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/quest/func_core.php
@@ -14,7 +14,7 @@
 
 function a_quest($id){
 
-                 $GLOBALS['ss']["query_output"]->add("success",lr('repair_success'));
-                 $GLOBALS['ss']["query_output"]->add("1",1);
+                 $GLOBALS['ss']['query_output']->add("success",lr('repair_success'));
+                 $GLOBALS['ss']['query_output']->add("1",1);
 }
 ?>

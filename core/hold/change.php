@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/hold/change.php
@@ -18,13 +18,13 @@ if($_GET["id"]){
 }elseif($GLOBALS['get']["id"]){
     $id=$GLOBALS['get']["id"];
 }else{
-    $id=$GLOBALS['ss']["use_object"]->set->ifnot('changeid',0);
+    $id=$GLOBALS['ss']['use_object']->set->ifnot('changeid',0);
 }
 
 if($_GET['q']){aac();}
 //--------------------------
 if(ifobject($id)){
- $GLOBALS['ss']["use_object"]->set->add('changeid',$id);    
+ $GLOBALS['ss']['use_object']->set->add('changeid',$id);
     
 $object= new object($id);
 $eff=$object->supportF('change','eff');

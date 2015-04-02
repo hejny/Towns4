@@ -206,8 +206,8 @@ CREATE TABLE `[mpx]text` (
 
 
 CREATE TABLE `[mpx]memory` (
- `id` varchar(43) COLLATE utf8_czech_ci NOT NULL , 
- `key` varchar(100) COLLATE utf8_czech_ci NOT NULL , 
+ `id` varchar(64) COLLATE utf8_czech_ci NOT NULL ,
+ `key` varchar(100) COLLATE utf8_czech_ci NOT NULL ,
  `value` text COLLATE utf8_czech_ci NOT NULL , 
  `time` int(11) NOT NULL , 
  UNIQUE KEY `id` (`id`,`key`),
@@ -345,8 +345,66 @@ FROM [mpx]positions
 LEFT JOIN [mpx]objects ON [mpx]positions.id=[mpx]objects.id
 LEFT JOIN [mpx]objects_tmp ON [mpx]positions.id=[mpx]objects_tmp.id
 ;
---COMMENT = 'Spojení tabulek objects, objects_tmp a positions'
---parametr in a hard je zatím provizorní a vždy 0
+
+
+
+#----------------------------------------------
+
+CREATE VIEW `[mpx]pos_obj_ter` AS
+SELECT
+  `id`,
+  `name`,
+  `type`,
+  `origin`,
+  `func`,
+  `hold`,
+  `res`,
+  `profile`,
+  `set`,
+  `fp`,
+  `fs`,
+  `fc`,
+  `fr`,
+  `fx`,
+  `own`,
+  `superown`,
+  `ww`,
+  `x`,
+  `y`,
+  `traceid`,
+  `starttime`,
+  `readytime`,
+  `stoptime`
+FROM
+`[mpx]pos_obj`
+UNION
+SELECT
+  '4' AS id,
+  CONCAT('{terrain_',terrain,'}') AS `name`,
+  'terrain' AS `type`,
+  '' AS `origin`,
+  '' AS `func`,
+  '' AS `hold`,
+  `terrain` AS `res`,
+  '' AS `profile`,
+  '' AS `set`,
+  '' AS `fp`,
+  '' AS `fs`,
+  '' AS `fc`,
+  '' AS `fr`,
+  '' AS `fx`,
+  0 AS `own`,
+  0 AS `superown`,
+  `ww` AS `ww`,
+  `x`,
+  `y`,
+  0 AS `traceid`,
+  0 AS `starttime`,
+  0 AS `readytime`,
+  0 AS `stoptime`
+FROM  [mpx]map
+;
+
 
 #---------------------------------------------------------------------------------------------------------------------------Aplikace / Projekty
 
@@ -362,7 +420,7 @@ CREATE TABLE `towns_projects` (
   KEY `group` (`group`),
   KEY `phase` (`phase`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Tabulka projektů'
-
+;
 
 
 #----------------------------------------------
@@ -376,4 +434,4 @@ CREATE TABLE `towns_projects_tags` (
   KEY `projectid` (`projectid`),
   KEY `tag` (`tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Značky u jednotlivých projektů'
-
+;

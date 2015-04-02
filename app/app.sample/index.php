@@ -1,3 +1,0 @@
-<?php
-//@todo ukázková aplikace
-?>

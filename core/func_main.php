@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/func_main.php
@@ -543,7 +543,7 @@ if($GLOBALS['ss']["lang"]){
     $lang=lang;
 }
 if($GLOBALS['get']["lang"]){$lang=$GLOBALS['get']["lang"];}
-if($_GET['lang']){$lang=$_GET['lang'];}
+if($_GET['locale']){$lang=$_GET['locale'];}//@todo Nahradit v celé aplikaci zastaralý název "lang"
 if($_GET['rvscgo']==1){$lang='rv';}
 if($lang=='cz'){$lang='cs_CZ';}
 $GLOBALS['ss']["lang"]=$lang;

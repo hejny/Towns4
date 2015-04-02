@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/aac.php
@@ -20,13 +20,13 @@ echo($tmp);br(2);*/
 	}else{
 
 		//------------------- statistika, playtime
-		$tdiff=time()-$GLOBALS['ss']["log_object"]->t;
+		$tdiff=time()-$GLOBALS['ss']['log_object']->t;
 		
 		if($tdiff<=60*4){
-		    $GLOBALS['ss']["log_object"]->pt+=$tdiff;
+		    $GLOBALS['ss']['log_object']->pt+=$tdiff;
 		}
 		
-	    $GLOBALS['ss']["log_object"]->t=time();
+	    $GLOBALS['ss']['log_object']->t=time();
 
 
 
@@ -55,8 +55,8 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 //subjs('dockbuttons',false,false,true);
 //-------------------obnovení mapy
 
-    $xc_=$GLOBALS['ss']["use_object"]->set->ifnot("map_xc",false);
-	$yc_=$GLOBALS['ss']["use_object"]->set->ifnot("map_yc",false);
+    $xc_=$GLOBALS['ss']['use_object']->set->ifnot("map_xc",false);
+	$yc_=$GLOBALS['ss']['use_object']->set->ifnot("map_yc",false);
 	
     //----
     

@@ -483,9 +483,9 @@ if(!$_GET['onlyaac'] and !$_GET['limit']) {
                 $email=trim($_POST['email']);
 
                 if (!$text) {
-                    e('<span class="error">'.lr('app_projects_write_error_notext').'</span>');
+                    e('<span class='error'>'.lr('app_projects_write_error_notext').'</span>');
                 }elseif(!check_email($email)){
-                    e('<span class="error">'.lr('app_projects_write_error_email').'</span>');
+                    e('<span class='error'>'.lr('app_projects_write_error_email').'</span>');
                 }else{
 
                     //----------------Malé / Velké Zprávy

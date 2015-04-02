@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2013
+   © Pavel Hejný | 2011-2015
    _____________________________
 
    core/page/map_units.php
@@ -184,8 +184,8 @@ foreach($array as $row){//WHERE res=''//modelnamape//
     //------------------------------------------------------------------------------------------------------pozice
     
     /*if($id==$GLOBALS['ss']['useid']){
-        $_xc=$GLOBALS['ss']["use_object"]->x;
-        $_yc=$GLOBALS['ss']["use_object"]->y;
+        $_xc=$GLOBALS['ss']['use_object']->x;
+        $_yc=$GLOBALS['ss']['use_object']->y;
         //$text=($_xc.','.$_yc);
         
     }else{*/
@@ -293,9 +293,9 @@ foreach($array as $row){//WHERE res=''//modelnamape//
        if($onmap and ($attack or $own!=$GLOBALS['ss']['useid'])){
 	    if($own!=$GLOBALS['ss']['useid']){$attack=1;$aa=gr;}else{
 		$aa=gr;
-		//$attack_mafu=$GLOBALS['ss']["use_object"]->set->val("attack_mafu");
+		//$attack_mafu=$GLOBALS['ss']['use_object']->set->val("attack_mafu");
 		//list($attack_ma)=explode('-',$attack_mafu);
-		$set=$GLOBALS['ss']["use_object"]->set->val("set");
+		$set=$GLOBALS['ss']['use_object']->set->val("set");
 		$set=str2list(xx2x($set));
 		$attack_mafu=$set['attack_mafu'];
 		list($attack_ma)=explode('-',$attack_mafu);
@@ -447,7 +447,7 @@ foreach($array as $row){//WHERE res=''//modelnamape//
         
         if($onmap){
 
-            if(contentlang(id2name($GLOBALS['config']['register_building']))==$name and logged()){ 
+            if(contentlang(id2name($GLOBALS['config']['register_building']))==$name and !$_GET['first']){
                 $say=id2name($own);
                 if(!is_numeric($say)){
                         $say=str_replace(' ','&nbsp;',$say);
