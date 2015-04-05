@@ -284,12 +284,6 @@ if($quest){
 			
 			if($('#helpnumber_<?php e($number); ?>').attr('dragging')=='2'){
 
-				/*console.log('<?=$rand ?>_<?=$number ?> <?=$helpid ?>');*/
-				
-				/*display=$('#helpnumber_<?php e($number); ?>').css('display');
-				visibility=$('#helpnumber_<?php e($number); ?>').css('visibility');
-				position && position.left!=0 && display!=='none' && visibility!=='hidden'*/
-				
 
 				baseid=$('#helpnumber_<?php e($number); ?>').attr('baseid');
 
@@ -299,7 +293,6 @@ if($quest){
 
 					if($('#'+baseid).length==0){
 
-						/*setTimeout(function(){*/
 
 							if(<?php e($number); ?>==document.aachelp)
 							if($('#'+baseid).length==0){
@@ -312,9 +305,6 @@ if($quest){
 							    	if(alerthelp)alert(baseid+' už exists!');
 							}
 
-						/*},4000);*/
-
-
 
 					}else{
 
@@ -326,25 +316,16 @@ if($quest){
 						
 						var position = $('#'+baseid).offset();
 
-						/*if($('#helpnumber_<?php e($number); ?>').attr('not')==1){
-							//alert('ok');
-							clearInterval(interval_<?php e($number-1); ?>);
-							$('#helpnumber_<?php e($number-1); ?>').remove();
-							$('#helpnumber_<?php e($number); ?>').attr('not',0);
-						}*/
 
 
-						/*------------------------------------------------------------------------------Click Bind----*/
-						/*setInterval(function(){*/
+						//------------------------------------------------------------------------------Click Bind----
+
 
 						if($('#<?php e($helpid); ?>').length>0){
 						if($('#<?php e($helpid); ?>').attr('binded')!=1){
 
 
 							if(alerthelp)alert('binding to <?php e($number); ?> <?php e($helpid); ?>');
-
-							/*$('#<?php e($helpid); ?>').draggable();
-							console.log($('#<?php e($helpid); ?>'));*/
 
 							if(alerthelp)
 							$('#<?php e($helpid); ?>').append('click');
@@ -362,27 +343,19 @@ if($quest){
 
 
 							});
-							/*$('#<?php e($helpid); ?>').bind('mouseenter', function() {
-
-								if(alerthelp)alert('hoover'+document.aachelp+'==<?php e($number); ?>');
-
-
-							});*/
 
 
 
 							$('#<?php e($helpid); ?>').attr('binded',1);
 						}}
 
-						/*},500);*/
-						/*-------------------------------------------------------------------------------*/
+						//-------------------------------------------------------------------------------
 
 						lasttime=parseFloat($('#helpnumber_<?php e($number); ?>').attr('lasttime'));
 
 						aactime = new Date();
 						aactime = aactime.getTime();
 
-						/*alert(aactime+' , '+lasttime);*/
 						if(lasttime+(1000/fps_quick)<aactime){
 							ax=position.left-30;
 							ay=position.top-30;
@@ -396,15 +369,13 @@ if($quest){
 								y=parseFloat($('#helpnumber_<?php e($number); ?>').css('top'))-ay;
 								lr=parseFloat($('#helpnumber_<?php e($number); ?>').attr('lr'));
 
-								/*if(Math.sqrt(Math.abs(x)+Math.abs(y))<7){
-									xm+=(1-2*Math.random())*20;
-									ym+=(1-2*Math.random())*20;
-								}*/
 
-								q=0.985+(Math.sqrt(Math.abs(x)+Math.abs(y))/200);
+								//q=0.985+(Math.sqrt(Math.abs(x)+Math.abs(y))/200);
+								//k=8/(q*q*q);
+
+                                q=1.1+(Math.sqrt(Math.abs(x)+Math.abs(y))/200);
 								k=8/(q*q*q);
 
-				
 								x=(x/q)+((lr*y)/k);
 								y=(y/q)+((-lr*x)/k);
 
@@ -436,6 +407,7 @@ if($quest){
 
 			}
 		},10);
+        /**/
 
 		<?php
 	
