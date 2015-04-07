@@ -311,45 +311,11 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 	if(!$nothing/** and true/**/){
 
 
+   if(logged()){ ?>
 
 
-        if($_GET['first']){ ?>
+        <script type="text/javascript">
 
-            <script type="text/javascript">
-                $(function() {
-
-                    $('#draglayer').css({
-                        //'-webkit-filter': 'blur(13px)',
-                        //'-moz-filter': 'blur(13px)',
-                        'filter': 'blur(13px)'
-
-                    });
-
-                    /*$('#draglayer').attr('blur',30);
-
-                    setInterval(function() {
-
-                        blur=parseInt($('#draglayer').attr('blur'));
-                        blur=blur-0.1;
-                        $('#draglayer').attr('blur',blur);
-
-                        $('#draglayer').css({
-                            '-webkit-filter': 'blur('+blur+'px)',
-                            '-moz-filter': 'blur('+blur+'px)',
-                            'filter': 'blur('+blur+'px)'
-
-                        });
-                    },100);*/
-                });
-                </script>
-
-        <?php }
-
-        if(logged()){ ?>
-
-<script type="text/javascript">
-
-	<?php /*if($_GET['q'] and true){subjs('quest-mini');}*/ ?>
 
     /*---------------------------------POSITION*/
         function pos2pos(xt,yt){
@@ -379,11 +345,14 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
 			 }).bind('selectstart', function(){ return false; });
+
+
+
         /*---------------------------------DRAG*/
         drag=0;
         /*parseMap();*/
 
-      
+
 
 		$('#draglayer').draggable({ disabled: <?php e($_GET['first']?'true':'false') ?>, distance:<?php e($GLOBALS['dragdistance']); ?> });
         $( "#draglayer" ).bind( "dragstart", function(event, ui){
@@ -1002,6 +971,9 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
 
 <?php } ?>
 
+
+
+
 <div style="top:<?php  echo($yy); ?>;left:<?php  echo($xx); ?>;z-index:20;" id="draglayer">
 <?php
 
@@ -1140,13 +1112,9 @@ echo('</script>');*/
 </div>
 
 
-<?php 
-}else{
-//echo('to je sračka');
-//$url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww']);
-//click($url,1);
-//js('alert(1);');
+<?php
+
 
 }
 ?>
-<!--<div style="position:absolute;top:0;left:0;z-index:23;" id="zaloha_u">ahoj</div>-->
+
