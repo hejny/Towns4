@@ -864,6 +864,16 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		$('#units_new').html($('#units_new').html()+newhtml);
 
 
+
+            //----------------------------------------
+            infinario.track('create', {
+                name: id+' created on ['+build_x+','+build_y+']',
+                status: 'completed',
+                player_level: <?=sql_1number('SELECT COUNT(`id`) FROM [mpx]objects WHERE type=\'building\' AND `own`='.$GLOBALS['ss']['useid'])?>
+            });
+            //----------------------------------------
+
+
 	    }
 
             <?php
