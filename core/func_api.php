@@ -11,6 +11,9 @@
 
 unset($GLOBALS['ss']['use_object']);
 unset($GLOBALS['ss']['log_object']);
+//--------------------------------------------
+
+if(!$GLOBALS['ss']["ww"])$GLOBALS['ss']["ww"]=1;
 
 //======================================================================================================================townsfunction
 
@@ -136,7 +139,7 @@ function townsfunction($query,$q='a'){
 		                    if(!$cooldown)$cooldown=$GLOBALS['config']['f']['default']['cooldown'];
 		                    $time=($cooldown-time()+$lastused);
 		                    
-		                    //-------------------------------------------------------------------ncgc
+		                    //-------------------------------------------------------------------Náhradní creator
 		                    if($time>0 and $funcname=='create' AND !$GLOBALS['ncgc']){
 		                        //e('ncgc');br();
 		                        
@@ -193,6 +196,10 @@ function townsfunction($query,$q='a'){
                     /*$tmp=($GLOBALS['ss']['aac_object']->func->vals2list());
                     $tmp[$funcname_]['params']['lastused']=time();
                     $GLOBALS['ss']['aac_object']->func=new func($tmp);*/
+
+                    foreach($params as &$param){
+                        $param=addslashes($param);
+                    }
                     $paramsx=implode("','",$params);
                     $paramsx="'$paramsx'";
 
@@ -339,7 +346,7 @@ function xquery($a,$b='',$c='',$d='',$e='',$f='',$g='',$h='',$i=''){
 
         }else{*/
 
-        if(!$GLOBALS['ss']['terminal_nolog']) {
+        if(substr($querystring,0,4)!='info') {
             $GLOBALS['ss']['terminal'][] = array($querystring, $response);
         }
 

@@ -77,6 +77,7 @@ class object{
                 $this->expand_=$row["expand"];
                 $this->block_=$row["block"];
                 $this->attack_=$row["attack"];
+                $this->group_=$row["group"];
                 $this->own=$row["own"];
 				$this->superown=$row["superown"];
                 $this->ownname=$row["ownname"];
@@ -140,6 +141,7 @@ class object{
                 'expand' => '',
                 'block' => '',
                 'attack' => '',
+                'group' => '',
                 'create_lastused' => '',
                 'create_lastobject' => '',
                 'create2_lastused' => '',
@@ -181,7 +183,8 @@ class object{
             $this->hard="";
             $this->expand_="";
             $this->block_="";
-	    $this->attack_="";
+	        $this->attack_="";
+            $this->group_="";
             $this->own="";
 			$this->superown="";
             $this->ownname="";
@@ -332,11 +335,16 @@ class object{
                     $this->fr=$this->hold->fp();  
                     //------------------------------FX
                     $this->fx=$this->fp+$this->fr;
-                    //------------------------------HARD,EXPAND,block,ATTACK
+
+                    //------------------------------GROUP
+                    $this->group_=$funcs['group']['profile']['group'];
+
+                    //------------------------------EXPAND,BLOCK,ATTACK
                     //$tmp=$funcs["hard"]["params"]["hard"];$this->hard=$tmp[0]*$tmp[1];//r(444);r($tmp);
 					$tmp=$funcs["expand"]["params"]["distance"];$this->expand_=$tmp[0]*$tmp[1];    
 					$tmp=$funcs["block"]["params"]["block"];$this->block_=$tmp[0]*$tmp[1];
 					$tmp=$funcs["attack"]["params"]["distance"];$this->attack_=$tmp[0]*$tmp[1];
+
                     //------------------------------TIME
                     $this->t=time();   
                     //------------------------------FP=FS
@@ -384,7 +392,9 @@ class object{
                     'superown' => $this->superown,
                     'expand' => $this->expand_,
                     'block' => $this->block_,
-                    'attack' => $this->attack_
+                    'attack' => $this->attack_,
+                    'group' => $this->group_
+                    //@todo Zprovoznit rušení  staveb
                     /*'create_lastused' => $this->xxx,
                     'create_lastobject' => $this->xxx,
                     'create2_lastused' => $this->xxx,
@@ -406,33 +416,6 @@ class object{
                     //'stoptime' => $this->xxx
                 ));
                 //------------------
-
-                /*$query=("UPDATE  `[mpx]pos_obj` SET
-                `type` =  '".($this->type)."',
-                `fp` =  '".($this->fp)."',
-                `fs` =  '".($this->fs)."',
-                `fr` =  '".($this->fr)."',
-                `fx` =  '".($this->fx)."',
-                `fc` =  '".($this->fc)."',
-                ".//`fx` =  ".($this->fr)."+(SELECT SUM(`fr`) FROM `objects` AS tmp WHERE tmp.`own`='".$this->id."' OR tmp.`in`='".$this->id."'),
-                //UPDATE objects SET `fx` = 10+(SELECT 1 FROM objects AS xxxx)
-                "
-                `origin` =  '".implode(',',$this->origin)."',
-                `name` =  '".($this->name)."',
-                `func` =  '".($this->func->vals2str())."',
-                `set` =  '".($this->set->vals2str())."',
-                `res` =  '".$this->res."',
-                `profile` =  '".($this->profile->vals2str())."',
-                `expand` =  '".(($this->expand_))."',
-                `block` =  '".(($this->block_))."',
-                `attack` =  '".(($this->attack_))."',
-                `own` =  '".(($this->own))."',
-                `ww` =  '".(($this->ww))."',
-                `t`=  '".($this->t)."',
-                `pt`=  '".($this->pt)."',
-                `x` =  '".($this->x)."',
-                `y` =  '".($this->y)."'
-                WHERE  id ='".($this->id)."'");*/
 
 
             }
@@ -867,6 +850,7 @@ function trackobject($id){
         'expand' => true,
         'block' => true,
         'attack' => true,
+        'group' => true,
         'create_lastused' => true,
         'create_lastobject' => true,
         'create2_lastused' => true,
@@ -888,15 +872,6 @@ function trackobject($id){
         'stoptime' => time()
     ));
     //------------------
-
-    /*sql_query("
-    INSERT INTO `[mpx]pos_obj`
-    (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, `traceid`, `starttime`, `readytime`, `stoptime`)
-    SELECT
-    ".nextid().", `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `pt`, ".sql($id).", `starttime`, `readytime`, ".$time."
-    FROM
-    `[mpx]pos_obj`
-    WHERE id='".sql($id)."' ");*/
 
     sql_query("UPDATE `[mpx]pos_obj` SET `starttime`='".time()."' WHERE id='".sql($id)."' ");
 

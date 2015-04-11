@@ -398,13 +398,18 @@ function sql_query($q,$w=false){
  * @param (integer) Zobrazit?
  */
 function sql_insert($table,$array,$w=false){
+
+    if(substr($table,0,8)!='townsapp'){
+        $table='[mpx]'.$table;
+    }
+
     $keys=array_keys($array);
     $vals=array_values($array);
     $keys=implodex($keys,',','`');
     $i=0;
     while(isset($vals[$i])){$vals[$i]=sql($vals[$i]);$i++;}
     $vals=implodex($vals,',',"'");
-    $sql="INSERT INTO `[mpx]$table` ($keys) VALUES ($vals)";
+    $sql="INSERT INTO `$table` ($keys) VALUES ($vals)";
     return(sql_query($sql,$w));
 }
 //--------------------------------------------sql_reinsert
@@ -422,6 +427,8 @@ function sql_insert($table,$array,$w=false){
  * @param (integer) Zobrazit?
  */
 function sql_reinsert($table,$table_where,$array,$w=false){
+    //@todo reinserty nefungují pro townsapp
+
     $keys=array_keys($array);
     $vals=array_values($array);
     $i=0;
@@ -451,13 +458,19 @@ function sql_reinsert($table,$table_where,$array,$w=false){
  * @param (integer) Zobrazit?
  */
 function sql_update($table,$table_where,$array,$w=false){
+
+    if(substr($table,0,8)!='townsapp'){
+        $table='[mpx]'.$table;
+    }
+
     $set=array();
     foreach($array as $key=>$row){
         $set[]="`$key`=".sqlx($row);
 
     }
     $set=implode(',',$set);
-    $sql="UPDATE `[mpx]$table` SET $set WHERE $table_where";
+
+    $sql="UPDATE `$table` SET $set WHERE $table_where";
     return(sql_query($sql,$w));
 }
 //--------------------------------------------sql_1data
@@ -494,7 +507,21 @@ function sql_array($q,$w=false){
     $array->execute();
     t('sql_array',$q);
     $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
-    $array = $array->fetchAll();
+    $array = $array->fetchAll(/*PDO::FETCH_NUM*/);
+    return($array);
+}
+//--------------------------------------------sql_array
+function sql_assoc($q,$w=false){
+    $q=sql_mpx($q);
+    if($w==1){r($q);}
+    if($w==2){echo($q);}
+    if($w==3){echo($q.';');br();}
+    $array= $GLOBALS['pdo']->prepare($q);
+    t();
+    $array->execute();
+    t('sql_assoc',$q);
+    $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
+    $array = $array->fetchAll(PDO::FETCH_ASSOC);
     return($array);
 }
 //--------------------------------------------sql_row
@@ -712,12 +739,14 @@ function create_sql($table=false){
     
     $sql=fgc(core.'/create.sql');
     if($table){
+        //@todo Fungování i pro pohledy
         $a=strpos($sql,'CREATE TABLE `[mpx]'.$table.'`');
         $sql=substr($sql,$a);
         $b=strpos($sql,';');
         $sql=substr($sql,0,$b);
     }
     $sql=str_replace('CREATE TABLE','CREATE TABLE IF NOT EXISTS',$sql);
+    $sql=str_replace('CREATE VIEW','CREATE OR REPLACE VIEW',$sql);
     //PH - SQL NEVALIDNI $sql=str_replace('CREATE VIEW','CREATE VIEW IF NOT EXISTS',$sql);
     
     return($sql);

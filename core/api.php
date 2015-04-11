@@ -44,6 +44,12 @@ if($_GET['pretty']) {
     $options = NULL;
 }
 
+if($response['1']=='1'){//@todo udělat přímo v interním API
+    unset($response['1']);
+    $response['ok']=1;
+}
+
+
 $response = json_encode($response,$options);
 
 

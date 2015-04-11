@@ -45,13 +45,15 @@ if($group){
 	infob(contentlang($object->name));
 	
 	if($groupx!='extended'){
-	    $group="func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'";//" AND name!='".$object->name."'";
+	    //$group="func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'";//" AND name!='".$object->name."'";
+        $group='`group`='.sqlx($group);
     }else{
         $group=/*"func LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]$group%'".*/' own='.$object->own." AND name!='".mainname()."'";//" AND name!='".$object->name."'";
 		$GLOBALS['groupby']='GROUP BY name';
     }
 }else{
-	$group="func NOT LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]%'";
+	//$group="func NOT LIKE '%group=class[5]group[3]1[5]profile[3]profile[5]group[7]5[10]%'";
+    $group='`group`!='.sqlx($group);
 }
 
 

@@ -116,7 +116,7 @@ if($q){
  ?>
 </div></div>
 <div style="position:absolute;"><div style="position:relative;left:<?php e(round(-150+(110*0.75*0.5))); ?>px;width:300px;text-align:center;top:<?php e(round(160/$GLOBALS['mapzoom'])+20); ?>;">
-<div id="create-build_message"><div style="border-width: 2px; border-style: solid; border-color: #222222;"><?php info(lr('create_move')); ?></div></div>
+<div id="create-build_message"><div style="border-width: 2px; border-style: solid; border-color: #222222;"><?php info(lr('create_move'),false); ?></div></div>
 </div></div>
 <?php
 if($qq){
