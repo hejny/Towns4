@@ -567,7 +567,7 @@ function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
         
 		$where2='password=\''.md5($param3).'\'';
 
-    }elseif($param2=='facebook'){
+    }elseif($param2=='facebook'){//@todo bezpečnost v externím Towns API
 
         $where2='`fbid`=\''.sql($param3).'\'';;
 
@@ -679,7 +679,7 @@ function a_use($param1){
     //echo("use($param1)");
     $GLOBALS['ss']['use_object'] = new object($param1);
     //$GLOBALS['ss']['use_object']->xxx();
-    //$GLOBALS['ss']['query_output']->add("1",1);
+    $GLOBALS['ss']['query_output']->add("1",1);
     $GLOBALS['ss']['useid']=$GLOBALS['ss']['use_object']->id;
     if($GLOBALS['ss']['use_object']->own!=$GLOBALS['ss']['logid'] and $GLOBALS['ss']['logid']!=$GLOBALS['ss']['useid']){
         $GLOBALS['ss']['query_output']->add('error',"Tento objekt vám nepatří!");

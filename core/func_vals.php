@@ -328,6 +328,10 @@ class func{
          if(!isset($tmp['upgrade']))$this->add('upgrade','upgrade');
          if(!isset($tmp['design']))$this->add('design','design');
          if(!isset($tmp['xmine']))$this->add('xmine','xmine');
+
+         if(!isset($tmp['create']))$this->add('create','create');
+
+
          //}
          //$emptyvals=new vals();
          //login=1;use=1;info=1;item=1;profile_edit=1;set_edit=1;move=2;message=1;image=1

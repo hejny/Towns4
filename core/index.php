@@ -187,8 +187,7 @@ require(root.core."/memory.php");
 //try {
 //define("url","http://localhost/4/");
 //define("notmp",1);
-//--------------------------------------------
-if(!$GLOBALS['ss']["ww"])$GLOBALS['ss']["ww"]=1;
+
 //--------------------------------------------
 //if(w!=$GLOBALS['ss']["worldsession"]){session_destroy();$GLOBALS['ss']["worldsession"]=w;}
 //--------------------------------------------
@@ -319,7 +318,7 @@ if(logged() and !$GLOBALS['ss']['useid']){//e('log1');
 //---------------------------------------------------------------------------------------------
 if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
 
-    $GLOBALS['ss']['terminal_nolog']=true;
+    //$GLOBALS['ss']['terminal_nolog']=true;
 
     //r("t");
     t("xxx");
@@ -348,7 +347,7 @@ if(logged() and $_GET['e']!="none"/**/){//Udělat přímo VVV
     if(!$GLOBALS['ss']['useid']){$GLOBALS['ss']['useid']=$info["id"];}
     if(!$GLOBALS['ss']['logid']){$GLOBALS['ss']['logid']=$info2["id"];}
 
-    $GLOBALS['ss']['terminal_nolog']=false;
+    //$GLOBALS['ss']['terminal_nolog']=false;
 }
 //-------------------------------RESETS
 if($_GET["resetwindow"]){

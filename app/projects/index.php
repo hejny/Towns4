@@ -100,10 +100,10 @@ if(!$_GET['project']){
 
 
 //--------------------------------LOAD projects
-$projects=sql_array('SELECT `id`,`name`,`group`,`phase` FROM [mpx]projects WHERE (SELECT 1 FROM [mpx]projects_tags WHERE [mpx]projects_tags.projectid=[mpx]projects.id AND [mpx]projects_tags.tag=\'private\' LIMIT 1) IS NULL');
+$projects=sql_array('SELECT `id`,`name`,`group`,`phase` FROM townsapp_projects WHERE (SELECT 1 FROM townsapp_projects_tags WHERE townsapp_projects_tags.projectid=townsapp_projects.id AND townsapp_projects_tags.tag=\'private\' LIMIT 1) IS NULL');
 $i=0;
 while($projects[$i]){
-$projects[$i]['tags']=sql_array('SELECT `tag`,`value` FROM [mpx]projects_tags WHERE projectid='.$projects[$i]['id'].' ORDER BY pos ');
+$projects[$i]['tags']=sql_array('SELECT `tag`,`value` FROM townsapp_projects_tags WHERE projectid='.$projects[$i]['id'].' ORDER BY pos ');
 
 $i++;
 }
@@ -417,10 +417,10 @@ if(!$_GET['onlyaac'] and !$_GET['limit']) {
 }else{
 //======================================================================================================================Zobrazení karty projektu
 
-    $project=sql_row('SELECT `id`,trelloid,`name`,`group`,`phase` FROM [mpx]projects WHERE id='.sqlx($_GET['project']));
+    $project=sql_row('SELECT `id`,trelloid,`name`,`group`,`phase` FROM townsapp_projects WHERE id='.sqlx($_GET['project']));
     if($project) {
         //---------------------------------------------
-        $project['tags'] = sql_array('SELECT `tag`,`value` FROM [mpx]projects_tags WHERE projectid=' . $project['id']);
+        $project['tags'] = sql_array('SELECT `tag`,`value` FROM townsapp_projects_tags WHERE projectid=' . $project['id']);
         $project['texts'] = array();
         $project['authors'] = array();
         $project['inbox']=false;
@@ -483,9 +483,9 @@ if(!$_GET['onlyaac'] and !$_GET['limit']) {
                 $email=trim($_POST['email']);
 
                 if (!$text) {
-                    e('<span class='error'>'.lr('app_projects_write_error_notext').'</span>');
+                    e('<span class="error">'.lr('app_projects_write_error_notext').'</span>');
                 }elseif(!check_email($email)){
-                    e('<span class='error'>'.lr('app_projects_write_error_email').'</span>');
+                    e('<span class="error">'.lr('app_projects_write_error_email').'</span>');
                 }else{
 
                     //----------------Malé / Velké Zprávy

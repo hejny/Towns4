@@ -84,7 +84,7 @@ CREATE TABLE `[mpx]config` (
 
 CREATE TABLE `[mpx]objects` (
  `id` int(11) NOT NULL,
- `name` varchar(100) COLLATE utf8_czech_ci DEFAULT NULL , 
+ `name` varchar(1000) COLLATE utf8_czech_ci DEFAULT NULL ,
  `type` varchar(100) COLLATE utf8_czech_ci DEFAULT 'hybrid' COMMENT 'prime=modul,user=hráč,town,town2=pevnost,building,tree,rock',
  `userid` int(11) NOT NULL COMMENT 'Id připojeného uživatele/bota' , 
  `origin` text COLLATE utf8_czech_ci COMMENT 'seznam modulů, ze kterých objekt vzniknul',
@@ -249,6 +249,7 @@ CREATE TABLE `[mpx]objects_tmp` (
  `expand` decimal(10,3) NOT NULL DEFAULT '0.000' COMMENT 'Dálka Expanze',
  `block` decimal(10,3) NOT NULL DEFAULT '0.000' COMMENT 'Hradba?',
  `attack` decimal(10,3) NOT NULL DEFAULT '0.000' COMMENT 'Vzdálenost útoku',
+ `group` varchar(50) NOT NULL DEFAULT '' COMMENT 'Skupina',
  `create_lastused` int(11) NOT NULL COMMENT 'Naposledy použiá funkce create' , 
  `create_lastobject` varchar(20) COLLATE utf8_czech_ci NOT NULL DEFAULT '' COMMENT 'Který objekt staví',
  `create2_lastused` int(11) NOT NULL , 
@@ -263,6 +264,7 @@ CREATE TABLE `[mpx]objects_tmp` (
  KEY `expand` (`expand`),
  KEY `block` (`block`),
  KEY `attack` (`attack`),
+ KEY `group` (`group`),
  KEY `create_lastused` (`create_lastused`),
  KEY `create_lastobject` (`create_lastobject`),
  KEY `create2_lastused` (`create_lastused`),
@@ -326,6 +328,7 @@ SELECT
 [mpx]objects_tmp.`expand` AS `expand`,
 [mpx]objects_tmp.`block` AS `block`,
 [mpx]objects_tmp.`attack` AS `attack`,
+[mpx]objects_tmp.`group` AS `group`,
 [mpx]objects_tmp.`create_lastused` AS `create_lastused`,
 [mpx]objects_tmp.`create_lastobject` AS `create_lastobject`,
 [mpx]objects_tmp.`create2_lastused` AS `create2_lastused`,
@@ -347,16 +350,20 @@ LEFT JOIN [mpx]objects_tmp ON [mpx]positions.id=[mpx]objects_tmp.id
 ;
 
 
-
 #----------------------------------------------
 
+
 CREATE VIEW `[mpx]pos_obj_ter` AS
-SELECT
+/*SELECT
   `id`,
   `name`,
   `type`,
   `origin`,
   `func`,
+  `group`,
+  `expand`,
+  `block`,
+  `attack`,
   `hold`,
   `res`,
   `profile`,
@@ -377,19 +384,23 @@ SELECT
   `stoptime`
 FROM
 `[mpx]pos_obj`
-UNION
+UNION*/
 SELECT
   '4' AS id,
   CONCAT('{terrain_',terrain,'}') AS `name`,
   'terrain' AS `type`,
   '' AS `origin`,
   '' AS `func`,
+  `terrain` AS `group`,
+  0 AS `expand`,
+  0 AS `block`,
+  0 AS `attack`,
   '' AS `hold`,
-  `terrain` AS `res`,
+  CONCAT(`terrain`,',',`x`,',',`y`) AS `res`,
   '' AS `profile`,
   '' AS `set`,
-  '' AS `fp`,
-  '' AS `fs`,
+  100 AS `fp`,
+  100 AS `fs`,
   '' AS `fc`,
   '' AS `fr`,
   '' AS `fx`,
@@ -409,7 +420,7 @@ FROM  [mpx]map
 #---------------------------------------------------------------------------------------------------------------------------Aplikace / Projekty
 
 
-CREATE TABLE `towns_projects` (
+CREATE TABLE `townsapp_projects` (
   `id` int(11) NOT NULL COMMENT 'ID projektu',
   `trelloid` varchar(24) COLLATE utf8_czech_ci NOT NULL COMMENT 'Trello ID projektu',
   `name` varchar(200) COLLATE utf8_czech_ci NOT NULL,
@@ -426,7 +437,7 @@ CREATE TABLE `towns_projects` (
 #----------------------------------------------
 
 
-CREATE TABLE `towns_projects_tags` (
+CREATE TABLE `townsapp_projects_tags` (
   `projectid` int(11) NOT NULL COMMENT 'ID projektu',
   `tag` varchar(50) COLLATE utf8_czech_ci NOT NULL COMMENT 'značka',
   `value` text COLLATE utf8_czech_ci NOT NULL COMMENT 'hodnota',

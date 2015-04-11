@@ -16,7 +16,7 @@ msgstr ""
 
 # SEO, Meta - title
 msgid "app_title"
-msgstr "Towns - strategická kreativní online hra"
+msgstr "Strategická kreativní online hra - Towns.cz"
 
 
 # SEO, Meta - description
@@ -1218,7 +1218,7 @@ msgid "create_master_surkey"
 msgstr "Suroviny"
 
 msgid "create_move"
-msgstr "Přesunˇ budovu tam, kde ji chceš postavit"
+msgstr "Přesu&#328;  budovu tam, kde ji chceš postavit"
 
 msgid "create_ok_join"
 msgstr "Budova bude připojena k budově [0]"
@@ -1729,6 +1729,12 @@ msgstr "Rozebrat budovu"
 
 msgid "f_dismantle_prompt"
 msgstr "Opravdu chceš rozebrat tuto budovu?"
+
+msgid "dismantle_error_not_allowed"
+msgstr "Tuto budovu nemůžeš rozebrat."
+
+msgid "dismantle_error_main_building"
+msgstr "Hlavní budovu nemůžeš rozebrat."
 
 msgid "f_expand"
 msgstr "Expanze"

@@ -1061,6 +1061,9 @@ if(/*(!$_GET['first']) and */true){
 }*/
 
 e('</div></div>');
+
+
+
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:200;display:none;" id="grid">'.$stream3.'</div></div>');
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:300;">'.$stream2.'</div></div>');
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:400;" id="units_stream">'.$GLOBALS['units_stream']/**/.'</div></div>');

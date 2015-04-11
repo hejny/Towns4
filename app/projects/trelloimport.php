@@ -69,16 +69,16 @@ foreach($boards as $board){
             br();
             //----------------Zpracování tabule - Vytvoření projektu v DB
 
-            $projectid=sql_1number('SELECT id FROM [mpx]projects WHERE trelloid='.sqlx($board->id));
+            $projectid=sql_1number('SELECT id FROM townsapp_projects WHERE trelloid='.sqlx($board->id));
             if($projectid){
-                sql_update('projects',"id='$projectid'",array(
+                sql_update('townsapp_projects',"id='$projectid'",array(
                     'name' => $project,
                     'group' => $group,
                     'phase' => $phase
                 ));
             }else {
-                $projectid = sql_1number('SELECT max(id) FROM [mpx]projects') + 1;
-                sql_insert('projects', array(
+                $projectid = sql_1number('SELECT max(id) FROM townsapp_projects') + 1;
+                sql_insert('townsapp_projects', array(
                     'id' => $projectid,
                     'trelloid' => $board->id,
                     'name' => $project,
@@ -87,8 +87,8 @@ foreach($boards as $board){
                 ));
             }
             //----------------Zpracování tabule - Štítku projektu - Smazání z databáze
-            //$projecttags=sql_array('SELECT tag,value FROM [mpx]projects_tags WHERE projectid='.$projectid);
-            sql_query('DELETE FROM [mpx]projects_tags WHERE projectid='.$projectid );
+            //$projecttags=sql_array('SELECT tag,value FROM townsapp_projects_tags WHERE projectid='.$projectid);
+            sql_query('DELETE FROM townsapp_projects_tags WHERE projectid='.$projectid );
 
             //----------------Zpracování tabule - Štítku projektu - Nové
             //e($board->id);
@@ -135,7 +135,7 @@ foreach($boards as $board){
 
                         //------------------INSERT projects_tags
                         if($tag) {
-                            sql_insert('projects_tags', array(
+                            sql_insert('townsapp_projects_tags', array(
                                 'projectid' => $projectid,
                                 'tag' => $tag,
                                 'value' => $value,
