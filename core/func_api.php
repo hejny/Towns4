@@ -559,7 +559,7 @@ function block1test($type,$x,$y){
 
 	}elseif($type=='B'){
 
-		$cc=sql_1data("SELECT terrain FROM [mpx]map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+		$cc=sql_1data("SELECT res FROM [mpx]pos_obj WHERE `type`='terrain' AND `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 		//e($cc);			
 		if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
 
@@ -623,7 +623,7 @@ while($i<=$distx){
 				return($cc);
 			}
 
-			$cc=sql_1data("SELECT terrain FROM [mpx]map WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
+			$cc=sql_1data("SELECT res FROM [mpx]objects WHERE `type`='terrain' AND `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 			//e($cc);			
 			if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
 

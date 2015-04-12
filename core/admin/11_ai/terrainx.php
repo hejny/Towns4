@@ -32,9 +32,17 @@ if($_GET['terrainx']){
 
 		//r($func);
 
+        //@todo Záznam změny terénů
 
-		sql_query("UPDATE [mpx]map SET terrain='$terrain' WHERE `ww`=$ww AND $distance>sqrt(POW(`x`-$x,2)+POW(`y`-$y,2)) ",2);br();
+
+
+
+        //echo($terrain);
+		sql_query("UPDATE [mpx]positions SET id='".(1000+intval(substr($terrain,1)))."' WHERE 'terrain'=(SELECT `type` FROM [mpx]objects WHERE `[mpx]positions`.`id`=`[mpx]objects`.`id`)  AND `ww`=$ww AND $distance>sqrt(POW(`x`-$x,2)+POW(`y`-$y,2)) ",2);br();
 		sql_query("UPDATE `[mpx]pos_obj` SET stoptime='".time()."' WHERE `id`=$id LIMIT 1",2);br();
+
+
+
 		//sql_query("DELETE FROM `[mpx]pos_obj` WHERE `id`=$id LIMIT 1",2);br();
 		changemap($x,$y,2);
 		changemap($x+5,$y,2);

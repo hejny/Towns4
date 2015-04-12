@@ -144,7 +144,7 @@ contenu_a();
 		if(!$bound){$bound=$value;}
 
 		$row=array();	
-		$row[]=imgr('icons/res_'.$key.'.png',lr('res_'.$key),35);
+		$row[]=imgr('icons/res_'.$key.'.png',lr('res_'.$key),35);//.trr(lr('res_'.$key),array(20,'999999'));
 		//<b>'."<span id=\"res_".$key."\">".$valuex."</span>".' / '.$bound.'</b>
 
 		if($key=='wood'){$color='998866';}
@@ -171,7 +171,7 @@ contenu_a();
 	}}}
 
 	br();
-	array2table($table);
+	array2table($table/*,200*/);
 	//js($script);
 
 

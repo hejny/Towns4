@@ -281,11 +281,11 @@ function a_list($cols,$where=0,$order=false,$limit=0){
 
     //----------------SELECT
 
-    //$query="SELECT $cols2 FROM [mpx]pos_obj_ter WHERE $where2 AND ".objt()." $order2 $limit";
-    //$GLOBALS['ss']['query_output']->add('query',$query);
-    //$objects=sql_assoc($query);
+    $query="SELECT $cols2 FROM [mpx]pos_obj WHERE $where2 AND ".objt()." $order2 $limit";
+    $GLOBALS['ss']['query_output']->add('query',$query);
+    $objects=sql_assoc($query);
 
-    $query1="SELECT $cols2 FROM [mpx]pos_obj WHERE $where2 AND ".objt()." $order2 $limit";
+    /*$query1="SELECT $cols2 FROM [mpx]pos_obj WHERE $where2 AND ".objt()." $order2 $limit";
     $query2="SELECT $cols2 FROM [mpx]pos_obj_ter WHERE $where2 AND ".objt()." $order2 $limit";
 
     $GLOBALS['ss']['query_output']->add('query1',$query1);
@@ -296,10 +296,8 @@ function a_list($cols,$where=0,$order=false,$limit=0){
 
     $objects=array_merge($objects1,$objects2);
 
-
     if($limitnumber)
-    array_splice($objects, $limitnumber);
-
+    array_splice($objects, $limitnumber);*/
 
     foreach($objects as &$object){
         foreach($object as $key=>&$value){

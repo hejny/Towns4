@@ -137,20 +137,6 @@ CREATE TABLE `[mpx]positions` (
 #----------------------------------------------
 
 
-CREATE TABLE `[mpx]map` (
- `x` int(11) NOT NULL ,
- `y` int(11) NOT NULL ,
- `ww` int(11) NOT NULL COMMENT 'Podsvět' ,
- `terrain` varchar(100) COLLATE utf8_czech_ci NOT NULL COMMENT 'Terén z design/terrain' ,
- `name` varchar(100) COLLATE utf8_czech_ci NOT NULL COMMENT 'nepoužíváné' ,
- UNIQUE KEY `position` (`x`,`y`,`ww`),
- KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='Mapa světa - terény' ;
-
-
-#----------------------------------------------
-
-
 CREATE TABLE `[mpx]quest` (
  `name` varchar(200) COLLATE utf8_czech_ci NOT NULL , 
  `quest` int(11) NOT NULL COMMENT 'ID questu - Např. tutorial' , 
@@ -347,73 +333,6 @@ SELECT
 FROM [mpx]positions
 LEFT JOIN [mpx]objects ON [mpx]positions.id=[mpx]objects.id
 LEFT JOIN [mpx]objects_tmp ON [mpx]positions.id=[mpx]objects_tmp.id
-;
-
-
-#----------------------------------------------
-
-
-CREATE VIEW `[mpx]pos_obj_ter` AS
-/*SELECT
-  `id`,
-  `name`,
-  `type`,
-  `origin`,
-  `func`,
-  `group`,
-  `expand`,
-  `block`,
-  `attack`,
-  `hold`,
-  `res`,
-  `profile`,
-  `set`,
-  `fp`,
-  `fs`,
-  `fc`,
-  `fr`,
-  `fx`,
-  `own`,
-  `superown`,
-  `ww`,
-  `x`,
-  `y`,
-  `traceid`,
-  `starttime`,
-  `readytime`,
-  `stoptime`
-FROM
-`[mpx]pos_obj`
-UNION*/
-SELECT
-  '4' AS id,
-  CONCAT('{terrain_',terrain,'}') AS `name`,
-  'terrain' AS `type`,
-  '' AS `origin`,
-  '' AS `func`,
-  `terrain` AS `group`,
-  0 AS `expand`,
-  0 AS `block`,
-  0 AS `attack`,
-  '' AS `hold`,
-  CONCAT(`terrain`,',',`x`,',',`y`) AS `res`,
-  '' AS `profile`,
-  '' AS `set`,
-  100 AS `fp`,
-  100 AS `fs`,
-  '' AS `fc`,
-  '' AS `fr`,
-  '' AS `fx`,
-  0 AS `own`,
-  0 AS `superown`,
-  `ww` AS `ww`,
-  `x`,
-  `y`,
-  0 AS `traceid`,
-  0 AS `starttime`,
-  0 AS `readytime`,
-  0 AS `stoptime`
-FROM  [mpx]map
 ;
 
 

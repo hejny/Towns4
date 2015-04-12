@@ -129,7 +129,11 @@ if($_GET['create']){
                 $terrains=array(2,3,4,5,6,7,10,11);
                 shuffle($terrains);
                 $terrain='t'.$terrains[0];
-                list(list($x,$y,$terrain))=sql_array("SELECT x,y,terrain FROM [mpx]map WHERE ww='".$GLOBALS['ss']['ww']."' AND terrain='$terrain' ORDER BY rand() LIMIT 1",3);
+                //@todo Sql ROW
+                list(list($x,$y,$terrain))=sql_array("SELECT x,y,res FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND terrain='$terrain' ORDER BY rand() LIMIT 1",3);
+                //$terrain='t'.($terrain-1000);
+
+
 				if($newtexts){
 					$title=implode(', '.nln,$newtexts).nln.'------'.nln;//vývojová novinka
 				}else{
