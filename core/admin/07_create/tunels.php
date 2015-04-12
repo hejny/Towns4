@@ -48,8 +48,8 @@ if($_GET['create']){
     list($ww1,$ww2)=explode(',',$_GET['create']);
 
     //------------------Create 2+ positons
-    while(count($positions)<2) {
-        list(list($start_x, $start_y)) = sql_array("SELECT x,y FROM [mpx]map WHERE terrain='" . $GLOBALS['ss']['tunel_terrain'] . "' AND ww=" . sqlx($ww1) . " ORDER BY RAND() LIMIT 1");
+    while(count($positions)<2) {//@todo Dokončit převod Mapy do objektů
+        list(list($start_x, $start_y)) = sql_array("SELECT x,y FROM [mpx]pos_obj WHERE res='" . $GLOBALS['ss']['tunel_terrain'] . "' AND ww=" . sqlx($ww1) . " ORDER BY RAND() LIMIT 1");
 
         foreach (array($ww1, $ww2) as $aac_ww) {
 
@@ -63,7 +63,7 @@ if($_GET['create']){
             while ($aac_limit > 0) {
 
 
-                $aac_terrain = sql_1data("SELECT terrain FROM [mpx]map WHERE x=" . round($aac_x) . " AND y=" . round($aac_y) . " AND ww=" . sqlx($aac_ww),3);
+                $aac_terrain = sql_1data("SELECT res FROM [mpx]pos_obj WHERE x=" . round($aac_x) . " AND y=" . round($aac_y) . " AND ww=" . sqlx($aac_ww),3);
                 e($aac_terrain.',');
 
                 if ($aac_terrain and !in_array($aac_terrain, $terrains)) {

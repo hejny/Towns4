@@ -507,7 +507,7 @@ if($post["kmennuholnik"]){
 //-=====================================================================================
 if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){echo("<br>mapgenerator<br>");
     if($action=="map"){
-        sql_query("DELETE FROM `[mpx]map` WHERE ww='".$GLOBALS['ss']["ww"]."'",2);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `type`='terrain' AND ww='".$GLOBALS['ss']["ww"]."'",2);
     }
     if($action=="tree"){
         sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%' AND ww='".$GLOBALS['ss']["ww"]."'",2);
@@ -578,7 +578,8 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
     $lp=100;
     $l=rand($la*$lp,$lb*$lp)/$lp;
     //-----
-    $query="INSERT INTO `[mpx]map` (`x`, `y`, `ww`, `terrain`, `name`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','$terrain','')";
+        //@todo Funguje To???
+    $query="INSERT INTO `[mpx]positions` (`x`, `y`, `ww`, `id`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','".(1000+intval($terrain))."')";
     if($action=="map" and $q==0){sql_query($query);echo($query.br);}
     //-----
     if($terrain=="t10" and $action=="tree"){

@@ -82,14 +82,16 @@ if($_GET['wtf']==1){
 
 		$file=tmpfile2("registerx_list","txt","text");
 		$array1=unserialize(file_get_contents($file));
-                    $array2=sql_array("
-                    SELECT `x`,`y` FROM [mpx]map where `ww`='".$GLOBALS['ss']["ww"]."' AND 
+                    /*$array2=sql_array("
+                    SELECT `x`,`y` FROM [mpx]map where `type`='terrain' AND `ww`='".$GLOBALS['ss']["ww"]."' AND
             RAND()>0.9999 AND
                     (`terrain`='t3' OR `terrain`='t4' OR `terrain`='t7' OR `terrain`='t8' OR `terrain`='t9' OR `terrain`='t12' OR `terrain`='t13')  AND 
-                    9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
+                    9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`type`='terrain' AND Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
                     AND
                     0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`))
-                    ORDER BY RAND()");
+                    ORDER BY RAND()");*/
+        exit2('@todo Převod Map do Objects');//@todo Převod Map do Objects
+
 
 		fpc($file,serialize(array_merge($array2,$array1)));
 

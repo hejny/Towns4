@@ -114,7 +114,7 @@ if($sql and $id?ifobject($id):true){
                 $dist=sqrt(pow($x_-$x,2)+pow($y_-$y,2));
                 if($dist>1 or $_GET['terrain']==1){
                         //e(intval($_GET["x"]).','.intval($_GET["y"]));	
-                        $terrain=sql_1data('SELECT `terrain` FROM `[mpx]map` WHERE `ww`='.$GLOBALS['ss']["ww"].' AND `x`='.intval($_GET["xc"]).' AND `y`='.intval($_GET["yc"]).' ');
+                        $terrain=sql_1data('SELECT `res` FROM `[mpx]pos_obj` WHERE `type`=\'terrain\' AND `ww`='.$GLOBALS['ss']["ww"].' AND `x`='.intval($_GET["xc"]).' AND `y`='.intval($_GET["yc"]).' ');
                         echo(lr('terrain_'.$terrain));
 
                         //list($r,$g,$b)=t2rgb($terrain);

@@ -35,8 +35,8 @@ define("imgext", "jpg");
 
 //===============================================================================================================
 if(!defined('mapsize')){
-    $mapsize1=sql_1data('SELECT max(x) FROM [mpx]map WHERE ww=\''.$GLOBALS['ss']["ww"].'\'');
-    $mapsize2=sql_1data('SELECT max(y) FROM [mpx]map WHERE ww=\''.$GLOBALS['ss']["ww"].'\'');
+    $mapsize1=sql_1data('SELECT max(x) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$GLOBALS['ss']["ww"].'\'');
+    $mapsize2=sql_1data('SELECT max(y) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$GLOBALS['ss']["ww"].'\'');
     $mapsize1=intval($mapsize1)+1;
     $mapsize2=intval($mapsize2)+1;
     //echo("($mapsize1,$mapsize2)");

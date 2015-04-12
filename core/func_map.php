@@ -131,7 +131,7 @@ function imgresizeh($img,$height) {
 //=============================================================
 function map1($param,$xc=false,$yc=false,$outfile=false){
     //echo($param);
-    if(!$param){$param=sql_1data("SELECT terrain from `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`=1 AND `y`=1");}
+    if(!$param){$param=sql_1data("SELECT res from `[mpx]pos_obj` WHERE `type`='terrain' AND ww=".$GLOBALS['ss']["ww"]." AND `x`=1 AND `y`=1");}
     if($xc===false or $yc===false){
         $rand=rand(1,7);
     }else{
@@ -653,11 +653,13 @@ function mapbg($xc,$yc){
         }        
         //--------------------
            
-        $array=sql_array("SELECT x,y,terrain from `[mpx]map` WHERE ww=".$GLOBALS['ss']["ww"]." AND `x`>=".round($xc-$exp-$pos)." AND `y`>=".round($yc-$exp-$pos)." AND `x`<".round($xc+$zoom+$exp+$pos+$lvlexp)." AND `y`<".round($yc+$zoom+$exp+$pos+$lvlexp)." ORDER by `y`,`x`");
+        $array=sql_array("SELECT x,y,res from `[mpx]pos_obj` WHERE `type`='terrain' AND ww=".$GLOBALS['ss']["ww"]." AND `x`>=".round($xc-$exp-$pos)." AND `y`>=".round($yc-$exp-$pos)." AND `x`<".round($xc+$zoom+$exp+$pos+$lvlexp)." AND `y`<".round($yc+$zoom+$exp+$pos+$lvlexp)." ORDER by `y`,`x`");
         
         
         foreach($array as $row){
             list($x,$y,$terrain)=$row;
+            //$terrain='t'.($terrain-1000);
+
             $data[$y-($yc-$exp-$pos)][$x-($xc-$exp-$pos)]=$terrain; 
         } 
         //--------------------
@@ -1143,8 +1145,8 @@ function worldmap($width=0,$minsize=0,$w=false,$top=false,$worldmap_red=false){
         $w=$GLOBALS['ss']["ww"];
         $mapsize=mapsize;
     }else{
-        $mapsize1=sql_1data('SELECT max(x) FROM [mpx]map WHERE ww=\''.$w.'\'');
-        $mapsize2=sql_1data('SELECT max(y) FROM [mpx]map WHERE ww=\''.$w.'\'');
+        $mapsize1=sql_1data('SELECT max(x) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$w.'\'');
+        $mapsize2=sql_1data('SELECT max(y) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$w.'\'');
         $mapsize1=intval($mapsize1)+1;
         $mapsize2=intval($mapsize2)+1;
         if($mapsize1>$mapsize2){
@@ -1189,9 +1191,10 @@ function worldmap($width=0,$minsize=0,$w=false,$top=false,$worldmap_red=false){
         
         $limit=0;$q=true;
         while($q){$q=false;
-            foreach(sql_array('SELECT x,y,terrain FROM [mpx]map WHERE  ww=\''.$w.'\' LIMIT '.$limit.',500') as $row){//WHERE terrain!=\'t1\' AND
+            foreach(sql_array('SELECT x,y,res FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$w.'\' LIMIT '.$limit.',500') as $row){//WHERE terrain!=\'t1\' AND
                 $q=true;
                 list($x,$y,$terrain)=$row;
+                //$terrain='t'.($terrain-1000);
 
 				if(!$top){
 		            $xx=($x-$y)/($mapsize*2)*($width/$kk)+($width/2);

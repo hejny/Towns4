@@ -38,14 +38,16 @@ function register_positionx($reg1,$reg2,$iiii=0){
             //-------------------------------------------------------------------------CREATE NEW TOWN
                 $file=tmpfile2("registerx_list","txt","text");
                 if(!file_exists($file) or unserialize(file_get_contents($file))==array()){
-                    $array=sql_array("
+
+                    exit2('@todo Převod Map do Objects');//@todo Převod Map do Objects - podobné v admin/08_spawn/register.php
+                    /*$array=sql_array("
                     SELECT `x`,`y` FROM [mpx]map where `ww`='".$GLOBALS['ss']["ww"]."' AND 
             RAND()>0.90 AND
                     (`terrain`='t3' OR `terrain`='t4' OR `terrain`='t7' OR `terrain`='t8' OR `terrain`='t9' OR `terrain`='t12' OR `terrain`='t13')  AND 
                     9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
                     AND
                     0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`) AND ".objt('X').")
-                    ORDER BY RAND()");
+                    ORDER BY RAND()");*/
                     
                 }else{
                     $array=unserialize(file_get_contents($file));
