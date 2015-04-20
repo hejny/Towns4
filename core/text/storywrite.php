@@ -12,7 +12,7 @@
         {
             mode: 'textareas',
             selector: '#story_text',
-            skin_url: 'lib/tinymce/skins/custom',
+            skin_url: '../lib/tinymce/skins/custom',
             content_css : '../lib/tinymce/skins/custom/content.css',
             language: 'cs',
             theme: 'modern',
