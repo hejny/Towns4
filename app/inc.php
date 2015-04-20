@@ -2,13 +2,12 @@
 
 //--------------------------------------------inicializace
 
-//$aacdir=getcwd();
-//chdir('../../');
-//chdir($aacdir);
-
-
+$aacdir=getcwd();
+chdir('../../');
 define('noinc',true);
 require('../../index.php');
+chdir($aacdir);
+
 
 define('root', '../../');//todo: PH - je to divné
 define('core',$GLOBALS['inc']['core']);//todo: PH - je to divné
