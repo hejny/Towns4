@@ -845,7 +845,7 @@ function htmllibs(){
 	script_('lib/jquery/plugins/colorpicker/colorpicker.js');
 	css_('lib/jquery/plugins/colorpicker/colorpicker.css');
 
-    e('<script src="'.url.'lib/tinymce/tinymce.min.js"></script>');
+    e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 
 }
 //======================================================================================================================
