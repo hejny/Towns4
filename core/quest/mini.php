@@ -132,11 +132,11 @@ if($quest){
 
 
 		if($previous){
-			$infob.=ahrefr(textbr(lr('quest_previous')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($previous).';'.js2('removeallhelp()'));
+			$infob.=ahrefr(textbr(lr('quest_previous')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($previous).';'/*.js2('removeallhelp()')*/);
 			//e(nbspo);
 		}
 		if($time2){//e(1);
-			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($next).';'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
+			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($next).';'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 		}
 
 		//echo($time2);
@@ -144,9 +144,9 @@ if($quest){
 		if($GLOBALS['questq'] and !$time2){
 			
 			if($next){
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 			}else{
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'.js2('removeallhelp()'),NULL,NULL,'quest_finish');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 			}
 
 
@@ -165,7 +165,7 @@ if($quest){
 					},10);
 					</script>
 					<?php*/
-					click('e=quest-mini;quest='.$id.';questi='.$next.';'.js2('removeallhelp()'));
+					click('e=quest-mini;quest='.$id.';questi='.$next.';'/*.js2('removeallhelp()')*/);
 				}
 			}
 
@@ -196,6 +196,8 @@ if($quest){
 
 
 	//---------------------------------------------------------------------------------------
+    /**
+
 	?>
 	<style type="text/css">
 	<!--
@@ -265,7 +267,7 @@ if($quest){
 		//$('#helpnumber_<?php e($helpid); ? >').css('top',position.top);
 		?>
 
-		html='<div id="helpnumber_<?php e($number); ?>" baseid="<?php e($helpid); ?>" class="helpnumber" style="position:absolute;left:100px;top:100px;z-index:<?php e(100000-$number); ?>" lr="-1" dragging="2" lasttime="0" ><?php /*tee($number,30);*/imge('icons/click.png',lr('click_here'),40); ?></div>';
+		html='<div id="helpnumber_<?php e($number); ?>" baseid="<?php e($helpid); ?>" class="helpnumber" style="position:absolute;left:100px;top:100px;z-index:<?php e(100000-$number); ?>" lr="-1" dragging="2" lasttime="0" ><?php imge('icons/click.png',lr('click_here'),40); ?></div>';
 		$('#windows').append(html);
 
 
@@ -407,7 +409,7 @@ if($quest){
 
 			}
 		},10);
-        /**/
+
 
 		<?php
 	
@@ -420,6 +422,7 @@ if($quest){
 	e('	},200);
 	</script>');
 
+    /**/
 	//---------------------------------------------------------------------------------------
 
 
