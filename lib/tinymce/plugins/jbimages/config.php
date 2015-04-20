@@ -38,7 +38,7 @@
 | -------------------------------------------------------------------*/
 
 	
-	$config['img_path'] = 'userdata/upload'; // Relative to domain name
+	$config['img_path'] = '../userdata/upload'; // Relative to domain name
 	$config['upload_path'] = '../../../../../userdata/upload'; // Physical path. [Usually works fine like this]
 
 /*-------------------------------------------------------------------
