@@ -13,7 +13,7 @@
             mode: 'textareas',
             selector: '#story_text',
             skin_url: 'lib/tinymce/skins/custom',
-            content_css : 'lib/tinymce/skins/custom/content.css',
+            content_css : '../lib/tinymce/skins/custom/content.css',
             language: 'cs',
             theme: 'modern',
             height : 550,
@@ -97,7 +97,7 @@ if($_POST['story_send']){
             $id = intval($_POST['story_id']);
 
             trackobject($id);
-            
+
             //------------------UPDATE objects
             sql_update('objects', "id='$id'", array(
                 'id' => $id,
