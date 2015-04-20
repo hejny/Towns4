@@ -43,14 +43,17 @@ class object{
             //$this->id=$id;
             //r(">".$id,"t");
 		t("object - create - a");
-            $sql_ownname="(SELECT name FROM `[mpx]pos_obj` as tmp WHERE tmp.id=`[mpx]pos_obj`.own) AS ownname";
-            $result = sql_array("SELECT *,$sql_ownname FROM `[mpx]pos_obj` WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1",0);
+
+
+            //$sql_ownname="(SELECT name FROM `[mpx]pos_obj` as tmp WHERE tmp.id=`[mpx]pos_obj` LIMIT 1) AS ownname";,$sql_ownname
+            $result = sql_array("SELECT * FROM `[mpx]pos_obj` WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1");
             $row = $result[0];
             if($row){
                 //---------------
                 //$this->own2=sql_csv("SELECT id,name FROM `[mpx]pos_obj` WHERE (`type`='user' OR `type`='unit') AND own='".$row["id"]."' ORDER BY name");
 		        t("object - create - b");
                 $this->loaded=true;
+                //print_r($row);
                 $this->id=$row["id"];
                 $this->type=$row["type"];
                 $this->fp=$row["fp"];
@@ -80,7 +83,7 @@ class object{
                 $this->group_=$row["group"];
                 $this->own=$row["own"];
 				$this->superown=$row["superown"];
-                $this->ownname=$row["ownname"];
+                //$this->ownname=$row["ownname"];
                 $this->ww=$row["ww"];
                 $this->t=$row["t"];
                 $this->pt=$row["pt"];
@@ -187,7 +190,7 @@ class object{
             $this->group_="";
             $this->own="";
 			$this->superown="";
-            $this->ownname="";
+            //$this->ownname="";
             $this->ww="1";
             $this->t="";
             $this->x="";
@@ -511,7 +514,7 @@ class object{
      */
 
     function deletex(){
-        sql_query("UPDATE `[mpx]pos_obj` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'");
+        sql_query("UPDATE `[mpx]pos_obj` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'",3);
         $this->loaded=false;
     }
 
@@ -603,7 +606,6 @@ class object{
     }
     //======================================================================================object->join
     function join($id,$res=false,$rot=false,$onlyfunc=false){
-	if(!defined("func_map"))require(root.core."/func_map.php");
 
 
 	$joinobject = new object($id); 

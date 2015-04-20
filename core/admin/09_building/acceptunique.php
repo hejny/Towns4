@@ -9,8 +9,8 @@
 */
 //==============================
 
-require2("/func_map.php");
-require2("text/func_core.php");
+//@todo Wtf
+//require2("text/func_core.php");
 ?>
 
 <table>

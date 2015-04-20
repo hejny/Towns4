@@ -36,7 +36,7 @@ require(core."/quest/func_core.php");
 //--------------------------------------------
 
 $q=$_GET['q'];
-$response=townsapi($q);
+$response=TownsApi($q);
 
 if($_GET['pretty']) {
     $options = JSON_PRETTY_PRINT;

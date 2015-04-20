@@ -235,6 +235,7 @@ if(!defined('timeplan'))define('timeplan',0);
 define("mpx",mysql_prefix);
 /**/
 
+if(!defined('noinc'))
 if(!debug)error_reporting(0);
 
 //======================================================================================================================timeplan
@@ -691,6 +692,7 @@ function contentlang($buffer){//if(rr())r();
 
 
 //======================================================================================================================-NOVe KONFIGURACE
+if(!defined('noinc')){
 $array=sql_array('SELECT `key`,`value` FROM [mpx]config');
 
 if(!$array){
@@ -733,6 +735,7 @@ if(!$array){
         }
 
     }
+}
 }
 //===============================================================================================================Vytváření struktury SQL
 function create_sql($table=false){
@@ -841,6 +844,9 @@ function htmllibs(){
 	script_('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
 	script_('lib/jquery/plugins/colorpicker/colorpicker.js');
 	css_('lib/jquery/plugins/colorpicker/colorpicker.css');
+
+    e('<script src="lib/tinymce/tinymce.min.js"></script>');
+
 }
 //======================================================================================================================
 

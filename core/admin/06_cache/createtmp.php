@@ -17,7 +17,6 @@ Vygenerování všech pomocných podkladů, 2D bloků, 3D bloků, modelů, pří
 <?php
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
 ini_set("max_execution_time","1000");
-require2("/func_map.php");
 $time=time();
 //---------------------
 //sleep(1);

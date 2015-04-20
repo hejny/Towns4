@@ -19,8 +19,8 @@ function copyToClipboard(text) {
 }
 </script>
 <?php
-require2("/func_map.php");
-require2("text/func_core.php");
+//@todo WTF
+//require2("text/func_core.php");
 
 
 $onrow=6;

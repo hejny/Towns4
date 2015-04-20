@@ -99,7 +99,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
     //--------------------------------------------------------------------------TERRAIN
     if(substr($res,0,1)=='t'){
 
-        list($terrain,$x,$y)=explode(',',$res);
+        list($terrain,$x,$y)=explode(':',$res);
         $GLOBALS['model_file']=map1($terrain,$x,$y,$GLOBALS['model_noimg']);
         return;//@todo mělo by vracet i resource, nejenom url
 
@@ -381,8 +381,13 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
     
     t('3dmodel - start');
     $s=$s*height2/500;
-	//echo("model,aa,$s=1,$rot=0,$slnko=1,$ciary=1,$zburane=0,$hore");
-    $file=tmpfile2("model7,aa,$res,$s=1,$rot=0,$slnko=1,$ciary=1,$zburane=0,$postavene=0,$hore-$usercolor","png","model");
+
+    //print_r(array('model',$res,$s,$rot,$slnko,$ciary,$zburane,$postavene,$hore,$usercolor));
+
+
+    $file=tmpfile2(array('model',$res,$s,$rot,$slnko,$ciary,$zburane,$postavene,$hore,$usercolor),'png','model');
+    //e($file);
+
     $GLOBALS['model_file']=$file;
     
     //r($file);exit;

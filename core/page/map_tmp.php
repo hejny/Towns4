@@ -33,13 +33,7 @@ if(!$zoom)$zoom=1;
 //==============================
 
 
-//r('setx'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
-//Dropbox
-if(!defined("func_map"))require(root.core."/func_map.php");
 ?>
-
-<!--<script type="text/javascript" src="jquery/js/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>-->
 
 <?php
     

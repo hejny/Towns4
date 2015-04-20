@@ -8,7 +8,6 @@
    správce budov
 */
 //==============================
-if(!defined("func_map"))require(root.core."/func_map.php");
 
 window(lr('title_create_master'));
 

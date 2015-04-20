@@ -29,13 +29,8 @@ if(!$zoom)$zoom=1;
 //==============================
 
 
-//r('setx'.$GLOBALS['ss']['use_object']->x.','.$GLOBALS['ss']['use_object']->y);
-//Dropbox
-if(!defined("func_map"))require(root.core."/func_map.php");
 ?>
 
-<!--<script type="text/javascript" src="jquery/js/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>-->
 
 <?php
     
@@ -493,15 +488,19 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 $('#map_context').css('display','block');
                 title=$(this).attr('title');
                 name=$(this).attr('id');
-                
-		/*if($('#cache_minimenu_'+name).length!=0){
-			cache=$('#cache_minimenu_'+name).html();
-			//alert(cache);
-			$('#map_context').html(cache);
-		}else{
-                	$('#map_context').html(title);
-		}*/
-		
+
+
+
+                offset =  $("#tabulkamapy").offset();
+                /*alert(hovno.pageX);*/
+                xt=(hovno.pageX-offset.left);/*pozice myši px*/
+                yt=(hovno.pageY-offset.top);
+                tmp=pos2pos(xt,yt);
+                xxt=tmp[0];
+                yyt=tmp[1];
+
+
+
 		if(ifcache('minimenu_'+name)){
 			$('#map_context').html(cache('minimenu_'+name));
 		}else{
@@ -510,7 +509,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		
 		
                  <?php if(logged){ ?>
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title+'&xc='+xxc+'&yc='+yyc, function(vystup){$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         }).addClass("x-unit-minimenu-registered");/**/
@@ -865,7 +864,7 @@ if(defined('object_hybrid')){
 
 
 <!--================TERRAIN===================-->
-><?php /* ?><div  id="terrain-build"  name="terrain-build" style="position:absolute;display:none;top:0; left:0;z-index:25;">&nbsp;</div>
+<?php /* ?><div  id="terrain-build"  name="terrain-build" style="position:absolute;display:none;top:0; left:0;z-index:25;">&nbsp;</div>
 <script type="text/javascript">
             tbuild_x=0;
             tbuild_y=0;
@@ -902,11 +901,6 @@ if(defined('object_hybrid')){
                 }
             ?>
 </script><?php */ ?>
-
-
-
-
-
 
 
 

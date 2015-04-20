@@ -13,7 +13,6 @@
 
 
 ini_set("max_execution_time","1000");
-define("func_map",true);
 //=============================================================MAPCONFIG
 $zoom=$GLOBALS['mapzoom'];
 if(!$zoom)$zoom=1;

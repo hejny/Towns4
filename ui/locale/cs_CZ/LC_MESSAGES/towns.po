@@ -16,7 +16,7 @@ msgstr ""
 
 # SEO, Meta - title
 msgid "app_title"
-msgstr "Strategická kreativní online hra - Towns.cz"
+msgstr "Towns - Strategická kreativní online hra"
 
 
 # SEO, Meta - description
@@ -3708,5 +3708,42 @@ msgstr "Přidat suroviny"
 
 msgid "admin_page_surkey-key"
 msgstr "Bonusové kódy"
+
+
+msgid "fx_storywrite"
+msgstr "Napsat příběh"
+
+msgid "story_name"
+msgstr "Název, Nadpis, Postava, Místo, Město,..."
+
+msgid "story_author"
+msgstr "Autor"
+
+msgid "story_edit"
+msgstr "Upravit příběh"
+
+msgid "story_delete"
+msgstr "Smazat příběh"
+
+
+msgid "f_dismantle_story_prompt"
+msgstr "Opravdu chceš smazat tento příběh?"
+
+msgid "title_story_create"
+msgstr "Napsat příběh"
+
+msgid "title_story_edit"
+msgstr "Upravit příběh"
+
+msgid "story_send"
+msgstr "Odeslat"
+
+
+msgid "story_error_noname"
+msgstr "Napiš prosím název nebo naspis svého příběhu, popisu,..."
+
+msgid "story_error_notext"
+msgstr "Napiš prosím text nebo nahraj obrázek."
+
 
 

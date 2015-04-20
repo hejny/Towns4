@@ -238,22 +238,6 @@ function ir($i,$q=2){
 }
 function ie($i,$q=2){echo(ir($i,$q));}/**/
 
-//======================================================================================================================aacute
-function aacute($word){
-	//sql_query("INSERT INTO [mpx]lang `lang`,`va VALUES 'ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ'");
-	//$word=iconv(mb_detect_encoding($word, mb_detect_order(), true), "UTF-8", $word);
-	//$word=iconv("ISO-8859-1","UTF-8",$word);	
-	//$word='ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ';
-	$a=array('Ä›','Å¡','Ä','Å™','Å¾','Ã½','Ã¡','Ã­','Ã©','Ãº','Å¯','[15]');
-	//$a=str_split('ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ'/*sql_1data('SELECT `value` FROM [mpx]lang WHERE `key`=\'escrzyaieuu\' AND `lang`=\'cz\'')*/);//'ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ'
-	//$b=str_split('escrzyaieuuESCRZYAIEUU');
-	$b=explode('-','&#283;-&scaron;-&#269;-&#345;-&#382;-&yacute;-&aacute;-&iacute;-&eacute;-&uacute;-&#367;-&nbsp;'/*'-&#282;-&Scaron;-&#268;-&#344;-&#381;-&Yacute;-&Aacute;-&Iacute;-&Eacute;-&Uacute;-&#366;'*/);
-	$word=str_replace($a,$b,$word);
-	//$a=str_split('ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮ');
-	//$b=explode('-','&#283;-&scaron;-&#269;-&#345;-&#382;-&yacute;-&aacute;-&iacute;-&eacute;-&uacute;-&#367;-&#282;-&Scaron;-&#268;-&#344;-&#381;-&Yacute;-&Aacute;-&Iacute;-&Eacute;-&Uacute;-&#366;');
-	//$word=str_replace($a,$b,$word);
-	return($word);
-}
 //======================================================================================tr,te
 /**
 * @param $i
@@ -1095,7 +1079,6 @@ function imageurl($file,$rot=1,$grey=false){
                     if($res/* and $q==true*/){
                         //r($res);
                         $uz=1;
-                        if(!defined("func_map"))require(root.core."/func_map.php");
                         //$GLOBALS['model_bigimg']=true;
                         $img1=model($res,2,20,1.5,0);
                         //$GLOBALS['model_bigimg']=false;
@@ -1310,6 +1293,7 @@ if($script)e('<script>');
 //alert("#<?php e($GLOBALS['formid']); ?>");
 $("#<?php e($GLOBALS['formid']); ?>").submit(function() {
     //alert('send'+'<?php e($url.'&token='.$_GET['token']); ?>');
+
     $.post('<?php e($url.'&token='.$_GET['token']); ?>',
         {
         <?php
@@ -1321,8 +1305,16 @@ $("#<?php e($GLOBALS['formid']); ?>").submit(function() {
             }
         ?>
          },
-        function(vystup){/*alert(2);*/$('#<?php e($sub); ?>').html(vystup);}
+        function(vystup){$('#<?php e($sub); ?>').html(vystup);}
     );
+
+    <?php
+    foreach($rows as $val){
+        e("$('#$val').css('enabled','0');");
+    }
+    ?>
+
+
     return(false);
 });
 //});
@@ -1330,14 +1322,24 @@ $("#<?php e($GLOBALS['formid']); ?>").submit(function() {
 if($script)e('</script>');
 }
 //--------------------------------------------
-function input_textr($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){
+function input_textr($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee',$placeholder=''){
     //echo(xsuccess());
     if($value===false and !xsuccess())$value=$_POST[$name];
-    $value=tr($value,true);
-    $stream="<input type=\"input\" name=\"$name\" id=\"$name\" value=\"$value\" size=\"$cols\"  maxlength=\"$max\" style=\"$style\"/>";
+    $value=addslashes($value);
+    $stream="<input type=\"text\" name=\"$name\" id=\"$name\" value=\"$value\" size=\"$cols\"  maxlength=\"$max\" style=\"$style\" placeholder=\"$placeholder\" />";
     return($stream);
 }
-function input_text($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee'){echo(input_textr($name,$value,$max,$cols,$style));}
+function input_text($name,$value=false,$max=100,$cols="",$style='border: 2px solid #000000; background-color: #eeeeee',$placeholder=''){echo(input_textr($name,$value,$max,$cols,$style,$placeholder));}
+
+
+//--------------------------------------------
+
+
+function input_hiddenr($name,$value){
+  $stream='<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.addslashes($value).'" />';
+  return($stream);
+}
+function input_hidden(){e(call_user_func_array('input_hiddenr',func_get_args()));}
 //--------------------------------------------
 /*function input_colorr($name,$value='000000'){
     //echo(xsuccess());
@@ -1364,7 +1366,7 @@ function input_color($name,$value='000000'){echo(input_colorr($name,$value));}
 */
 //--------------------------------------------
 function input_passr($name,$value=''){
-    $stream="<input type=\"password\" name=\"$name\" id=\"$name\" value=\"$value\" />";
+    $stream="<input type=\"password\" name=\"$name\" id=\"$name\" value=\"".addslashes($value)."\" />";
     return($stream);
 }
 function input_pass($name,$value=''){echo(input_passr($name,$value));}
@@ -1372,10 +1374,9 @@ function input_pass($name,$value=''){echo(input_passr($name,$value));}
 function input_textarear($name,$value='',$cols="",$rows="",$style='',$placeholder=''){
     if(!$value and !xsuccess())$value=$_POST[$name];
     if($value=='none')$value='';
-    $value=tr($value,true);
     if($cols){$cols="cols=\"$cols\"";}
     if($rows){$rows="rows=\"$rows\"";}
-    $stream="<textarea name=\"$name\" id=\"$name\"  $cols $rows style=\"$style\" placeholder=\"$placeholder\" >$value</textarea>";
+    $stream="<textarea name=\"$name\" id=\"$name\"  $cols $rows style=\"$style\" placeholder=\"$placeholder\" >".htmlspecialchars($value)."</textarea>";
     return($stream);
 }
 function input_textarea($name,$value='',$cols="",$rows="",$style='',$placeholder=''){echo(input_textarear($name,$value,$cols,$rows,$style,$placeholder));}
@@ -1609,7 +1610,7 @@ switch (gettype($text)) {
 }
 //-----------------------------------------
 function r($text="",$a,$b,$c,$d,$e,$f){
-    if(debug or is_resource($text)){
+    if((defined('debug') and debug) or is_resource($text)){
     xr($text);
     if(isset($a)){xr($a);}
     if(isset($b)){xr($b);}
@@ -1730,19 +1731,19 @@ function ahrefr($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclic
 }
 function ahref($text,$url,$textd="none",$nol=true,$id=false,$data=false,$onclick=""){echo(ahrefr($text,$url,$textd,$nol,$id,$data,$onclick));}
 //==========================================================================================
-function ahrefpr($prompt,$text,$url,$textd="underline",$nol=false,$id="page",$data=false){
+function ahrefpr($prompt,$text,$url,$textd="none",$nol=false,$id="page",$data=false){
     $tmp=urlr($url);
     if(strpos("x".$tmp,"javascript: ")){$onclick=str_replace("javascript: ","",$tmp);$tmp="#";}    
     
     if($onclick){
-        $onclick="pokracovat = confirm('$prompt');if(pokracovat) ".$onclick;
+        $onclick="pokracovat = confirm('$prompt');if(pokracovat) {".$onclick.'}';
     }else{
         $onclick="pokracovat = confirm('$prompt');if(pokracovat) window.location.replace('".urlr($url)."');";
     }
     $html=ahrefr($text,"",$textd,$nol,$id,$data,$onclick);
     return($html);
 }
-function ahrefp($prompt,$text,$url,$textd="underline",$nol=false,$id="page",$data=false){echo(ahrefpr($prompt,$text,$url,$textd,$nol,$id,$data));}
+function ahrefp($prompt,$text,$url,$textd="none",$nol=false,$id="page",$data=false){echo(ahrefpr($prompt,$text,$url,$textd,$nol,$id,$data));}
 //==========================================================================================
 function submenu($page,$array,$deafult=1,$session="",$v=false){$session='submenu_'.$session;
     

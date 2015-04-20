@@ -14,8 +14,8 @@
 //======================================================================================DISMANTLE
 define("a_dismantle_help","");
 function a_dismantle($id){
-	
-    if(/*$id==*/sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE own='.$GLOBALS['ss']['useid'].' AND id='.sqlx(intval($id))) or $id=$GLOBALS['ss']['candismantle']){
+
+    if(/*$id==*/sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE (`own`='.$GLOBALS['ss']['useid'].' OR `own`='.$GLOBALS['ss']['logid'].') AND id='.sqlx(intval($id))) or $id==$GLOBALS['ss']['candismantle']){
 
 
         if(sql_1data("SELECT name FROM `[mpx]pos_obj` WHERE id='$id'")==mainname()){
@@ -24,6 +24,7 @@ function a_dismantle($id){
 
             $fc = new hold(sql_1data("SELECT fc FROM `[mpx]pos_obj` WHERE id='$id'"));
             $tmp = new object($id);
+
             //$tmp->update(true);//s
             //$fc=new hold($tmp->fc);
 
@@ -99,7 +100,11 @@ function a_list($cols,$where=0,$order=false,$limit=0){
         'superown',
         'ww',
         'x',
-        'y'
+        'y',
+        'traceid',
+        'starttime',
+        'readytime',
+        'stoptime'
     );
     //----------------cols
 
@@ -109,19 +114,24 @@ function a_list($cols,$where=0,$order=false,$limit=0){
         if(in_array($col,$allcols)) {
 
             if($col=='resurl'){
-                $col="res` AS `resurl";
+                $cols2[]="`res` AS `resurl`";
+                if(!in_array("`type`",$cols2))$cols2[]="`type`";
+                if(!in_array("`x`",$cols2))$cols2[]="`x`";
+                if(!in_array("`y`",$cols2))$cols2[]="`y`";
 
             }elseif($col=='_name'){
-                $col="name` AS `_name";
+                $cols2[]="`name` AS `_name`";
+            }else{
+                if(!in_array("`$col`",$cols2))
+                    $cols2[]="`$col`";
             }
 
-            $cols2[]=$col;
+
         }else{
             $GLOBALS['ss']['query_output']->add('error','Unknown col '.$col);
         }
     }
-    $cols2=implode('`,`',$cols2);
-    $cols2="`$cols2`";
+    $cols2=implode(',',$cols2);
 
     //----------------where - EDIT
 
@@ -304,8 +314,12 @@ function a_list($cols,$where=0,$order=false,$limit=0){
 
             if($key=='resurl') {
 
-                require_once(root . core . '/func_map.php');
-                $value = modelx($value);
+
+
+                if($object['type']=='terrain')
+                    $value="$value:{$object['x']}:{$object['y']}";
+
+                    $value = modelx($value);
 
             }elseif($key=='_name') {
 
@@ -334,6 +348,18 @@ function a_list($cols,$where=0,$order=false,$limit=0){
     $GLOBALS['ss']['query_output']->add('objects',$objects);
     $GLOBALS['ss']['query_output']->add('useid',$GLOBALS['ss']['useid']);
     $GLOBALS['ss']['query_output']->add('logid',$GLOBALS['ss']['logid']);
+
+}
+
+//=======================================================================================Worldmap
+
+function a_worldmap($ww,$top){
+
+
+
+    $url=rebase(url.worldmap(0,0,$ww,$top));
+
+    $GLOBALS['ss']['query_output']->add('url',$url);
 
 }
 

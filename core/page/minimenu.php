@@ -15,37 +15,6 @@
     $space=' ';
 //===============================================================
 
-//e($GLOBALS['ss']['useid'].'x'.$GLOBALS['ss']['useid']);br();
-//e($GLOBALS['ss']['logid'].'x'.$GLOBALS['ss']['logid']);br();
-
-/*if(!function_exists('centerurl')){
-function centerurl($id,$x='x',$y=0,$ww=1){//echo('bbb');
-    if($x=='x'){//echo('aaaaa');echo($id);
-        $destinationobject=new object($id);
-        if(!$destinationobject->loaded)return('');
-        $x=$destinationobject->x;
-        $y=$destinationobject->y;
-        $ww=$destinationobject->ww;
-        unset($destinationobject);  
-    }
-    $tmp=3;
-    $xc=(-(($y-1)/10)+(($x-1)/10));
-    $yc=((($y-1)/10)+(($x-1)/10));
-    $xx=(($xc-intval($xc))*-414);
-    $yy=(($yc-intval($yc)+$tmp)*-211);
-    $xc=intval($xc);
-    $yc=intval($yc)-$tmp;
-    $url='e=minimenu;e=map;xc='.$xc.';yc='.$yc.';xx='.$xx.';yy='.$yy.';ww='.$ww.';center='.$id.';noi=1';
-    //echo($url);
-    return($url);
-}}*/
-
- //e('<table width="140" height="50" border="0"><tr><td align="left" valign="top">'); 
-
-
-
-//if(!defined("func_map"))require(root.core."/func_map.php");
-
 $terrains=array(
     "t0" => "000000",//temnota
     "t1" => "5299F9",//moře //Výbuchy v Blitz Stree
@@ -115,10 +84,19 @@ if($sql and $id?ifobject($id):true){
                 if($dist>1 or $_GET['terrain']==1){
                         //e(intval($_GET["x"]).','.intval($_GET["y"]));	
                         $terrain=sql_1data('SELECT `res` FROM `[mpx]pos_obj` WHERE `type`=\'terrain\' AND `ww`='.$GLOBALS['ss']["ww"].' AND `x`='.intval($_GET["xc"]).' AND `y`='.intval($_GET["yc"]).' ');
-                        echo(lr('terrain_'.$terrain));
 
+
+                        textb(lr('terrain_'.$terrain));
+                        //tee(lr('terrain_'.$terrain),13,2);
                         //list($r,$g,$b)=t2rgb($terrain);
                         $color=$terrains[$terrain];
+                        /*border(
+                        iconr('e=text-storywrite;x='.x2xx($_GET["xc"]).';y='.x2xx($_GET["yc"]),
+                            'fx_storywrite',lr('fx_storywrite'),$iconsize)
+                            ,0,$iconsize);*/
+
+                        icon('e=text-storywrite;x='.x2xx($_GET["xc"]).';y='.x2xx($_GET["yc"]),
+                            'fx_storywrite',lr('fx_storywrite'),22);
 
 
 
@@ -152,11 +130,20 @@ if($sql and $id?ifobject($id):true){
             //e("<div style=\"position: relative;top: -10px;left: 0px;z-index:2;\">".trr($name,13,2)."</div>");
 
             //----------------------------------------------Zobrazení jména objectu
+
+            //----------------------------------------------Příběhy
+            if(!$own or $own==$GLOBALS['ss']['useid'])
+            $writeicon=iconr('e=text-storywrite;x='.x2xx($_GET["xc"]).';y='.x2xx($_GET["yc"]),'fx_storywrite',lr('fx_storywrite'),22);
+
+
             // PH tenhle 'divný' způsob je proto, aby se klikání na jméno neprovedlo omylem na mobilech a tabletech
-            e('<span id="minimenunamea" style="display:block;">'.trr($name,13,2).'</span>');
-            trr($name,13,2);
-            e('<span id="minimenunameb" style="display:none;">'.ahrefr(trr($name,13,2),"e=content;ee=profile;id=".$id,"none",true).'</span>');
+            e('<span id="minimenunamea" style="display:block;">'.trr($name,13,2).$writeicon.'</span>');
+
+
+            e('<span id="minimenunameb" style="display:none;">'.ahrefr(trr($name,13,2).$writeicon,"e=content;ee=profile;id=".$id,"none",true).'</span>');
             click(js2('$("#minimenunamea").css("display","none");$("#minimenunameb").css("display","block");'),0.2);
+
+
             //----------------------------------------------
 
             if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
