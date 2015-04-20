@@ -56,7 +56,6 @@ if($id?ifobject($id):false){
 		
 		//------------------------------------BUILDING_TYPE
 		if($q==1){contenu_a();
-		require_once(root.core."/func_map.php");
 
 
 

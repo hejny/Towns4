@@ -507,13 +507,13 @@ if($post["kmennuholnik"]){
 //-=====================================================================================
 if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){echo("<br>mapgenerator<br>");
     if($action=="map"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `type`='terrain' AND ww='".$GLOBALS['ss']["ww"]."'",2);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `type`='terrain' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
     if($action=="tree"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%' AND ww='".$GLOBALS['ss']["ww"]."'",2);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
     if($action=="rock"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%rock%' AND ww='".$GLOBALS['ss']["ww"]."'",2);
+        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%rock%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
     $im = imagecreatefrompng($imgurl);
     $bgs=array(
@@ -579,8 +579,10 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
     $l=rand($la*$lp,$lb*$lp)/$lp;
     //-----
         //@todo Funguje To???
-    $query="INSERT INTO `[mpx]positions` (`x`, `y`, `ww`, `id`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','".(1000+intval($terrain))."')";
-    if($action=="map" and $q==0){sql_query($query);echo($query.br);}
+    if($action=="map" and $q==0){
+        $query="INSERT INTO `[mpx]positions` (`x`, `y`, `ww`, `id`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','".(1000+intval($terrain))."')";
+        sql_query($query,3);
+    }
     //-----
     if($terrain=="t10" and $action=="tree"){
         //$tmp=new object("create");
@@ -646,7 +648,7 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
                 'id' => '',
                 'ww' => $GLOBALS['ss']["ww"],
                 'x' => $xx,
-                'y' => $yy'',
+                'y' => $yy,
                 'traceid' => '',
                 'starttime' => time(),
                 'readytime' => '',

@@ -1,18 +1,48 @@
 <?php
 
+//--------------------------------------------inicializace
+
+//$aacdir=getcwd();
+//chdir('../../');
+//chdir($aacdir);
+
 
 define('noinc',true);
+require('../../index.php');
 
-$aacdir=getcwd();
-chdir('../../');
+define('root', '../../');//todo: PH - je to divné
+define('core',$GLOBALS['inc']['core']);//todo: PH - je to divné
+//-------------
 
-require_once('index.php');
-require_once($inc['core'].'/func_vals.php');
-require_once($inc['core'].'/func_main.php');
-require_once($inc['core'].'/memory.php');
-require_once($inc['core'].'/func_external.php');
+require_once(root.core."/func_main.php");
+require_once(root.core."/func_vals.php");
+require_once(root.core."/func_object.php");
+require_once(root.core."/memory.php");
 
-chdir($aacdir);
+
+//-------------
+
+require_once(root.core."/func.php");
+require_once(root.core."/func_core.php");
+
+
+//-------------
+
+require_once(root.core."/login/func_core.php");
+require_once(root.core."/create/func_core.php");
+require_once(root.core."/attack/func_core.php");
+require_once(root.core."/text/func_core.php");
+require_once(root.core."/hold/func_core.php");
+require_once(root.core."/quest/func_core.php");
+
+//-------------
+
+require_once(root.core.'/model/func_map.php');
+
+//--------------------------------------------
+
+
+
 
 //===========================================================================================
 function app_auth($perm){
@@ -148,7 +178,7 @@ function page($title='',$description='',$startyear=false,$jquery=false,$author=f
     }
 
     ?>
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="description" content="<?php echo(aacute($description)); ?>"/>

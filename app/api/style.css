@@ -1,0 +1,182 @@
+
+
+body {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+
+a {
+	color: #000000;
+}
+
+
+h1 {
+	position: relative;
+	left:8px;
+}
+h1 a {
+	text-decoration: none;
+}
+
+
+h3 {
+	display: block;
+	font-size: 1.17em;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+	font-weight: bold;
+	color: #000055;
+}
+
+
+.page {
+	position: relative;
+	top: 0;
+	left: 0;
+	vertical-align: top;
+	/*width: 1400px;*/
+	width: 100%;
+	max-width: 100%;
+	display: inline-block;
+	text-align: justify;
+}
+
+
+ul {
+	z-index: 50000;
+	height: 30px;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+
+li a {
+	float: left;
+	width: 100px;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	background-color: #445577;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #333333;
+	margin: -1px;
+	padding: 4px 4px;
+}
+
+
+.selected {
+	background-color: #667799;
+	border-top-color: #667799;
+	border-bottom-color: #667799;
+}
+
+
+li a: hover {
+	background-color: #667799;
+}
+
+
+li {
+	display: inline;
+}
+
+
+hr{
+	background-color:#667799;
+	height:2px;
+	border:none;
+}
+
+.appDescription {
+	display: block;
+	background: #f7f7f7;
+	padding: 20px;
+}
+
+
+.pageDescription {
+	display: block;
+	background-color: #eeeef7;
+	border-top-width: 4px;
+	border-top-style: solid;
+	border-top-color: #667799;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #ddddee;
+	padding: 20px;
+}
+
+
+.navigation {
+	display: block;
+	float: right;
+	position: relative;
+	top: 5px;
+	width: 130px;
+	background: #f7f7f7;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #cccccc;
+	padding: 10px;
+	z-index: 50000;
+}
+
+
+.navigation a {
+	color: #777777;
+	text-decoration: none;
+}
+
+
+.error {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+
+.success {
+ color: #0055cc;
+	font-weight: bold;
+}
+
+
+#mapCenter {
+	display: block;
+	float: left;
+	position:absolute;
+	z-index: 50000;
+	width: 100px;
+	//height: 22px;
+	text-align: justify;
+	background-color: #667788;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #333333;
+	padding: 2px;
+	
+}
+
+#mapCenter a {
+	color: white;
+	text-decoration: none;
+	
+}
+
+
+.move {
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #cccccc;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #111111;
+	border-radius: 20px;
+}
+
+

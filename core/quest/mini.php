@@ -69,7 +69,7 @@ if($quest){
 
 
 			if(is_numeric($image)){
-				if(!defined("func_map"))require(root.core."/func_map.php");
+
 				$res=sql_1data('SELECT `res` FROM `[mpx]pos_obj` WHERE id='.$image);
 				//e(modelx($res));
 				?><img src="<?php e(modelx($res)); ?>" height="122" alt="<?php e($name); ?>" /><?php /**/

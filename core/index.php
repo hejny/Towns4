@@ -172,45 +172,37 @@ list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 
 
 //===============================================================================
-//error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
+
+//--------------------------------------------inicializace
+
 define("root", "");//todo: PH - je to divné
-//--------------------------------------------
-require(root.core."/func_main.php");
-require(root.core."/func_vals.php");
-require(root.core."/func_object.php");
-require(root.core."/memory.php");
+
+//-------------
+
+require_once(root.core."/func_main.php");
+require_once(root.core."/func_vals.php");
+require_once(root.core."/func_object.php");
+require_once(root.core."/memory.php");
 
 
+//-------------
 
-//error_reporting(E_ALL);
-//exit(ini_get("register_globals"));
-//try {
-//define("url","http://localhost/4/");
-//define("notmp",1);
-
-//--------------------------------------------
-//if(w!=$GLOBALS['ss']["worldsession"]){session_destroy();$GLOBALS['ss']["worldsession"]=w;}
-//--------------------------------------------
-
-//define("mapsize",50);
-//$GLOBALS['ss']["url"]=url;//"http://localhost/towns4/";
-/*TOHLE už NE*/ //if($_GET['e']!='-export' and $_GET['e']!='create-editor')require(root.core."/output.php");
-
-require(root.core."/func.php");
-require(root.core."/func_core.php");
-//r($GLOBALS['config']);
-
-//--------------------------------------------
-
-require(root.core."/login/func_core.php");
-require(root.core."/create/func_core.php");
-/*TOHLE ještě NE*/ //require(root.core."/terrain/func_core.php");
-require(root.core."/attack/func_core.php");
-require(root.core."/text/func_core.php");
-require(root.core."/hold/func_core.php");
-require(root.core."/quest/func_core.php");
+require_once(root.core."/func.php");
+require_once(root.core."/func_core.php");
 
 
+//-------------
+
+require_once(root.core."/login/func_core.php");
+require_once(root.core."/create/func_core.php");
+require_once(root.core."/attack/func_core.php");
+require_once(root.core."/text/func_core.php");
+require_once(root.core."/hold/func_core.php");
+require_once(root.core."/quest/func_core.php");
+
+//-------------
+
+require_once(root.core.'/model/func_map.php');
 
 //--------------------------------------------
 define("single", true);

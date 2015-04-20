@@ -39,15 +39,15 @@ function register_positionx($reg1,$reg2,$iiii=0){
                 $file=tmpfile2("registerx_list","txt","text");
                 if(!file_exists($file) or unserialize(file_get_contents($file))==array()){
 
-                    exit2('@todo Převod Map do Objects');//@todo Převod Map do Objects - podobné v admin/08_spawn/register.php
-                    /*$array=sql_array("
-                    SELECT `x`,`y` FROM [mpx]map where `ww`='".$GLOBALS['ss']["ww"]."' AND 
+                    $array=sql_array("
+                    SELECT `x`,`y` FROM [mpx]pos_obj WHERE `type`='terrain' AND `ww`='".$GLOBALS['ss']["ww"]."' AND
             RAND()>0.90 AND
-                    (`terrain`='t3' OR `terrain`='t4' OR `terrain`='t7' OR `terrain`='t8' OR `terrain`='t9' OR `terrain`='t12' OR `terrain`='t13')  AND 
-                    9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
+                    (`res`='t3' OR `res`='t4' OR `res`='t7' OR `res`='t8' OR `res`='t9' OR `res`='t12' OR `res`='t13')  AND
+                    9=(SELECT COUNT(1) FROM [mpx]pos_obj AS Y WHERE `Y`.`type`='terrain' AND Y.`ww`='".$GLOBALS['ss']["ww"]."' AND
+                    (Y.`res`='t3' OR Y.`res`='t4' OR Y.`res`='t7' OR Y.`res`='t8' OR Y.`res`='t9' OR Y.`res`='t12' OR Y.`res`='t13') AND (Y.`x`+1>=[mpx]pos_obj.`x` AND Y.`y`+1>=[mpx]pos_obj.`y` AND Y.`x`-1<=[mpx]pos_obj.`x` AND Y.`y`-1<=[mpx]pos_obj.`y`))
                     AND
-                    0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`) AND ".objt('X').")
-                    ORDER BY RAND()");*/
+                    0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]pos_obj.`x` AND X.`y`+4>[mpx]pos_obj.`y` AND X.`x`-4<[mpx]pos_obj.`x` AND X.`y`-4<[mpx]pos_obj.`y`) AND ".objt('X').")
+                    ORDER BY RAND()");
                     
                 }else{
                     $array=unserialize(file_get_contents($file));

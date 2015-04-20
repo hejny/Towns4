@@ -10,7 +10,6 @@
 <h3>Registace míst na mapě</h3>
 <?php
 
-require2("/func_map.php");
 $scale=2;
 
 

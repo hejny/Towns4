@@ -45,7 +45,6 @@ if($_GET['start']==1){
 ini_set("max_execution_time","1000");
 ini_set('memory_limit','5000M');
 set_time_limit(60);
-require2("/func_map.php");
 //---------------------
 
 

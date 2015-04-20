@@ -63,13 +63,7 @@ function changemap($x,$y,$files=false){
     //$files=true;
     
     if($files and $files!=2){
-    //r($x.','.$y);
-    if(!defined("func_map"))require(root.core."/func_map.php");
-    //$gx=(intval(($x-1)/5)*5)+1;
-    //$gy=(intval(($y-1)/5)*5)+1;
-    //r($gx.",".$gy);
-    //$file=tmpfile2("map2,".size.",".zoom.",".$gx.",".$gy.",".w.",".gird.",".t_sofb.",".t_pofb.",".t_brdcc.",".t_brdca.",".t_brdcb.$GLOBALS['ss']["ww"],"png","map");e("<img src=\"$file\" width=\"100\"/>");unlink($file);
-    
+
     
     
     //-------------------
@@ -100,12 +94,6 @@ function changemap($x,$y,$files=false){
     }
     }elseif($files==2){
 
-	    if(!defined("func_map"))require(root.core."/func_map.php");
-
-	    
-	    //$gy=floor((($y-1)/10)+(($x-1)/10)-0.5);
-	    //$gx_=(($y-1)/-10)+(($x-1)/10);
-	    //$gy_=(($y-1)/10)+(($x-1)/10);
  	    $x=round($x);
 	    $y=round($y);
 		 $gx1=floor((($y-1)/-10)+(($x-1)/10));
@@ -113,8 +101,6 @@ function changemap($x,$y,$files=false){
 		 $gx2=ceil((($y-1)/-10)+(($x-1)/10));
    		 $gy2=ceil((($y-1)/10)+(($x-1)/10));
 		 $gx3=ceil((($y-1)/-10)+(($x)/10));
-   		 //$gy3=ceil((($y-1)/10)+(($x-1)/10));    
-
 
 
 	    $gs=array(array($gx1,$gy1),array($gx2,$gy1),array($gx3,$gy1),array($gx1,$gy2),array($gx2,$gy2),array($gx3,$gy2));

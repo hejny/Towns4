@@ -25,7 +25,6 @@
 
 require_once('../inc.php');
 
-
 $alltags=array('text','startx','stopx','start','stop','private','author','inbox');
 
 

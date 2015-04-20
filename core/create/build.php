@@ -19,8 +19,6 @@
 
 
 
-
-require_once(root.core."/func_map.php");
 $id=$_GET["id"];
 if(!$id and $GLOBALS['ss']["object_build_id"])$id=$GLOBALS['ss']["object_build_id"];
 $GLOBALS['ss']["object_build_id"]=$id;

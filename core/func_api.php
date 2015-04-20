@@ -66,7 +66,7 @@ function townsfunction($query,$q='a'){
             $aid=false;
             $GLOBALS['ss']['query_output']->add('error',lr('api_unknown_user'));
         }
-    }elseif($func=="list"){
+    }elseif(in_array($func,array('list','worldmap'))){
 
         $noregister=false;//Nebude nastavený aac object
         $aid='none';//Proto se musí nastavit domělé aid
@@ -274,27 +274,36 @@ function use_param($p){//konstanty
  * @return array
  *
  * */
-function townsapi($query){
+function TownsApi()
+{
     //@todo PH mělo by fungovat zadávání přes více parametrů
 
-	if(is_string($query)){
+    $query = func_get_args();
+
+
+    if(count($query)==1) {
+        $query=$query[0];
+    }
+
+
+    if(is_string($query)){
 
         //@todo PH při vstupu do api přes string by mělo správně fungovat escapování
-		$query=str_replace(' ',',',$query);
-		list($function,$params)=explode(',',$query,2);
+        $query=str_replace(' ',',',$query);
+        list($function,$params)=explode(',',$query,2);
 
 
         $params=params($params);
-		//$params=explode(',',$params);
+        //$params=explode(',',$params);
+
+    }elseif(is_array($query)){
 
 
-	}elseif(is_array($query)){
+        $function=array_shift($query);
+        $params=$query;
 
+    }
 
-		$function=array_shift($query);
-		$params=$query;
-
-	}
 
 	$query=array($function,$params);
 	townsfunction($query,'a');
@@ -324,7 +333,7 @@ function xquery($a,$b='',$c='',$d='',$e='',$f='',$g='',$h='',$i=''){
 		$query=$a;
 	}
 
-    $response=townsapi($query);
+    $response=TownsApi($query);
 
     //----------------Zapsání do terminálu
 
