@@ -8,6 +8,7 @@
     }catch(e){
     }
 
+
     tinyMCE.init(
         {
             mode: 'textareas',
@@ -18,16 +19,20 @@
             theme: 'modern',
             height : 550,
             statusbar:false,
-            pagebreak_separator: '<!-- my page break -->',
-
+            //pagebreak_separator: '<!-- my page break -->',
+            setup: function (ed) {
+                ed.on('init', function(args) {
+                    $('#story_name').focus();
+                });
+            },
             menubar: 'edit insert view format table tools jbimages',
-            plugins: 'advlist autolink lists link image charmap print preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking table contextmenu emoticons template paste textcolor colorpicker textpattern pagebreak jbimages',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking table contextmenu emoticons template paste textcolor colorpicker textpattern jbimages',
             toolbar: " bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link |  jbimages  ",//pagebreak
             relative_urls: false
         }
     );
 
-    /*$('#story_name').focus();*/
+
 
 </script>
 <style>
