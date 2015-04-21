@@ -24,7 +24,7 @@
             setup: function (ed) {
                 ed.on('init', function(args) {
                         setTimeout(function() {
-                            $('#story_name').focus();
+                            $('div').scrollTop(0);
                         },200);
                 });
             },
@@ -74,6 +74,9 @@ if(isset($GLOBALS['get']['id'])){
         $x = $GLOBALS['get']['x'];
         $y = $GLOBALS['get']['y'];
 
+    }else{
+
+        click(js2("w_close('text-storywrite');"));
     }
 }
 
