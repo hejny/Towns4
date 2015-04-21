@@ -1474,7 +1474,7 @@ function bhp($text,$id=''){
     echo(bhpr($text,$id));
 }
 function hydepark($id=''){
-    echo("<div style=\"display: none\" id=\"hydepark_".$id."\">");
+    echo("<div style=\"display: none;z-index:10000;\" id=\"hydepark_".$id."\">");
 }
 function ihydepark(){
     echo("</div>");
