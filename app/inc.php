@@ -5,7 +5,7 @@
 $aacdir=getcwd();
 chdir('../../');
 define('noinc',true);
-require('../../index.php');
+require('index.php');
 chdir($aacdir);
 
 
@@ -194,7 +194,7 @@ function page($title='',$description='',$startyear=false,$jquery=false,$author=f
         ?>
 
 
-        <title><?php echo(aacute($title)); ?></title>
+        <title><?php echo(lr('apps_title',$title)); ?></title>
         <style type="text/css">
             body {
                 background-color: #<?php echo($colors[0]); ?>;
