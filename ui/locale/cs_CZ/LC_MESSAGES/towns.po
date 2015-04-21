@@ -18,6 +18,10 @@ msgstr ""
 msgid "app_title"
 msgstr "Towns - Strategická kreativní online hra"
 
+# SEO, Meta - title
+msgid "apps_title"
+msgstr "[0] | Towns"
+
 
 # SEO, Meta - description
 msgid "app_description"
@@ -30,7 +34,7 @@ msgstr "Towns"
 
 # Share, Meta - Title
 msgid "app_og_title"
-msgstr "Towns - Vytvářej vlastní svět!"
+msgstr "Towns &mdash; Vytvářej vlastní svět!"
 
 # Share, Meta - Description
 msgid "app_og_description"
