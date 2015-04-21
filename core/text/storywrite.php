@@ -27,7 +27,7 @@
         }
     );
 
-    $('#story_name').focus();
+    /*$('#story_name').focus();*/
 
 </script>
 <style>
