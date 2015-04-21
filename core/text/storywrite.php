@@ -9,6 +9,7 @@
     }
 
 
+
     tinyMCE.init(
         {
             mode: 'textareas',
@@ -22,7 +23,9 @@
             //pagebreak_separator: '<!-- my page break -->',
             setup: function (ed) {
                 ed.on('init', function(args) {
-                    $('#story_name').focus();
+                        setTimeout(function() {
+                            $('#story_name').focus();
+                        },200);
                 });
             },
             menubar: 'edit insert view format table tools jbimages',
