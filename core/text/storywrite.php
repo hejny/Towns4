@@ -23,7 +23,7 @@
             //pagebreak_separator: '<!-- my page break -->',
             setup: function (ed) {
                 ed.on('init', function(args) {
-                        setTimeout(function() {
+                        setInterval(function() {
                             $('div').scrollTop(0);
                         },200);
                 });
