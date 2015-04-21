@@ -33,6 +33,8 @@ require(core."/attack/func_core.php");
 require(core."/text/func_core.php");
 require(core."/hold/func_core.php");
 require(core."/quest/func_core.php");
+//---------------
+require(core."/model/func_map.php");
 //--------------------------------------------
 
 $q=$_GET['q'];
