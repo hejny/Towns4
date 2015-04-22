@@ -6,7 +6,7 @@
     }
 
 
-    tinyMCE.baseURL = '<?=url?>lib/tinymce';
+    tinyMCE.baseURL = '<?=url?>../lib/tinymce';
     tinyMCE.init(
         {
             mode: 'textareas',
