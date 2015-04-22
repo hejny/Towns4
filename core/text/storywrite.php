@@ -1,7 +1,4 @@
-
 <script>
-
-    //alert('init');
 
     try{
         tinyMCE.remove()
@@ -9,13 +6,13 @@
     }
 
 
-
+    tinyMCE.baseURL = '<?=url?>lib/tinymce/';
     tinyMCE.init(
         {
             mode: 'textareas',
             selector: '#story_text',
-            skin_url: '../lib/tinymce/skins/custom',
-            content_css : '../lib/tinymce/skins/custom/content.css',
+            skin_url: '<?=url?>lib/tinymce/skins/custom',
+            content_css : '<?=url?>/lib/tinymce/skins/custom/content.css',
             language: 'cs',
             theme: 'modern',
             height : 550,
@@ -23,9 +20,9 @@
             //pagebreak_separator: '<!-- my page break -->',
             setup: function (ed) {
                 ed.on('init', function(args) {
-                        setInterval(function() {
-                            $('div').scrollTop(0);
-                        },200);
+                    setInterval(function() {
+                        $('div').scrollTop(0);
+                    },200);
                 });
             },
             menubar: 'edit insert view format table tools jbimages',
@@ -34,6 +31,8 @@
             relative_urls: false
         }
     );
+
+
 
 
 
