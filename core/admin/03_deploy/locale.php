@@ -23,17 +23,19 @@ if ($_GET['start']) {
       ini_set('memory_limit', '256M');
       ini_set("max_execution_time","1000");
 
+    if(!function_exists('terminal')) {
+        function terminal($command, $show = false)
+        {
 
-   function terminal($command,$show=false){
+            if (!$show) $show = $command;
+            e('<span style="color: #aaffaa;">');
+            e(nl2br(htmlspecialchars($show . nln)));
+            e('</span>');
 
-      if(!$show)$show=$command;
-      e('<span style="color: #aaffaa;">');
-      e(nl2br(htmlspecialchars($show.nln)));
-      e('</span>');
-
-      $response=shell_exec($command.' 2>&1;');
-      e(nl2br(htmlspecialchars($response.nln)));
-   }
+            $response = shell_exec($command . ' 2>&1;');
+            e(nl2br(htmlspecialchars($response . nln)));
+        }
+    }
 
    ob_start();
 
