@@ -825,7 +825,7 @@ function check_email($email) {
 
 function htmljscss($nocss=0){
 
-    $filejs = tmpfile2('js', 'js', 'page');
+    $filejs = tmpfile2('js6', '.min.js', 'page');
     $filecss = tmpfile2('css', 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs)/** or 1/**/) {
@@ -843,8 +843,57 @@ function htmljscss($nocss=0){
         $js .= fgc('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
         $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');
 
-        //-------------------------------------------------FPS
+        //-------------------------------------------------Knihovny / TiniMce
+        
+        $js .= fgc('lib/tinymce/tinymce.min.js');
+        
+        $js .= fgc('lib/tinymce/langs/cs.min.js');
+        $js .= fgc('lib/tinymce/themes/modern/theme.min.js');
+        $js .= fgc('lib/tinymce/plugins/autolink/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/advlist/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/lists/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/link/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/image/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/charmap/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/print/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/preview/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/hr/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/anchor/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/searchreplace/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/wordcount/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/visualblocks/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/visualchars/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/code/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/fullscreen/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/media/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/nonbreaking/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/table/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/contextmenu/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/emoticons/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/template/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/paste/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/textcolor/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/colorpicker/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/textpattern/plugin.min.js');
+        $js .= fgc('lib/tinymce/plugins/jbimages/plugin.min.js');
+        
+
+        //-------------------------------------------------FPS, Context
+        //<?php if(!debug){
         //$js .= 'fps=30;';
+        $js .= <<<EOF
+        z_index=1000;
+
+            $(document).ready(function(){
+            $(document).bind("contextmenu",function(e){
+            return false;
+            });
+            });
+
+        connectfps=4;
+        fps=12;
+        fps_quick=60;
+EOF;
         //-------------------------------------------------Google analytics code
 
         if (defined('analytics')) {
@@ -931,63 +980,15 @@ EOF;
 
     e('<script src="'.$filejs.'"></script>');
     if(!$nocss)e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
-    e('<script src="../lib/tinymce/tinymce.min.js"></script>');
+    e('<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>');
+    //e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 
 }
-//======================================================================================================================Minifikace
+//======================================================================================================================Minifikace JS
 
 
 
 
-function slib_compress_script( $buffer ) {
-
-    // JavaScript compressor by John Elliot <jj5@jj5.net>
-
-    $replace = array(
-        '#\'([^\n\']*?)/\*([^\n\']*)\'#' => "'\1/'+\'\'+'*\2'", // remove comments from ' strings
-        '#\"([^\n\"]*?)/\*([^\n\"]*)\"#' => '"\1/"+\'\'+"*\2"', // remove comments from " strings
-        '#/\*.*?\*/#s'            => "",      // strip C style comments
-        '#[\r\n]+#'               => "\n",    // remove blank lines and \r's
-        '#\n([ \t]*//.*?\n)*#s'   => "\n",    // strip line comments (whole line only)
-        '#([^\\])//([^\'"\n]*)\n#s' => "\\1\n",
-        // strip line comments
-        // (that aren't possibly in strings or regex's)
-        '#\n\s+#'                 => "\n",    // strip excess whitespace
-        '#\s+\n#'                 => "\n",    // strip excess whitespace
-        '#(//[^\n]*\n)#s'         => "\\1\n", // extra line feed after any comments left
-        // (important given later replacements)
-        '#/([\'"])\+\'\'\+([\'"])\*#' => "/*" // restore comments in strings
-    );
-
-    $search = array_keys( $replace );
-    $script = preg_replace( $search, $replace, $buffer );
-
-    $replace = array(
-        "&&\n" => "&&",
-        "||\n" => "||",
-        "(\n"  => "(",
-        ")\n"  => ")",
-        "[\n"  => "[",
-        "]\n"  => "]",
-        "+\n"  => "+",
-        ",\n"  => ",",
-        "?\n"  => "?",
-        ":\n"  => ":",
-        ";\n"  => ";",
-        "{\n"  => "{",
-//  "}\n"  => "}", (because I forget to put semicolons after function assignments)
-        "\n]"  => "]",
-        "\n)"  => ")",
-        "\n}"  => "}",
-        "\n\n" => "\n"
-    );
-
-    $search = array_keys( $replace );
-    $script = str_replace( $search, $replace, $script );
-
-    return trim( $script );
-
-}
 
 //======================================================================================================================
 
