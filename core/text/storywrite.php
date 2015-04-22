@@ -11,8 +11,8 @@
         {
             mode: 'textareas',
             selector: '#story_text',
-            skin_url: '<?=url?>lib/tinymce/skins/custom',
-            content_css : '<?=url?>/lib/tinymce/skins/custom/content.css',
+            skin_url: '<?=url?>../lib/tinymce/skins/custom',
+            content_css : '<?=url?>../lib/tinymce/skins/custom/content.css',
             language: 'cs',
             theme: 'modern',
             height : 550,
