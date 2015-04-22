@@ -980,7 +980,7 @@ EOF;
 
     e('<script src="'.$filejs.'"></script>');
     if(!$nocss)e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
-    e('<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>');
+    //e('<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>');
     //e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 
 }
