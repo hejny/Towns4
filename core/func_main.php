@@ -823,8 +823,7 @@ function check_email($email) {
 }
 //======================================================================================================================Načtení knihoven
 
-function htmljscss()
-{
+function htmljscss($nocss=0){
 
     $filejs = tmpfile2('js', 'js', 'page');
     $filecss = tmpfile2('css', 'css', 'page');
@@ -931,7 +930,7 @@ EOF;
     $filecss=rebase(url.$filecss);
 
     e('<script src="'.$filejs.'"></script>');
-    e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
+    if(!$nocss)e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
     e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 
 }
