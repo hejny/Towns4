@@ -197,7 +197,7 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
             <?php /*if($position=='relative')e('<div style="position:absolute;z-index:'.$z.';">');*/ ?>
 	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="display:block;position:<?php e($position); ?>;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($sizex<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;">
 	    <table border="0" cellpadding="0" cellscpacing="0" width="100%" height="100%">
-	    <tr><td valign="midle" align="center" <?php e($count==1?'':'height="'.(abs($y)-9).'"'); ?>>
+	    <tr><td valign="midle" align="center" <?php e($count==1?'':'height="'.(abs($y)-9).'px"'); ?>>
 	    <?php
 	    
 
@@ -1132,7 +1132,7 @@ function imgr($file,$alt="",$width="",$height="",$rot=1,$border=0,$grey=0){
     $stream=imageurl($file,$rot,$grey);
     t('imgr - after imageurl');
     if($border)
-        $border='style="border: '.$border.'px solid #cccccc"';
+        $border='style="border: '.$border.'px solid #cccccc;"';
     else
         $border='border="0"';
     $stream="<img src=\"$stream\" $border alt=\"$alt\" $width $height />";
