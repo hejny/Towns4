@@ -8,35 +8,11 @@
    Javascript hlavně pro mapu
 */
 //==============================
-?><script type="text/javascript">
+?>
 
-/*------------------------------base64*/
-            /*function base64_decode(s) {
-                var e={},i,k,v=[],r='',w=String.fromCharCode;
-                var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
-            
-                for(z in n){for(i=n[z][0];i<n[z][1];i++){v.push(w(i));}}
-                for(i=0;i<64;i++){e[v[i]]=i;}
-            
-                for(i=0;i<s.length;i+=72){
-                var b=0,c,x,l=0,o=s.substring(i,i+72);
-                     for(x=0;x<o.length;x++){
-                            c=e[o.charAt(x)];b=(b<<6)+c;l+=6;
-                            while(l>=8){r+=w((b>>>(l-=8))%256);}
-                     }
-                }
-                var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
-                var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-                for(i=0;i<64;i++){e[A.charAt(i)]=i;}
-                for(x=0;x<L;x++){
-                    c=e[s.charAt(x)];b=(b<<6)+c;l+=6;
-                    while(l>=8){((a=(b>>>(l-=8))&0xff)||(x<(L-2)))&&(r+=w(a));}
-                }
-                return r;
-            }*/
 /*------------------------------parseMap*/
-            xc=0<?php echo($GLOBALS['xc']); ?>;
-            yc=0<?php echo($GLOBALS['yc']); ?>;
+            xc=0/*<?php echo($GLOBALS['xc']); ?>*/;
+            yc=0/*<?php echo($GLOBALS['yc']); ?>*/;
             
             function parseMapF(fff) {
                 parseMapx(false,fff);
@@ -101,23 +77,9 @@
 
                     freeze=1;
                     inloading=1;
-		    //$( "#draglayer" ).draggable( "option", "disabled", true );
 
-
-                    /*window.stop();*/
-                    /*alert('?e=map&xc='+xc+'&yc='+yc+'&xx='+xx);
-                    r('?e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&q='+movefunc+'%20to,'+_xc+','+_yc);
-					*/
-		    /*if(typeof aacparsejsget!="undefined")aacparsejsget.abort();    */    
-		    
-		            //alert('?token=<?php e($_GET['token']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>');
-                    /*$(function(){aacparsejsget=*/
-                    
-                    //alert(document.parseMapxloading);
-
-                    //alert(document.parseMapxloading);
                     document.parseMapxloading=true;
-                    document.maploader = $.get('?token=<?php e($_GET['token']); ?>&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+'<?php e($_GET['mobile']); ?>',    function(vystup){
+                    document.maploader = $.get('?token='+token+'&e=map&xc='+xc+'&yc='+yc+'&xx='+xx+'&yy='+yy+'&i='+windows+'&mobile='+mobile,    function(vystup){
 			    
                            
                             //alert(vystup.url);
@@ -152,11 +114,7 @@
     							$('#grid').css('display',zaloha_gr);
     								$('.mapbox').css('display',zaloha_mb);
     								$('.saybox').css('display',zaloha_sb);
-                                                            /*$('#zaloha_u').css('left',zaloha_uxc);
-                                                            $('#zaloha_u').css('top',<?php e(htmlunitc); ?>-zaloha_uyc);
-                                                            $('#zaloha_u').html(zaloha_u);
-                                                            //alert(zaloha_uxc+','+zaloha_uyc);*/
-                                                            
+
                                 fff();
     
     
@@ -319,7 +277,6 @@ $(document).ready(function(){
     rvrao=false;
 	qbuffer='';
 	windows='';
-	map_units_time=<?php e(time()); ?>;
 	setset='';
 	nmr=false;
 
@@ -346,10 +303,10 @@ $(document).ready(function(){
                 
                 if(playing){
 					if(nmr){
-                    	urlpart='?token=<?php e($_GET['token']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
+                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
 						nmr=false;
 					}else{
-                    	urlpart='?token=<?php e($_GET['token']); ?>&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
 					}
     		    qbuffer=''
                     windows='';
@@ -357,13 +314,8 @@ $(document).ready(function(){
                 }
                
               
-            }/*else{
-		qii=qii+1;
-		if(qii>10){qii=0;
-		urlpart='?token=<?php e($_GET['token']); ?>&e=aac&onlyc=1';
-		}
-                //rvrao=false;
-            }*/
+            }
+
 		if(urlpart!=''){rvrao=true;$.get(urlpart, function(vystup){rvrao=false;eval(vystup);});}
             }
 	    }
@@ -522,7 +474,7 @@ $(document).ready(function(){
                 
                 xx=parseFloat($('#draglayer').css("left"));
                 yy=parseFloat($('#draglayer').css("top"));
-                d=/*207*//*500*/<?php e(!$GLOBALS['mobile']?1100:248) ?>*act*actx;q=false;
+                d=<?php e(!$GLOBALS['mobile']?1100:248) ?>*act*actx;q=false;
                 xxp=xx;
                 yyp=yy;
                 if ( key_up==true    ) {yy=yy+d;q=true;}
@@ -567,14 +519,11 @@ $(document).ready(function(){
 	/*----------------------------------*/
 	function w_close(w_name){
 	/*alert(w_name);*/
-	<?php
-	if($GLOBALS['mobile']){
-	e("if(w_name=='content'){ wm_close(); }");
+
+	if(mobile==1){
+	    if(w_name=='content'){ wm_close(); }
 	}
-	?>
-        <?php /*if(debug){ ?>
-        alert(w_name);
-        <?php }*/ ?>
+
         if(w_name.substring(0,7)!='window_'){ 
             w_name='window_'+w_name;
         }  
@@ -623,8 +572,8 @@ $(document).ready(function(){
         if(w_name!='content'){
             if(!xx)xx=50;
             if(!yy)yy=50;
-            if(!ww)ww=5;/*<?php e(contentwidth); ?>;*/
-            if(!hh)hh=5;/*$('#html_fullscreen').height()-118;*/
+            if(!ww)ww=5;
+            if(!hh)hh=5;
         }else{
             if(!xx)xx=1;
             if(!yy)yy=1;
@@ -632,7 +581,7 @@ $(document).ready(function(){
         if(!ww)ww=0;
         if(!hh)hh=0;
         /*r(w_name+","+w_content+","+xx+","+yy);*/
-		url="?token=<?php e($_GET['token']); ?>&e="+w_content+w_urlpart+"&i="+w_name+","+w_content+","+xx+","+yy;
+		url="?token="+token+"&e="+w_content+w_urlpart+"&i="+w_name+","+w_content+","+xx+","+yy;
 		/*--------*/
 			stream=$('#window').html();
 			stream=stream.split("window_name").join("window_"+w_name);
@@ -685,4 +634,3 @@ $(document).ready(function(){
 
  
        /*===========================================================================*/
-</script>

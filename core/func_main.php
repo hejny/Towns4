@@ -823,31 +823,173 @@ function check_email($email) {
 }
 //======================================================================================================================Načtení knihoven
 
-function script_($script){
-   e('<script type="text/javascript">');
-   readfile($script);
-   e('</script>');
-}
-function css_($css){
-   e('<style>');
-   readfile($css);
-   e('</style>');
-}
+function htmljscss()
+{
 
-function htmllibs(){
-	script_('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
-	script_('lib/jquery/jquery-ui.min.js');
+    $filejs = tmpfile2('js', 'js', 'page');
+    $filecss = tmpfile2('css', 'css', 'page');
+    //-------------------------------------------------
+    if (!file_exists($filejs)/** or 1/**/) {
 
-	script_('lib/jquery/plugins/fullscreen-min.js');//Funkce plné obrazovky, která neblbne
-	script_('lib/jquery/plugins/mousewheel.js');//Potřeba pro mousewheel
-	script_('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
-	script_('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
-	script_('lib/jquery/plugins/colorpicker/colorpicker.js');
-	css_('lib/jquery/plugins/colorpicker/colorpicker.css');
+        $js = '';
 
+        //-------------------------------------------------Knihovny
+
+        $js .= fgc('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
+        $js .= fgc('lib/jquery/jquery-ui.min.js');
+
+        $js .= fgc('lib/jquery/plugins/fullscreen-min.js');//Funkce plné obrazovky, která neblbne
+        $js .= fgc('lib/jquery/plugins/mousewheel.js');//Potřeba pro mousewheel
+        $js .= fgc('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
+        $js .= fgc('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
+        $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');
+
+        //-------------------------------------------------FPS
+        //$js .= 'fps=30;';
+        //-------------------------------------------------Google analytics code
+
+        if (defined('analytics')) {
+            $analytics = analytics;
+            $js .= <<<EOF
+
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', '$analytics']);
+                _gaq.push(['_trackPageview']);
+
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ?  'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+EOF;
+
+        } else {
+            //Pokud Google analytics není je vytvořen prázdný _gaq
+            $js .= ('var _gaq = [];');
+        }
+        //-------------------------------------------------Facebook
+        $fb_appid = fb_appid;
+        $js .= <<<EOF
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/cs_CZ/all.js#xfbml=1&appId=$fb_appid";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+EOF;
+        //-------------------------------------------------Javascript
+        ob_start();
+        require(root . core . '/page/javascript.php');
+        $js .= ob_get_contents();
+        ob_end_clean();
+        //-------------------------------------------------
+
+
+        //$js=slib_compress_script($js);
+
+        fpc($filejs, $js);
+    }
+
+    if (!file_exists($filecss)/** or 1/**/){
+
+        $css = '';
+
+        //-------------------------------------------------Základní
+        $css.='body {
+            background-color: #000000;
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+        body,td,th {
+            color: #cccccc;
+            font-size: 14px;
+        font-family: "trebuchet ms";
+        }
+        h1{
+            font-size: 25px;
+        }
+        h3{
+            font-size: 15px;
+        }
+        hr {
+            border-color: #cccccc;
+        height: 0.5px;
+        }
+        a{color: #cccccc;text-decoration: none;}';
+        //-------------------------------------------------Knihovny
+        $css .= fgc('lib/jquery/plugins/colorpicker/colorpicker.css');
+        //-------------------------------------------------
+
+        fpc($filecss, $css);
+
+    }
+
+    $filejs=rebase(url.$filejs);
+    $filecss=rebase(url.$filecss);
+
+    e('<script src="'.$filejs.'"></script>');
+    e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
     e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 
 }
+//======================================================================================================================Minifikace
+
+
+
+
+function slib_compress_script( $buffer ) {
+
+    // JavaScript compressor by John Elliot <jj5@jj5.net>
+
+    $replace = array(
+        '#\'([^\n\']*?)/\*([^\n\']*)\'#' => "'\1/'+\'\'+'*\2'", // remove comments from ' strings
+        '#\"([^\n\"]*?)/\*([^\n\"]*)\"#' => '"\1/"+\'\'+"*\2"', // remove comments from " strings
+        '#/\*.*?\*/#s'            => "",      // strip C style comments
+        '#[\r\n]+#'               => "\n",    // remove blank lines and \r's
+        '#\n([ \t]*//.*?\n)*#s'   => "\n",    // strip line comments (whole line only)
+        '#([^\\])//([^\'"\n]*)\n#s' => "\\1\n",
+        // strip line comments
+        // (that aren't possibly in strings or regex's)
+        '#\n\s+#'                 => "\n",    // strip excess whitespace
+        '#\s+\n#'                 => "\n",    // strip excess whitespace
+        '#(//[^\n]*\n)#s'         => "\\1\n", // extra line feed after any comments left
+        // (important given later replacements)
+        '#/([\'"])\+\'\'\+([\'"])\*#' => "/*" // restore comments in strings
+    );
+
+    $search = array_keys( $replace );
+    $script = preg_replace( $search, $replace, $buffer );
+
+    $replace = array(
+        "&&\n" => "&&",
+        "||\n" => "||",
+        "(\n"  => "(",
+        ")\n"  => ")",
+        "[\n"  => "[",
+        "]\n"  => "]",
+        "+\n"  => "+",
+        ",\n"  => ",",
+        "?\n"  => "?",
+        ":\n"  => ":",
+        ";\n"  => ";",
+        "{\n"  => "{",
+//  "}\n"  => "}", (because I forget to put semicolons after function assignments)
+        "\n]"  => "]",
+        "\n)"  => ")",
+        "\n}"  => "}",
+        "\n\n" => "\n"
+    );
+
+    $search = array_keys( $replace );
+    $script = str_replace( $search, $replace, $script );
+
+    return trim( $script );
+
+}
+
 //======================================================================================================================
 
 define('dnln',debug?nln:'');
