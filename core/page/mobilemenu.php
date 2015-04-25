@@ -11,7 +11,7 @@
 
 if(!mobile){
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     w_close('content');
 },10);

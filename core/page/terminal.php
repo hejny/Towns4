@@ -90,7 +90,7 @@ if($q==1) {
     moveby(ahrefr(imgr('icons/fx_automine.png', lr('terminal_clean'), 22), 'e=terminal;clean=1'), -22, -454/*550,-540-514,*/);
 
     ?>
-    <script>
+    <script type="text/javascript">
 
         function terminalclick() {
             //alert(444);

@@ -198,6 +198,16 @@ function townsfunction($query,$q='a'){
                     $GLOBALS['ss']['aac_object']->func=new func($tmp);*/
 
                     foreach($params as &$param){
+
+                        if(is_array($param)){
+                            $param=array_map(function($param){
+                                $param=str_replace('\\','\\\\',$param);
+                                $param=str_replace(',','\\,',$param);
+                                return($param);
+                            },$param);
+                            $param=implode(',',$param);
+                        }
+
                         $param=addslashes($param);
                     }
                     $paramsx=implode("','",$params);

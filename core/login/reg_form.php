@@ -32,7 +32,7 @@ br();
 
 
 </form>
-<script>
+<script type="text/javascript">
 $("#reg_form").submit(function() {
     //alert(123);
     register($('#register_username').val(),$('#register_password').val(),$('#register_email').val(),($("#register_sendmail").is(':checked') ? 1 : 0));

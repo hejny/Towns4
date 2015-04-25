@@ -443,7 +443,7 @@ if($quest){
 
 }else{
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     w_close('quest-mini');
     w_close('window_quest-mini');

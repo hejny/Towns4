@@ -2,3 +2,6 @@ body {
    background: #111; 
    color:#ccc;
 }
+img {
+    max-width: 100%;
+} 

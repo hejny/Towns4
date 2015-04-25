@@ -15,7 +15,7 @@
 
 window(lr('title_settings'));
 
-$q=submenu(array("content","settings"),array("settings_town","settings_user"),1);
+$q=submenu(array('content','settings'),array('settings_town','settings_user','settings_description','settings_image'),1);
 
 
 contenu_a();
@@ -48,9 +48,11 @@ if($q==1){
 	    //if($post["web"]){xquery("profile_edit","web",$post["web"]);}
 	    //if($post["image"]){xquery("profile_edit","image",$post["image"]);}
 	    if($_POST["description"] and $p["description"]!=$_POST["description"]){
-			xquery("profile_edit",$id,"description",$_POST["description"]);
+
+            $description=remove_javascript($_POST["description"]);//@todo funkce pro zpracovávání TinyMCE
+			xquery("profile_edit",$id,"description",$description);
 			xreport();
-			$p["description"]=$_POST["description"];
+			$p["description"]=$description;
 		}
 	    if($_POST["color"] and $p["color"]!=$_POST["color"]){
 			xquery("profile_edit",$id,"color",$_POST["color"]);
@@ -94,14 +96,16 @@ if($q==1){
 	<tr><td><b><?php le("web"); ?>:</b></td><td>http://<?php input_text("web",$p["web"]); ?></td></tr>
 	<tr><td><b><?php le("image"); ?>:</b></td><td><?php input_text("image",$p["image"]); ?></td></tr>
 	<?php */ ?>
-	<tr><td><b><?php le('description'); ?>:</b></td><td><?php input_textarea("description",$p["description"],(!$GLOBALS['mobile']?44:'30'),17); ?></td></tr>
+	    <tr><td colspan="2"><b><?php le('description'); ?>:</b></td></tr>
+        <tr><td colspan="2"><?php input_tinymce("description",$p["description"],450,200,1); ?></td></tr>
 
+        <tr><td colspan="2"><b><?php le('color'); ?>:</b></td></tr>
 
-<tr><td><b><?php le('color'); ?>:</b></td><td>
+<tr><td colspan="2" align="center">
 
 <input type="hidden" name="color" id="color" value="<?php e($p["color"]); ?>" />
 <p id="colorpickerHolder"></p>
-	<script>
+	<script type="text/javascript">
 	$('#colorpickerHolder').ColorPicker({
 	flat: true,
 	color: '#<?php e($p["color"]); ?>',
@@ -302,13 +306,14 @@ if($q==1){
     	}
 	blue(lr('fb_form_warning'));
 	//}
-	?>
+
+//======================================================================================
+}elseif($q==3){
+//==============================================================================
 
 
-<?php
     if(!is_numeric($GLOBALS['ss']['log_object']->name)){
     	//------------------------------------------------description
-    	hr();
     	    $info=array();
     	    $tmpinfo=xquery("info",$GLOBALS['ss']['logid']);
     	    $info["profile"]=new profile($tmpinfo["profile"]);
@@ -317,33 +322,64 @@ if($q==1){
     
     	if($_GET["profile_edit"]){
     
-    	    if($_GET["description"] and $p["description"]!=$_GET["description"]){
+    	    /*if($_GET["description"] and $p["description"]!=$_GET["description"]){
     			xquery("profile_edit",$GLOBALS['ss']['logid'],"description",$_GET["description"]);xreport();
     			$p["description"]=$_GET["description"];
-    		}
+    		}*/
     
-    	    if($_POST["description"] and $p["description"]!=$_POST["description"]){
-    			xquery("profile_edit",$GLOBALS['ss']['logid'],"description",$_POST["description"]);xreport();
+    	    //if($_POST["description"] and $p["description"]!=$_POST["description"]){
+
+                $description=remove_javascript($_POST["description"]);//@todo funkce pro zpracovávání TinyMCE
+    			xquery("profile_edit",$GLOBALS['ss']['logid'],"description",$description);xreport();
     			$p["description"]=$_POST["description"];
-    		}  
-    
-    	}
-    
+    		//}
+
+            //if($_POST["signature"] and $p["signature"]!=$_POST["signature"]){
+                $signature=remove_javascript($_POST["signature"]);//@todo funkce pro zpracovávání TinyMCE
+                xquery("profile_edit",$GLOBALS['ss']['logid'],"signature",$signature);xreport();
+                $p["signature"]=$_POST["signature"];
+            //}
+
+        }
+
+        $rand=rand(11111,99999);
+
+
     	form_a(urlr('profile_edit=1'),'profile_edit');
-    	?>
-    
-                    
-    	<table>
-    	<tr><td><b><?php le('description'); ?>:</b></td></tr>
-    	<tr><td><?php input_textarea("description",$p["description"],(!$GLOBALS['mobile']?52:'30'),17); ?></td></tr>
-    
-    	<tr><td colspan="2"><input type="submit" value="<?php le('submit_description') ?>" /></td>
-    	</tr></table>
-    
-    	<?php
+
+        form_send(lr('submit_description'),'font-size:18px;width:100%;color: #cccccc;border: 2px solid #555555; background-color: rgba(40,20,40,1);');
+
+
+        infob(textbr(lr('description')).br.lr('description_text'));
+
+        input_tinymce('description'.$rand,$p["description"],450,200,1);
+
+
+        infob(textbr(lr('signature')).br.lr('signature_text'));
+        input_tinymce('signature'.$rand,$p["signature"],450,200,1);
+
+        form_send(lr('submit_description'),'font-size:18px;width:100%;color: #cccccc;border: 2px solid #555555; background-color: rgba(40,20,40,1);');
+
     	form_b();
-    	form_js('content','?e=settings&submenu=2&profile_edit=1',array('description'));
+    	form_js('content','?e=settings&submenu=2&profile_edit=1',array('description','signature'),1,$rand);
     }
+//======================================================================================
+}elseif($q==4){
+//==============================================================================
+
+    $email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
+
+    br();
+    le('settings_gravatar_top');
+    br(2);
+    e('<div style="width: 100%;text-align: center;"><img src="'.gravatar($email,350).'" border="2"></div>');
+
+    br();
+    le('settings_gravatar_info',$email);
+    br();
+    tfont('<a href="http://cs.gravatar.com/" target="_blank">gravatar.com</a>',18);
+
+
 //======================================================================================
 }
 contenu_b(true);

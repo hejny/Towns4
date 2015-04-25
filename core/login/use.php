@@ -16,7 +16,7 @@
 
 if(!$usenotclose){
 	  ?> 
-	<script>
+	<script type="text/javascript">
 	    w_close('content');
 	</script>
 	<?php

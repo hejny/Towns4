@@ -44,7 +44,7 @@ if(!$GLOBALS['mcontent']){
 
 
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     $('#mobilecontent').css('display','none');
 },10);

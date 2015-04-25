@@ -39,7 +39,7 @@ if($quest){
 
 }else{
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     $('#quest-mobile').css('display','none');
 },10);

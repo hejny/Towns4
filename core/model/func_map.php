@@ -93,9 +93,46 @@ function imgresizeh($img,$height) {
       $height = imagesy($img) * $ratio;
       return(imgresize($img,$width,$height));
    }
- 
- 
-   function imgresize($img,$width,$height) {
+
+    function imgresizewurl($url,$width) {
+
+        $ext = pathinfo($url, PATHINFO_EXTENSION);
+        $ext=strtolower($ext);
+        $file=tmpfile2(array($url,$width),$ext,'imgresizewurl');
+        if(!file_exists($file)/** or 1/**/) {
+            if($pos=strpos($url,'userdata')){
+                $url=substr($url,$pos);
+            }
+            $res = imagecreatefromstring(fgc($url));
+            //r($res);
+            $res=imgresizew($res,$width);
+            //r($res);
+            switch($ext){
+                case 'jpg':
+                case 'jpeg':
+                case 'bmp':
+                    imagejpeg($res,$file);
+                    break;
+                case 'png':
+                    imagepng($res,$file);
+                case 'gif':
+                    imagegif($res,$file);
+                    break;
+                default:
+                    imagesavealpha($res,true);
+                    imagepng($res,$file);
+                    break;
+            }
+            chmod($file,0777);
+
+
+        }
+        $file=rebase(url.'/../'.$file);
+        return($file);
+    }
+
+
+    function imgresize($img,$width,$height) {
       $new_image = imagecreatetruecolor($width, $height);
       imagealphablending($new_image,false);
       imagecopyresampled($new_image, $img, 0, 0, 0, 0, $width, $height, imagesx($img), imagesy($img));

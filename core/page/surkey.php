@@ -64,7 +64,7 @@ ahref($buffer,'e=content;ee=mobilemenu');
 
 ?>
 
-<script>
+<script type="text/javascript">
 menu_open=function(){
 <?php e(str_replace('javascript:','',urlr('e=content;ee=mobilemenu'))); ?>
 } 

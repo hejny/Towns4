@@ -1,52 +1,9 @@
-<script>
-
-    try{
-        tinyMCE.remove()
-    }catch(e){
-    }
-
-
-    tinyMCE.baseURL = '<?=url?>../lib/tinymce';
-    tinyMCE.init(
-        {
-            mode: 'textareas',
-            selector: '#story_text',
-            skin_url: '<?=url?>../lib/tinymce/skins/custom',
-            content_css : '<?=url?>../lib/tinymce/skins/custom/content.css',
-            language: 'cs',
-            theme: 'modern',
-            height : 550,
-            statusbar:false,
-            //pagebreak_separator: '<!-- my page break -->',
-            setup: function (ed) {
-                ed.on('init', function(args) {
-                    setInterval(function() {
-                        $('div').scrollTop(0);
-                    },200);
-                });
-            },
-            menubar: 'edit insert view format table tools jbimages',
-            plugins: 'advlist autolink lists link image charmap print preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking table contextmenu emoticons template paste textcolor colorpicker textpattern jbimages',
-            toolbar: " bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link |  jbimages  ",//pagebreak
-            relative_urls: false
-        }
-    );
-
-
-
-
-
-</script>
-<style>
-    body.mceContentBody {
-
-    }
-</style>
 
 <?php
+//htmljscss();
 
 //print_r($GLOBALS['get']);
-
+//----------------------------------------------------------------------------------------------------------------------Name,Text,Position
 if(isset($GLOBALS['get']['id'])){
 
     $id=intval($GLOBALS['get']["id"]);
@@ -58,8 +15,8 @@ if(isset($GLOBALS['get']['id'])){
 
 
 }else{
-    $story_name=$_POST['story_name'];
-    $story_text=$_POST['story_text'];
+    $story_name=trim($_POST['story_name']);
+    $story_text=trim($_POST['story_text']);
 
 
 
@@ -78,7 +35,63 @@ if(isset($GLOBALS['get']['id'])){
         click(js2("w_close('text-storywrite');"));
     }
 }
+//----------------------------------------------------------------------------------------------------------------------ID
 
+if ($_POST['story_id']) {
+    $id = intval($_POST['story_id']);
+} else {
+    $id = nextid();
+}
+
+//----------------------------------------------------------------------------------------------------------------------Text
+
+if($story_text){
+
+    $story_text=remove_javascript($story_text);
+
+    if(strpos($story_text,'<img')) {
+
+        $i=0;
+        while($img = substr2($story_text, '<img', '>',$i)){
+
+            //--------------------------------------Nastavení width="100%"
+            if(!strpos($img,'width')) {
+                $img.=' width="100%" ';
+                $story_text=substr2($story_text, '<img', '>',$i,$img);//Uložení
+            }
+            //--------------------------------------Přesun do userdata/objects
+            $src_old = substr2($img, 'src="', '"',0);
+
+            //@todo Může být problematické pokud je nastaven absolutní root
+            if(strpos($src_old,'userdata/upload/')){
+
+                $dir_old=root.'userdata/upload';
+                $dir_new=root.'userdata/objects/'.$id;
+
+                $src_new=str_replace($dir_old.'/',$dir_new.'/',$src_old);
+
+
+                $file_old=$dir_old.'/'.html_entity_decode(basename($src_old));
+                $file_new=$dir_new.'/'.html_entity_decode(basename($src_new));
+
+
+                mkdir2(root.'userdata/objects/'.$id);//Vytvoření adresáře objektu
+                rename($file_old,$file_new);//Přesun
+
+                $img=substr2($img, 'src="', '"',0,$src_new);//Změna src
+                $story_text=substr2($story_text, '<img', '>',$i,$img);//Uložení
+                //$story_text.="rename($file_old,$file_new)";
+
+            }
+
+
+            //--------------------------------------
+            $i++;
+        }
+
+    }
+}
+//----------------------------------------------------------------------------------------------------------------------Window Title
 
 if($id or $_POST['story_send']){
     window(lr('title_story_edit'),550,0,'text-storywrite');
@@ -88,10 +101,11 @@ if($id or $_POST['story_send']){
     window(lr('title_story_create'),550,0,'text-storywrite');
 
 }
-
+//----------------------------------------------------------------------------------------------------------------------Saving
 
 //@todo $_POST['story_name']
 if($_POST['story_send']){
+    //----------------------------------------------------Errors
     if(!trim($story_name)){
 
         error(lr('story_error_noname'));
@@ -102,9 +116,8 @@ if($_POST['story_send']){
 
     }else {
 
-        if ($_POST['story_id']) {
-
-            $id = intval($_POST['story_id']);
+        if (ifobject($id,true)) {
+            //----------------------------------------------------UPDATE
 
             trackobject($id);
 
@@ -136,11 +149,10 @@ if($_POST['story_send']){
                 'readytime' => 0,
                 'stoptime' => 0
             ));
-            //------------------
+            //----------------------------------------------------
 
         } else {
-
-            $id = nextid();
+            //----------------------------------------------------INSERT NEW
 
             //------------------INSERT objects
             sql_insert('objects', array(
@@ -171,13 +183,14 @@ if($_POST['story_send']){
                 'readytime' => 0,
                 'stoptime' => 0
             ));
-            //--rlx----------------
+            //----------------------------------------------------
+
         }
         //centerurl()
         click('e=map;noi=1;');
     }
 }
-
+//----------------------------------------------------------------------------------------------------------------------Form
 form_a('','story_form');
 
 input_hidden('story_send',1);
@@ -186,7 +199,7 @@ input_hidden('story_x',$x);//e("[$x,$y]");
 input_hidden('story_y',$y);
 input_text('story_name',$story_name,200,'','font-size:22px;width: 100%;border: 2px solid #171717; background-color: #222;color:#fff;',lr('story_name'));
 
-input_textarea('story_text',$story_text);
+input_tinymce('story_text',$story_text,'100%',400,2);
 
 /*
 ?>

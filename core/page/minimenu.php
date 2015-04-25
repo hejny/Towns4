@@ -101,7 +101,7 @@ if($sql and $id?ifobject($id):true){
 
 
                         ?>
-                        <script>
+                        <script type="text/javascript">
                         //alert(1);
                         $('#map_context').css('border-color','#<?php e($color); ?>');
                         </script>
@@ -175,7 +175,7 @@ if($sql and $id?ifobject($id):true){
 
 
         ?>
-        <script>
+        <script type="text/javascript">
         $('#map_context').css('border-color','#<?php e($color2); ?>');
         </script>
         <?php
@@ -344,7 +344,7 @@ if($sql and $id?ifobject($id):true){
                         //---------------------------------------------------------------Vykreslení tlačítka u minimenu
                         if($stream or $ahref){
 
-                                if($yes and $stream){echo("<script>$stream</script>");}
+                                if($yes and $stream){echo("<script type=\"text/javascript\">$stream</script>");}
                                 //echo("<span class=\"functiondrag\" id=\"fd_$name\" style=\"position: relative;top:0px;left:0px;z-index:2;\">");
                                 //echo("<a onclick=\"$stream\">".nln);
                                 //imge("icons/$icon.png",$xname,22,22);

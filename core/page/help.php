@@ -62,7 +62,7 @@ if($GLOBALS['ss']["helpanchor"]){
 	$stream=$stream[$GLOBALS['ss']["helpanchor"]-1];
 }
 
-$stream=substr2($stream,'<title>','</title>',0,'<script>$("#window_title_content").html("[]");</script>',false);
+$stream=substr2($stream,'<title>','</title>',0,'<script type="text/javascript">$("#window_title_content").html("[]");</script>',false);
 
 
 //$stream=str_replace('src="../image/','src="',$stream);
@@ -115,7 +115,7 @@ if(strpos($stream,'<!--aac-->')){
         $url=url.'../app/projects/?only=2&limit=2&nolink=1';
         $projects='<a href="'.$GLOBALS['inc']['projects'].'" target="_blank"><span id="app_projects" style="" >'.lr('loading').'</span></a>';
         $projects.=<<<EOF
-            <script>
+            <script type="text/javascript">
 
             $.get( "$url", function( data ) {
                 $( "#app_projects" ).html( data );

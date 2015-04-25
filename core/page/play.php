@@ -36,7 +36,7 @@ ihydepark('timetable');
 
 ?>
 
-<script>
+<script type="text/javascript">
     document.maptimespeed=0;
     //---------------------------------------------------
     maptimectl = function(time){

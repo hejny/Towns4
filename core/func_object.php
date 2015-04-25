@@ -890,10 +890,10 @@ function trackobject($id){
  * @param $id
  * @return array|bool
  */
-function ifobject($id){
+function ifobject($id,$noobjt=false){
 	$id=trim($id);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.objt());// OR profile LIKE '%mail=$id;%'
+    $result = sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.($noobjt?'1':objt()));// OR profile LIKE '%mail=$id;%'
     //r($result);
     if($result){
         return($result);
@@ -903,10 +903,13 @@ function ifobject($id){
 }
 //======================================================================================topobject
 function topobject($id,$i=0){
-    if($i>8)return(false);
+
+
+    if($i>=8)return(false);
+    //if(!$id)return(false);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE id='$id' OR name='$id' AND ".objt()." LIMIT 1");
-    //e("($i,$result)");
+    $result = sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE id=".sqlx($id)." OR name=".sqlx($id)." AND ".objt()." LIMIT 1");
+    if(!$result)return;
     if($result==$id)return($id);
     if($result){
         return(topobject($result,$i+1));
