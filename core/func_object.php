@@ -909,7 +909,7 @@ function topobject($id,$i=0){
     //if(!$id)return(false);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
     $result = sql_1data("SELECT own FROM `[mpx]pos_obj` WHERE id=".sqlx($id)." OR name=".sqlx($id)." AND ".objt()." LIMIT 1");
-    if(!$result)return;
+    if(!$result)return($id);
     if($result==$id)return($id);
     if($result){
         return(topobject($result,$i+1));
