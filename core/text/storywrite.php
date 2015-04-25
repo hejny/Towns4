@@ -119,7 +119,7 @@ if($_POST['story_send']){
 
     }else {
 
-        e($id);
+        //e($id);
         if (ifobject($id,true)) {
             //----------------------------------------------------UPDATE
 
