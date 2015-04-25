@@ -34,12 +34,18 @@ $terrains=array(
 //--------------------------
 t("minimenu - start");
 
-$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`, (SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `profileown`, `set`, `hard`, `own`, (SELECT `name` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `ownname`, (SELECT `type` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own`) as `owntype`, (SELECT count(1) from `[mpx]pos_obj` as x WHERE x.`own`=`[mpx]pos_obj`.`own`) as `owncount`, `in`, `ww`, `x`, `y`, `t`,starttime,`readytime`,create_lastused,create_lastobject,create2_lastused,create2_lastobject,create3_lastused,create3_lastobject,create4_lastused,create4_lastobject";
+
+
+ //* ,create_lastused,create_lastobject,create2_lastused,create2_lastobject,create3_lastused,create3_lastobject,create4_lastused,create4_lastobject
+
+$fields="`id`, `name`, `type`, `origin`, `fs`, `fp`, `fr`, `fx`, `fc`, `func`, `hold`, `res`, `profile`,  `set`, `hard`, `own`, `in`, `ww`, `x`, `y`, `t`,starttime,`readytime`";
+
+
 if($_GET["xc"] and $_GET["yc"]){
     $x_=$_GET["xc"]+1;
     $y_=$_GET["yc"]+1;
     $dd=1;
-    $sql="SELECT $fields FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' AND x<".($x_+$dd)." AND x>".($x_-$dd)." AND y<".($y_+$dd)." AND y>".($y_-$dd)." AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(x-$x_)+ABS(y-$y_) LIMIT 1";
+    $sql="SELECT $fields FROM `[mpx]pos_obj` WHERE ".objt()." AND `ww`='".$GLOBALS['ss']['ww']."' AND `x`<".round($x_+$dd,2)." AND `x`>".round($x_-$dd,2)." AND `y`<".round($y_+$dd,2)." AND `y`>".round($y_-$dd,2)." AND (`type`='building' OR `type`='tree' OR `type`='rock') ORDER BY ABS(`x`-".round($x_,2).")+ABS(`y`-".round($y_,2).") LIMIT 1";
     t("minimenu - A1");
     
 }else{
@@ -70,7 +76,20 @@ if($sql and $id?ifobject($id):true){
         //t('before sql');
         $array=sql_array($sql);
         //t('after sql');
-        list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $profileown, $set, $hard, $own, $ownname, $owntype, $owncount, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
+        //list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $profileown, $set, $hard, $own, $ownname, $owntype, $owncount, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
+
+
+        list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
+
+
+
+        if($own) {
+            $profileown = sql_1data("SELECT `profile` from `[mpx]pos_obj` WHERE `id`=$own AND " . objt());
+            $ownname = sql_1data("SELECT `name` from `[mpx]pos_obj` WHERE `id`=$own AND " . objt());
+            $owncount = sql_1number("SELECT count(1) from `[mpx]pos_obj` WHERE `own`=$own AND " . objt());
+            $owntype = sql_1data("SELECT `type` from `[mpx]pos_obj` WHERE `id`=$own AND " . objt());
+        }
+
 
         /*$fileMM=tmpfile2("$id,$t,".timeplan,'html','minimenu');
         if(!file_exists($fileMM)){//e('creating');
