@@ -131,7 +131,7 @@ function send_report($from,$to,$title="",$text="",$idle=false){
 //fb_notify(fb_user($to),lr('fb_new_report','text'));
 //======================================================================================
 function send_message($from,$to,$title="",$text="",$idle=false){
-    if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
+    if(!$idle)$idle=sql_1number("SELECT MAX(idle) FROM `[mpx]text`")+1;
     //$from=topobject($from);
     $to=topobject($to);
     //e($to);

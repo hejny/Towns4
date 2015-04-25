@@ -15,6 +15,7 @@ if(isset($GLOBALS['get']['id'])){
 
 
 }else{
+
     $story_name=trim($_POST['story_name']);
     $story_text=trim($_POST['story_text']);
 
@@ -37,10 +38,12 @@ if(isset($GLOBALS['get']['id'])){
 }
 //----------------------------------------------------------------------------------------------------------------------ID
 
-if ($_POST['story_id']) {
-    $id = intval($_POST['story_id']);
-} else {
-    $id = nextid();
+if(!$id){
+    if ($_POST['story_id']) {
+        $id = intval($_POST['story_id']);
+    } else {
+        $id = nextid();
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------Text
@@ -116,6 +119,7 @@ if($_POST['story_send']){
 
     }else {
 
+        e($id);
         if (ifobject($id,true)) {
             //----------------------------------------------------UPDATE
 

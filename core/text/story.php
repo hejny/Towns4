@@ -41,9 +41,9 @@ if($html){
     }
 }
 
-
+e('<div style="width: 440px;">');
 e($html);
-
+e('</div>');
 
 
 e('<div style="width: 440px;background-color: #111111;padding: 5px;border-top: 2px solid rgba(80,80,80,0.44);">');
