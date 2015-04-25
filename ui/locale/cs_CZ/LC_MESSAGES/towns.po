@@ -3719,7 +3719,7 @@ msgid "story_name"
 msgstr "Název, Nadpis, Postava, Místo, Město,..."
 
 msgid "story_author"
-msgstr "Autor"
+msgstr "Tento příběh napsal hráč "
 
 msgid "story_edit"
 msgstr "Upravit příběh"
