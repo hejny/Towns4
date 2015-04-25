@@ -1251,8 +1251,6 @@ msgstr "Opravdu chceš tuto zprávu smazat?"
 msgid "demaged"
 msgstr "poškozená"
 
-msgid "description"
-msgstr "Popis"
 
 # -
 msgid "discard_edited"
@@ -3087,7 +3085,7 @@ msgstr "Hráči"
 
 # submit
 msgid "submit_description"
-msgstr "Změnit popis"
+msgstr "Změnit popis a podpis"
 
 # submit
 msgid "submit_message"
@@ -3742,12 +3740,38 @@ msgstr "Upravit příběh"
 msgid "story_send"
 msgstr "Odeslat"
 
-
 msgid "story_error_noname"
 msgstr "Napiš prosím název nebo naspis svého příběhu, popisu,..."
 
 msgid "story_error_notext"
 msgstr "Napiš prosím text nebo nahraj obrázek."
 
+msgid "settings_description"
+msgstr "Popis/Podpis"
 
 
+msgid "description"
+msgstr "Popis"
+
+msgid "signature"
+msgstr "Podpis"
+
+msgid "profile_signature"
+msgstr "Podpis"
+
+msgid "description_text"
+msgstr "Popis se zobrazuje ve Tvém profilu pod avatarem."
+
+msgid "signature_text"
+msgstr "Podpis se zobrazuje pod Tvými příběhy."
+
+msgid "settings_image"
+msgstr "Avatar"
+
+
+msgid "settings_gravatar_top"
+msgstr "Avatar se zobrazuje ve Tvém profilu a pod příběhy, které napíšeš."
+
+
+msgid "settings_gravatar_info"
+msgstr "Jako tvůj obrázek v profilu se používá Gravatar na tvůj e-mail [0]. Pokud ho chceš změnit, udělej to na:"

@@ -10,7 +10,7 @@
 //==============================
 ?>
 
-<script>
+<script type="text/javascript">
 function copyToClipboard(text) {
   //window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
   var myWindow = window.open("", "myWindow", "width=400, height=200");    // Opens a new window

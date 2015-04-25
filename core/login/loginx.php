@@ -93,7 +93,7 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
 
 	?>
     
-    <?php if(!$GLOBALS['mobilex']){e("<script>$('#lshp_log').draggable({distance: 10});</script>");} ?>
+    <?php if(!$GLOBALS['mobilex']){e("<script type=\"text/javascript\">$('#lshp_log').draggable({distance: 10});</script>");} ?>
     
     
     
@@ -113,7 +113,7 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
 		eval(subpage('login-reg_form'));
 	?>
     
-    <?php if(!$GLOBALS['mobilex']){e("<script>$('#lshp_reg').draggable({distance: 10});</script>");} ?>
+    <?php if(!$GLOBALS['mobilex']){e("<script type=\"text/javascript\">$('#lshp_reg').draggable({distance: 10});</script>");} ?>
     
     
     

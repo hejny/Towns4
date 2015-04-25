@@ -478,6 +478,7 @@ foreach($objects as $object){
 
                 $img = substr2($object['res'],'<img','>');
                 $img = substr2($img, 'src="', '"');
+                $img=html_entity_decode($img);
 
             }else{
 
@@ -510,7 +511,7 @@ foreach($objects as $object){
                 <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >
 
                 '.ahrefr('
-                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75);border:2px solid #'.$color.';border-radius: 2px; padding: 4px;">'.trr($say,13).($img?'<br><img src="'.$img.'" width="100%">':'').'</div>
+                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75);border:2px solid #'.$color.';border-radius: 2px; padding: 4px;max-width:70px;max-height:70px;overflow:hidden;">'.trr($say,13).($img?'<br><img src="'.imgresizewurl($img,60).'" width="60">':'').'</div>
                 ','e=content;ee=text-story;id='.$object['id']).'
                 </div>';
                 //width:150px;height:120px;overflow:hidden;

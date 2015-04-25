@@ -189,5 +189,25 @@ function wppost($title,$body,$categories='',$keywords='') {
 }
 
 //======================================================================================================================
-        
+
+
+/**
+ * Get either a Gravatar URL or complete image tag for a specified email address.
+ *
+ * @param string $email The email address
+ * @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+ * @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+
+ * @param array $atts Optional, additional key/value attributes to include in the IMG tag
+ * @return String containing either just a URL or a complete image tag
+ * @source http://gravatar.com/site/implement/images/php/
+ */
+function gravatar( $email, $s = 80, $d = 'identicon') {
+    $url = 'https://secure.gravatar.com/avatar/';
+    $url .= md5( strtolower( trim( $email ) ) );
+    $url .= "?s=$s&d=$d&r=x";
+    return $url;
+}
+
+
 ?>

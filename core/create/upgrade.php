@@ -59,7 +59,7 @@ if($id?ifobject($id):false){
 			xreport();
 			if(xsuccess()){
 			?>
-			<script>
+			<script type="text/javascript">
 			<?php subjs('surkey'); ?>
 			</script>
 			<?php

@@ -11,7 +11,7 @@
 ?><?php window("{items}",10); ?>
 <div id="ctable_content">
 </div>
-<script>
+<script type="text/javascript">
 function dechex (number) {
     if (number < 0) {
         number = 0xFFFFFFFF + number + 1;

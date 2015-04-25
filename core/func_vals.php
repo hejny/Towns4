@@ -47,7 +47,7 @@ class vals{
     function add($a,$b,$unserialize=false){
         //echo($a."=".$b.br);
         //r($this->nojoin);
-        if($a and !$b and $b!=='0'){
+        if($a and !isset($b) and $b!=='0'){
             $q=true;
             //r("swichaandb",$this->numberindex,$a,$b);
             $b=$a;

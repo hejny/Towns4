@@ -32,20 +32,73 @@ if($_GET["output"]=="js"){
 define("imgext", "jpg");
 //$GLOBALS['ss']['useid']=$GLOBALS['ss']['useid'];
 //$GLOBALS['ss']['logid']=$GLOBALS['ss']['logid'];
+//======================================================================================================================Cache
+function tmpfile2($file,$ext=imgext,$cpath="main"){
+    if($cpath)$cpath="/".$cpath;
+    $ext=".".$ext;
+    if(is_array($file)){$file=serialize($file);}
 
+    $md5=md5($file.$ext);
+    $md52=md52($file.$ext);
+    list($a,$b)=str_split($md5,2);
+    $a=hexdec($a);
+    $b=hexdec($b);
+    mkdir2(root.cache);
+    if($cpath)mkdir2(root.cache.$cpath);
+    mkdir2(root.cache.$cpath."/$a");
+    mkdir2(root.cache.$cpath."/$a/$b");
+    $url=root.cache.$cpath."/$a/$b/$md52".$ext;
+    //echo($url);
+    return($url);
+}/**/
+//--------------------------------------------
+function cache($key,$value=false,$cpath='cachevals'){
+    $file=tmpfile2($key,'txt',$cpath);
+    if($value===false){
+        if(file_exists($file)){
+            return(unserialize(fgc($file)));
+        }else{
+            return(false);
+        }
+    }else{
+        fpc($file,serialize($value));
+    }
+}
+//--------------------------------------------
+function cleartmp($id){
+    /*error_reporting(E_ALL );
+    $name="id_$id";
+    r($name);
+    $tmp=url.tmpfile2($name);
+    r($tmp);
+    //r(imageurl($name));
+    //imge($name,"",100,100);
+    r(file_exists("http://localhost/4/tmp/32/193/269388.jpg"));
+    r(file_exists("tmp/32/193/269388.jpg"));
+    r(file_exists("tmp/32/193"));
+    r(glob("tmp/32/193/*"));
+    r(file_exists($tmp));
+    //unlink($tmp);*/
+    unlink(tmpfile2("id_$id"));
+    unlink(tmpfile2("id_$id"."_icon"));
+}
 //===============================================================================================================
 if(!defined('mapsize')){
-    $mapsize1=sql_1data('SELECT max(x) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$GLOBALS['ss']["ww"].'\'');
-    $mapsize2=sql_1data('SELECT max(y) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\''.$GLOBALS['ss']["ww"].'\'');
-    $mapsize1=intval($mapsize1)+1;
-    $mapsize2=intval($mapsize2)+1;
-    //echo("($mapsize1,$mapsize2)");
-    if($mapsize1>$mapsize2){
-        $mapsize=$mapsize1;
-    }else{
-        $mapsize=$mapsize2;
+
+    if(!$mapsize=cache('mapsize')) {
+        $mapsize1 = sql_1data('SELECT max(x) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\'' . $GLOBALS['ss']["ww"] . '\'');
+        $mapsize2 = sql_1data('SELECT max(y) FROM [mpx]pos_obj WHERE `type`=\'terrain\' AND ww=\'' . $GLOBALS['ss']["ww"] . '\'');
+        $mapsize1 = intval($mapsize1) + 1;
+        $mapsize2 = intval($mapsize2) + 1;
+        //echo("($mapsize1,$mapsize2)");
+        if ($mapsize1 > $mapsize2) {
+            $mapsize = $mapsize1;
+        } else {
+            $mapsize = $mapsize2;
+        }
+        cache('mapsize',$mapsize);
     }
-    define('mapsize',$mapsize);
+    define('mapsize', $mapsize);
 }
 //===============================================================================================================
 define('cookietime',time()+60*60*24*30*12);
@@ -272,7 +325,7 @@ function subpage_($sub,$ee=""){
 function subref($sub,$period=false){$period=$period*1000;
 if($period){
     ?>
-    <script>
+    <script type="text/javascript">
     setInterval(function() {
     <?php echo(target($sub,"","","",true,"",true)); ?>
     }, <?php echo($period); ?>);
@@ -280,7 +333,7 @@ if($period){
     <?php
 }else{
     ?>
-    <script>
+    <script type="text/javascript">
     <?php echo(target($sub,"","","",true,"",true)); ?>
     </script>
     <?php
@@ -450,7 +503,7 @@ function urlxr($url,$script=true){
         $url=str_replace('javascript:', '', $url);
         $url=trim($url);
         if($script){
-            return('<script>'.$url.'</script>');
+            return('<script type="text/javascript">'.$url.'</script>');
         }else{
             return($url);
         }
@@ -771,7 +824,12 @@ function extract_zip($zipfile,$to){
 
 }
 
+//==========================================================================================remove_javascript
 
+function remove_javascript($html){
+    return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $html);
+
+}
 
 //==========================================================================================
 require(root.core."/func_components.php");

@@ -58,7 +58,7 @@ if(logged()){
 }
 ?>
 
-<script>
+<script type="text/javascript">
 chat_first=<?php e($q); ?>;
 //$('#say').focus();
 //$('#say').blur();

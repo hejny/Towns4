@@ -44,7 +44,7 @@ eval(subpage("chat_aac"));
     </td></tr></table>
 </form>
 </span>
-<script>
+<script type="text/javascript">
 /*$("#form_chat").submit(function() {
    alert('hovno');
     $.post('?token=<?php e($_GET['token']); ?>&e=chat_text',

@@ -110,7 +110,7 @@ br();le('plus_invite_info');br(2);
 
 ?>
 
-<script>
+<script type="text/javascript">
  //-----------------------------------
  function sendRequest() {
    // Get the list of selected friends
@@ -165,7 +165,7 @@ contenu_b();}elseif($q==2){contenu_a();
 
 ?>
 
-<script>
+<script type="text/javascript">
 
 
 
@@ -336,7 +336,7 @@ br();
 <br/>
 <input type="submit" value="<?php le('shareo_ok'); ?>" />
 </form>
-<script>
+<script type="text/javascript">
 $("#shareo").submit(function() {
     //alert(1);
     $.post('?token=<?php e($_GET['token']); ?>&e=plus-index',
@@ -414,7 +414,7 @@ contenu_b();}elseif($q==3){contenu_a();
 <br/>
 <input type="submit" value="<?php le('key_ok'); ?>" />
 </form>
-<script>
+<script type="text/javascript">
 $("#keyform").submit(function() {
     //alert(1);
     $.post('?token=<?php e($_GET['token']); ?>&e=plus-index',

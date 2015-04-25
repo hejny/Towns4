@@ -29,7 +29,7 @@ if($settime){
 
 
 ?>
-<script>
+<script type="text/javascript">
    var win = window.open('<?= $url ?>', '_blank');
    if(win){
       //Browser has allowed it to be opened

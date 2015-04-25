@@ -46,7 +46,7 @@ if($id?ifobject($id):false){
             xreport();
 if(xsuccess()){
   ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     w_close('content');
 },10);

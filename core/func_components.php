@@ -5,7 +5,18 @@
    core/func_components.php
    HTML komponenty
 */
-//==============================
+
+//======================================================================================
+
+/*function createe($e){
+    //$e=substr($r,0,strlen($r)-1);
+    $r=$e.'r';
+    $php="function $e(){e(call_user_func_array('$r',func_get_args()));}";
+    eval($php);
+}*/
+
+
+//======================================================================================
 
 
 function refresh($url=""){
@@ -43,7 +54,7 @@ function click($url,$timeout=0){
 function window($title=0,$width=0,$height=0,$window='content'){
         if($title){
                 ?>
-                <script>
+                <script type="text/javascript">
             /*aaa*/
             $("#window_title_<?php echo($window); ?>").html('<?php echo(trim($title)); ?>');
                 </script>
@@ -123,7 +134,7 @@ if($scroll){
     xreport();
 }else{
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
 	<?php if($_GET['width']){e('ww='.$_GET['width'].';');}else{e('ww=$(window).width();');} ?>
 	<?php if($_GET['height']){e('hh='.$_GET['height'].';');}else{e('hh=$(window).height();');} ?>
@@ -144,9 +155,9 @@ e('</td><td>'.imgr('design/none.png','',1,1000).'</td></tr></table></div></div>'
 }else{
 	
 	e('</div></div>');
-if(!$forms)e("<script>$('#innercontent').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#innercontent').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");//
+if(!$forms)e("<script type=\"text/javascript\">$('#innercontent').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#innercontent').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");//
 ?>
-<script>
+<script type="text/javascript">
 setTimeout(function(){
     w_close('quest-mini');
     w_close('window_quest-mini');
@@ -195,7 +206,7 @@ function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=fal
 	    ob_start();
     ?>
             <?php /*if($position=='relative')e('<div style="position:absolute;z-index:'.$z.';">');*/ ?>
-	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="display:block;position:<?php e($position); ?>;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($sizex<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;">
+	    <div <?php e($id[$i]?'id="'.$id[$i].'"':''); ?> style="display:block;position:<?php e($position); ?>;left:<?php e($x+$posuv[$i]); ?>px;top:<?php e($y); ?>px;background: <?php e($background[$i]); ?>;border: 2px solid <?php e($border[$i]); ?>;border-radius: 4px;<?php e($sizex<0?'height:'.$width[$i].'px':'width:'.$width[$i].'px'); ?>;z-index:<?php e($z+$i); ?>;<?=shadow?>">
 	    <table border="0" cellpadding="0" cellscpacing="0" width="100%" height="100%">
 	    <tr><td valign="midle" align="center" <?php e($count==1?'':'height="'.(abs($y)-9).'px"'); ?>>
 	    <?php
@@ -659,7 +670,7 @@ function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
     if($countdown){
 	if(is_numeric($countdown)){
         $md5=md5(rand(0,999999));
-        $md5js='<script>
+        $md5js='<script type="text/javascript">
         setInterval(function(){ 
             /*alert(($("#'.$md5.'").html()));*/
             $("#'.$md5.'").html(parseFloat($("#'.$md5.'").html())-1);
@@ -908,7 +919,7 @@ function th($data){
 * @see tr
 *
 * */
-function tr_table(){
+function tr_table(){//@todo Může fungovat i bez toho
     createtable();
     $GLOBALS['protected']['table']->tr();
 }
@@ -988,43 +999,7 @@ if($plus and $width1<$width){
 return($html.js($script));
 }
 
-//======================================================================================================================
-function tmpfile2($file,$ext=imgext,$cpath="main"){
-    if($cpath)$cpath="/".$cpath;
-    $ext=".".$ext;
-    if(is_array($file)){$file=serialize($file);}
-
-    $md5=md5($file.$ext);
-    $md52=md52($file.$ext);
-    list($a,$b)=str_split($md5,2);
-    $a=hexdec($a);
-    $b=hexdec($b);
-    mkdir2(root.cache);
-    if($cpath)mkdir2(root.cache.$cpath);
-    mkdir2(root.cache.$cpath."/$a");
-    mkdir2(root.cache.$cpath."/$a/$b");
-    $url=root.cache.$cpath."/$a/$b/$md52".$ext;
-    //echo($url);
-    return($url);
-}/**/
-//--------------------------------------------
-function cleartmp($id){
-    /*error_reporting(E_ALL );
-    $name="id_$id";
-    r($name);
-    $tmp=url.tmpfile2($name);
-    r($tmp);
-    //r(imageurl($name));
-    //imge($name,"",100,100);
-    r(file_exists("http://localhost/4/tmp/32/193/269388.jpg"));
-    r(file_exists("tmp/32/193/269388.jpg"));
-    r(file_exists("tmp/32/193"));
-    r(glob("tmp/32/193/*"));
-    r(file_exists($tmp));
-    //unlink($tmp);*/
-    unlink(tmpfile2("id_$id"));
-    unlink(tmpfile2("id_$id"."_icon"));
-}
+//======================================================================================================================Image
 //--------------------------------------------
 function imageurl($file,$rot=1,$grey=false){
 	$ext=explode('.',$file);
@@ -1283,10 +1258,10 @@ function form_send($text="ok",$style=''){
 //----------
 function form_sb($text="ok"){form_send($text);form_b();}
 //----------
-function form_js($sub,$url,$rows,$script=true){
+function form_js($sub,$url,$rows,$script=true,$rand=''){
 //$url=urlr($url);
 //$url=str_replace('&amp;','&',$url);
-if($script)e('<script>');
+if($script)e('<script type="text/javascript">');
 ?>
 //alert('1send');
 //$( document ).ready(function() {
@@ -1300,7 +1275,7 @@ $("#<?php e($GLOBALS['formid']); ?>").submit(function() {
             $q=false;
             foreach($rows as $val){
                 if($q)echo(',');
-                e("$val: $('#$val').val()");
+                e("$val: $('#$val$rand').val()");
                 $q=true;
             }
         ?>
@@ -1371,15 +1346,80 @@ function input_passr($name,$value=''){
 }
 function input_pass($name,$value=''){echo(input_passr($name,$value));}
 //--------------------------------------------
-function input_textarear($name,$value='',$cols="",$rows="",$style='',$placeholder=''){
+function input_textarear($name,$value='',$cols="",$rows="",$style='',$placeholder='',$class=''){
     if(!$value and !xsuccess())$value=$_POST[$name];
     if($value=='none')$value='';
     if($cols){$cols="cols=\"$cols\"";}
     if($rows){$rows="rows=\"$rows\"";}
-    $stream="<textarea name=\"$name\" id=\"$name\"  $cols $rows style=\"$style\" placeholder=\"$placeholder\" >".htmlspecialchars($value)."</textarea>";
+    $stream="<textarea name=\"$name\" id=\"$name\"  $cols $rows style=\"$style\" placeholder=\"$placeholder\" class=\"$class\" >".htmlspecialchars($value)."</textarea>";
     return($stream);
 }
-function input_textarea($name,$value='',$cols="",$rows="",$style='',$placeholder=''){echo(input_textarear($name,$value,$cols,$rows,$style,$placeholder));}
+function input_textarea($name,$value='',$cols="",$rows="",$style='',$placeholder='',$class=''){echo(input_textarear($name,$value,$cols,$rows,$style,$placeholder,$class));}
+
+
+
+//--------------------------------------------
+function input_tinymcer($name,$value='',$width='',$height='',$type=1){
+
+
+      if(!$value and !xsuccess())$value=$_POST[$name];
+      if($value=='none')$value='';
+
+        //$rand=rand(11111,99999);
+
+
+   ?>
+    <script type="text/javascript">
+
+        <?php
+        if(!isset($GLOBALS['tinyMCEremove'])){
+            $GLOBALS['tinyMCEremove']=true;
+            ?>
+            try{
+                tinyMCE.remove();
+                //tinymce.destroy();
+            }catch(e){
+            }
+
+
+
+        tinyMCE.init(
+            {
+                mode: 'textareas',
+                selector: 'textarea.tinymcetextarea',
+                skin_url: '<?=(url.'../lib/tinymce/skins/custom')?>',
+                content_css : '<?=(url.'../lib/tinymce/skins/custom/content.css')?>',
+                language: 'cs',
+                theme: 'modern',
+                width : '<?=$width?>',
+                height : '<?=$height?>',
+                statusbar:false,
+                //pagebreak_separator: '<!-- my page break -->',
+                <?php if($type==1){ ?>
+                    menubar: 'edit view format table tools',
+                    plugins: 'advlist autolink lists link image charmap print preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking table contextmenu emoticons template paste textcolor colorpicker textpattern jbimages',
+                    toolbar: " bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link ",
+                <?php }elseif($type==2){ ?>
+                    menubar: 'edit insert view format table tools jbimages',
+                    plugins: 'advlist autolink lists link image charmap print preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking table contextmenu emoticons template paste textcolor colorpicker textpattern jbimages',
+                    toolbar: " bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link |  jbimages  ",//pagebreak
+                <?php } ?>
+                relative_urls: false
+            }
+        );
+
+        <?php } ?>
+
+
+    </script>
+
+    <textarea name="<?=$name?>" id="<?=$name?>" class="tinymcetextarea" style="width:<?=$width?>;height:<?=$height?>;" ><?=htmlspecialchars($value)?></textarea>
+    <?php
+  $stream="";
+  return($stream);
+}
+function input_tinymce(){e(call_user_func_array('input_tinymcer',func_get_args()));}
+
 //--------------------------------------------
 function input_checkboxr($name,$value){
     if(!$value and !xsuccess())$value=$_POST[$name];
@@ -1863,7 +1903,7 @@ function timece($t,$sec=true){echo(timecr($t,$sec));}
 //======================================================================================
 function timejsr($t,$urlx=''){
         $md5='js'.substr(md5($t),0,6).rand(1,1000);
-        $js='<script>
+        $js='<script type="text/javascript">
 		'.$md5.'t='.($t-time()).';
 		'.$md5.'x=true;
         setInterval(function(){ 
@@ -1968,12 +2008,15 @@ function liner($id="use",$p=1){
     if($response["in"]){
         $hline=$hline.textqqr(ahrefr($response["inname"],"page=profile;id=".$response["in"],"none",true));
     }
-    $hline=ahrefr($hline,"e=content;ee=profile;page=profile;ref=left;".show.";id=".$id,"none",true);
+
+    //e("e=content;ee=profile;page=profile;ref=left;".show.";id=".$id);
+    $hline=ahrefr($hline,"e=content;ee=profile;page=profile;".show.";id=".$id,"none",true);
     return($hline);
 }
 function line($id="use",$p=1){echo(liner($id,$p));}
-//======================================================================================
-function profiler($id="use"){
+//======================================================================================================================
+function profiler($id="use"){//@todo Aktualizovat
+
     $stream="";
     $response=xquery("info",$id);
     //r($response);
@@ -1988,6 +2031,7 @@ function profiler($id="use"){
     $level=count($origin);
     if($array["showmail"]){$array["mail"]=$array2["mail"];}
     $array["showmail"]="";
+
     //----------------------------------------------------------------Základní info ID, LVL, počet budov, vlastník
     $stream.=("<table width=\"".((!$GLOBALS['mobile']?contentwidth-3:'96%'))."\"><tr><td valign=\"top\"><table>");
     //-----------
@@ -2032,7 +2076,7 @@ function profiler($id="use"){
 	}
     //----------------------------------------------------------------Profilové info
     foreach($array as $a=>$b){
-        if($a!=''.($a-1+1) and trim($b) and $b!="@" and $a!="text"  and $a!="description"  and $a!="text" and $a!="image" and $a!="public" and $a!="author" and strpos($a,"mail")===false and strpos($a,"fb")===false){
+        if($a!=''.($a-1+1) and trim($b) and $b!="@" and $a!="text"  and $a!="description"  and $a!="signature"  and $a!="text" and $a!="image" and $a!="public" and $a!="author" and strpos($a,"mail")===false and strpos($a,"fb")===false){
             $pa=$a;
             $a=lr($a);
             $b=tr($b);
@@ -2051,52 +2095,6 @@ function profiler($id="use"){
     }
     //-----------
     $stream.=("<tr><td colspan=\"2\"><hr/></td></tr>");
-     //-------------------------------------------------------------------Info o předmětech
-    /*$support=array();
-    $stream3="";
-    $stream3=$stream3.("<table width=\"100%\" cellspacing=\"0\">");
-    foreach($in2 as $item){
-        list($_id,$_type,$_fp,$_fs,$_dev,$_name,$_password,$_func,$_set,$_res,$_profile,$_hold,$_own,$_in,$_t,$_x,$_y)=$item;
-        $_x=intval($_x);$_y=intval($_y);
-        $i++;
-        if(!$_x)$_x="";
-        $stream2="";
-        //r("hold$_x");
-        //r($funcs["hold$_x"]["params"]);
-        foreach($funcs["hold$_x"]["params"] as $param=>$value){
-            list($qqe1,$e2)=$value;
-            //r($param);
-            if($param!="q"){
-                //r($param);
-                //$stream2=$stream2.($e2*100)."%";
-                foreach(func2list($item[7]) as $funci){
-                    if($funci["class"]==$param){
-                        $stream2=$stream2.nbspo."<b>".tr($funci["profile"]["name"])."</b> (".($e2*100)."%)".br;
-                        foreach($funci["params"] as $parami=>$valuei){
-                            //r($parami);
-                            list($e1i,$e2i)=$valuei;
-                            $e1i=$e1i*$e2;
-                            $e2i=pow($e2i,$e2);//2^0.2
-                            if(!$support[$funci["class"]])$support[$funci["class"]]=array();
-                            if(!$support[$funci["class"]][$parami])$support[$funci["class"]][$parami]=array(0,1);
-                            $stream2=$stream2.(nbspo.nbsp3.lr("f_".$funci["class"]."_".$parami)." + ".lvlr($e1i,$e2i).br);
-                            $support[$funci["class"]][$parami][0]=$support[$funci["class"]][$parami][0]+$e1i;
-                            $support[$funci["class"]][$parami][1]=$support[$funci["class"]][$parami][1]*$e2i;
-                        }
-                    }
-                }
-            }
-        }
-        if($stream2){
-            $stream3=$stream3.("<tr height=\"55\"><td align=\"left\" valign=\"top\">");
-            //id        type    fp      fs      dev     name    password        func    set     res     profile hold    own     in      t       x       y
-            $stream3=$stream3.objecticonr($_id,$_name,$_type,$_fs,$_fp,"page=profile;id=$_id",0,0);
-            $stream3=$stream3.$stream2;
-            $stream3=$stream3.("</td></tr>");
-        }
-    }
-    $stream3=$stream3.("</table>");*/
-    //r($support);
     //------------------------------------------------------------------------Info o funkcích
     //$stream.=("<b>".lr("f_life").": </b>".$response["fp"]."/".$response["fs"]."");
 	
@@ -2140,6 +2138,7 @@ function profiler($id="use"){
     //if($funcs["image"]){$stream.=("<tr><td colspan=\"2\">Tento uživatel může nahrávat obrázky.</td></tr>");}
     //$stream.=("<tr><td colspan=\"2\"><hr/></td></tr>");
     $stream.=("</table>");
+    //
 	if($q)$stream.=hrr();
 	
     //-----------{""
@@ -2147,9 +2146,9 @@ function profiler($id="use"){
     //------------------------------------------------------------------------vlastněná města
 	if($response["type"]=='user'){
 		$iconsize=25;
-		$array=sql_array('SELECT `id`,`name`,`profile` FROM `[mpx]pos_obj` WHERE `own`=\''.($id).'\' AND (`type`=\'town\' OR `type`=\'town2\') ORDER BY `type`,ABS('.$id.'-`id`)');
-		foreach($array as $row){
-			list($id_,$name_,$profile_,$mainid_,$x_,$y_,$ww_)=$row;
+		$towns=sql_array('SELECT `id`,`name`,`profile` FROM `[mpx]pos_obj` WHERE `own`=\''.($id).'\' AND (`type`=\'town\' OR `type`=\'town2\') ORDER BY `type`,ABS('.$id.'-`id`)');
+		foreach($towns as $town){
+			list($id_,$name_,$profile_,$mainid_,$x_,$y_,$ww_)=$town;
 			$profile_=str2list($profile_);
 			$color_=$profile_['color'];
 			if(!$color_)$color_='699CFE';
@@ -2199,9 +2198,16 @@ function profiler($id="use"){
     //----------------------------------------------------------------OBRázek, POPIS
     if($response["type"]!="message") {
         $stream.=("</td><td align=\"justify\" valign=\"top\" width=\"147\">");
-        $stream.=imgr("id_$id","",147,NULL,1,2);
+
+        if($response["type"]=='user'){
+            $email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=(SELECT `userid` FROM `[mpx]pos_obj` WHERE id=".$id." AND ".objt()." LIMIT 1) AND aac=1 LIMIT 1");
+            $stream.=('<img src="'.gravatar($email,147).'" border="2">');
+        }else{
+            $stream.=imgr("id_$id","",147,NULL,1,2);
+        }
+
         $stream.=br;
-        $stream.=inteligentparse($array["description"]);
+        $stream.=($array['description']);
     }/*else{
         $stream.=("</td><td width=\"200\" align=\"left\" valign=\"top\">");
         $stream.="<b>".tr($array["subject"])."</b>".br;

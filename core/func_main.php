@@ -659,8 +659,8 @@ EOF;
 
 //----------------------------------------------------------------le
 
-function le($key){
-    echo(lr($key));
+function le($key,$params=''){
+    echo(lr($key,$params));
 }
 
 //----------------------------------------------------------------contentlang
@@ -826,7 +826,7 @@ function check_email($email) {
 function htmljscss($nocss=0){
 
     $filejs = tmpfile2('js6', 'min.js', 'page');
-    $filecss = tmpfile2('css', 'css', 'page');
+    $filecss = tmpfile2('css4', 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs)/** or 1/**/) {
 
@@ -878,10 +878,16 @@ function htmljscss($nocss=0){
         $js .= fgc('lib/tinymce/plugins/jbimages/plugin.min.js');
         
 
-        //-------------------------------------------------FPS, Context
+        //-------------------------------------------------FPS, Context, ToTop
         //<?php if(!debug){
         //$js .= 'fps=30;';
+
+        $tinymceurl=(url.'../lib/tinymce');
+
         $js .= <<<EOF
+
+        tinyMCE.baseURL = '$tinymceurl';
+
         z_index=1000;
 
             $(document).ready(function(){
@@ -893,7 +899,15 @@ function htmljscss($nocss=0){
         connectfps=4;
         fps=12;
         fps_quick=60;
+
+        setInterval(function() {
+            $('div').scrollTop(0);
+        },200);
 EOF;
+
+
+
+
         //-------------------------------------------------Google analytics code
 
         if (defined('analytics')) {
@@ -944,7 +958,8 @@ EOF;
         $css = '';
 
         //-------------------------------------------------Základní
-        $css.='body {
+        $css.='
+        body {
             background-color: #000000;
             margin-left: 0px;
             margin-top: 0px;
@@ -964,9 +979,15 @@ EOF;
         }
         hr {
             border-color: #cccccc;
-        height: 0.5px;
+            height: 0.5px;
         }
-        a{color: #cccccc;text-decoration: none;}';
+        a{color: #cccccc;text-decoration: none;}
+        .author {
+            border:#000000 2px solid;
+            border-radius: 50px;
+            background-color: #000000;
+        }
+        ';
         //-------------------------------------------------Knihovny
         $css .= fgc('lib/jquery/plugins/colorpicker/colorpicker.css');
         //-------------------------------------------------

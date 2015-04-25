@@ -28,7 +28,7 @@ if($GLOBALS['ss']['attack_report']){
         contenu_b();
     }
     unset($GLOBALS['ss']['attack_report']);
-    e('<script>refreshMap();'.urlxr('e=miniprofile',false).'</script>');
+    e('<script type="text/javascript">refreshMap();'.urlxr('e=miniprofile',false).'</script>');
 }else{
     //xreport();
 //==============================================================================================================

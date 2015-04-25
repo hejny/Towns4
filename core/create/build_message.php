@@ -20,11 +20,11 @@ $b='</div>';
 a_create($id,$x,$y,NULL,true,$_GET['master']);
 if(defined('create_error')){
 e($a);error(create_error,false);e($b);
-?><script>$('#build_button').css('display','none');</script><?php
+?><script type="text/javascript">$('#build_button').css('display','none');</script><?php
 }else{
 
 if(defined('create_ok')){e($a);success(create_ok,false);e($b);}
-?><script>$('#build_button').css('display','block');</script><?php
+?><script type="text/javascript">$('#build_button').css('display','block');</script><?php
 }
 
 
