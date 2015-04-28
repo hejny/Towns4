@@ -14,6 +14,7 @@ $res = explode(':',$res,2);
 $html=$res[1];
 
 window($name);
+permalink($name,$GLOBALS['ss']["storyid"]);
 
 contenu_a();
 
@@ -76,7 +77,14 @@ if(trim($signature)) {
 
 td($td);
 tr();
-ahref(tabler('100%',array('left','middle')),'e=content;ee=profile;page=profile;id='.$own);
+$table=tabler('100%',array('left','middle'));
+
+if(logged()){
+    ahref($table,'e=content;ee=profile;page=profile;id='.$own);
+}else{
+    e($table);
+}
+
 
 e('</div>');
 

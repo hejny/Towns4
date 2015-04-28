@@ -80,8 +80,12 @@ foreach($uri as $x){
         elseif($x=='api'){$api=true;}
         elseif(is_numeric(substr($x,0,1))){
             $speciale=true;
-            //$x=str_replace(array('[',']'),'',$x);
-            list($GLOBALS['mapgtx'],$GLOBALS['mapgty'])=explode(',',$x);
+            if(!strpos($x,',')){//echo($x);
+                $GLOBALS['mapgtid']=$x;
+            }else{//echo(345);
+                list($GLOBALS['mapgtx'],$GLOBALS['mapgty'])=explode(',',$x);
+            }
+
         }
         else{$speciale=true;$GLOBALS['url_param']=substr($x,1);}
 
@@ -103,6 +107,7 @@ if(!$world/**/ or str_replace(array('.','?'),'',$world)!=$world){header('Locatio
 
 $gooduri=str_replace('/'.'/','',$GLOBALS['inc']['url']);
 $gooduri=substr($gooduri,strpos($gooduri,'/'));
+//echo('Location: '.$GLOBALS['inc']['url'].$ref);
 //die($gooduri);
 if(!$admin and
     !$app and
