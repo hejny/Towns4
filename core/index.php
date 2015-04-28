@@ -53,6 +53,7 @@ $notmp=false;
 $timeplan=false;
 $onlymap=false;
 $api=false;
+$sitemap=false;
 $speciale=false;
 
 
@@ -67,7 +68,9 @@ foreach($uri as $x){
             $x!='notmp' AND
             $x!='timeplan' AND
             $x!='onlymap' AND
-            $x!='corex' AND !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
+            $x!='sitemap.xml' AND
+            $x!='corex' AND
+            !is_numeric(substr($x,0,1)) AND substr($x,0,1)!='-')
         {$world=$x;}
         elseif($x=='admin'){$admin=true;}
         elseif($x=='app'){$app=true;}
@@ -78,6 +81,7 @@ foreach($uri as $x){
         elseif($x=='corex'){$corex=true;}
         elseif($x=='debug'){$debug=true;}
         elseif($x=='api'){$api=true;}
+        elseif($x=='sitemap.xml'){$sitemap=true;}
         elseif(is_numeric(substr($x,0,1))){
             $speciale=true;
             if(!strpos($x,',')){//echo($x);
@@ -102,9 +106,6 @@ $GLOBALS['inc']['url']=str_replace('[world]',$world,$GLOBALS['inc']['url']);
 if(!$world/**/ or str_replace(array('.','?'),'',$world)!=$world){header('Location: '.$GLOBALS['inc']['urld'].$ref);exit;}
 
 
-//$tmp=$_SERVER["REQUEST_URI"];
-//if(strpos($tmp,'?'))$tmp=substr($tmp,0,strpos($tmp,'?'));
-
 $gooduri=str_replace('/'.'/','',$GLOBALS['inc']['url']);
 $gooduri=substr($gooduri,strpos($gooduri,'/'));
 //echo('Location: '.$GLOBALS['inc']['url'].$ref);
@@ -118,6 +119,7 @@ if(!$admin and
     !$notmp and
     !$timeplan and
     !$onlymap and
+    !$sitemap and
     !$corex)
     if($tmp!=$gooduri){header('Location: '.$GLOBALS['inc']['url'].$ref);exit;}
 
@@ -524,6 +526,12 @@ if(!$GLOBALS['mapzoom']){
 //-------------------------------
 //exit;
 //e('d');
+
+
+if($sitemap){
+    require(core."/sitemap.php");
+    exit2();
+}
 
 
 if($_GET['e']){
