@@ -531,6 +531,13 @@ $(document).ready(function(){
         $('#'+w_name).remove();
         w_name=w_name.split("window_").join("");
         windows=windows+w_name+',none,,;';
+
+
+
+    if(w_name=='content'){
+    <?=permalink(0,0,0)?>
+    }
+
     }
 
 	/*----------------------------------*/
