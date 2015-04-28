@@ -84,8 +84,11 @@ function window($title=0,$width=0,$height=0,$window='content'){
 }
 //--------------------------------------------------------------------------permalink
 
-function permalink($name,$link){
-    $js = "loadurl='".url.(debug?'debug/':'').$link."/';
+function permalink($name=false,$link=false,$yjs=true){
+    if($name or $link){
+    $js = "
+            /*alert(123);*/
+            loadurl='".url.(debug?'debug/':'').$link."/';
 
             var state = {
                 'thisIsOnPopState': true
@@ -93,7 +96,24 @@ function permalink($name,$link){
             history.pushState(state, '".lr('apps_title',$name)."', loadurl);
             document.title = '".lr('apps_title',$name)."';
             ";
-    js($js);
+    }else{
+        $js = "
+            /*alert(345);*/
+            loadurl='".url.(debug?'debug/':'')."';
+
+            var state = {
+                'thisIsOnPopState': true
+            };
+            history.pushState(state, '".lr('app_title')."', loadurl);
+            document.title = '".lr('app_title')."';
+            ";
+    }
+    if($yjs){
+        js($js);
+    }else{
+        e($js);
+    }
+
 }
 
 

@@ -16,7 +16,7 @@ msgstr ""
 
 # SEO, Meta - title
 msgid "app_title"
-msgstr "Towns &mdash; Strategická kreativní online hra"
+msgstr "Towns — Strategická kreativní online hra"
 
 # SEO, Meta - title externích aplikací, Ostatní url @todo Přejmenovat
 msgid "apps_title"
