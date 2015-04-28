@@ -69,7 +69,7 @@ if(!$GLOBALS['map_units_ids']){
 
 	if(!mobile){
 	/*dafaq*/
-	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 	}else{
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	}
@@ -78,16 +78,16 @@ if(!$GLOBALS['map_units_ids']){
 	//$range=1;
 	//echo($range);
 	$hlname=id2name($GLOBALS['config']['register_building']);
-	// OR (`type`='rock' AND RAND()<0.01)
-		//$mapunitstime=intval(file_get_contents(tmpfile2("mapunitstime","txt","text")));
-		// AND ((`own`=".$GLOBALS['ss']['useid']." AND `expand`!=0) OR `collapse`!=0 OR `t`>$mapunitstime)  AND NOT ($where)
-	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story') AND "/*." AND (`type`='building') AND "*/.$range.$whereplay,2 );
-}else{                   /*" AND (`name`!='$hlname' OR (SELECT COUNT(1) FROM `[mpx]pos_obj` AS X WHERE X. `own`= `[mpx]pos_obj`.`own` AND X. `type`='building')>1 OR `own`='".$GLOBALS['ss']['logid']."' OR `own`='".$GLOBALS['ss']['useid']."')"*/
+
+
+	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story') AND ".$range.$whereplay );
+}else{
+
     //------------------------------------------------------------------------------------------------------SELECT ALLES
         $where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
-    $objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$say,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);// AND ".objt()
+    $objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
 }
 
 
@@ -95,21 +95,21 @@ if(!$GLOBALS['map_units_ids']){
 
 
 //======================================================================================================================FOREACH
-foreach($objects as $object){
+foreach($objects as $object) {
     //------------------------------------------------------------------------------------------------------------------Příprava proměnných
 
-    $uzids[]=$object['id'];
+    $uzids[] = $object['id'];
 
-    $object['pname']=$object['name'];
-    $object['name']=contentlang(trim($object['name']));
+    $object['pname'] = $object['name'];
+    $object['name'] = contentlang(trim($object['name']));
 
-    $object['expand']=floatval($object['expand']);
-    $object['block']=floatval($object['block']);
-    $object['attack']=floatval($object['attack']);
+    $object['expand'] = floatval($object['expand']);
+    $object['block'] = floatval($object['block']);
+    $object['attack'] = floatval($object['attack']);
 
-    $object['t']=intval($object['t']);
+    $object['t'] = intval($object['t']);
 
-    ebr($object['name']);
+    //ebr($object['name']);
 
     //------------------------------------------------------------------------------------------------------------------Rozestavěnost
 
@@ -118,7 +118,7 @@ foreach($objects as $object){
         $onmap = true;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
-        if($object['type']=='building') {
+        if ($object['type'] == 'building') {
 
             if ($object['readytime'] > time()) {
 
@@ -136,29 +136,33 @@ foreach($objects as $object){
 
 
     //------------------------------------------------------------------------------------------------------------------Barva uživatele
-	$a=strpos($object['profileown'],'color=');
-	if($a!==false){
 
-        $object['profileown']=substr($object['profileown'],$a+6);
-        $usercolor=$object['profileown'];
-        $b=strpos($object['profileown'],';');
-        if($b)$object['profileown']=substr($object['profileown'],0,$b);
-        //e($object['profileown']);
+    if($object['type']=='building'){
 
-        if(strpos($object['res'],'000000')){
-            $object['res']=str_replace('000000',$object['profileown'],$object['res']);
-        }else{
-            /*$object['res']=explode(':',$object['res']);
-            $pos=strrpos($object['res'][2],',');
-            $object['res'][2]=substr($object['res'][2],0,$pos+1).$object['profileown'];
-            $object['res']=implode(':',$object['res']);
-            //$object['res']=str_replace('000000',$object['profileown']['color'],$object['res']);
-            */
+        $a = strpos($object['profileown'], 'color=');
+        if ($a !== false) {
+
+            $object['profileown'] = substr($object['profileown'], $a + 6);
+            $usercolor = $object['profileown'];
+            $b = strpos($object['profileown'], ';');
+            if ($b) $object['profileown'] = substr($object['profileown'], 0, $b);
+            //e($object['profileown']);
+
+            if (strpos($object['res'], '000000')) {
+                $object['res'] = str_replace('000000', $object['profileown'], $object['res']);
+            } else {
+                /*$object['res']=explode(':',$object['res']);
+                $pos=strrpos($object['res'][2],',');
+                $object['res'][2]=substr($object['res'][2],0,$pos+1).$object['profileown'];
+                $object['res']=implode(':',$object['res']);
+                //$object['res']=str_replace('000000',$object['profileown']['color'],$object['res']);
+                */
+            }
+        } else {
+            $usercolor = false;
         }
-    }else{
-        $usercolor=false;
-    }
 
+    }
 
     //------------------------------------------------------------------------------------------------------------------pozice
 

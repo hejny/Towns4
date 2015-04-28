@@ -50,26 +50,27 @@ function click($url,$timeout=0){
         js($onclick);
     }   
 }
-//======================================================================================
+//======================================================================================================================
+//--------------------------------------------------------------------------window
 function window($title=0,$width=0,$height=0,$window='content'){
-        if($title){
-                ?>
-                <script type="text/javascript">
+    if ($title) {
+        ?>
+        <script type="text/javascript">
             /*aaa*/
             $("#window_title_<?php echo($window); ?>").html('<?php echo(trim($title)); ?>');
-                </script>
-                <?php
-        }
-        if($width){
-                /*
-        <script>
-            $("#scrollbar1").css('width','<?php echo($width); ?>');
-                </script>
-                */
-                ?>
-                <div style="width:<?php echo($width); ?>;"></div>
-                  <?php                
-        }
+        </script>
+    <?php
+    }
+    if ($width) {
+        /*
+<script>
+    $("#scrollbar1").css('width','<?php echo($width); ?>');
+        </script>
+        */
+        ?>
+        <div style="width:<?php echo($width); ?>;"></div>
+    <?php
+    }
     /*if($enableSelection){
                 ?>
         <script type="text/javascript"><!--
@@ -79,7 +80,26 @@ function window($title=0,$width=0,$height=0,$window='content'){
         --></script>
                 <?php
         }*/
+
 }
+//--------------------------------------------------------------------------permalink
+
+function permalink($name,$link){
+    $js = "loadurl='".url.(debug?'debug/':'').$link."/';
+
+            var state = {
+                'thisIsOnPopState': true
+            };
+            history.pushState(state, '".lr('apps_title',$name)."', loadurl);
+            document.title = '".lr('apps_title',$name)."';
+            ";
+    js($js);
+}
+
+
+//--------------------------------------------------------------------------w_close
+
+
 function w_close($w_name,$tt=false){
     r('w_close_'.$w_name);
         echo("<script type=\"text/javascript\">
