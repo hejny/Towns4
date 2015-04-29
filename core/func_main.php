@@ -151,7 +151,7 @@ function fpc($file,$contents){
     chmod($file,0777);
 }
 //--------------------------------------------fgc
-function fgc($file,$contents){
+function fgc($file){
     return(file_get_contents($file));
 }
 //--------------------------------------------

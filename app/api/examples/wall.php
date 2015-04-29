@@ -9,6 +9,7 @@
  *
  */
 
+if(!isset($_GET['onlypage']))
 echo '<div class="pageDescription"><b>Správce opevnění města:</b> Nejdříve vyberte typ hradby, potom klikáním na mapu stavíte nebo rozebíráte jednotlivé hradební články.<br>
 [W] Vaše hradby<br>
 [O] Jiná vaše budova<br>
@@ -19,8 +20,8 @@ echo '<div class="pageDescription"><b>Správce opevnění města:</b> Nejdříve
 //----------------------------------------------------------------Výběr typů zdí
 
 //-------------------------Zjištění všech šablon zdí
-$objects = TownsApi('list', 'id,_name,resurl,x,y,ww,func,group',array('unique',"group='wall'"), '',100);
-$objects = $objects['objects'];
+$buildings = TownsApi('list', 'id,_name,resurl,x,y,ww,func,group',array('unique',"group='wall'"), '',100);
+$buildings = $buildings['objects'];
 
 //-------------------------Aktuálně zvolená zeď
 
@@ -28,11 +29,11 @@ if($_GET['selected_object'])
 $_SESSION['selected_object']=$_GET['selected_object'];
 
 //-------------------------Vykreslení výběru zdí
-if($objects)
-foreach($objects as $object){
+if($buildings)
+foreach($buildings as $building){
 ?>
-<a href="?selected_object=<?=$object['id']?>">
-<img width="50" src="<?=$object['resurl']?>" border="<?=($object['id']==$_SESSION['selected_object']?2:0)?>" alt="<?=$object['_name']?>" title="<?=$object['_name']?>">
+<a href="?selected_object=<?=$building['id']?>">
+<img width="50" src="<?=$building['resurl']?>" border="<?=($building['id']==$_SESSION['selected_object']?2:0)?>" alt="<?=$building['_name']?>" title="<?=$building['_name']?>">
 </a>
 <?php
 }

@@ -9,7 +9,7 @@
  *
  */
 
-if($_SESSION['page']=='map')
+if($_SESSION['page']=='map' and !isset($_GET['onlypage']))
 	echo '<div class="pageDescription">Zobrazení mapy pomocí vlastnosti resurl</div>';
 
 //----------------------------------------------------------------Pozice na mapě a zoom
@@ -59,7 +59,7 @@ $s=0.5;
 
 //-------------------------Mapa
 $result = TownsApi('list', 'id,x,y,type,resurl'.($_SESSION['page']=='attack'?',func':''), array("box({$_SESSION['x']},{$_SESSION['y']},".($_SESSION['x']+$_SESSION['zoom']).",".($_SESSION['y']+$_SESSION['zoom']).")"), 'y,x');
-$objects = $result['objects'];
+$buildings = $result['objects'];
 
 
 
@@ -69,12 +69,12 @@ $cell=(254/4)*$s;
 
 echo '<div style="position:relative;height:700px;width:1400px;">';
 
-if($objects)
-foreach($objects as $object){
+if($buildings)
+foreach($buildings as $building){
 	//print_r($object);
 
-    $relative_x=$object['x']-$_SESSION['x'];
-    $relative_y=$object['y']-$_SESSION['y'];
+    $relative_x=$building['x']-$_SESSION['x'];
+    $relative_y=$building['y']-$_SESSION['y'];
 
 
 	$real_x=($relative_x-$relative_y)*$cell;
@@ -83,7 +83,7 @@ foreach($objects as $object){
 	$real_x+=$left-($cell*2);
 
 
-	if($object['type']!='terrain'){
+	if($building['type']!='terrain'){
 
 		$real_y-=$s*(254-(133/2));
 		$real_x+=$s*(133/2);
@@ -93,9 +93,9 @@ foreach($objects as $object){
 
 	?>
 
-	<div style="position:absolute;z-index:<?=intval($object['type']=='terrain'?1:3000+$real_y)?>">
+	<div style="position:absolute;z-index:<?=intval($building['type']=='terrain'?1:3000+$real_y)?>">
 		<div style="position:relative;left:<?=intval($real_x)?>px;top:<?=intval($real_y)?>px;">
-			<img width="<?=($object['type']!='rock'?(100*$s):(162*$s))?>%" src="<?=$object['resurl']?>"  >
+			<img width="<?=($building['type']!='rock'?(100*$s):(162*$s))?>%" src="<?=$building['resurl']?>"  >
 
 
 		</div>
@@ -104,10 +104,10 @@ foreach($objects as $object){
 	<?php
 
 	
-	if(in_array($_SESSION['page'],array('map','build')) and $object['type']=='terrain'){
+	if(in_array($_SESSION['page'],array('map','build')) and $building['type']=='terrain'){
 	?>
 	<div style="position:absolute;z-index:10000">
-		<a href="?selected_x=<?=$object['x']?>&selected_y=<?=$object['y']?>" onclick="return loadSelectedMap(<?=$object['x'].','.$object['y']?>);">
+		<a href="?selected_x=<?=$building['x']?>&selected_y=<?=$building['y']?>" onclick="return loadSelectedMap(<?=$building['x'].','.$building['y']?>);">
 		<div style="position:relative;left:<?=intval($real_x+45)?>px;top:<?=intval($real_y-10)?>px;width:40px;height:40px;background: rgba(0,0,0,0);border-radius:40px;">
 		</div>
 		</a>

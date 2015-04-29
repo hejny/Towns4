@@ -76,7 +76,7 @@ li a {
 }
 
 
-li a: hover {
+li a:hover {
 	background-color: #667799;
 }
 
@@ -101,6 +101,7 @@ hr{
 
 .pageDescription {
 	display: block;
+    min-height: 27px;
 	background-color: #eeeef7;
 	border-top-width: 4px;
 	border-top-style: solid;

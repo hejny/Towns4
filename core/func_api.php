@@ -299,7 +299,6 @@ function TownsApi()
     if(is_string($query)){
 
         //@todo PH při vstupu do api přes string by mělo správně fungovat escapování
-        $query=str_replace(' ',',',$query);
         list($function,$params)=explode(',',$query,2);
 
 
@@ -341,7 +340,9 @@ function xquery($a,$b='',$c='',$d='',$e='',$f='',$g='',$h='',$i=''){
     	$query=array($a,$b,$c,$d,$e,$f,$g,$h,$i);
     }else{
 		$query=$a;
+        $query=str_replace(' ',',',$query);
 	}
+
 
     $response=TownsApi($query);
 

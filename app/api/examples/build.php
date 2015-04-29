@@ -24,7 +24,7 @@ if($_GET['selected_x'] and $_GET['selected_y']){
 
 //------------------------------------------------------------------------Pozice na mapě a zoom
 
-require('example.map.php');
+require('examples/map.php');
 
 //------------------------------------------------------------------------Seznam všech unikátů
 
@@ -33,11 +33,11 @@ $_SESSION['selected_object']=$_GET['selected_object'];
 
 
 //Zjištění všech unikátních budov seřazených podle skupiny
-$objects = TownsApi('list', 'id,_name,resurl,x,y,ww,func,group',array('unique',"group!=''"), 'group',100);
-$objects = $objects['objects'];
+$buildings = TownsApi('list', 'id,_name,resurl,x,y,ww,func,group',array('unique',"group!=''"), 'group',100);
+$buildings = $buildings['objects'];
 
 
-$lastgroup=$objects[0]['group'];
+$lastgroup=$buildings[0]['group'];
 
 
 //--------------------------------CSS
@@ -65,18 +65,18 @@ $lastgroup=$objects[0]['group'];
 //--------------------------------Vykreslení budov
 
 echo('<div class="skupina">');
-if($objects)
-foreach($objects as $object){
+if($buildings)
+foreach($buildings as $building){
 
-if($lastgroup!=$object['group']){
+if($lastgroup!=$building['group']){
 	echo '</div><div class="skupina">';
 	//echo $object['group'];
-	$lastgroup=$object['group'];
+	$lastgroup=$building['group'];
 }
 
 ?>
-<a href="?selected_object=<?=$object['id']?>">
-<img height="100" src="<?=$object['resurl']?>" border="<?=($object['id']==$_SESSION['selected_object']?2:0)?>" alt="<?=$object['_name']?>" title="<?=$object['_name']?>">
+<a href="?selected_object=<?=$building['id']?>">
+<img height="100" src="<?=$building['resurl']?>" border="<?=($building['id']==$_SESSION['selected_object']?2:0)?>" alt="<?=$building['_name']?>" title="<?=$building['_name']?>">
 </a>
 <?php
 
