@@ -102,6 +102,8 @@ if($own==$GLOBALS['ss']['logid']) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------Share buttons
+// a2a_counter
+
 
 $url=url.$GLOBALS['ss']["storyid"];
 $title=lr('apps_title',$name);
@@ -111,7 +113,7 @@ $title=lr('apps_title',$name);
     <style type="text/css">
         #story_share_buttons {
             margin: 0 auto;
-            width: 180px;
+            width: 150px;
             filter: grayscale(80%);
             opacity: 0.4;
         }
@@ -133,13 +135,13 @@ $title=lr('apps_title',$name);
         a2a_config.linkname = "'.addslashes($title).'";
         a2a_config.linkurl = "'.addslashes($url).'";
         a2a_config.locale = "cs";
-        a2a_config.color_main = "undefined";
-        a2a_config.color_border = "undefined";
-        a2a_config.color_link_text = "undefined";
-        a2a_config.color_link_text_hover = "undefined";
-        a2a_config.color_bg = "undefined";
-        a2a_config.color_arrow = "undefined";
-        a2a_config.color_arrow_hover = "undefined";
+        a2a_config.color_main = "cccccc";
+        a2a_config.color_border = "333333";
+        a2a_config.color_link_text = "cccccc";
+        a2a_config.color_link_text_hover = "000000";
+        a2a_config.color_bg = "222222";
+        a2a_config.color_arrow = "ff0000";
+        a2a_config.color_arrow_hover = "880000";
     </script>
     <script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
     <!-- AddToAny END -->
