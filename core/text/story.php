@@ -87,22 +87,71 @@ if(logged()){
 
 
 e('</div>');
+br();
 
 if($own==$GLOBALS['ss']['logid']) {
 
-    br();
+
     $td=ahrefr(lr('story_edit'), 'e=text-storywrite;id=' . $GLOBALS['ss']["storyid"].';'.js2('w_close(\'content\');'));
     $td.=' - ';
     $td.=ahrefpr(lr('f_dismantle_story_prompt'),lr('story_delete'), 'e=map;noi=1;q=dismantle ' . $GLOBALS['ss']["storyid"].';'.js2('w_close(\'content\');'));
     td($td);
     tr();
-    table('100%',array('center','middle'));
+
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------Share buttons
 
+$url=url.$GLOBALS['ss']["storyid"];
+$title=lr('apps_title',$name);
 
+    $share=brr().'
 
+    <style type="text/css">
+        #story_share_buttons {
+            margin: 0 auto;
+            width: 180px;
+            filter: grayscale(80%);
+            opacity: 0.4;
+        }
+        #story_share_buttons:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+    </style>
+
+    <!-- AddToAny BEGIN -->
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style" id="story_share_buttons">
+        <a class="a2a_dd" href="https://www.addtoany.com/share_save?linkurl='.urlencode($url).'&amp;linkname='.urlencode($title).'"></a>
+        <a class="a2a_button_facebook"></a>
+        <a class="a2a_button_twitter"></a>
+        <a class="a2a_button_google_plus"></a>
+    </div>
+    <script type="text/javascript">
+        var a2a_config = a2a_config || {};
+        a2a_config.linkname = "'.addslashes($title).'";
+        a2a_config.linkurl = "'.addslashes($url).'";
+        a2a_config.locale = "cs";
+        a2a_config.color_main = "undefined";
+        a2a_config.color_border = "undefined";
+        a2a_config.color_link_text = "undefined";
+        a2a_config.color_link_text_hover = "undefined";
+        a2a_config.color_bg = "undefined";
+        a2a_config.color_arrow = "undefined";
+        a2a_config.color_arrow_hover = "undefined";
+    </script>
+    <script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+    <!-- AddToAny END -->
+    ';
+    td($share);
+    tr();
+
+//----------------------------------------------------------------------------------------------------------------------Dolní menu
+
+table('100%',array('center','middle'));
+
+//----------------------------------------------------------------------------------------------------------------------Konec
 
 contenu_b();
 ?>
