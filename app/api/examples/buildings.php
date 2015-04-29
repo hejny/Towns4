@@ -9,6 +9,7 @@
  *
  */
 
+if(!isset($_GET['onlypage']))
 echo '<div class="pageDescription">Seznam každé vlastnosti u všech budov města</div>';
 
 //----------------------------------------------------------------Rozebrání budovy
@@ -20,8 +21,8 @@ if($_GET['dismantle']){
 
 //----------------------------------------------------------------Načtení objektů
 
-$objects = TownsApi('list', 'id,name,_name,type,origin,func,group,expand,block,attack,hold,resurl,res,profile,fp,fs,fc,fr,fx,own,superown,ww,x,y,traceid,starttime,readytime,stoptime',array('mybuildings'), 'y,x');
-$objects = $objects['objects'];
+$buildings = TownsApi('list', 'id,name,_name,type,origin,func,group,expand,block,attack,hold,resurl,res,profile,fp,fs,fc,fr,fx,own,superown,ww,x,y,traceid,starttime,readytime,stoptime',array('mybuildings'), 'y,x');
+$buildings = $buildings['objects'];
 
 //----------------------------------------------------------------CSS, JS
 ?>
@@ -115,8 +116,8 @@ $objects = $objects['objects'];
         </tr>
         <?php
 			//----------------------------------------------------------------Jednotlivé budovy
-			if($objects)
-            foreach($objects as $row){
+			if($buildings)
+            foreach($buildings as $row){
                 echo('<tr>');
 
 				echo('<td>'.$row['id'].'</td>');

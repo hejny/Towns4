@@ -478,6 +478,28 @@ foreach($objects as $object) {
             $say = short( $object['name'] , 30);
 
 
+
+            if(strpos($html,'<img')) {
+
+                $i=0;
+                while($img = substr2($html, '<img', '>',$i)){
+
+                    $src = substr2($img, 'src="', '"',0);
+
+                    $src=imgresizewurl(html_entity_decode($src),450);
+
+                    $img=substr2($img, 'src="', '"',0,$src);
+
+                    $html=substr2($html, '<img', '>',$i,$img);
+
+
+                    $i++;
+                }
+
+
+            }
+
+
             if(strpos($object['res'],'<img')) {
 
                 $img = substr2($object['res'],'<img','>');

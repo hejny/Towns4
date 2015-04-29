@@ -35,17 +35,17 @@ if($_GET['target']){
 
 //-------------------------------------------------------------------------Mapa
 
-require('example.map.php');
+require('examples/map.php');
 
 //-------------------------------------------------------------------------Mapa - ovládací prvky
 
 //--------------------------------Zjištění všech budov v daném úseku
 
-if($objects)
-foreach($objects as $object){
+if($buildings)
+foreach($buildings as $building){
 
-    $relative_x=$object['x']-$_SESSION['x'];
-    $relative_y=$object['y']-$_SESSION['y'];
+    $relative_x=$building['x']-$_SESSION['x'];
+    $relative_y=$building['y']-$_SESSION['y'];
 
 
 	$real_x=($relative_x-$relative_y)*$cell;
@@ -56,12 +56,12 @@ foreach($objects as $object){
 
 
 	//--------------------------------Útočná budova
-	if($object['func']['attack']){
+	if($building['func']['attack']){
 	?>
 
 	<div style="position:absolute;z-index:10000">
-		<a href="?attacker=<?=$object['id']?>">
-		<div style="position:relative;left:<?=intval($real_x)?>px;top:<?=intval($real_y+100)?>px;width:30px;height:30px;background: #<?=($_SESSION['attacker']==$object['id']?'88ff88':'8888ff')?>;border: 2px solid #000000;border-radius:30px;">
+		<a href="?attacker=<?=$building['id']?>">
+		<div style="position:relative;left:<?=intval($real_x)?>px;top:<?=intval($real_y+100)?>px;width:30px;height:30px;background: #<?=($_SESSION['attacker']==$building['id']?'88ff88':'8888ff')?>;border: 2px solid #000000;border-radius:30px;">
 		</div>
 		</a>
 	</div>
@@ -72,11 +72,11 @@ foreach($objects as $object){
 
 	//--------------------------------Potenciální cíl
 
-	if($object['own']!=$result['useid'] and $object['type']=='building'){
+	if($building['own']!=$result['useid'] and $building['type']=='building'){
 	?>
 
 	<div style="position:absolute;z-index:10000">
-		<a href="?target=<?=$object['id']?>">
+		<a href="?target=<?=$building['id']?>">
 		<div style="position:relative;left:<?=intval($real_x)?>px;top:<?=intval($real_y+100)?>px;width:30px;height:30px;background: #ff0000;border: 2px solid #000000;border-radius:30px;">
 		</div>
 		</a>

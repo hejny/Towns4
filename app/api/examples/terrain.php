@@ -9,6 +9,7 @@
  *
  */
 
+if(!isset($_GET['onlypage']))
 echo '<div class="pageDescription">Zobrazení terénů v html tabulce</div>';
 
 

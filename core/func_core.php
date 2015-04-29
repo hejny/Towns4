@@ -55,7 +55,7 @@ function a_dismantle($id){
 
 //======================================================================================INFO
 
-function a_list($cols,$where=0,$order=false,$limit=0){
+function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
 
     //----------------Injection
 
@@ -97,6 +97,8 @@ function a_list($cols,$where=0,$order=false,$limit=0){
         'fr',
         'fx',
         'own',
+        'own_name',
+        'own_avatar',
         'superown',
         'ww',
         'x',
@@ -121,6 +123,10 @@ function a_list($cols,$where=0,$order=false,$limit=0){
 
             }elseif($col=='_name'){
                 $cols2[]="`name` AS `_name`";
+            }elseif($col=='own_name'){
+                $cols2[]="(SELECT name FROM [mpx]pos_obj AS X WHERE X.id=[mpx]pos_obj.own LIMIT 1) AS `own_name`";
+            }elseif($col=='own_avatar'){
+                $cols2[]="(SELECT email FROM [mpx]users WHERE [mpx]users.id=(SELECT userid FROM [mpx]pos_obj AS X WHERE X.id=[mpx]pos_obj.own LIMIT 1) LIMIT 1) AS `own_avatar`";
             }else{
                 if(!in_array("`$col`",$cols2))
                     $cols2[]="`$col`";
@@ -176,6 +182,10 @@ function a_list($cols,$where=0,$order=false,$limit=0){
 
         }elseif($wher=='users'){//Všichni uživatelé
             $where[]="type='user'";
+
+        }elseif($wher=='story'){//Všechny příběhy
+            $where[]="type='story'";
+
             //----------------------------------------------------------------Moje ..
 
         }elseif($wher=='mytowns'){//Vaše města
@@ -265,8 +275,18 @@ function a_list($cols,$where=0,$order=false,$limit=0){
         $order=params($order);
         $order2=array();
         foreach($order as $col) {
+
+            $col=strtolower($col);
+            if(strpos($col,'desc')){
+                $col=str_replace('desc','',$col);
+                $desc=' DESC';
+            }else{
+                $desc='';
+            }
+            $col=trim($col);
+
             if(in_array($col,$allcols)) {
-                $order2[]="`$col`";
+                $order2[]="`$col`$desc";
             }elseif($col=='rand'){
                 $order2[]='RAND()';
             }else{
@@ -292,7 +312,7 @@ function a_list($cols,$where=0,$order=false,$limit=0){
     //----------------SELECT
 
     $query="SELECT $cols2 FROM [mpx]pos_obj WHERE $where2 AND ".objt()." $order2 $limit";
-    $GLOBALS['ss']['query_output']->add('query',$query);
+    $GLOBALS['ss']['query_output']->add('query',sql_mpx($query));
     $objects=sql_assoc($query);
 
     /*$query1="SELECT $cols2 FROM [mpx]pos_obj WHERE $where2 AND ".objt()." $order2 $limit";
@@ -309,30 +329,92 @@ function a_list($cols,$where=0,$order=false,$limit=0){
     if($limitnumber)
     array_splice($objects, $limitnumber);*/
 
+    //-----------------------------------------------------$imagewidth
+    $imagewidth=strtolower($imagewidth);
+    if($imagewidth=='hd')$imagewidth=1366;
+    if($imagewidth=='fullhd')$imagewidth=1920;
+
+    $imagewidth=intval($imagewidth);
+    if(!$imagewidth)$imagewidth=450;
+    if($imagewidth>1920)$imagewidth=1920;
+    //-----------------------------------------------------
+
+
     foreach($objects as &$object){
         foreach($object as $key=>&$value){
 
+            //-----------------------------------------------------RES u STORY
+            if($key=='res' and $object['type']=='story') {
+
+
+                if(strpos($value,'<img')) {
+
+                    $i=0;
+                    while($img = substr2($value, '<img', '>',$i)){
+
+                        $src = substr2($img, 'src="', '"',0);
+                        $src=imgresizewurl(html_entity_decode($src),$imagewidth);
+                        $img=substr2($img, 'src="', '"',0,$src);
+                        $value=substr2($value, '<img', '>',$i,$img);
+
+                        $i++;
+                    }
+
+
+                }
+
+
+            }
+            //-----------------------------------------------------RESURL
+
             if($key=='resurl') {
+                //-----------------------------------------------------RESURL u STORY
+                if($object['type']=='story'){
+
+                    if(strpos($object['res'],'<img')) {
+
+                        $value = substr2($value,'<img','>');
+                        $value = substr2($value, 'src="', '"');
+                        $value=html_entity_decode($value);
+                        $value=imgresizewurl($value,$imagewidth);
+
+                    }else{
+
+                        $value='';
+
+                    }
+                //-----------------------------------------------------RESURL u ostatních
 
 
+                }else {
 
-                if($object['type']=='terrain')
-                    $value="$value:{$object['x']}:{$object['y']}";
+                    if ($object['type'] == 'terrain')
+                        $value = "$value:{$object['x']}:{$object['y']}";
 
                     $value = modelx($value);
 
+                }
+                //-----------------------------------------------------own_avatar
+            }elseif($key=='own_avatar') {
+
+                $value = gravatar($value);
+
+                //-----------------------------------------------------_name
             }elseif($key=='_name') {
 
                     $value = contentlang($value);
 
+                //-----------------------------------------------------func
             }elseif($key=='func') {
                 $value = func2list($value);
 
+                //-----------------------------------------------------'x','y','expand','block','attack'
             }elseif(in_array($key,array('x','y','expand','block','attack'))){
                 if($value==ceil($value)){
                     $value=intval($value);
                 }
 
+                //-----------------------------------------------------hold, profile, fc
             }elseif($key=='hold' or $key=='profile' or $key=='fc'){
                 $value=str2list($value);
 
