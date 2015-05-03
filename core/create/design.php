@@ -37,7 +37,7 @@ if($id?ifobject($id):false){
 	    //========================================UPGRADE
 		//$tmpobject=new object($id);
 		window(lr('title_design'));
-		$q=submenu(array("content","create-design"),array(/*"upgrade_help",*/"upgrade_origin","upgrade_profile"/*,"upgrade_func","upgrade_funcadd"*//*,"upgrade_res*/"/*,"upgrade_rot"/*,"messages_report","messages_new"*/),1,'upgrade');
+		$q=submenu(array("content","create-design"),array("upgrade_origin","upgrade_profile"),1,'upgrade');
 
 
 			$functions=array(
