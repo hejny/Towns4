@@ -110,7 +110,7 @@ if($_POST['townsapi_url'])
 
 
 if(!$_SESSION['townsapi_url'])
-	$_SESSION['townsapi_url']='https://www.towns.cz/world2';
+	$_SESSION['townsapi_url']='https://towns.cz';
 
 //--------------------------------Jazyk
 
@@ -173,7 +173,7 @@ if($_GET['login']){
 //----------------------------------------------------------------Stránky
 
 //--------------------------------Vždy zobrazované stránky
-$links=array('map','terrain','links','story');
+$links=array('map',/*'jsmap',*/'terrain','links','story');
 
 //--------------------------------Stránky pouze s tokenem
 if($_SESSION['townsapi_token']){
@@ -200,6 +200,10 @@ if($_GET['page'])
 
 
 		<link rel="stylesheet" href="style.css">
+
+        <!--<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+
 
 
 		<script type="text/javascript">
