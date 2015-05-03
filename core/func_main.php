@@ -135,8 +135,8 @@ function implodex($array,$delimiter=',',$enclosure='`'){
 //===============================================================================================================
 function rebase($url){
 	$url=preg_replace('(\/[^\/]*\/\.\.\/)', '/', $url);
-	$i=strpos($url,'/'.w.'/');$c=strlen(w);
-	$url=substr($url,0,$i).substr($url,$i+$c+1);
+	//$i=strpos($url,'/'.w.'/');$c=strlen(w);//
+	//$url=substr($url,0,$i).substr($url,$i+$c+1);
 	return($url);
 }
 //echo('ahoj/www/../debile/index.php');
@@ -582,19 +582,24 @@ setlocale(LC_ALL, $lang.'.UTF-8');
 setlocale(LC_NUMERIC, 'en_US.UTF-8');
 
 bindtextdomain('towns', $GLOBALS['inc']['base'].'ui/locale');
+//die( $GLOBALS['inc']['base'].'ui/locale');
+
 //bind_textdomain_codeset("towns", 'UTF-8');
 textdomain("towns");
 
+
+//die(gettext('app_title'));
 //----------------------------------------------------------------lr
 
 
 
-function lr($key,$params=''){
+function lr($key,$params=''){//return('sračka');
     //----------------
     if($GLOBALS['inc']['lang_record']){
 
 
         $file=$GLOBALS['inc']['base'].'ui/locale/towns.pot';
+
         if(!file_exists($file)){
             $contents=<<<EOF
 msgid ""
@@ -635,7 +640,7 @@ EOF;
 
     $text=gettext($key);
 
-
+    //die("$text==$key");
     if($text==$key){
         $params=str2list($params);
         //print_r($params);
@@ -645,6 +650,7 @@ EOF;
             $alt=str_replace('+','',$altplus);
 
             $plus=substr($altplus,strlen($alt));
+
 
             $text=lr($alt).$plus;
         }
@@ -817,9 +823,15 @@ function x2xx($text){//,$vals_a=vals_a,$vals_b=vals_b
 //======================================================================================================================check_email
 
 function check_email($email) {
-    $atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]'; // znaky tvořící uživatelské jméno
+    /*$atom = '[-a-z0-9!#$%&\'*+/=?^_`{|}~]'; // znaky tvořící uživatelské jméno
     $domain = '[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])'; // jedna komponenta domény
-    return eregi("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);
+    return preg_match("^$atom+(\\.$atom+)*@($domain?\\.)+$domain\$", $email);*/
+
+    if(preg_match("/^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$/i", $email)){
+        return(true);
+    }else{
+        return(false);
+    }
 }
 //======================================================================================================================Načtení knihoven
 
@@ -882,7 +894,7 @@ function htmljscss($nocss=0){
         //<?php if(!debug){
         //$js .= 'fps=30;';
 
-        $tinymceurl=(url.'../lib/tinymce');
+        $tinymceurl=(url.'lib/tinymce');
 
         $js .= <<<EOF
 
@@ -987,7 +999,25 @@ EOF;
             border-radius: 50px;
             background-color: #000000;
         }
+
         ';
+        /*        .story {
+                font-family: Georgia;
+                 font-size: 14px;
+        }
+
+
+        .story p:first-child:first-letter {
+
+            float: left;
+            font-size: 22px;
+            line-height: 60px;
+            padding-top: 4px;
+            padding-right: 8px;
+            padding-left: 3px;
+            font-family: Georgia;
+
+        }*/
         //-------------------------------------------------Knihovny
         $css .= fgc('lib/jquery/plugins/colorpicker/colorpicker.css');
         //-------------------------------------------------

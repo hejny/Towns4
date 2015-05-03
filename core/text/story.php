@@ -8,13 +8,14 @@ if($GLOBALS['get']["id"]){$GLOBALS['ss']["storyid"]=$GLOBALS['get']["id"];}
 
 
 
-list($name,$res,$own)=sql_row("SELECT name,res,own FROM [mpx]pos_obj WHERE id=".sqlx($GLOBALS['ss']["storyid"])." AND type='story' AND ".objt());
+list($name,$res,$own,$permalink)=sql_row("SELECT name,res,own,permalink FROM [mpx]pos_obj WHERE id=".sqlx($GLOBALS['ss']["storyid"])." AND type='story' AND ".objt());
+
 
 $res = explode(':',$res,2);
 $html=$res[1];
 
 window($name);
-permalink($name,$GLOBALS['ss']["storyid"]);
+permalink($name,/*$GLOBALS['ss']["storyid"]*/$permalink);
 
 contenu_a();
 
@@ -42,7 +43,7 @@ if($html){
     }
 }
 
-e('<div style="width: 440px;">');
+e('<div style="width: 440px;" class="story">');
 e($html);
 e('</div>');
 
@@ -105,7 +106,7 @@ if($own==$GLOBALS['ss']['logid']) {
 // a2a_counter
 
 
-$url=url.$GLOBALS['ss']["storyid"];
+$url=url.$permalink;
 $title=lr('apps_title',$name);
 
     $share=brr().'

@@ -36,16 +36,182 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING );
 ini_set("register_globals","off");
 ini_set("display_errors","on");
 
-//===============================================================================INC
-// @todo Vyřešit URL parametry
-
-$tmp=$_SERVER["REQUEST_URI"];
+//======================================================================================================================INC
 
 
-if(strpos($tmp,'?'))$tmp=substr($tmp,0,strpos($tmp,'?'));
-$uri=explode('/',$tmp);
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
-$admin=false;
+
+$uri=$_SERVER["REQUEST_URI"];
+if(strpos($uri,'?'))$uri=substr($uri,0,strpos($uri,'?'));
+
+
+$real_url=$protocol.$_SERVER['HTTP_HOST'].$uri;
+
+//die($real_url);
+
+$uri_keywords=
+    array(
+    'debug',
+    'timeplan',
+    //'edit',
+    //'notmp',
+    'onlymap',
+    //'corex',
+    'app',
+    'api',
+    'admin',
+    'sitemap.xml'
+);
+$used_keywords=array();
+
+//------------------------------------------------Rozebrání $uri
+
+
+$uri=explode('/',$uri);
+$uri=array_filter($uri);
+
+//------------------------------------------------Světy
+
+$GLOBALS['inc']['default_world']=$GLOBALS['inc']['world'];
+
+foreach($GLOBALS['inc']['worlds'] as $world){
+
+    if(in_array($world,$uri)){
+
+        if($world!=$GLOBALS['inc']['default_world']) {///Defaultní svět
+            $used_keywords[] = $world;
+            $GLOBALS['inc']['world']=$world;
+        }
+
+        break;
+
+    }
+}
+
+//------------------------------------------------Klíčová slova
+
+foreach($uri_keywords as $keyword){
+
+    if(in_array($keyword,$uri)){
+
+        $used_keywords[]=$keyword;
+
+    }
+}
+
+//------------------------------------------------name2permalink
+
+function name2permalink($permalink){
+
+    if(function_exists('contentlang'))
+        $permalink=contentlang($permalink);
+    $permalink=strtolower($permalink);
+
+    //echo($permalink.'<br>');
+
+    $hacky= array('ě','š','č','ř','ž','ý','á','í','é','ú','ů','ľ','ť','ď');
+    $normal=str_split('escrzyaieuultd');
+
+    //print_r($hacky);
+    //print_r($normal);
+
+    $permalink=str_replace($hacky,$normal,$permalink);
+
+    //echo($permalink.'<br>');
+
+    $cisla=str_split('0123456789.');
+    $znaky=str_split('0123456789abcdefghijklmnopqrstuvwxyz-');
+
+    $permalink=str_split($permalink);
+
+    $cutfloat=false;
+    foreach($permalink as &$char){
+
+        if($char=='.'){
+            $cutfloat=true;
+        }elseif(!in_array($char,$cisla)){
+            $cutfloat=false;
+        }
+
+        if($cutfloat) {
+            $char = '';
+        }else{
+            if (!in_array($char, $znaky)) {
+                $char = '-';
+            }
+        }
+    }
+    $permalink=join('',$permalink);
+    $permalink=trim($permalink,'-');
+
+
+    while(strpos($permalink,'--'))
+        $permalink=str_replace('--','-',$permalink);
+
+    return($permalink);
+
+}
+
+
+//------------------------------------------------Objekt
+
+
+
+$other_keywords=array('towns');//@todo načíst automaticky
+
+$GLOBALS['object_permalink']=array();
+
+foreach($uri as $last) {
+    if (!in_array($last, $uri_keywords) and !in_array($last, $other_keywords) and !in_array($last, $GLOBALS['inc']['worlds'])) {
+
+        $last = urldecode($last);
+        $last = name2permalink($last);
+        $used_keywords[] = $last;
+
+        $GLOBALS['object_permalink'][] = $last;
+
+    }
+}
+
+$GLOBALS['object_permalink']=implode('/',$GLOBALS['object_permalink']);
+
+
+//------------------------------------------------Případné přesměřování
+
+
+$virtual_url=$GLOBALS['inc']['url'].join('/',$used_keywords);
+
+
+$ref=$_GET['ref']?'?ref='.$_GET['ref']:'';//@todo Vyřešit reference
+$virtual_url.=$ref;
+
+
+
+/**
+echo($real_url);
+echo('<br>');
+echo($virtual_url);
+die();
+/**/
+//echo('<br>');
+//echo("$real_url!=$virtual_url.'/'");
+//exit;
+
+if($real_url!=$virtual_url and $real_url!=$virtual_url.'/'){
+
+    header('Location: '.$virtual_url);
+    //echo('Location: '.$virtual_url);
+    exit;
+
+}
+
+
+
+//die();
+//------------------------------------------------------------------------------------Vyhodnocení, co dál
+
+/*$admin=false;
 $app=false;
 $debug=false;
 $edit=false;
@@ -54,10 +220,25 @@ $timeplan=false;
 $onlymap=false;
 $api=false;
 $sitemap=false;
-$speciale=false;
+$speciale=false;*/
 
 
-foreach($uri as $x){
+
+define('core',$GLOBALS['inc']['core']);
+define('base',$GLOBALS['inc']['base']);
+
+
+if(!in_array('debug',$used_keywords))define('debug',0);
+if(in_array('timeplan',$used_keywords)){define('timeplan',1);}else{define('timeplan',0);}
+if(in_array('onlymap',$used_keywords)){define('onlymap',1);}else{define('onlymap',0);}
+if(in_array('sitemap.xml',$used_keywords)){$sitemap=true;}else{$sitemap=false;}
+
+
+define('edit',0);
+define('notmp',0);
+
+
+/*foreach($uri as $x){
     if($x){
         if(
             $x!='admin' AND
@@ -93,17 +274,12 @@ foreach($uri as $x){
         }
         else{$speciale=true;$GLOBALS['url_param']=substr($x,1);}
 
-    }}
-
-
-//die($world);
-
-$ref=$_GET['ref']?'?ref='.$_GET['ref']:'';
+    }}*//*
 
 
 $GLOBALS['inc']['urld']=str_replace('[world]',$GLOBALS['inc']['world'],$GLOBALS['inc']['url']);
 $GLOBALS['inc']['url']=str_replace('[world]',$world,$GLOBALS['inc']['url']);
-if(!$world/**/ or str_replace(array('.','?'),'',$world)!=$world){header('Location: '.$GLOBALS['inc']['urld'].$ref);exit;}
+if(!$world or str_replace(array('.','?'),'',$world)!=$world){header('Location: '.$GLOBALS['inc']['urld'].$ref);exit;}
 
 
 $gooduri=str_replace('/'.'/','',$GLOBALS['inc']['url']);
@@ -134,9 +310,11 @@ if(!$edit)define('edit',0);
 if($notmp){define('notmp',1);}else{define('notmp',0);}
 if($timeplan){define('timeplan',1);}else{define('timeplan',0);}
 if($onlymap){define('onlymap',1);}else{define('onlymap',0);}
-if($corex){define('corex',1);define('corexx','corex/');}else{define('corex',0);define('corexx','');}
+if($corex){define('corex',1);define('corexx','corex/');}else{define('corex',0);define('corexx','');}*/
 
-if($app){
+
+
+if(in_array('app',$used_keywords)){
     //@todo spouštění aplikací přes core + bezpečnost
 
 
@@ -154,15 +332,15 @@ if($app){
 
     require($file);*/
 
-    echo('APP');
+    echo('APP NOT FOUND!');
     exit;
 
-}elseif($api){
+}elseif(in_array('api',$used_keywords)){
 
     require($GLOBALS['inc']['core'].'/api.php');
     exit;
 
-}elseif($admin){
+}elseif(in_array('admin',$used_keywords)){
 
     require($GLOBALS['inc']['core'].'/admin/index.php');
     exit;
@@ -173,12 +351,16 @@ if($app){
 
 
 header("Connection: Keep-alive");
-//===============================================================================url_param
+
+
+
+//-----------------------------------------------------------------url_param
+//@todo zrušit
 //if($_GET["e"])$_GET['e']=$_GET["e"];
 list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
 
 
-//===============================================================================
+////====================================================================================================================
 
 //--------------------------------------------inicializace
 
@@ -571,6 +753,7 @@ if($_GET['e']){
     }else{
         require(core."/page/frame.php");
     }
+
 }
 
 

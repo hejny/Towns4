@@ -88,13 +88,13 @@ function permalink($name=false,$link=false,$yjs=true){
     if($name or $link){
     $js = "
             /*alert(123);*/
-            loadurl='".url.(debug?'debug/':'').$link."/';
+            loadurl='".url.(debug?'debug/':'').$link."';
 
             var state = {
                 'thisIsOnPopState': true
             };
-            history.pushState(state, '".lr('apps_title',$name)."', loadurl);
-            document.title = '".lr('apps_title',$name)."';
+            history.pushState(state, '".lr('apps_title',ucfirst($name))."', loadurl);
+            document.title = '".lr('apps_title',ucfirst($name))."';
             ";
     }else{
         $js = "
@@ -1133,6 +1133,10 @@ function imageurl($file,$rot=1,$grey=false){
         }
         t('imageurl - stopcreating');
         }
+
+        //echo(url.$file2.'<br>');
+        //die(rebase(url.$file2).'<br>');
+
         $stream=rebase(url.$file2);//=$GLOBALS['ss']["url"].$file2;
         return($stream);
     
@@ -1427,8 +1431,8 @@ function input_tinymcer($name,$value='',$width='',$height='',$type=1){
             {
                 mode: 'textareas',
                 selector: 'textarea.tinymcetextarea',
-                skin_url: '<?=(url.'../lib/tinymce/skins/custom')?>',
-                content_css : '<?=(url.'../lib/tinymce/skins/custom/content.css')?>',
+                skin_url: '<?=(url.'lib/tinymce/skins/custom')?>',
+                content_css : '<?=(url.'lib/tinymce/skins/custom/content.css')?>',
                 language: 'cs',
                 theme: 'modern',
                 width : '<?=$width?>',

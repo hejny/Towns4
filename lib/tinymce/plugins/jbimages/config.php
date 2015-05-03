@@ -37,8 +37,21 @@
 | 
 | -------------------------------------------------------------------*/
 
-	
-	$config['img_path'] = '../userdata/upload'; // Relative to domain name
+	define('noinc',true);
+	require('../../../../../index.php');
+
+	//print_r($GLOBALS['inc']);
+	//http://127.0.0.1/towns/
+	//$GLOBALS['inc']['url'].
+
+
+	$url = parse_url($GLOBALS['inc']['url']);
+
+
+	$config['img_path'] = '/'.$url['path'].'/userdata/upload'; // Relative to domain name
+	$config['img_path']=str_replace('//','/',$config['img_path']);
+
+	//die($config['img_path']);
 	$config['upload_path'] = '../../../../../userdata/upload'; // Physical path. [Usually works fine like this]
 
 /*-------------------------------------------------------------------

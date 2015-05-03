@@ -276,7 +276,7 @@ ob_start();
                 <div style="position:absolute;">
                     <div style="position:relative;left:<?= $left ?>;top:-62px;">
 
-                        <img src="<?php e(str_replace('[world]',$GLOBALS['inc']['app'],$GLOBALS['inc']['url'])); ?>/projects/authors/<?= $author ?>.jpg" alt="<?php le('towns_author_'.$author) ?>" title="<?php le('towns_author_'.$author) ?>" width="40" class="author" />
+                        <img src="authors/<?= $author ?>.jpg" alt="<?php le('towns_author_'.$author) ?>" title="<?php le('towns_author_'.$author) ?>" width="40" class="author" />
 
                     </div>
                 </div>

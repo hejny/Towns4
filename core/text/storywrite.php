@@ -190,6 +190,11 @@ if($_POST['story_send']){
             //----------------------------------------------------
 
         }
+
+        $tmpobject=new object($id);
+        $tmpobject->update(true);
+        unset($tmpobject);
+
         //centerurl()
         click('e=map;noi=1;');
     }

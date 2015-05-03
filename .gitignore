@@ -4,6 +4,8 @@
  *(copy)*
 *.old.*
 
+/.htaccess
+
 /index.php
 /tmp
 /backup
@@ -24,5 +26,7 @@
 !/app/admin/files/backup/small.sql
 !/app/admin/files/A.png
 !/app/admin/files/B.png
+
+
 /nbproject
 /.idea
