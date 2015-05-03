@@ -42,8 +42,9 @@ ini_set("display_errors","on");
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
 
-$uri=$_SERVER["REQUEST_URI"];
-if(strpos($uri,'?'))$uri=substr($uri,0,strpos($uri,'?'));
+list($uri,$querystring)=explode('?',$_SERVER["REQUEST_URI"],2);
+if($querystring)$querystring='?'.$querystring;
+
 
 
 $real_url=$protocol.$_SERVER['HTTP_HOST'].$uri;
@@ -179,14 +180,14 @@ foreach($uri as $last) {
 $GLOBALS['object_permalink']=implode('/',$GLOBALS['object_permalink']);
 
 
+
 //------------------------------------------------Případné přesměřování
 
 
 $virtual_url=$GLOBALS['inc']['url'].join('/',$used_keywords);
 
 
-$ref=$_GET['ref']?'?ref='.$_GET['ref']:'';//@todo Vyřešit reference
-$virtual_url.=$ref;
+
 
 
 
@@ -202,7 +203,7 @@ die();
 
 if($real_url!=$virtual_url/* and $real_url!=$virtual_url.'/'*/){
 
-    header('Location: '.$virtual_url);
+    header('Location: '.$virtual_url.$querystring);
     //echo('Location: '.$virtual_url);
     exit;
 
