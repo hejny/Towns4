@@ -61,6 +61,7 @@ $uri_keywords=
     'app',
     'api',
     'admin',
+    'fblogin',
     'sitemap.xml'
 );
 $used_keywords=array();
@@ -165,6 +166,7 @@ $GLOBALS['object_permalink']=array();
 foreach($uri as $last) {
     if (!in_array($last, $uri_keywords) and !in_array($last, $other_keywords) and !in_array($last, $GLOBALS['inc']['worlds'])) {
 
+        //if(substr($last,0,1)=='-' and){}
         $last = urldecode($last);
         $last = name2permalink($last);
         $used_keywords[] = $last;
@@ -231,6 +233,7 @@ define('base',$GLOBALS['inc']['base']);
 if(!in_array('debug',$used_keywords))define('debug',0);
 if(in_array('timeplan',$used_keywords)){define('timeplan',1);}else{define('timeplan',0);}
 if(in_array('onlymap',$used_keywords)){define('onlymap',1);}else{define('onlymap',0);}
+if(in_array('fblogin',$used_keywords)){define('fblogin',1);}else{define('fblogin',0);}
 if(in_array('sitemap.xml',$used_keywords)){$sitemap=true;}else{$sitemap=false;}
 
 
@@ -353,13 +356,6 @@ if(in_array('app',$used_keywords)){
 header("Connection: Keep-alive");
 
 
-
-//-----------------------------------------------------------------url_param
-//@todo zrušit
-//if($_GET["e"])$_GET['e']=$_GET["e"];
-list($GLOBALS['url_param'])=explode('#',$GLOBALS['url_param']);
-
-
 ////====================================================================================================================
 
 //--------------------------------------------inicializace
@@ -450,7 +446,7 @@ function mainname(){
     return(id2name($GLOBALS['config']['register_building']));
 }
 //------------------------------------------------------------------FBLOGIN -> REDIRECT
-if($GLOBALS['url_param']=='fblogin'){
+if(fblogin){
     //echo('aaa');
     eval(subpage_('login-fb_redirect'));
     exit2;

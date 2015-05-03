@@ -16,7 +16,7 @@
   // login URL
   $params = array(
     'display' => 'popup',
-    'redirect_uri' => url.corexx.('-fblogin'),
+    'redirect_uri' => url.('fblogin'),
     'scope' => 'email'
   );
   //e($params['redirect_uri']);
