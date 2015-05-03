@@ -189,9 +189,11 @@ setTimeout(function(){
 }
 function contenu_b($forms=false){
 if(!$GLOBALS['mobile']){
+
+    /*
 ?>
     <br><br><br><br>
-    
+
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Towns content 2 -->
     <ins class="adsbygoogle"
@@ -202,10 +204,10 @@ if(!$GLOBALS['mobile']){
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 
-
-
-
 <?php
+    */
+
+
 e('</td><td>'.imgr('design/none.png','',1,2000).'</td></tr></table></div></div>');
 }else{
 	
