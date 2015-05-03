@@ -27,17 +27,17 @@ if($_GET['actual']){
     $actual=1;    
 }
 
-$total=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE type=\'building\'');
+$total=sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE type!=\'prime\' AND type!=\'tree\' AND  type!=\'rock\' AND  type!=\'terrain\' AND '.objt());
 $percent=intval($actual/$total*100);
 
-$id=sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE type=\'building\' LIMIT '.$actual.',1');
+$id=sql_1data('SELECT id FROM `[mpx]pos_obj` WHERE type!=\'prime\' AND type!=\'tree\' AND  type!=\'rock\' AND  type!=\'terrain\' AND '.objt().' ORDER BY id LIMIT '.$actual.',1');
 
 echo("<h2>$percent% ($actual/$total)</h2>");
 echo("<b>$id</b><br>");
 //echo("<table border=\"1\" width=\"424\" height=\"211\"><tr><td>");
 $tmpobject=new object($id);
 $tmpobject->update(true);
-sql_query('UPDATE `[mpx]pos_obj` SET `fp`=`fs` WHERE id='.$id);
+//sql_query('UPDATE `[mpx]pos_obj` SET `fp`=`fs` WHERE id='.$id);//@todo ? provádět či ne
 
 if($actual>=$total){
 echo("<b>hotovo</b><br>");

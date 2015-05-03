@@ -48,7 +48,7 @@ function tmpfile2($file,$ext=imgext,$cpath="main"){
     mkdir2(root.cache.$cpath."/$a");
     mkdir2(root.cache.$cpath."/$a/$b");
     $url=root.cache.$cpath."/$a/$b/$md52".$ext;
-    //echo($url);
+    //echo($url.'<br>');
     return($url);
 }/**/
 //--------------------------------------------
@@ -830,6 +830,7 @@ function remove_javascript($html){
     return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $html);
 
 }
+
 
 //==========================================================================================
 require(root.core."/func_components.php");

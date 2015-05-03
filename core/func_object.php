@@ -81,6 +81,7 @@ class object{
                 $this->block_=$row["block"];
                 $this->attack_=$row["attack"];
                 $this->group_=$row["group"];
+                $this->permalink_=$row["permalink"];
                 $this->own=$row["own"];
 				$this->superown=$row["superown"];
                 //$this->ownname=$row["ownname"];
@@ -145,6 +146,7 @@ class object{
                 'block' => '',
                 'attack' => '',
                 'group' => '',
+                'permalink' => '',
                 'create_lastused' => '',
                 'create_lastobject' => '',
                 'create2_lastused' => '',
@@ -188,6 +190,7 @@ class object{
             $this->block_="";
 	        $this->attack_="";
             $this->group_="";
+            $this->permalink_="";
             $this->own="";
 			$this->superown="";
             //$this->ownname="";
@@ -341,6 +344,36 @@ class object{
 
                     //------------------------------GROUP
                     $this->group_=$funcs['group']['profile']['group'];
+                    //------------------------------Permalink
+
+                    if(!$this->permalink_/** or true/**/) {
+                        if(in_array($this->type,array('story','building','user','town','town2'))) {
+
+                            $own_permalink = '';
+                            if ($this->own)
+                                $own_permalink = sql_1data('SELECT permalink FROM [mpx]pos_obj WHERE id=' . sqlx($this->own) . ' AND ' . objt());
+
+                            if ($own_permalink)
+                                $own_permalink .= '/';
+
+
+                            $base = $own_permalink . name2permalink($this->name);
+
+                            $i = 1;
+                            $id = -1;
+
+                            while ($id and $id != $this->id) {
+                                $testing = $base . ($i > 1 ? '-' . $i : '');
+
+                                $id = sql_1number('SELECT id FROM [mpx]pos_obj WHERE permalink=' . sqlx($testing) /*. ' AND ' . objt()*/);
+                                $i++;
+                            }
+
+
+                            $this->permalink_ = $testing;
+
+                        }
+                    }
 
                     //------------------------------EXPAND,BLOCK,ATTACK
                     //$tmp=$funcs["hard"]["params"]["hard"];$this->hard=$tmp[0]*$tmp[1];//r(444);r($tmp);
@@ -375,6 +408,7 @@ class object{
                     'type' => $this->type,
                     //'userid' => $this->xxx,
                     'origin' => implode(',',$this->origin),
+                    'permalink' => $this->permalink_,
                     'fp' => $this->fp,
                     'func' => ($this->func->vals2str()),
                     'hold' => ($this->hold->vals2str()),
@@ -386,27 +420,45 @@ class object{
                     'pt' => $this->pt
                 ));
                 //------------------UPDATE objects_tmp
-                sql_update('objects_tmp',"id='".$this->id."'",array(
-                    //'id' => $this->xxx,
-                    'fs' => $this->fs,
-                    'fc' => $this->fc,
-                    'fr' => $this->fr,
-                    'fx' => $this->fx,
-                    'superown' => $this->superown,
-                    'expand' => $this->expand_,
-                    'block' => $this->block_,
-                    'attack' => $this->attack_,
-                    'group' => $this->group_
-                    //@todo Zprovoznit rušení  staveb
-                    /*'create_lastused' => $this->xxx,
-                    'create_lastobject' => $this->xxx,
-                    'create2_lastused' => $this->xxx,
-                    'create2_lastobject' => $this->xxx,
-                    'create3_lastused' => $this->xxx,
-                    'create3_lastobject' => $this->xxx,
-                    'create4_lastused' => $this->xxx,
-                    'create4_lastobject' => $this->xxx*/
-                ));
+
+                if(sql_1number('SELECT id FROM [mpx]objects_tmp WHERE id='.$this->id)) {
+
+                    sql_update('objects_tmp', "id='" . $this->id . "'", array(
+                        //'id' => $this->xxx,
+                        'fs' => $this->fs,
+                        'fc' => $this->fc,
+                        'fr' => $this->fr,
+                        'fx' => $this->fx,
+                        'superown' => $this->superown,
+                        'expand' => $this->expand_,
+                        'block' => $this->block_,
+                        'attack' => $this->attack_,
+                        'group' => $this->group_
+                        //@todo Zprovoznit rušení  staveb
+                        /*'create_lastused' => $this->xxx,
+                        'create_lastobject' => $this->xxx,
+                        'create2_lastused' => $this->xxx,
+                        'create2_lastobject' => $this->xxx,
+                        'create3_lastused' => $this->xxx,
+                        'create3_lastobject' => $this->xxx,
+                        'create4_lastused' => $this->xxx,
+                        'create4_lastobject' => $this->xxx*/
+                    ));
+                }else{
+                    sql_insert('objects_tmp', array(
+                        'id' => $this->id,
+                        'fs' => $this->fs,
+                        'fc' => $this->fc,
+                        'fr' => $this->fr,
+                        'fx' => $this->fx,
+                        'superown' => $this->superown,
+                        'expand' => $this->expand_,
+                        'block' => $this->block_,
+                        'attack' => $this->attack_,
+                        'group' => $this->group_
+                    ));
+
+                }
                 //------------------UPDATE positions
                 sql_update('positions',"id='".$this->id."'",array(
                     //'id' => $this->xxx,
@@ -853,6 +905,7 @@ function trackobject($id){
         'block' => true,
         'attack' => true,
         'group' => true,
+        'permalink' => true,
         'create_lastused' => true,
         'create_lastobject' => true,
         'create2_lastused' => true,

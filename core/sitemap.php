@@ -24,11 +24,11 @@ e('<lastmod>'.date(DATE_W3C,filemtime(core.'/page/aac.php')).'</lastmod>');
 e('</url>');
 
 
-$objects=sql_array('SELECT id,starttime FROM [mpx]pos_obj WHERE type=\'story\' AND '.objt());
+$objects=sql_array('SELECT permalink,starttime FROM [mpx]pos_obj WHERE type=\'story\' AND own!=0 AND '.objt());
 foreach($objects as $object){
 
     e('<url>');
-    e('<loc>'.url.$object['id'].'</loc>');
+    e('<loc>'.url.$object['permalink'].'</loc>');
     e('<lastmod>'.date(DATE_W3C,$object['starttime']).'</lastmod>');
     e('</url>');
 
