@@ -200,7 +200,7 @@ die();
 //echo("$real_url!=$virtual_url.'/'");
 //exit;
 
-if($real_url!=$virtual_url and $real_url!=$virtual_url.'/'){
+if($real_url!=$virtual_url/* and $real_url!=$virtual_url.'/'*/){
 
     header('Location: '.$virtual_url);
     //echo('Location: '.$virtual_url);
