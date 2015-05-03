@@ -190,8 +190,23 @@ setTimeout(function(){
 function contenu_b($forms=false){
 if(!$GLOBALS['mobile']){
 ?>
+    <br><br><br><br>
+    
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Towns content 2 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:446px;height:60px"
+         data-ad-client="ca-pub-5059650173115860"
+         data-ad-slot="3907152521"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+
+
+
 <?php
-e('</td><td>'.imgr('design/none.png','',1,1000).'</td></tr></table></div></div>');
+e('</td><td>'.imgr('design/none.png','',1,2000).'</td></tr></table></div></div>');
 }else{
 	
 	e('</div></div>');

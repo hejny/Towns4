@@ -999,25 +999,25 @@ EOF;
             border-radius: 50px;
             background-color: #000000;
         }
-
-        ';
-        /*        .story {
-                font-family: Georgia;
-                 font-size: 14px;
+        .story {
+                 font-size: 1.1em;
+                 text-shadow: 0em 0em 0.1em #666;
         }
 
 
-        .story p:first-child:first-letter {
+        .story p:first-letter {
 
-            float: left;
-            font-size: 22px;
-            line-height: 60px;
-            padding-top: 4px;
-            padding-right: 8px;
-            padding-left: 3px;
-            font-family: Georgia;
+            font-weight:bold;
+            font-size: 1.2em;
 
-        }*/
+        }
+        ';
+        /*float: left;
+        font-size: 2em;
+        line-height: 60px;
+        padding-top: 4px;
+        padding-right: 4px;
+        padding-left: 3px;*/
         //-------------------------------------------------Knihovny
         $css .= fgc('lib/jquery/plugins/colorpicker/colorpicker.css');
         //-------------------------------------------------
