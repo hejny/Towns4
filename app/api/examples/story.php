@@ -76,7 +76,7 @@ function truncate($text, $length) {
  * A všechny obrázky (URL na ně) budou mít 262 pixelů na šířku
  * Výsledek vrátí v asociovaném poli pod klíčem 'objects'
  * */
-$result = TownsApi('list', 'id,name,res,resurl,own_name,own_avatar','story', 'starttime DESC',100,262);
+$result = TownsApi('list', 'id,name,permalink,res,resurl,own_name,own_avatar','story', 'starttime DESC',100,262);
 //print_r($result);
 $result = $result['objects'];
 
@@ -97,7 +97,7 @@ foreach($result as $story){
 
 
 ?>
-<a href="<?=$_SESSION['townsapi_url'].'/'.$story['id']?>" target="_blank"
+<a href="<?=$_SESSION['townsapi_url'].'/'.$story['permalink']?>" target="_blank"
     ><div class="karta" style="background-color:#cccccc;">
 
             <div style="position:absolute;">

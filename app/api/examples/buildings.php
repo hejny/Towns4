@@ -21,7 +21,7 @@ if($_GET['dismantle']){
 
 //----------------------------------------------------------------Načtení objektů
 
-$buildings = TownsApi('list', 'id,name,_name,type,origin,func,group,expand,block,attack,hold,resurl,res,profile,fp,fs,fc,fr,fx,own,superown,ww,x,y,traceid,starttime,readytime,stoptime',array('mybuildings'), 'y,x');
+$buildings = TownsApi('list', 'id,name,_name,type,permalink,origin,func,group,expand,block,attack,hold,resurl,res,profile,fp,fs,fc,fr,fx,own,superown,ww,x,y,traceid,starttime,readytime,stoptime',array('mybuildings'), 'y,x');
 $buildings = $buildings['objects'];
 
 //----------------------------------------------------------------CSS, JS
@@ -89,6 +89,7 @@ $buildings = $buildings['objects'];
         <th>name</th>
         <th>_name</th>
         <th>type</th>
+        <th>permalink</th>
         <th>origin</th>
         <th>func</th>
         <th>group</th>
@@ -124,6 +125,7 @@ $buildings = $buildings['objects'];
 				echo('<td><pre>'.$row['name'].'</pre></td>');
 				echo('<td><b>'.$row['_name'].'</b></td>');
 				echo('<td>'.$row['type'].'</td>');
+                echo('<td><a href="'.$_SESSION['townsapi_url'].'/'.$row['permalink'].'" target="_blank">'.$row['permalink'].'</a></td>');
 				echo('<td><pre onclick="showres(this);">'.$row['origin'].'</pre></td>');
 				echo('<td><pre onclick="showres(this);">'.print_r($row['func'],true).'</pre></td>');
 				echo('<td>'.$row['group'].'</td>');
