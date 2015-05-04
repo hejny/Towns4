@@ -70,11 +70,11 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
     $yu=($ycu-$xcu)*5+1;
     //----
     
-	if(!mobile){
+	//if(!mobile){
 	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+35 AND (x+y)<($xu+$yu)+60";
-	}else{
-	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
-	}
+	//}else{
+	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
+	//}
     //----
     
 	if($_GET['map_units_time']!=-1){
@@ -144,8 +144,6 @@ if($_GET['q'] and !$_GET['onlyc']){
 
 }
 ?>
-<?php /*subjs('quest-mini');*/ ?>
-<?php if($GLOBALS['mobile'] and !$_GET['onlyc']){subjs('quest-mobile');}/**/ ?>
             <?php
                 /*if(defined('object_hybrid')){
                     e('alert("'.object_hybrid.'");');

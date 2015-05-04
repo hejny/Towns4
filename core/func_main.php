@@ -848,11 +848,14 @@ function htmljscss($nocss=0){
 
         $js .= fgc('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
         $js .= fgc('lib/jquery/jquery-ui.min.js');
+        //$js .= fgc('jquery.mobile.custom.min.js');
+
+
 
         $js .= fgc('lib/jquery/plugins/fullscreen-min.js');//Funkce plné obrazovky, která neblbne
         $js .= fgc('lib/jquery/plugins/mousewheel.js');//Potřeba pro mousewheel
         $js .= fgc('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
-        $js .= fgc('lib/jquery/plugins/touch-punch.min.js');//Pro fungování tahání v mobilech a tabletech
+        $js .= fgc('lib/jquery/plugins/touch-punch.js');//Pro fungování tahání v mobilech a tabletech
         $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');
 
         //-------------------------------------------------Knihovny / TiniMce
@@ -914,8 +917,10 @@ function htmljscss($nocss=0){
 
         setInterval(function() {
             $('div').scrollTop(0);
+            $(document).scrollLeft(0);
         },200);
 EOF;
+//@todo scroll je pěkná prasárna 'div'
 
 
 
@@ -957,6 +962,9 @@ EOF;
         require(root . core . '/page/javascript.php');
         $js .= ob_get_contents();
         ob_end_clean();
+        //-------------------------------------------------Minifikace @todo Zprovoznit minifikacri
+        //require_once(root.'lib/jsmin.php');
+        //$js=JSMin::minify($js);
         //-------------------------------------------------
 
 
@@ -1011,8 +1019,10 @@ EOF;
             font-size: 1.2em;
 
         }
+
         ';
-        /*float: left;
+        /*@media screen and (min-width: 960px) {
+         * float: left;
         font-size: 2em;
         line-height: 60px;
         padding-top: 4px;

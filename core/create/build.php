@@ -95,22 +95,22 @@ if($q){
 ?>
 <?php if($q){ ?>
 <!--==========-->
-<div style="position:absolute;"><div style="position:relative;left:<?php e((!$GLOBALS['mobile']?-18:-27)); ?>;top:<?php e(round(95/$GLOBALS['mapzoom'])); ?>;">
-<?php icon(js2('_rot=_rot-15;if(_rot<0){_rot=_rot+360;}build_model_rot(_rot);'),"rotate_left",lr('rotate_left'),(!$GLOBALS['mobile']?25:35)); ?>
+<div style="position:absolute;"><div style="position:relative;left:-18;top:<?php e(round(95/$GLOBALS['mapzoom'])); ?>;">
+<?php icon(js2('_rot=_rot-15;if(_rot<0){_rot=_rot+360;}build_model_rot(_rot);'),"rotate_left",lr('rotate_left'),25); ?>
 </div></div>
 <!--==========-->
 <div style="position:absolute;"><div style="position:relative;left:<?php e(round(80/$GLOBALS['mapzoom'])); ?>;top:<?php e(round(95/$GLOBALS['mapzoom'])); ?>;">
-<?php icon(js2('_rot=_rot+15;if(_rot>=360){_rot=_rot-360;}build_model_rot(_rot);'),"rotate_right",lr('rotate_right'),(!$GLOBALS['mobile']?25:35)); ?>
+<?php icon(js2('_rot=_rot+15;if(_rot>=360){_rot=_rot-360;}build_model_rot(_rot);'),"rotate_right",lr('rotate_right'),25); ?>
 </div></div>
 <!--==========-->
 <?php } ?>
 <div style="position:absolute;"><div style="position:relative;left:4;top:4;z-index:20;">
-<?php icon(js2($hidex.(!$q?"\$('#grid').css('display','none');map_units_time=0;":'')),"cancel",lr('cancel'),(!$GLOBALS['mobile']?20:25)); ?>
+<?php icon(js2($hidex.(!$q?"\$('#grid').css('display','none');map_units_time=0;":'')),"cancel",lr('cancel'),20); ?>
 </div></div>
 <!--==========-->
 <div style="position:absolute;"><div id="build_button" style="display:none;position:relative;left:-1;top:<?php e(round(160/$GLOBALS['mapzoom'])); ?>;">
 <?php /*icon(js2(($q?$hide.',':'').$js),"f_create_building_submit","{f_create_building_submit}",25);*/
-    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,(!$GLOBALS['mobile']?14:14),3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js.';'.(!$q?'nmr=true;':'')));
+    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,14,3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js.';'.(!$q?'nmr=true;':'')));
  ?>
 </div></div>
 <div style="position:absolute;"><div style="position:relative;left:<?php e(round(-150+(110*0.75*0.5))); ?>px;width:300px;text-align:center;top:<?php e(round(160/$GLOBALS['mapzoom'])+20); ?>;">

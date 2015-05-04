@@ -98,7 +98,7 @@ contenu_a();
     form_js('content','?e=text-messages&'.$url,array('message_title','message_text'));
     
     //-----------------------
-    echo("<table width=\"".((!$GLOBALS['mobile']?contentwidth:'96%'))."\" bgcolor=\"$col\" cellspacing=\"0\">");
+    echo("<table width=\"".contentwidth."\" bgcolor=\"$col\" cellspacing=\"0\">");
 
     /*echo("<tr  bgcolor=\"#444444\">");
     echo("<td height=\"\" valign=\"top\" colspan=\"6\">");
@@ -162,7 +162,7 @@ contenu_a();
 }else{
 contenu_a();    
     
-    e("<table width=\"".((!$GLOBALS['mobile']?contentwidth-6:'96%'))."\" cellspacing=\"0\">");
+    e("<table width=\"".(contentwidth-6)."\" cellspacing=\"0\">");
     /*e("<tr><td width=\"36%\">");
     e("Předmět");
     e("</td><td width=\"5%\">");

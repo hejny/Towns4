@@ -132,9 +132,9 @@ function w_close($w_name,$tt=false){
 //1114415007, 973151688
 //----------------
 define('contentwidth',449);
-function contenu_a($top17='',$scroll=true){?>
+function contenu_a($top17='',$scroll=true){ ?>
 <?php
-if(!$GLOBALS['mobile']){
+
 if($top17){
     if($top17===true)$top17=nbsp;
     infob($top17);
@@ -172,6 +172,7 @@ if($scroll){
 <div id="contenu"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td width="100%" align="left" valign="top">
       <?php
     xreport();
+ /*
 }else{
 ?>
 <script type="text/javascript">
@@ -185,10 +186,10 @@ setTimeout(function(){
 </script>
 <?php
 	e('<div style="width: 100%; height: 100%; overflow: hidden;"><div id="innercontent"  style="width: 100%; height: 100%;">');
-} 
+} */
 }
 function contenu_b($forms=false){
-if(!$GLOBALS['mobile']){
+
 
     /*
 ?>
@@ -209,7 +210,12 @@ if(!$GLOBALS['mobile']){
 
 
 e('</td><td>'.imgr('design/none.png','',1,2000).'</td></tr></table></div></div>');
-}else{
+
+
+e("<script type=\"text/javascript\">$('#englobe').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#englobe').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");
+
+
+/*}else{
 	
 	e('</div></div>');
 if(!$forms)e("<script type=\"text/javascript\">$('#innercontent').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#innercontent').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");//
@@ -221,7 +227,7 @@ setTimeout(function(){
 },10);
 </script>
 <?php
-}
+}*/
 }
 //======================================================================================dockbutton
 function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=false,$background='rgba(10,10,10,0.9)',$border='#222222',$position='absolute'){
@@ -758,7 +764,11 @@ function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
 	$countdownx=(movebyr(textcolorr('<span style="display:block;">'.buttonr($countdown,11).'</span>','dddddd'),-$w+$brd,$w,NULL,'z-index:2001'));
 	}
     }
-    return(movebyr($html,0,0,$id,"position:absolute;width:".($w)."px;height:".($w)."px;border: ".$brd."px solid #".$brdcolor.";z-index:1000").imgr("design/iconbg.png",'',$w+2,$w+2).$countdownx);
+
+
+    $puvodni=(movebyr($html,0,0,$id,"position:absolute;width:".($w)."px;height:".($w)."px;border: ".$brd."px solid #".$brdcolor.";z-index:1000").imgr("design/iconbg.png",'',$w+2,$w+2).$countdownx);
+
+    return('<div style="display:inline-block;">'.$puvodni.'</div>');
 }
 //<table id=\"\" width=\"$w\" height=\"$w\" style=\"position:absolute;border: ".$brd."px solid #ffffff\" cellpadding=\"0\" cellspacing=\"0\"><tr><td>$html</td></tr></table>
 function border($html,$brd=1,$w=10,$id="",$category="",$countdown=0){echo(borderr($html,$brd,$w,$id,$category,$countdown));}
@@ -2094,7 +2104,7 @@ function profiler($id="use"){//@todo Aktualizovat
     $array["showmail"]="";
 
     //----------------------------------------------------------------Základní info ID, LVL, počet budov, vlastník
-    $stream.=("<table width=\"".((!$GLOBALS['mobile']?contentwidth-3:'96%'))."\"><tr><td valign=\"top\"><table>");
+    $stream.=("<table width=\"".(contentwidth-3)."\"><tr><td valign=\"top\"><table>");
     //-----------
     /*$hline=lrr(contentlang(tfontr(textcolorr(lr($response["type"]),$response["dev"])." ".tr($response["name"],true),18));
     if($response["in"]){

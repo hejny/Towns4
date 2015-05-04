@@ -309,8 +309,6 @@ if($cooldown>0){
 
 
 
-if(!$GLOBALS['mobile']){
-
 br();
 hr();
 br();
@@ -347,7 +345,7 @@ $("#shareo").submit(function() {
 });
 </script>
 <?php
-}
+
 ?>
 
 

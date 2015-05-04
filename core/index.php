@@ -632,52 +632,7 @@ if(logged() and $_GET['e']!="none"/**/){
 t("before content");
 
 //print_r($_GET);
-//---------------------mobil
-if(!is_bool($GLOBALS['ss']['mobile'])){
 
-    if($GLOBALS['mobile_detect']->isMobile() && !$GLOBALS['mobile_detect']->isTablet() ){
-        $GLOBALS['ss']['mobile']=true;
-    }else{
-        $GLOBALS['ss']['mobile']=false;
-    }
-}
-//---------------------mobilni zarizeni
-if(!is_bool($GLOBALS['ss']['mobilex'])){
-
-    if($GLOBALS['mobile_detect']->isMobile()){
-        $GLOBALS['ss']['mobilex']=true;
-    }else{
-        $GLOBALS['ss']['mobilex']=false;
-    }
-}
-//---------------------IE
-if(!is_bool($GLOBALS['ss']['isie'])){
-
-    if(ae_detect_ie()){
-        $GLOBALS['ss']['isie']=true;
-    }else{
-        $GLOBALS['ss']['isie']=false;
-    }
-}
-//---------------------
-if($_GET['mobile']){
-    $GLOBALS['ss']['mobile']=true;
-    if($_GET['mobile']==2){
-        $GLOBALS['ss']['android']=true;
-    }else{
-        $GLOBALS['ss']['android']=false;
-    }
-}
-if($_GET['mobile']=='0'){
-    $GLOBALS['ss']['mobile']=false;
-    $GLOBALS['ss']['android']=false;
-}
-$GLOBALS['mobile']=$GLOBALS['ss']['mobile'];
-$GLOBALS['mobilex']=$GLOBALS['ss']['mobilex'];
-$GLOBALS['isie']=$GLOBALS['ss']['isie'];
-$GLOBALS['android']=$GLOBALS['ss']['android'];
-define('mobile',$GLOBALS['mobile']);
-define('android',$GLOBALS['android']);
 
 //print_r(android);
 /*if($_GET['e']=='-html_fullscreen'){
@@ -688,18 +643,19 @@ die();
 
 //-------------------------------
 //==============================
-if($GLOBALS['mobile']){
-    $GLOBALS['dragdistance']=19;
-}else{
+
     $GLOBALS['dragdistance']=11;
-}
+
 //==============================
 if(!$GLOBALS['mapzoom']){
-    if(!$GLOBALS['mobile']){
-        $GLOBALS['mapzoom']=1;
-    }else{
-        $GLOBALS['mapzoom']=round(pow(gr,(1/2))*100)/100;
-    }
+
+
+    $GLOBALS['mapzoom']=1;
+
+    //@todo zprovoznit mapzoom
+    //}else{
+    //    $GLOBALS['mapzoom']=round(pow(gr,(1/2))*100)/100;
+    //}
 }
 //==============================
 //-------------------------------

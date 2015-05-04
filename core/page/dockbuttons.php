@@ -14,7 +14,6 @@
     if(chat)
     dockbutton(0,-155-(0*185)+5,-12,'{title_chat}',showhide('window_chat'),4);
     dockbutton(0,-155-(1*185)+5+(chat?0:140),-12,'{title_write}',showhide('window_write'),4);
-	if(!$GLOBALS['mobile'])
     dockbutton(0,-155-(2*185)+5+(chat?0:140),-12,'{title_tutorial}',showhide('window_quest-mini'),4,'dockbutton_tutorial');
 
 
@@ -28,7 +27,6 @@
 	$noattack=1;
     }
 
-	if(!$GLOBALS['mobile']){
 		if($noattack){
 
 			dockbutton('%',-31,14,
@@ -55,7 +53,7 @@
 			array('#222299','#552255','#992222')
 			);
 		}
-	}else{
+	/*}else{
 		if($noattack){
 
 			dockbutton('%',-31,14,
@@ -82,7 +80,7 @@
 			array('#222299','#992222')
 			);
 		}
-	}
+	}*/
 
     //subref('dockbuttons',1);
     //dockbutton('-400',-31,14,,$url,4,'dockbutton_center',160,'rgba(40,10,20,0.9)','#992222');

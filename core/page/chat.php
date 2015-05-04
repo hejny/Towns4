@@ -16,8 +16,8 @@ window(lr('title_chat'),NULL,NULL,'chat')
 ?><div style="width:100%;height:2px;"></div>
 <div style="width:100%;height:2px;"></div>
 
-<div style="width:<?php e(!$GLOBALS['mobile']?'449px':'96%') ?>;height:<?php e(!$GLOBALS['mobile']?'117px':'96%') ?>;overflow:hidden;">
-<span style="width:100%;height:<?php e(!$GLOBALS['mobile']?'111px':'90%') ?>;overflow: hidden;z-index:1;" id="chatscroll">
+<div style="width:449px;height:117px;overflow:hidden;">
+<span style="width:100%;height:111px;overflow: hidden;z-index:1;" id="chatscroll">
 <?php eval(subpage("chat_text"));/*subref("chat_text",3);*/ ?>
 </span>
 
@@ -38,7 +38,7 @@ eval(subpage("chat_aac"));
 <span style="z-index:2;">
 <form id="form_chat" name="form_chat" ><!--  method="post"action=""?q=chat [say]-->
     <table border="0" width="100%"><tr><td>
-    <input type="text" id="say" name="say" maxlength="160" style="width:<?php e(!$GLOBALS['mobile']?'416px':'96%') ?>;height:22px;color: #cccccc;border: 2px solid #000000; background-color: rgba(0,0,0,1);"/>
+    <input type="text" id="say" name="say" maxlength="160" style="width:416px;height:22px;color: #cccccc;border: 2px solid #000000; background-color: rgba(0,0,0,1);"/>
     </td><td>
     <input type="submit" value=">" style="width:22px;height:22px;color: #cccccc;border: 2px solid #000000; background-color: #000000"/>
     </td></tr></table>

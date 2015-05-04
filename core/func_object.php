@@ -1121,7 +1121,7 @@ function name_error($id){
     if($GLOBALS['ss']['use_object']->name==$id){
             return(lr('name_error_same'));//"Toto jméno právě používáte.");
     }*/
-    
+    $id=(xx2x($id));//@todo Prasárna
     if($id!=trim($id)){
             return(lr('name_error_space'));//"Jméno nesmí začínat ani končit mezerou.");
     }

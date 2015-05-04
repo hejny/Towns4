@@ -127,7 +127,7 @@ if($myversion){
 //-----------
 
 ?>
-<table width="<?php e((!$GLOBALS['mobile']?contentwidth:'100%')); ?>"><tr>
+<table width="<?=contentwidth?>"><tr>
 
 <?php
 /**/
@@ -337,7 +337,7 @@ SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `ho
 
 
 			<tr><td><b><?php le("name"); ?>:</b></td><td><?php input_text("name",contentlang($info["name"])); ?></td></tr>
-			<tr><td><b><?php le("description"); ?>:</b></td><td><?php input_textarea("description",contentlang($p["description"]),(!$GLOBALS['mobile']?44:'30'),17); ?></td></tr>
+			<tr><td><b><?php le("description"); ?>:</b></td><td><?php input_textarea("description",contentlang($p["description"]),44,17); ?></td></tr>
 			
 			<?php /*			
 			<tr><td></td><td><?php if($p["public"]=='y'){le('public_y');te(' - ');$ch='n';}else{$ch='y';} ahref("{public_ch$ch}",'e=content;ee=create-design;public='.$ch); ?></b></td></tr>
@@ -359,7 +359,9 @@ SELECT $nid, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `ho
 		//------------------------------------UPGRADE_RES
 			textb(tr($name));br();
 			e(lr('upgrade_res_by_editor'));
-			if($GLOBALS['mobile']){error(lr('mobile_noeditor'));}else{error(lr('noeditor'));}
+
+			error(lr('noeditor'));
+
 			blue(lr('editor_info'));
 			br();br();
 

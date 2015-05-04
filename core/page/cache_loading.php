@@ -9,10 +9,6 @@
 */
 //==============================
 
-
-
-if(!mobile){
-
 $style=' style="position:relative;top:-2px;left:-2px;background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"';
 
 ?>
@@ -34,4 +30,3 @@ tee(lr('cache_loading'),13,1);
 </tr>
 </table>
 
-<?php } ?>
