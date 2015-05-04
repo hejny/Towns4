@@ -265,9 +265,6 @@ msgstr "Děkujeme za Tvůj návrh...."
 msgid "application_aac"
 msgstr "Hra byla aktualizována, klikni sem pro načtení nové verze."
 
-# app
-msgid "application_aac_short"
-msgstr "Hra byla aktualizována"
 
 msgid "attack"
 msgstr "Útok"
@@ -1937,21 +1934,6 @@ msgstr "Obchod"
 msgid "id"
 msgstr "id"
 
-msgid "info"
-msgstr ""
-"Toto je pouze testovací verze hry. Omluv prosím nedostatky a chyby, které "
-"se postupně odstra&#328;ují."
-
-msgid "info_ie"
-msgstr ""
-"Omlouváme se, ale hra zatím není optimalizovaná pro všechny webové "
-"prohlížeče, proto Ti pravděpodobně nebudou Towns v Internet Exploreru zcela "
-"správně fungovat. Doporučujeme použít jiný prohlížeč například Mozilla Firefox nebo Google Chrome "
-
-msgid "info_mobile"
-msgstr ""
-"Na verzi pro mobilní prohlížeče se stále pracuje, proto Ti Towns na mobilu "
-"nebo tabletu možná nebudou fungovat zcela správně."
 
 # fb
 msgid "invite_button"
@@ -2180,12 +2162,6 @@ msgstr "Těžba skal"
 msgid "mine_tree"
 msgstr "Těžba stromů"
 
-msgid "mobile_noeditor"
-msgstr "Omlouváme se, ale některé editory nemusí fungovat na mobilní verzi."
-
-# mobile
-msgid "mobilemenu"
-msgstr "Menu"
 
 msgid "mx"
 msgstr "x"
@@ -2252,9 +2228,6 @@ msgid "noeditor"
 msgstr ""
 "Omlouváme se, ale některé editory nemusí fungovat na všech webových "
 "prohlížečích."
-
-msgid "nomobile"
-msgstr "Plná verze pro počítače"
 
 msgid "null"
 msgstr "(0)"
@@ -2816,6 +2789,10 @@ msgstr "Vyber si, kde bys chtěl začít."
 # register
 msgid "register_infox"
 msgstr "Registrace"
+
+# login
+msgid "login_infox"
+msgstr "Přihlášení"
 
 # register
 msgid "register_near"

@@ -59,7 +59,7 @@ if(!$zoom)$zoom=1;
         */
     
 
-    $file=tmpfile2('positions'.($GLOBALS['mobile']?'_mobile':''),'txt','text');
+    $file=tmpfile2('positions','txt','text');
 
    if(debug and $_GET['addposition']){
 	$position=explode(',',$_GET['addposition']);
@@ -196,11 +196,11 @@ if($GLOBALS['get']['play']){
     if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
     $xu=($ycu+$xcu)*5+1;
     $yu=($ycu-$xcu)*5+1;
-	if(!mobile){
+	//(!mobile){
 	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
-	}else{
-	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
-	}
+	//}else{
+	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
+	//}
 	$starttimes=sql_array('SELECT DISTINCT starttime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$times=array();
@@ -522,13 +522,14 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
         
         
 		xc=parseInt($( "#draglayer" ).css('left'));
-		yc=parseInt($( "#draglayer" ).css('top'));     
-        $( "#draglayer" ).css('left',xc-400/*(window.width)*/);
+		yc=parseInt($( "#draglayer" ).css('top'));
+
+        $( "#draglayer" ).css('left',xc-1050+($( window ).width()/2));
         $( "#draglayer" ).css('top',yc+200/*((window.height-120)/2)*/);
 		setTimeout(function(){         
         parseMapF(
-		function(){        
-        $('#map_context').css('left',645<?php if($GLOBALS['get']['center']){e('-'.$GLOBALS['get']['posuv']);} ?>);
+		function(){
+        $('#map_context').css('left',($( window ).width()/2));
         $('#map_context').css('top',195);
         $('#map_context').css('display','block');
         $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
@@ -917,8 +918,8 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
  onmousedown="key_left=true" onmouseup="key_left=false" onmouseout="key_left=false"
 */ ?>
 
-<?php if((!$_GET['first']) and !$GLOBALS['mobile'] and false){ ?>
-<div style="position:absolute;top:<?php e(!$GLOBALS['mobile']?40:60) ?>px;left:0px;width:100%;height:27px;z-index:550;">
+<?php if((!$_GET['first']) and false){ ?>
+<div style="position:absolute;top:40px;left:0px;width:100%;height:27px;z-index:550;">
 <a onclick="key_up=true;key_count=key_count+2;">
 <img src="<?php imageurle('design/blank.png'); ?>" id="navigation_up" border="0" alt="<?php le('navigation_up'); ?>" title="<?php le('navigation_up'); ?>" width="100%" height="100%">
 </a>
@@ -983,7 +984,7 @@ $stream3='';
 $screen=1270;
 
 if(!$glob){
-if(!$GLOBALS['mobile'] or 1){
+if(1){
 	$ym=6;//6;//$mapsize/5+1;//-1;
 	$xm=5;//5;//5;//ceil(($mapsize/5-1)/2);
 }else{
@@ -1013,13 +1014,6 @@ for($y=$yc; $y<=$ym+$yc; $y++){
 	//$stream1.="($x,$y)";
 
 	$q=1;
-	if($GLOBALS['mobile']/* and (!$_GET['first'])*/){
-		//if($y<$yc)$q=0;
-		if($y>$yc+4)$q=0;
-		//if($x<$xc)$q=0;
-		if($x>$xc+0)$q=0;
-
-	}
 
 		$divplace='<div style="width:'.round(424/$zoom).'px;height:'.round(211/$zoom).'px;overflow:hidden;"></div>';
 

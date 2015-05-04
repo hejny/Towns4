@@ -62,7 +62,7 @@ if(!$zoom)$zoom=1;
         */
     
 
-    $file=tmpfile2('positions'.($GLOBALS['mobile']?'_mobile':''),'txt','text');
+    $file=tmpfile2('positions','txt','text');
 
    if(debug and $_GET['addposition']){
 	$position=explode(',',$_GET['addposition']);
@@ -585,8 +585,8 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
  onmousedown="key_left=true" onmouseup="key_left=false" onmouseout="key_left=false"
 */ ?>
 
-<?php if(logged() and !$GLOBALS['mobile'] and false){ ?>
-<div style="position:absolute;top:<?php e(!$GLOBALS['mobile']?40:60) ?>px;left:0px;width:100%;height:27px;z-index:550;">
+<?php if(logged() and false){ ?>
+<div style="position:absolute;top:40px;left:0px;width:100%;height:27px;z-index:550;">
 <a onclick="key_up=true;key_count=key_count+2;">
 <img src="<?php imageurle('design/blank.png'); ?>" id="navigation_up" border="0" alt="<?php le('navigation_up'); ?>" title="<?php le('navigation_up'); ?>" width="100%" height="100%">
 </a>
@@ -648,7 +648,7 @@ $stream3='';
 $screen=1270;
 
 if(!$glob){
-if(!$GLOBALS['mobile'] or 1){
+if(1){
 	$ym=6;//6;//$mapsize/5+1;//-1;
 	$xm=5;//5;//5;//ceil(($mapsize/5-1)/2);
 }else{
@@ -678,13 +678,6 @@ for($y=$yc; $y<=$ym+$yc; $y++){
 	//$stream1.="($x,$y)";
 
 	$q=1;
-	if($GLOBALS['mobile']/* and logged()*/){
-		//if($y<$yc)$q=0;
-		if($y>$yc+4)$q=0;
-		//if($x<$xc)$q=0;
-		if($x>$xc+0)$q=0;
-
-	}
 
 		$divplace='<div style="width:'.round(424/$zoom).'px;height:'.round(211/$zoom).'px;overflow:hidden;"></div>';
 

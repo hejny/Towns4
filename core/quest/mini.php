@@ -39,11 +39,7 @@ $quest=$quests[0];
 $time2=$quest[3];
 
 if($quest){
-	if($GLOBALS['mobile']){
-		e('<table width="100%"><tr><td align="center"><div style="width:95%;">');
-		contenu_a();
-	}
-	
+
 	//print_r($quest);
 
 	list($quest)=sql_array("SELECT `name`,`quest`,`questi`,`limit`,`cond1`,`cond2`,`description`,`helpids`,`image`,`author`,`reward` FROM [mpx]quest WHERE quest=".$quest['quest']." AND questi=".$quest['questi']);
@@ -56,7 +52,7 @@ if($quest){
 	$GLOBALS['questq']=true;
 
 
-	if(!$GLOBALS['mobile'])e('<div style="width:449px;height:150px;overflow:hidden;">');
+	e('<div style="width:449px;height:150px;overflow:hidden;">');
 	?>
 	
 
@@ -132,11 +128,11 @@ if($quest){
 
 
 		if($previous){
-			$infob.=ahrefr(textbr(lr('quest_previous')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($previous).';'/*.js2('removeallhelp()')*/);
+			$infob.=ahrefr(textbr(lr('quest_previous')),'e=quest-mini;quest='.($id).';questi='.($previous).';'/*.js2('removeallhelp()')*/);
 			//e(nbspo);
 		}
 		if($time2){//e(1);
-			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;quest='.($id).';questi='.($next).';'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
+			$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),'e=quest-mini;quest='.($id).';questi='.($next).';'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 		}
 
 		//echo($time2);
@@ -144,9 +140,9 @@ if($quest){
 		if($GLOBALS['questq'] and !$time2){
 			
 			if($next){
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_next')),'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 			}else{
-				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),($GLOBALS['mobile']?'e=content;e':'').'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
+				$infob.=($infob?nbspo:'').ahrefr(textbr(lr('quest_finish')),'e=quest-mini;finish=1;'/*.js2('removeallhelp()')*/,NULL,NULL,'quest_finish');
 			}
 
 
@@ -434,12 +430,9 @@ if($quest){
 
 
 
-	if(!$GLOBALS['mobile'])e('</div>');
+	e('</div>');
 
-	if($GLOBALS['mobile']){
-		e('</div></td></tr></table>');
-		contenu_b();
-	}
+
 
 }else{
 ?>

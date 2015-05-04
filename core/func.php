@@ -17,7 +17,6 @@ require_once(root.core."/func_object.php");
 require_once(root.core."/func_main.php");
 require_once(root.core."/func_external.php");
 require_once(root.core."/memory.php");
-require_once(root.core."/mobile_detect.php");
 
 
 //=============================================================
@@ -270,7 +269,6 @@ if(typeof event === 'undefined'){1;}else{
         
         
     }
-    if($GLOBALS['mobile'] and $sub=='content')$bpart.="\$('#content').html('<table width=\'100%\' height=\'50%\'><tr><td align=\'center\' valign=\'center\'>".lr('loading')."</td></tr></table>');\$('#mobilecontent').css('display','block');"."\$('#map_context').css('display','none');";
     //-------
     //return("if(getElementById('$sub')){alert(1);};");
     if(!$only and $sub!='map'){
@@ -751,15 +749,18 @@ function centerurl($id,$x='x',$y=0,$ww=1,$noclose=false){//echo('bbb');
         unset($destinationobject);  
     }
 
-if(!$GLOBALS['mobile']){
+/*if($GLOBALS['screenwidth']>800){
 	$posuv=0;
 }else{
 	$posuv=400;//530;
-}
+}*/
+
+    $posuv=0;
+
 
     list($xc,$yc,$xx,$yy,$posuv)=convertpos($x,$y);
     //js2("wm_close();"
-    $url='e=map;xc='.$xc.';yc='.$yc.';xx='.$xx.';yy='.$yy.';ww='.$ww.';posuv='.round($posuv).';center='.$id.';noi=1;'.((mobile and !$noclose)?js2("wm_close();"):'');
+    $url='e=map;xc='.$xc.';yc='.$yc.';xx='.$xx.';yy='.$yy.';ww='.$ww.';center='.$id.';noi=1;';
     //echo($url);
     return($url);
 }}

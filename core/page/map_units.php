@@ -67,12 +67,12 @@ if(!$GLOBALS['map_units_ids']){
 	$range="(x-y)>($xu-$yu) AND (y-x)>($yu-$xu)-30 AND (x-y)<($xu-$yu)+5 AND (y-x)<($yu-$xu)+20";*/
 
 
-	if(!mobile){
+	//if(!mobile){
 	/*dafaq*/
 	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
-	}else{
-	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
-	}
+	//}else{
+	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
+	//}
 
 
 	//$range=1;

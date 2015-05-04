@@ -13,7 +13,7 @@
 
 
 if(logged()){
-	$q=(!$GLOBALS['mobile']?19:10);
+	$q=19;
     //r($GLOBALS['ss']['useid']);
     $stream='';
     // `id`,`from`,`to`,`text`,`time`,`timestop`

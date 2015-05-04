@@ -29,7 +29,7 @@ if($GLOBALS['topinfo']){
 
     //e('<div style="background:#'.$color.';width:100%;border:0px;" >'.ahrefr($GLOBALS['topinfo'],$url,'none;font-size:16px;color: #'.$textcolor.';').'</div>');
 
-e('<table style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 7px;'.(!$GLOBALS['mobile']?'':'position:relative;left:-5px;').'" cellpadding="0" cellspacing="0" width="'.(!$GLOBALS['mobile']?650:'104%').'" height="25"><tr><td align="center">');
+e('<table style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 7px;" cellpadding="0" cellspacing="0" width="650" height="25"><tr><td align="center">');
 
 ahref($GLOBALS['topinfo'],$url,'none;color: #'.$textcolor.';');
 

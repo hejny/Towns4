@@ -61,11 +61,6 @@ if ($GLOBALS['isie']/** or 1/**/) {
 <?php }
 
 
-if ($GLOBALS['mobilex']/** or 1/**/) {
-?>
-<div style="background:#442222;" ><?php le('info_mobile'); ?></div>
-<?php }
-
 
     $GLOBALS['ss']["helppage"]='about';
     $GLOBALS['nowidth']=true;
@@ -88,12 +83,14 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
     <div id="lshp_log" style="position:relative; left:33px; top:-200px; width:230px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
     <?php
-		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_log\').css(\'display\',\'none\');')),95,2);
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_log\').css(\'display\',\'none\');')),-115,2);
 		eval(subpage('login-log_form'));
 
 	?>
     
-    <?php if(!$GLOBALS['mobilex']){e("<script type=\"text/javascript\">$('#lshp_log').draggable({distance: 10});</script>");} ?>
+    <?php
+    //e("<script type=\"text/javascript\">$('#lshp_log').draggable({ cancel: ':input',delay:100,distance: 10});</script>");
+    ?>
     
     
     
@@ -106,14 +103,16 @@ if ($GLOBALS['mobilex']/** or 1/**/) {
     //br();
     ?>
     <div style="position:absolute;z-index:1000000;">
-    <div id="lshp_reg" style="position:relative; left:20px; top:-305px; width:300px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
+    <div id="lshp_reg" style="position:relative; left:0px; top:-150px; width:300px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
     <?php
-		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_reg\').css(\'display\',\'none\');')),130,2);
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_reg\').css(\'display\',\'none\');')),-150,2);
 		eval(subpage('login-reg_form'));
 	?>
     
-    <?php if(!$GLOBALS['mobilex']){e("<script type=\"text/javascript\">$('#lshp_reg').draggable({distance: 10});</script>");} ?>
+    <?php
+    //e("<script type=\"text/javascript\">$('#lshp_reg').draggable({distance: 10});</script>");
+    ?>
     
     
     

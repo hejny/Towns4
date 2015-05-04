@@ -297,7 +297,7 @@ if($sql and $id?ifobject($id):true){
                                                 //r($stream);
                                             //}
                                             }else{
-                                                $ahref='e='.(!$GLOBALS['mobile']?'mine':'mine').';ee=attack-mine;attack_mafu='.$set_value.';attack_limit='.$profile['limit'];
+                                                $ahref='e=mine;ee=attack-mine;attack_mafu='.$set_value.';attack_limit='.$profile['limit'];
                                             }
 
                                 break;
