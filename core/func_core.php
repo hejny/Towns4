@@ -82,6 +82,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
         '_name',
         'type',
         'origin',
+        'permalink',
         'func',
         'group',
         'expand',

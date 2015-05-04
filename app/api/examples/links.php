@@ -15,13 +15,13 @@ echo '<div class="pageDescription">Zobrazení náhodných objektů na mapě a od
 //----------------------------------------------------------------Náhodné budovy
 echo '<p><b>Budovy:</b><br>';
 
-$buildings = TownsApi('list', 'id,name,resurl,x,y,ww','building', 'rand',100);
+$buildings = TownsApi('list', 'id,name,permalink,resurl,x,y,ww','building', 'rand',100);
 $buildings = $buildings['objects'];
 
 if($buildings)
 foreach($buildings as $building){
 ?>
-<a href="<?=($_SESSION['townsapi_url'].'/'.$building['x'].','.$building['y'].','.$building['ww'])?>" target="_blank">
+<a href="<?=($_SESSION['townsapi_url'].'/'.$building['permalink'])?>" target="_blank">
 <img width="50" src="<?=$building['resurl']?>" ></a>
 	
 <?php
