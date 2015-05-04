@@ -39,7 +39,7 @@ $buildings = $buildings['objects'];
 if($buildings)
 foreach($buildings as $building){
 ?>
-<a href="<?=$_SESSION['townsapi_url'].'/'.$building['x'].','.$building['y'].','.$building['ww']?>" target="_blank">
+<a href="<?=$_SESSION['townsapi_url'].'/'.$building['x'].'-'.$building['y'].'-'.$building['ww']?>" target="_blank">
 <img width="50" src="<?=$building['resurl']?>" ></a>
 	
 <?php
