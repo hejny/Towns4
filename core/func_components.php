@@ -159,17 +159,16 @@ if($scroll){
     function registerTinyScrollbar(e) {
         $("#contenu").scrollbar({
             taille_bouton: 100,
-            pas: 77,
             marge_scroll_contenu: 15,
             largeur_scrollbar: 5
         });
     }
-    $(document).ready(registerTinyScrollbar);
+    $(document).ready(setTimeout(function(){registerTinyScrollbar();},600));
 </script>
 <?php } ?>
 <div style="width:<?php echo(contentwidth); ?>;"></div>
-<div style="width:<?php echo(contentwidth-17); ?>px;overflow:visible;">
-<div id="contenu"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td width="100%" align="left" valign="top">
+<div style="width:<?php echo(contentwidth-17); ?>px;height:<?=$GLOBALS['ss']['screenheight']?>px;overflow:visible;">
+<div id="contenu"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td width="100%" align="left" valign="top"><div id="inner_contenu">
       <?php
     xreport();
  /*
@@ -209,30 +208,14 @@ function contenu_b($forms=false){
     */
 
 
-e('</td><td>'.imgr('design/none.png','',1,2000).'</td></tr></table></div></div>');
+e('</div></td></tr></table></div></div>');
+//<td height="'.($GLOBALS['ss']['screenheight']-140).'"></td>
 
-
-e("<script type=\"text/javascript\">$('#englobe').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#englobe').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");
-
-
-/*}else{
-	
-	e('</div></div>');
-if(!$forms)e("<script type=\"text/javascript\">$('#innercontent').draggable({ axis:'y',stop: function( event, ui ) { if(ui.position.top>0) { \$('#innercontent').css('top','0px'); } } , distance:".$GLOBALS['dragdistance']." });</script>");//
-?>
-<script type="text/javascript">
-setTimeout(function(){
-    w_close('quest-mini');
-    w_close('window_quest-mini');
-},10);
-</script>
-<?php
-}*/
 }
 //======================================================================================dockbutton
 function dockbutton($x,$y,$size,$text,$href,$z=1,$id=false,$width=140,$posuv=false,$background='rgba(10,10,10,0.9)',$border='#222222',$position='absolute'){
     $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
-    $GLOBALS['screenwidth']=$GLOBALS['ss']['screenwidth']; 
+    $GLOBALS['screenheight']=$GLOBALS['ss']['screenheight'];
     if(is_array($size)){
         $sizex=$size[0];
     }else{

@@ -1008,9 +1008,15 @@ EOF;
             background-color: #000000;
         }
         .story {
-                 font-size: 1.1em;
-                 text-shadow: 0em 0em 0.1em #666;
+             padding:6px;
+             font-size: 1.1em;
+             text-shadow: 0em 0em 0.1em #666;
         }
+
+        .story img {
+             margin-left:-4px;
+        }
+
 
 
         .story p:first-letter {
