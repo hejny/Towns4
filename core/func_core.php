@@ -127,7 +127,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
             }elseif($col=='own_name'){
                 $cols2[]="(SELECT name FROM [mpx]pos_obj AS X WHERE X.id=[mpx]pos_obj.own LIMIT 1) AS `own_name`";
             }elseif($col=='own_avatar'){
-                $cols2[]="(SELECT email FROM [mpx]users WHERE [mpx]users.id=(SELECT userid FROM [mpx]pos_obj AS X WHERE X.id=[mpx]pos_obj.own LIMIT 1) LIMIT 1) AS `own_avatar`";
+                $cols2[]="(SELECT email FROM [mpx]users WHERE aac=1 AND [mpx]users.id=(SELECT userid FROM [mpx]pos_obj AS X WHERE X.id=[mpx]pos_obj.own LIMIT 1) LIMIT 1) AS `own_avatar`";
             }else{
                 if(!in_array("`$col`",$cols2))
                     $cols2[]="`$col`";
