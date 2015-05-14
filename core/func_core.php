@@ -92,6 +92,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
         'res',
         'resurl',
         'profile',
+        'set',
         'fp',
         'fs',
         'fc',
@@ -415,8 +416,8 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
                     $value=intval($value);
                 }
 
-                //-----------------------------------------------------hold, profile, fc
-            }elseif($key=='hold' or $key=='profile' or $key=='fc'){
+                //-----------------------------------------------------hold, profile, set a fc
+            }elseif($key=='hold' or $key=='profile' or $key=='set' or $key=='fc'){
                 $value=str2list($value);
 
             }
@@ -445,8 +446,34 @@ function a_worldmap($ww,$top){
     $GLOBALS['ss']['query_output']->add('url',$url);
 
 }
+//=======================================================================================Edit
+
+function a_edit($key,$value){
+
+    if($GLOBALS['ss']['aac_object']->own!=$GLOBALS['ss']['useid'])
+    {$GLOBALS['ss']['query_output']->add('error','no_own'); return;}
+
+    $changable=array('name','res');
+    if(in_array($key,$changable)){
+        $GLOBALS['ss']['query_output']->add("1",1);
+        //todo vyrobit lidskou hlášku o změně
+
+        $GLOBALS['ss']['query_output']->add('eval','$GLOBALS[\'ss\'][\'aac_object\']->'.$key.'=$value;');
+        eval('$GLOBALS[\'ss\'][\'aac_object\']->'.$key.'=$value;');
+
+        $GLOBALS['ss']['aac_object']->update();
+    }else{
+
+        $GLOBALS['ss']['query_output']->add('error',lr('edit_error_not_allowed',implode(', ',$changable)));//todo lang
+
+    }
+
+}
 
 //=======================================================================================PROFILE
+
+//@todo Aktualizovat tuhle funkci, aby fungovala jako edit_set
+
 define("a_profile_edit_help","id,key,value");
 function a_profile_edit($id,$key,$value){
     if($id==$GLOBALS['ss']['useid'])$object=$GLOBALS['ss']['use_object'];
@@ -461,7 +488,7 @@ function a_profile_edit($id,$key,$value){
         //$GLOBALS['ss']['use_object']->xxx();
         //r($GLOBALS['ss']['use_object']->profile->vals2list());
 
-        //e($value);
+        //e($value);define("a_profile_edit_help","id,key,value");
         //e($object->name);
         $object->profile->add($key,$value);
 
@@ -486,6 +513,25 @@ function a_profile_edit($id,$key,$value){
         //}
     }
     if($update)$object->update();
+}
+//=======================================================================================SET
+
+function a_edit_set($key,$value){
+
+    if($GLOBALS['ss']['aac_object']->own!=$GLOBALS['ss']['useid'])
+        {$GLOBALS['ss']['query_output']->add('error','no_own'); return;}
+
+    if($key){
+        $GLOBALS['ss']['query_output']->add("1",1);
+        if($GLOBALS['ss']['aac_object']->profile->val($key)!=$value){
+            $GLOBALS['ss']['query_output']->add("success",lr("set_$key").' '.lr('settings_changed'));
+        }
+
+
+        $GLOBALS['ss']['aac_object']->set->add($key,$value);
+
+        $GLOBALS['ss']['aac_object']->update();
+    }
 }
 
 

@@ -201,7 +201,7 @@ die();
 //echo("$real_url!=$virtual_url.'/'");
 //exit;
 
-if($real_url!=$virtual_url/* and $real_url!=$virtual_url.'/'*/){
+if($real_url!=$virtual_url/* and $real_url!=$virtual_url.'/'*/ and !in_array('api',$used_keywords)){
 
     header('Location: '.$virtual_url.$querystring);
     //echo('Location: '.$virtual_url);
@@ -211,7 +211,6 @@ if($real_url!=$virtual_url/* and $real_url!=$virtual_url.'/'*/){
 
 
 
-//die();
 //------------------------------------------------------------------------------------Vyhodnocení, co dál
 
 /*$admin=false;
@@ -414,6 +413,7 @@ if(!$GLOBALS['ss']['useid'])$GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
 
 
 //------------------------------------------------------------------QUERY
+
 if($_GET["q"]){$q=($_GET["q"]);}
 //if($GLOBALS['get']["query"]){$q=($GLOBALS['get']["query"]);}
 if($q){

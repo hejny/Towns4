@@ -8,10 +8,18 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Příběhy | Ukázka Towns API</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Zobrazení příběhů a odkazů na ně" />
+    </head>
+<body>
 
-if(!isset($_GET['onlypage']))
-echo '<div class="pageDescription">Zobrazení příběhů a odkazů na ně</div>';
-
+<?php
 
 //----------------------------------------------------------------CSS
 ?>
@@ -116,7 +124,10 @@ foreach($result as $story){
 
 
 }
+?>
 
 
+</body>
+</html>
 
 

@@ -8,14 +8,36 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hradby | Ukázka Towns API</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Správce opevnění města" />
+    <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+    <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+</head>
+<body>
 
-if(!isset($_GET['onlypage']))
+
+
+<?php
+//----------------------------------------------------------------Popis
+
 echo '<div class="pageDescription"><b>Správce opevnění města:</b> Nejdříve vyberte typ hradby, potom klikáním na mapu stavíte nebo rozebíráte jednotlivé hradební články.<br>
 [W] Vaše hradby<br>
 [O] Jiná vaše budova<br>
 [X] Nepřátelská budova
 </div>';
 
+//----------------------------------------------------------------Kontrola přihlášení
+
+//Při umístění aplikace na server Towns si můžete nastavit, že bude přístupná pouze po přihlášení. Každá aplikace má své pevné URL, které je dostupné každému a proto je dobré odchytit případ nepřihlášeného hráče.
+if(!TownsLogged){
+    die('<div class="error">Tato aplikace vyžaduje přihlášení.</div></body></html>');
+}
 
 //----------------------------------------------------------------Výběr typů zdí
 
@@ -66,9 +88,8 @@ if($_GET['wx'] AND $_GET['wy']){
 
 //----------------------------------------------------------------Pozice na mapě a zoom
 
-
-require('positions.php');
-
+require('positions.lib.php');//Jako základní adresář je nastaven ten, kde se aplikace nachází.
+//Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.
 
 //----------------------------------------------------------------Data mapy
 
@@ -184,6 +205,9 @@ $moveby=2;//Posouvat o xx políček
     </tr>
 </table>
 
+
+</body>
+</html>
 
 
 

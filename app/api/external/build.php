@@ -8,8 +8,30 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stavění | Ukázka Towns API</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Správce budov města" />
+    <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+    <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+</head>
+<body>
 
-echo '<div class="pageDescription"><b>Správce budov města:</b> Nejdříve vyberte budovu, potom klikáním na mapu stavíte nebo přistavujete.</div>';
+<?php
+//----------------------------------------------------------------Popis
+
+echo '<div class="pageDescription">Nejdříve vyberte budovu, potom klikáním na mapu stavíte nebo přistavujete.</div>';
+
+//----------------------------------------------------------------Kontrola přihlášení
+
+//Při umístění aplikace na server Towns si můžete nastavit, že bude přístupná pouze po přihlášení. Každá aplikace má své pevné URL, které je dostupné každému a proto je dobré odchytit případ nepřihlášeného hráče.
+if(!TownsLogged){
+    die('<div class="error">Tato aplikace vyžaduje přihlášení.</div></body></html>');
+}
 
 //------------------------------------------------------------------------Postavení nové budovy
 
@@ -24,7 +46,10 @@ if($_GET['selected_x'] and $_GET['selected_y']){
 
 //------------------------------------------------------------------------Pozice na mapě a zoom
 
-require('examples/map.php');
+$nohtml=1;//Proměnná říká, že se map.php nemá obalit do <html>...
+require('map.php');//Jako základní adresář je nastaven ten, kde se aplikace nachází.
+//Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.
+
 
 //------------------------------------------------------------------------Seznam všech unikátů
 
@@ -90,5 +115,8 @@ echo('</div>');
 
 ?>
 
+
+</body>
+</html>
 
 

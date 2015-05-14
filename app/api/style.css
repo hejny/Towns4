@@ -3,6 +3,7 @@
 body {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	text-align: left;
+    margin: 5px;
 }
 
 
@@ -21,16 +22,12 @@ h1 a {
 
 
 h3 {
-	display: block;
+	display: inline-block;
 	font-size: 1.17em;
-	margin-top: 0;
-	margin-bottom: 0;
-	margin-left: 0;
-	margin-right: 0;
+	margin: 0;
 	font-weight: bold;
 	color: #000055;
 }
-
 
 .page {
 	position: relative;
@@ -46,6 +43,7 @@ h3 {
 
 
 ul {
+    display: inline-block;
 	z-index: 50000;
 	height: 30px;
 	padding: 0;
@@ -53,14 +51,20 @@ ul {
 	list-style-type: none;
 }
 
+/*.menuExternal{
+    float:left;
+}
+
+.menuInternal{
+    float:right;
+}*/
 
 li a {
 	float: left;
-	width: 100px;
+	width: 115px;
 	text-decoration: none;
 	text-align: center;
 	color: white;
-	background-color: #445577;
 	border-width: 2px;
 	border-style: solid;
 	border-color: #333333;
@@ -68,16 +72,52 @@ li a {
 	padding: 4px 4px;
 }
 
+.titleExternal{
+    color:#FFFFFF;
+    background-color: #997766;
+    border: 2px solid #777777;
+    margin:0px;
+    padding:5px;
+}
 
-.selected {
-	background-color: #667799;
-	border-top-color: #667799;
-	border-bottom-color: #667799;
+.titleInternal{
+    color:#FFFFFF;
+    background-color: #667799;
+    border: 2px solid #777777;
+    margin:0px;
+    padding:5px;
+
 }
 
 
-li a:hover {
-	background-color: #667799;
+
+.menuExternal li a {
+    background-color: #775544;
+}
+
+.menuInternal li a {
+    background-color: #445577;
+}
+
+
+
+.selectedExternal {
+	background-color: #997766 !important;
+	border: 2px solid #997766 !important;
+}
+
+.selectedInternal {
+    background-color: #667799 !important;;
+    border: 2px solid #667799 !important;
+}
+
+
+.menuExternal li a:hover {
+	background-color: #997766;
+}
+
+.menuInternal li a:hover {
+    background-color: #667799;
 }
 
 
@@ -99,18 +139,7 @@ hr{
 }
 
 
-.pageDescription {
-	display: block;
-    min-height: 27px;
-	background-color: #eeeef7;
-	border-top-width: 4px;
-	border-top-style: solid;
-	border-top-color: #667799;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-	border-bottom-color: #ddddee;
-	padding: 20px;
-}
+
 
 
 .navigation {
@@ -146,38 +175,5 @@ hr{
 }
 
 
-#mapCenter {
-	display: block;
-	float: left;
-	position:absolute;
-	z-index: 50000;
-	width: 100px;
-	//height: 22px;
-	text-align: justify;
-	background-color: #667788;
-	border-width: 2px;
-	border-style: solid;
-	border-color: #333333;
-	padding: 2px;
-	
-}
-
-#mapCenter a {
-	color: white;
-	text-decoration: none;
-	
-}
-
-
-.move {
-	display: block;
-	width: 20px;
-	height: 20px;
-	background: #cccccc;
-	border-width: 2px;
-	border-style: solid;
-	border-color: #111111;
-	border-radius: 20px;
-}
 
 

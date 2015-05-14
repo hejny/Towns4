@@ -10,13 +10,29 @@
 //==============================
 
 
-if(!$_GET['token'] or $_GET['token']=='y'){
+if($_GET['token'] and $_GET['token']!='y') {
+    /*    $token=$_POST['token'];
+    }elseif($_GET['token'] and $_GET['token']!='y') {
+        $token=$_GET['token'];
+    }else{*/
+}else{
     die('{ "error": "Invalid token!" }');
 }
-if(!$_GET['q']){
+
+//----
+
+//die(json_encode($_POST));
+
+if($_POST['q']) {
+    $query=$_POST['q'];
+}elseif($_GET['q']) {
+    $query=$_GET['q'];
+}else{
     die('{ "error": "No query!" }');
 }
 
+
+//die(json_encode($query));
 
 //--------------------------------------------
 define("root", "");//todo: PH - je to divné
@@ -37,8 +53,7 @@ require(core."/quest/func_core.php");
 require(core."/model/func_map.php");
 //--------------------------------------------
 
-$q=$_GET['q'];
-$response=TownsApi($q);
+$response=TownsApi($query);
 
 if($_GET['pretty']) {
     $options = JSON_PRETTY_PRINT;

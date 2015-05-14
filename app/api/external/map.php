@@ -8,14 +8,31 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
 
-if($_SESSION['page']=='map' and !isset($_GET['onlypage']))
-	echo '<div class="pageDescription">Zobrazení mapy pomocí vlastnosti resurl</div>';
+//Pokud je mapa vyvolaná z attack nebo build, tak už se nezobrazí html obal
+if(!$nohtml){
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Mapa | Ukázka Towns API</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Zobrazení mapy pomocí vlastnosti resurl" />
+        <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+        <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+    </head>
+    <body>
+
+    <?php
+}
 
 //----------------------------------------------------------------Pozice na mapě a zoom
 
+$nohtml=1;//Proměnná říká, že se map.php nemá obalit do <html>...
+require('positions.lib.php');
+//Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.
 
-require('positions.php');
 
 
 //----------------------------------------------------------------
@@ -119,22 +136,6 @@ foreach($buildings as $building){
 }
 
 //----------------------------------------------------------------Ovládací prvky
-?>
-
-	<script type="text/javascript">
-
-	function loadMap(xm,ym){
-		return loadURL('page','?onlypage=1&xm='+xm+'&ym='+ym);
-	}
-
-	function loadSelectedMap(selected_x,selected_y){
-		return loadURL('page','?onlypage=1&selected_x='+selected_x+'&selected_y='+selected_y);
-	}
-	</script>
-
-
-
-	<?php
 
 	$moveby=2;
 
@@ -210,7 +211,11 @@ foreach($buildings as $building){
 echo '</div>';
 
 
+if(!$nohtml){
+    ?>
+    </body>
+    </html>
+    <?php
+}
 ?>
-
-
 

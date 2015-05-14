@@ -317,8 +317,9 @@ class func{
          if(!isset($tmp['list']))$this->add('list','list');
          if(!isset($tmp['logout']))$this->add('logout','logout');
          if(!isset($tmp['login']))$this->add('login','login');
+         if(!isset($tmp['edit']))$this->add('edit','edit');
          if(!isset($tmp['profile_edit']))$this->add('profile_edit','profile_edit');
-         if(!isset($tmp['set_edit']))$this->add('set_edit','set_edit');
+         if(!isset($tmp['edit_set']))$this->add('edit_set','edit_set');
          if(!isset($tmp['stat']))$this->add('stat','stat');
          if(!isset($tmp['text']))$this->add('text','text');
          if(!isset($tmp['use']))$this->add('use','use');

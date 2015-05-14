@@ -1,0 +1,45 @@
+.pageDescription {
+    display: block;
+    min-height: 27px;
+    background-color: #eeeef7;
+    border-top-width: 4px;
+    border-top-style: solid;
+    border-top-color: #667799;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #ddddee;
+    padding: 20px;
+}
+
+#mapCenter {
+    display: block;
+    float: left;
+    position:absolute;
+    z-index: 50000;
+    width: 100px;
+    text-align: justify;
+    background-color: #667788;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #333333;
+    padding: 2px;
+
+}
+
+#mapCenter a {
+    color: white;
+    text-decoration: none;
+
+}
+
+
+.move {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: #cccccc;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #111111;
+    border-radius: 20px;
+}
