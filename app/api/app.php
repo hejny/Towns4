@@ -23,14 +23,18 @@ session_start();
 /* $_SESSION je definované v index.php
  *
  */
-//----------------------------------------------------------------Případná změna page
-
+//----------------------------------------------------------------Pokud vypršelo session
 
 if($_GET['appName'])
     $_SESSION['appName']=$_GET['appName'];
 
-//----------------------------------------------------------------Inicializace API
+if(!$_SESSION['townsapi_url'])
+    $_SESSION['townsapi_url']='https://towns.cz';
 
+if(!$_SESSION['townsapi_locale'])
+    $_SESSION['townsapi_locale']='cs_CZ';
+
+//----------------------------------------------------------------Inicializace API
 
 TownsApiStart($_SESSION['townsapi_url'],$_SESSION['townsapi_token'],$_SESSION['townsapi_locale']);
 
