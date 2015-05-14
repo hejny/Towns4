@@ -15,6 +15,7 @@
 /debug
 /api
 /timeplan
+/app/api/memory/*
 /app/adminer/session/*
 /app/old*
 /app/admin/tmp*

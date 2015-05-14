@@ -835,10 +835,10 @@ function check_email($email) {
 }
 //======================================================================================================================Načtení knihoven
 
-function htmljscss($nocss=0){
+function htmljscss(){
 
-    $filejs = tmpfile2(array('js',1), 'min.js', 'page');
-    $filecss = tmpfile2(array('css',1), 'css', 'page');
+    $filejs = tmpfile2(array('js',1,$GLOBALS['inc']['url'],url), 'min.js', 'page');
+    $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs)/** or 1/**/) {
 
@@ -916,11 +916,16 @@ function htmljscss($nocss=0){
         fps_quick=60;
 
         setInterval(function() {
-            $('div').scrollTop(0);
+            $(document).scrollTop(0);
             $(document).scrollLeft(0);
         },200);
 EOF;
-//@todo scroll je pěkná prasárna 'div'
+
+        /*$('#html_fullscreen').scrollTop(0);
+            $('#html_fullscreen_inner').scrollTop(0);
+            $('#windows').scrollTop(0);*/
+
+//@todo scrollTop,scrollLeft je podivný způsob, jak zabránit posouvání stránky. (ale funguje dobře). Pokud najdu lepší způsob, tak ho sem dám...
 
 
 
@@ -1046,7 +1051,7 @@ EOF;
     $filecss=rebase(url.$filecss);
 
     e('<script src="'.$filejs.'"></script>');
-    if(!$nocss)e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
+    e('<link rel="stylesheet" type="text/css" href="'.$filecss.'">');
     //e('<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>');
     //e('<script src="../lib/tinymce/tinymce.min.js"></script>');
 

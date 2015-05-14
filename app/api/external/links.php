@@ -8,9 +8,18 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Náhodné objekty | Ukázka Towns API</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Zobrazení náhodných objektů na mapě a odkazů na ně" />
+    </head>
+<body>
 
-if(!isset($_GET['onlypage']))
-echo '<div class="pageDescription">Zobrazení náhodných objektů na mapě a odkazů na ně</div>';
+<?php
 
 //----------------------------------------------------------------Náhodné budovy
 echo '<p><b>Budovy:</b><br>';
@@ -47,5 +56,9 @@ foreach($buildings as $building){
 echo '</p>';
 
 //----------------------------------------------------------------
+?>
 
+
+</body>
+</html>
 

@@ -9,14 +9,26 @@
  *
  */
 
-if(!isset($_GET['onlypage']))
-echo '<div class="pageDescription">Zobrazení terénů v html tabulce</div>';
+//----------------------------------------------------------------HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terény | Ukázka Towns API</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Zobrazení terénů v html tabulce" />
+    <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+    <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+</head>
+<body>
 
+<?php
 
 //----------------------------------------------------------------Pozice na mapě a zoom
 
 
-require('positions.php');
+require('positions.lib.php');//Jako základní adresář je nastaven ten, kde se aplikace nachází.
+//Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.
 
 
 //----------------------------------------------------------------Data mapy
@@ -95,4 +107,7 @@ $moveby=2;//Posouvat o xx políček
     </tr>
 </table>
 
+
+</body>
+</html>
 

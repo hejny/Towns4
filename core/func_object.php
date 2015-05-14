@@ -566,7 +566,7 @@ class object{
      */
 
     function deletex(){
-        sql_query("UPDATE `[mpx]pos_obj` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'",3);
+        sql_query("UPDATE `[mpx]pos_obj` SET `stoptime` = '".time()."' WHERE `id` = '".$this->id."'");
         $this->loaded=false;
     }
 

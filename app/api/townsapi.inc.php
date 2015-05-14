@@ -52,9 +52,10 @@ class TownsApi{
      */
     public function q(){
 
-        $url=$this->url.'/api/?token='.urlencode($this->token).'&locale='.urlencode($this->locale).'&q=';
+        $url=$this->url.'/api?token='.urlencode($this->token).'&locale='.urlencode($this->locale);
 
         $params = func_get_args();
+        $query='';
 
         $separator='';
         foreach($params as $param){
@@ -70,12 +71,30 @@ class TownsApi{
 
             $param=str_replace('\\','\\\\',$param);
             $param=str_replace(',','\\,',$param);
-            $url.=$separator.urlencode($param);
+            $query.=$separator./*urlencode*/($param);
             $separator=',';
         }
 
-        //echo($url.'<br>');
-        $result=file_get_contents($url);
+        $postdata=array(
+            'q' => $query
+        );
+
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($postdata),
+            )
+        );
+        //print_r($options);
+        $context = stream_context_create($options);
+
+        //echo('<br>'.$url.'<br>');
+        $result = file_get_contents($url, false, $context);
+
+
+
         //echo('<hr>'.$result.'<hr>');
 
         $result=json_decode($result,true);

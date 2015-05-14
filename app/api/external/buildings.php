@@ -9,8 +9,24 @@
  *
  */
 
-if(!isset($_GET['onlypage']))
-echo '<div class="pageDescription">Seznam každé vlastnosti u všech budov města</div>';
+//----------------------------------------------------------------HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budovy | Ukázka Towns API</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Seznam každé vlastnosti u všech budov města" />
+</head>
+<body>
+
+<?php
+//----------------------------------------------------------------Kontrola přihlášení
+
+//Při umístění aplikace na server Towns si můžete nastavit, že bude přístupná pouze po přihlášení. Každá aplikace má své pevné URL, které je dostupné každému a proto je dobré odchytit případ nepřihlášeného hráče.
+if(!TownsLogged){
+    die('<div class="error">Tato aplikace vyžaduje přihlášení.</div></body></html>');
+}
 
 //----------------------------------------------------------------Rozebrání budovy
 
@@ -157,6 +173,5 @@ $buildings = $buildings['objects'];
     </table>
 
 
-
-
-
+</body>
+</html>

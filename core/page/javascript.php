@@ -401,6 +401,7 @@ $(document).ready(function(){
                 if ( e.which ==80){ shortcut_pl=1; }
                 else if ( e.which ==76 && shortcut_pl==1){ <?php urlx('e=play;noi=1;',false); ?>;shortcut_pl=0; }
                 else if ( e.which ==84 && shortcut_pl==1){ <?php urlx('e=terminal;noi=1;',false); ?>;shortcut_pl=0; }
+                /*else if ( e.which ==66 && shortcut_pl==1){ <?php urlx('e=content;ee=app-control;noi=1;',false); ?>;shortcut_pl=0; }*/
                 else{shortcut_pl=0;}
                 //-------------------------
                 

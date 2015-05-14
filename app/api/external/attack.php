@@ -8,17 +8,34 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Útoky | Ukázka Towns API</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Správce útoků" />
+    <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+    <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+</head>
+<body>
 
-echo '<div class="pageDescription">Správce útoků. Nejdřive označte útočící budovu, potom klikněte na cíl.<br>
+<?php
+//----------------------------------------------------------------Popis
+
+echo '<div class="pageDescription">Nejdříve označte útočící budovu, potom klikněte na cíl.<br>
 <div style="display:inline-block;width:19px;height:19px;background: #8888ff;border: 2px solid #000000;border-radius:19px;"></div> Vaše útočné budovy<br>
 <div style="display:inline-block;width:19px;height:19px;background: #88ff88;border: 2px solid #000000;border-radius:19px;"></div> Označená útočná budova<br>
 <div style="display:inline-block;width:19px;height:19px;background: #ff0000;border: 2px solid #000000;border-radius:19px;"></div> Nepřátelské budovy - cíle
 </div>';
 
+//----------------------------------------------------------------Kontrola přihlášení
 
-
-
-
+//Při umístění aplikace na server Towns si můžete nastavit, že bude přístupná pouze po přihlášení. Každá aplikace má své pevné URL, které je dostupné každému a proto je dobré odchytit případ nepřihlášeného hráče.
+if(!TownsLogged){
+    die('<div class="error">Tato aplikace vyžaduje přihlášení.</div></body></html>');
+}
 
 //------------------------------------------------------------------------Změna útočné budovy
 
@@ -35,7 +52,9 @@ if($_GET['target']){
 
 //-------------------------------------------------------------------------Mapa
 
-require('examples/map.php');
+$nohtml=1;//Proměnná říká, že se map.php nemá obalit do <html>...
+require('map.php');//Jako základní adresář je nastaven ten, kde se aplikace nachází.
+//Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.
 
 //-------------------------------------------------------------------------Mapa - ovládací prvky
 
@@ -92,5 +111,8 @@ foreach($buildings as $building){
 
 ?>
 
+
+</body>
+</html>
 
 

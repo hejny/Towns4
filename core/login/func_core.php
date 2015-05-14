@@ -560,7 +560,8 @@ VALUES ( ".($GLOBALS['ss']["userid"]?$GLOBALS['ss']["userid"].',':'')."  1, '".s
 
 define("a_login_help","user[,method,password,prefer logid ]");
 function a_login($param1,$param2='towns',$param3='',$param4=''/*,$param5=''*/){
-	
+
+
 	$param1=xx2x($param1);
 	$param3=xx2x($param3);
 

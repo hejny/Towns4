@@ -8,11 +8,21 @@
  * @version    1.0
  *
  */
+//----------------------------------------------------------------HTML
+?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Text příběhů | Ukázka Towns API</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Zobrazení příběhů pouze jako text" />
+        <?php TownsStyle(); ?><!--Zde funkce natvrdo vrátí styl, v Towns se místo toho použije externí .css soubor. -->
 
-if(!isset($_GET['onlypage']))
-echo '<div class="pageDescription">Zobrazení příběhů pouze jako text:</div>';
 
+    </head>
+<body>
 
+<?php
 //----------------------------------------------------------------Příběhy -načtení dat
 
 $result = TownsApi('list', 'id,name,permalink,res,resurl,own_name',array('story',($_GET['author']?"own='".$_GET['author']."'":'')), 'starttime DESC',100,262);
@@ -65,7 +75,10 @@ foreach($result as $story){
 
 
 }
+?>
 
 
+</body>
+</html>
 
 
