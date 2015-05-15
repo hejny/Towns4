@@ -267,7 +267,7 @@ foreach($objects as $object) {
 
             $src = rebase(url . $file);
             $GLOBALS['area_stream'] .= '<div style="position:absolute;z-index:150;" id="expand' . $object['id'] . '">
-        <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . '; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . ';" >
+        <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >
         <img src="' . $src . '" widht="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
         </div></div>';
         }
@@ -347,7 +347,7 @@ foreach($objects as $object) {
 
             //die($src);
             $GLOBALS['attack_stream'] .= '<div style="position:absolute;z-index:150;" id="attack' . $object['id'] . '">
-            <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . '; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . ';" >' ./*$object['attack']x.*/
+            <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >' ./*$object['attack']x.*/
                 '
         <img src="' . $src . '"width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
             </div></div>';
@@ -382,7 +382,7 @@ foreach($objects as $object) {
 
         $GLOBALS['units_stream'] .= '
             <div style="position:absolute;z-index:' . ($ry + 1000) . ';display:' . ($onmap ? 'block' : 'none') . ';"  class="timeplay" starttime="' . ($object['starttime'] ? $object['starttime'] : 0) . '" stoptime="' . ($object['stoptime'] ? $object['stoptime'] : 0) . '" >
-            <div id="object' . $object['id'] . '" style="position:relative; top:' . ($ry + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])) . '; left:' . ($rx + round((-43 + 2) / $GLOBALS['mapzoom'])) . ';">
+            <div id="object' . $object['id'] . '" style="position:relative; top:' . ($ry + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 2) / $GLOBALS['mapzoom'])) . 'px;">
         ';
 
         if ($object['res'] and $object['t'] > $mapunitstime) {
@@ -431,7 +431,7 @@ foreach($objects as $object) {
 
             $GLOBALS['units_stream'] .= '
                 <div style="position:absolute;z-index:' . ($ry + 2000) . ';" >
-            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . '; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . ';" ' . $yourid . '>
+            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px;" ' . $yourid . '>
             <img src="' . imageurl('design/blank.png') . '" class="unit" id="' . ($object['id']) . '" border="0" alt="' . addslashes($object['name']) . '" title="' . addslashes($object['name']) . '" width="' . (round(70 / $GLOBALS['mapzoom'])) . '" height="' . (round(35 / $GLOBALS['mapzoom'])) . '"/>
             </div>
             </div>';
@@ -526,7 +526,7 @@ foreach($objects as $object) {
 
                 $GLOBALS['units_stream'].='
                 <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >
-                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry-round(100/$GLOBALS['mapzoom'])).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75); border-radius: 2px;'.($usercolor?'border: 2px solid #'.$usercolor.';':'').' padding: 4px;">'.trr($say,13,NULL,'class="clickmap"').'</div>
+                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry-round(100/$GLOBALS['mapzoom'])).'px; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).'px;background: rgba(0,0,0,0.75); border-radius: 2px;'.($usercolor?'border: 2px solid #'.$usercolor.';':'').' padding: 4px;">'.trr($say,13,NULL,'class="clickmap"').'</div>
                 </div>';
 
                 //------------------------------------------------
@@ -537,7 +537,7 @@ foreach($objects as $object) {
                 <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >
 
                 '.ahrefr('
-                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry).'; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).';background: rgba(0,0,0,0.75);border:2px solid #'.$color.';border-radius: 2px; padding: 4px;max-width:70px;max-height:70px;overflow:hidden;">'.trr($say,13).($img?'<br><img src="'.imgresizewurl($img,60).'" width="60">':'').'</div>
+                <div title="'.addslashes($object['name']).'" style="position:relative; top:'.($ry).'px; left:'.($rx+((-43+7)/$GLOBALS['mapzoom'])).'px;background: rgba(0,0,0,0.75);border:2px solid #'.$color.';border-radius: 2px; padding: 4px;max-width:70px;max-height:70px;overflow:hidden;">'.trr($say,13).($img?'<br><img src="'.imgresizewurl($img,60).'" width="60">':'').'</div>
                 ','e=content;ee=text-story;id='.$object['id']).'
                 </div>';
                 //width:150px;height:120px;overflow:hidden;
