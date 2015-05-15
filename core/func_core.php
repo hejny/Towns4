@@ -591,11 +591,20 @@ function a_view($id=false,$s=1,$xsize=3,$ysize=4){
 
     if(!$id){
 
-        $terrains=array(2,3,4,5,6,7,10,11);
-        shuffle($terrains);
-        $terrain='t'.$terrains[0];
+        if(rand(1,2)==1){
 
-        list(list($x,$y))=sql_array("SELECT x,y,res FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND res='$terrain' ORDER BY rand() LIMIT 1");
+            $terrains=array(2,3,4,5,6,7,10,11);
+            shuffle($terrains);
+            $terrain='t'.$terrains[0];
+            $sql="SELECT x,y FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND res='$terrain' ORDER BY rand() LIMIT 1";
+
+        }else{
+
+            $sql="SELECT x,y FROM [mpx]pos_obj WHERE `type`='building' AND ww='".$GLOBALS['ss']['ww']."' ORDER BY rand() LIMIT 1";
+
+        }
+
+        list(list($x,$y))=sql_array($sql);
 
 
     }
@@ -708,10 +717,26 @@ function a_view($id=false,$s=1,$xsize=3,$ysize=4){
 }
 
 //=======================================================================================Ad
-function a_ad($w=160,$h=160,$s=0.5,$seed=false){
+function a_ad($w=160,$h=160,$new=false){
 
-    $s=1;
-    if(!$seed)$seed=rand(1,10);
+
+    $filecount=tmpfile2(array($w,$h),'txt','ad');
+
+    if(file_exists($filecount))
+        $count=fgc($filecount);
+
+    if(!$count)$count=1;
+
+    if($new){
+        $count++;
+        fpc($filecount,$count);
+        $seed=$count;
+    }else{
+        $seed=rand(1,$count);
+    }
+
+    //$s=1;
+    $s=0.5;
 
 
     $file=tmpfile2(array($w,$h,/*date('j.n.Y'),*/$seed),'png','ad');
@@ -751,14 +776,23 @@ function a_ad($w=160,$h=160,$s=0.5,$seed=false){
         $height = $y2 - $y1;*/
 
         $temp = imagecreatetruecolor($w, $h);
+
+        //imageantialias($temp,true);
+
             //die("$w, $h");
         imagecopy($temp, $img, 0,0,(imagesx($img)/2-($w/2)),(imagesy($img)/2-($h/2)), $w, $h);
 
-        for($i=0;$i<2;$i++)
-        imagefilter($temp,IMG_FILTER_GAUSSIAN_BLUR);
+        //for($i=0;$i<2;$i++)
+        imagefilter($temp, IMG_FILTER_SELECTIVE_BLUR);
+
+        //for($i=0;$i<2;$i++)
+        //imagefilter($temp,IMG_FILTER_GAUSSIAN_BLUR);
 
 
         $info = imagecreatefrompng('ui/image/ad/vertical.png');
+
+
+        //imagefilter($info, IMG_FILTER_SMOOTH, 5);
 
         if($w>$h){
 
