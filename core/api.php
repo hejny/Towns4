@@ -16,7 +16,7 @@ if($_GET['token'] and $_GET['token']!='y') {
         $token=$_GET['token'];
     }else{*/
 }else{
-    die('{ "error": "Invalid token!" }');
+    //die('{ "error": "Invalid token!" }');
 }
 
 //----
@@ -53,7 +53,20 @@ require(core."/quest/func_core.php");
 require(core."/model/func_map.php");
 //--------------------------------------------
 
+
 $response=TownsApi($query);
+
+
+if(isset($response['url'])){
+    //rebase(url.worldmap(0,0,$ww,$top))
+    //die($response['url']);
+
+    header('Content-Type: '.mime_content_type($response['url']));
+    header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' , filemtime($response['url'])) . ' GMT' );
+    readfile($response['url']);
+    exit2();
+}
+
 
 if($_GET['pretty']) {
     $options = JSON_PRETTY_PRINT;

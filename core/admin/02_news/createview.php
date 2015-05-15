@@ -129,7 +129,7 @@ if($_GET['create']){
                 shuffle($terrains);
                 $terrain='t'.$terrains[0];
                 //@todo Sql ROW
-                list(list($x,$y,$terrain))=sql_array("SELECT x,y,res FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND terrain='$terrain' ORDER BY rand() LIMIT 1",3);
+                list(list($x,$y,$terrain))=sql_array("SELECT x,y,res FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND res='$terrain' ORDER BY rand() LIMIT 1",3);
                 //$terrain='t'.($terrain-1000);
 
 
