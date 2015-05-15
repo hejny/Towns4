@@ -708,10 +708,13 @@ function a_view($id=false,$s=1,$xsize=3,$ysize=4){
 }
 
 //=======================================================================================Ad
-function a_ad($w=160,$h=160,$s=0.5){
+function a_ad($w=160,$h=160,$s=0.5,$seed=false){
+
+    $s=1;
+    if(!$seed)$seed=rand(1,10);
 
 
-    $file=tmpfile2(array($w,$h,date('j.n.Y')),'png','ad');
+    $file=tmpfile2(array($w,$h,/*date('j.n.Y'),*/$seed),'png','ad');
 
     //--------------------------------------------------------------------
     if(!file_exists($file)/** or 1/**/){
