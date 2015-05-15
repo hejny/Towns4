@@ -66,7 +66,7 @@ function townsfunction($query,$q='a'){
             $aid=false;
             $GLOBALS['ss']['query_output']->add('error',lr('api_unknown_user'));
         }
-    }elseif(in_array($func,array('list','worldmap'))){
+    }elseif(in_array($func,array('list','worldmap','view','ad'))){
 
         $noregister=false;//Nebude nastavený aac object
         $aid='none';//Proto se musí nastavit domělé aid

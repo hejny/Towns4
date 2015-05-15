@@ -441,11 +441,12 @@ function a_worldmap($ww,$top){
 
 
 
-    $url=rebase(url.worldmap(0,0,$ww,$top));
+    $url=worldmap(0,0,$ww,$top);
 
     $GLOBALS['ss']['query_output']->add('url',$url);
 
 }
+
 //=======================================================================================Edit
 
 function a_edit($key,$value){
@@ -540,46 +541,260 @@ function a_edit_set($key,$value){
 //@todo PH Odstranit tuhle zastaralou funkci a nahradit za list
 
 define("a_info_help","[q={use,log,id}]");
-function a_info($q="use"){
-    if($q!="use" and $q!="log"){
+function a_info($q="use")
+{
+    if ($q != "use" and $q != "log") {
         //r($q);
-        $GLOBALS['ss']["tmp_object"]= new object($q);
-        if(!$GLOBALS['ss']["tmp_object"]->loaded){
-            $GLOBALS['ss']['query_output']->add('error',"Neexistující objekt");
+        $GLOBALS['ss']["tmp_object"] = new object($q);
+        if (!$GLOBALS['ss']["tmp_object"]->loaded) {
+            $GLOBALS['ss']['query_output']->add('error', "Neexistující objekt");
             return;
         }
-        $q="tmp";
+        $q = "tmp";
     }
     //echo($GLOBALS['ss']['useid']);
     //echo($q."_object");
     //$GLOBALS['ss'][$q."_object"]->xxx();
-    if($GLOBALS['ss']['use_object'] and $GLOBALS['ss'][$q."_object"]){
-    $GLOBALS['ss']['query_output']->add("1",1);
-    $GLOBALS['ss']['query_output']->add("id",$GLOBALS['ss'][$q."_object"]->id);
-    $GLOBALS['ss']['query_output']->add("type",$GLOBALS['ss'][$q."_object"]->type);
-    $GLOBALS['ss']['query_output']->add("fp",$GLOBALS['ss'][$q."_object"]->fp);
-    $GLOBALS['ss']['query_output']->add("fs",$GLOBALS['ss'][$q."_object"]->fs);
-    $GLOBALS['ss']['query_output']->add("fr",$GLOBALS['ss'][$q."_object"]->fr);
-    $GLOBALS['ss']['query_output']->add("fx",$GLOBALS['ss'][$q."_object"]->fx);
-    $GLOBALS['ss']['query_output']->add("name",$GLOBALS['ss'][$q."_object"]->name);
-    $GLOBALS['ss']['query_output']->add("origin",implode(',',$GLOBALS['ss'][$q."_object"]->origin));
-    //$GLOBALS['ss']['query_output']->add("password",$GLOBALS['ss'][$q."_object"]->password);
-    $GLOBALS['ss']['query_output']->add("func",$GLOBALS['ss'][$q."_object"]->func->vals2str());
-    $GLOBALS['ss']['query_output']->add("support",$GLOBALS['ss'][$q."_object"]->support());
-    $GLOBALS['ss']['query_output']->add("profile",$GLOBALS['ss'][$q."_object"]->profile->vals2str());
-    $GLOBALS['ss']['query_output']->add("hold",$GLOBALS['ss'][$q."_object"]->hold->vals2str());
-    $GLOBALS['ss']['query_output']->add("own",$GLOBALS['ss'][$q."_object"]->own);
-    $GLOBALS['ss']['query_output']->add("superown",$GLOBALS['ss'][$q."_object"]->superown);
-    $GLOBALS['ss']['query_output']->add("ownname",$GLOBALS['ss'][$q."_object"]->ownname);
-    $GLOBALS['ss']['query_output']->add("own2",$GLOBALS['ss'][$q."_object"]->own2);
-    //r($GLOBALS['ss'][$q."_object"]->own2);
-    //$GLOBALS['ss']['query_output']->add("in2",$GLOBALS['ss'][$q."_object"]->in2);
-    $GLOBALS['ss']['query_output']->add("t",$GLOBALS['ss'][$q."_object"]->t);
-    $GLOBALS['ss']['query_output']->add("tasks",$GLOBALS['ss'][$q."_object"]->tasks);
-    $GLOBALS['ss']['query_output']->add("ww",$GLOBALS['ss'][$q."_object"]->ww);
-    $GLOBALS['ss']['query_output']->add("x",$GLOBALS['ss'][$q."_object"]->x);
-    $GLOBALS['ss']['query_output']->add("y",$GLOBALS['ss'][$q."_object"]->y);
-    //r($GLOBALS['ss']['query_output']->vals2str(),1);
+    if ($GLOBALS['ss']['use_object'] and $GLOBALS['ss'][$q . "_object"]) {
+        $GLOBALS['ss']['query_output']->add("1", 1);
+        $GLOBALS['ss']['query_output']->add("id", $GLOBALS['ss'][$q . "_object"]->id);
+        $GLOBALS['ss']['query_output']->add("type", $GLOBALS['ss'][$q . "_object"]->type);
+        $GLOBALS['ss']['query_output']->add("fp", $GLOBALS['ss'][$q . "_object"]->fp);
+        $GLOBALS['ss']['query_output']->add("fs", $GLOBALS['ss'][$q . "_object"]->fs);
+        $GLOBALS['ss']['query_output']->add("fr", $GLOBALS['ss'][$q . "_object"]->fr);
+        $GLOBALS['ss']['query_output']->add("fx", $GLOBALS['ss'][$q . "_object"]->fx);
+        $GLOBALS['ss']['query_output']->add("name", $GLOBALS['ss'][$q . "_object"]->name);
+        $GLOBALS['ss']['query_output']->add("origin", implode(',', $GLOBALS['ss'][$q . "_object"]->origin));
+        //$GLOBALS['ss']['query_output']->add("password",$GLOBALS['ss'][$q."_object"]->password);
+        $GLOBALS['ss']['query_output']->add("func", $GLOBALS['ss'][$q . "_object"]->func->vals2str());
+        $GLOBALS['ss']['query_output']->add("support", $GLOBALS['ss'][$q . "_object"]->support());
+        $GLOBALS['ss']['query_output']->add("profile", $GLOBALS['ss'][$q . "_object"]->profile->vals2str());
+        $GLOBALS['ss']['query_output']->add("hold", $GLOBALS['ss'][$q . "_object"]->hold->vals2str());
+        $GLOBALS['ss']['query_output']->add("own", $GLOBALS['ss'][$q . "_object"]->own);
+        $GLOBALS['ss']['query_output']->add("superown", $GLOBALS['ss'][$q . "_object"]->superown);
+        $GLOBALS['ss']['query_output']->add("ownname", $GLOBALS['ss'][$q . "_object"]->ownname);
+        $GLOBALS['ss']['query_output']->add("own2", $GLOBALS['ss'][$q . "_object"]->own2);
+        //r($GLOBALS['ss'][$q."_object"]->own2);
+        //$GLOBALS['ss']['query_output']->add("in2",$GLOBALS['ss'][$q."_object"]->in2);
+        $GLOBALS['ss']['query_output']->add("t", $GLOBALS['ss'][$q . "_object"]->t);
+        $GLOBALS['ss']['query_output']->add("tasks", $GLOBALS['ss'][$q . "_object"]->tasks);
+        $GLOBALS['ss']['query_output']->add("ww", $GLOBALS['ss'][$q . "_object"]->ww);
+        $GLOBALS['ss']['query_output']->add("x", $GLOBALS['ss'][$q . "_object"]->x);
+        $GLOBALS['ss']['query_output']->add("y", $GLOBALS['ss'][$q . "_object"]->y);
+        //r($GLOBALS['ss']['query_output']->vals2str(),1);
     }
 }
+
+//=======================================================================================View
+
+function a_view($id=false,$s=1,$xsize=3,$ysize=4){
+
+    if(!$id){
+
+        $terrains=array(2,3,4,5,6,7,10,11);
+        shuffle($terrains);
+        $terrain='t'.$terrains[0];
+
+        list(list($x,$y))=sql_array("SELECT x,y,res FROM [mpx]pos_obj WHERE `type`='terrain' AND ww='".$GLOBALS['ss']['ww']."' AND res='$terrain' ORDER BY rand() LIMIT 1");
+
+
+    }
+
+    /*$x = 50;
+    $y = 50;*/
+
+    /*$xsize = 3;
+    $ysize = 4;*/
+
+
+    $s = $s-1+1;
+    $sf = 's' . str_replace('.', 'o', $s) . 'xs' . $xsize . 'ys' . $ysize;
+
+
+    //---------------------------------------Zobrazovaná pozice
+
+    if (!$x and !$y) {//pokud není pozice v $x a $y doplní se z $id
+        $destinationobject = new object($id);
+        if (!$destinationobject->loaded) exit('chyba!');
+        $x = $destinationobject->x;
+        $y = $destinationobject->y;
+        //$ww=$destinationobject->ww;
+        unset($destinationobject);
+    }
+    //r($x,$y);
+    $x = round($x);
+    $y = round($y);
+    $xonmap = $x;
+    $yonmap = $y;
+
+
+    $file=tmpfile2(array(w,$GLOBALS['ss']["ww"],$sf,$x,$y,date('j.n.Y')),'png','view');
+
+    //--------------------------------------------------------------------
+    if(!file_exists($file)){
+
+        //---------------------------------------Přepočítání do jiného SS
+        $tmp = 2;
+        $xc = (-(($y - 1) / 10) + (($x - 1) / 10));
+        $yc = ((($y - 1) / 10) + (($x - 1) / 10));
+        $xc = intval($xc) - 1;
+        $yc = intval($yc) - $tmp;
+        //---------------------------------------
+
+        $size = 424;//424
+
+
+        $img = imagecreatetruecolor($xsize * $size * $s * 1.3, $ysize * $size * $s * 0.5 * 1.185);
+        //$img=imagecreate(($xm+$xm+1)*$size,($ym+1)*$size*0.5);
+        //$img=imagecreatetruecolor(500,500);
+
+        $yy = 0;
+        for ($y = $yc; $y <= $yc + $ysize; $y++) {
+            $xx = 0;
+            for ($x = $xc; $x <= $xc + $xsize; $x++) {
+
+                //for($y=0; $y<=$ym; $y++){$xx=0;
+                //    for ($x=-$xm; $x<=$xm; $x++) {
+
+
+                $file1 = htmlmap($x, $y, 1, true);
+                $file2 = htmlmap($x, $y, 2, true, NULL, true);
+                unlink($file2);
+
+                ob_start();
+                htmlmap($x, $y, NULL, NULL, NULL, true);
+                ob_end_clean();
+                //r($file2);
+                //$file=tmpfile2("outimg,".size.",".zoom.",".$x.",".$y.",".w.",".gird.",".t_sofb.",".t_pofb.",".t_brdcc.",".t_brdca.",".t_brdcb.','.$GLOBALS['ss']["ww"],'jpg','map');
+
+                //die($file."aaa<br>");
+                //$file=file_get_contents($file);
+
+                $posuv = htmlunitc - htmlbgc + $top;
+                foreach (array(array($file1, 0), array($file2, $posuv)) as $tmp) {
+                    list($file_u, $posuv) = $tmp;
+                    $part = imagecreatefromstring(file_get_contents($file_u));
+                    imagecopyresampled($img, $part,
+
+                        //((($x*$size)+(imagesx($img)/2)+($size)))*$s+(imagesx($img)*$s*0.5),
+                        $xx,
+                        $yy + ($posuv * $s),
+
+                        0, 0, ceil($size * $s), ceil(($size * 0.5 + 1) * $s), imagesx($part), imagesy($part) /*$size ,  $size*0.5 */);
+                    imagedestroy($part);
+
+                }
+                /*width="<? echo(ceil($size)); ?>" border="0" style="position: absolute;top:<? echo($y*$size*0.5); ?>px;left:<? echo(($x*$size)+($screen/2)-($size/2)); ?>px;"/>*/
+                $xx += ceil($size * $s);
+            }
+            $yy += ceil($size * $s * 0.5);
+        }
+        /*header("Content-type: image/png");
+        imagepng($img);*/
+        //r($img);
+
+
+        //r($img);
+
+        imagepng($img, $file, 9);
+        chmod($file, 0777);
+        imagedestroy($img);
+
+    }
+
+    $GLOBALS['ss']['query_output']->add('url',$file);
+    return($file);
+
+}
+
+//=======================================================================================Ad
+function a_ad($w=160,$h=160,$s=0.5){
+
+
+    $file=tmpfile2(array($w,$h,date('j.n.Y')),'png','ad');
+
+    //--------------------------------------------------------------------
+    if(!file_exists($file)/** or 1/**/){
+
+
+        $w1=(1653/3)*$s;
+        $h1=(1004/4)*$s;
+
+        //die("a_view(false,$s,ceil($w/$w1),ceil($h/$h1));");
+        $file_w=a_view(false,$s,ceil($w/$w1),ceil($h/$h1));
+
+        $img = imagecreatefromstring(fgc($file_w));
+
+
+        /*$width  = imagesx($img);
+        $height = imagesy($img);
+
+        $centreX = round($width / 2);
+        $centreY = round($height / 2);
+
+        $cropWidth  = $w;
+        $cropHeight = $h;
+        $cropWidthHalf  = round($cropWidth / 2); // could hard-code this but I'm keeping it flexible
+        $cropHeightHalf = round($cropHeight / 2);
+
+        $x1 = max(0, $centreX - $cropWidthHalf);
+        $y1 = max(0, $centreY - $cropHeightHalf);
+
+        $x2 = min($width, $centreX + $cropWidthHalf);
+        $y2 = min($height, $centreY + $cropHeightHalf);
+
+
+        $width = $x2 - $x1;
+        $height = $y2 - $y1;*/
+
+        $temp = imagecreatetruecolor($w, $h);
+            //die("$w, $h");
+        imagecopy($temp, $img, 0,0,(imagesx($img)/2-($w/2)),(imagesy($img)/2-($h/2)), $w, $h);
+
+        for($i=0;$i<2;$i++)
+        imagefilter($temp,IMG_FILTER_GAUSSIAN_BLUR);
+
+
+        $info = imagecreatefrompng('ui/image/ad/vertical.png');
+
+        if($w>$h){
+
+
+            $hh=$h;
+            $ww=imagesx($info)*($h/imagesy($info));
+            $yy=0;
+            $xx=(imagesx($temp)-$ww)*(0.1);
+
+
+        }else{
+
+            $ww=$w;
+            $hh=imagesy($info)*($w/imagesx($info));
+            $xx=0;
+            $yy=(imagesy($temp)-$hh)*(0.1);
+
+        }
+
+        imagecopyresized($temp, $info, $xx,$yy,0,0, $ww, $hh,imagesx($info),imagesy($info));
+
+
+
+        /*r($img);
+        r($temp);
+        exit;*/
+
+
+        imagepng($temp, $file, 9);
+        chmod($file, 0777);
+        imagedestroy($img);
+
+    }
+
+    $GLOBALS['ss']['query_output']->delete('url');
+    $GLOBALS['ss']['query_output']->add('url',$file);
+
+}
+
+//=======================================================================================
+
 ?>

@@ -32,7 +32,7 @@ class object{
         //r($id);
         $id=sql($id);
         //r($id);
-        if(!$where){$where="id='$id' OR name='$id'";}
+        if(!$where){$where="id='".addslashes($id)."' OR name='".addslashes($id)."' OR permalink='".addslashes($id)."'";}
 		if($type){
 					$type=sql($type);
 					if($type=='town'){$type="town' OR type='town2";}
