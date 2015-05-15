@@ -362,7 +362,7 @@ foreach($objects as $object) {
         t($object['name'] . ' - afrer modelx');
         //TOTÁLNÍ MEGASRAČKA - //list($width, $height) = getimagesize($modelurl);
         //TOTÁLNÍ MEGASRAČKA - echo("$width, $height");
-        if (substr($object['res'], 0, 1) == '[') {
+        if (in_array(substr($object['res'], 0, 1) , array('[','{'))) {
             $width = 133;
             $height = 254;
         } else {
