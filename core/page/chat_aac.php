@@ -9,11 +9,9 @@
 */
 //==============================
 
-$iconsize=30;
+$iconsize=27;
 $border3=array(2,'665544');
 
-
- $iconsize=30;
 
 
  $stream='';
