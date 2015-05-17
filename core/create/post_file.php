@@ -69,7 +69,7 @@ fpc($upload_dir.'.htaccess','
 
 Deny from all
 
-<FilesMatch "\.(jpg|jpeg|png|gif|bmp|wbmp)$">
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|wbmp|JPG|JPEG|PNG|GIF|BMP|WBMP)$">
 
  Order deny,allow
  Allow from all
