@@ -67,12 +67,14 @@ mkdir($upload_dir,0777);
 $upload_dir.='/';
 fpc($upload_dir.'.htaccess','
 
- Order Allow,Deny
- Deny from all
+Deny from all
 
-<FilesMatch ".(jgp|jpeg|png|gif|bmp|wbmp)$">
- Order Allow,Deny
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|wbmp)$">
+
+ Order deny,allow
  Allow from all
+ satisfy all
+
 </FilesMatch>
 
 ');
