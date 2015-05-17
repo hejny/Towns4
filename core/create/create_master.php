@@ -21,7 +21,7 @@ contenu_a();
 //počet, volných, čas uvolnění, id, fname
 $masters=array('master'=>array(0,0,0,0),'main'=>array(0,0,0,0),'wall'=>array(0,0,0,0),'bridge'=>array(0,0,0,0),'path'=>array(0,0,0,0),'terrain'=>array(0,0,0,0),'extended'=>array(0,0,0,0));
 
-$array=sql_array("SELECT `id`,`func`,`set` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%' AND `type`='building' ");
+$array=sql_array("SELECT `id`,`func`,`set` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `func` LIKE '%class[5]create%' AND `type`='building' AND ".objt());
 foreach($array as $row){
     list($id,$func,$set)=$row;
     //echo($func);

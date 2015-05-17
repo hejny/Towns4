@@ -324,7 +324,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 /*alert(yc);*/
                 xxc=(yc*5)+(xc*5)-12.5+xxt; /*-17.5*/
                 yyc=(yc*5)-(xc*5)+12.5+yyt; /*+17.5*/
-                return([xxt,yyt]);
+                return([xxc,yyc]);
         }
     $(function() {
 
@@ -408,12 +408,16 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		$('#map_context').css('border-color','#22222');
                 $('#map_context').css('display','block');/**/
                 offset =  $("#tabulkamapy").offset();
-                /*alert(hovno.pageX);*/
+
+                //alert(hovno.pageX+','+mouseX);
+
                 xt=(hovno.pageX-offset.left);/*pozice myši px*/
                 yt=(hovno.pageY-offset.top);
                 tmp=pos2pos(xt,yt);
-                xxt=tmp[0];
-                yyt=tmp[1];
+                xxc=tmp[0];
+                yyc=tmp[1];
+
+                /*alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));*/
                 /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
                 */
                 tmp=1;
@@ -539,7 +543,95 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		}
 		);
         },23);/**/
-        <?php } ?>   
+        <?php } ?>
+
+
+
+
+
+        /*---------------------------------------------------------------------Upload to map*/
+
+        <?php if(logged){ ?>
+
+        $('.clickmap').filedrop({
+
+
+            paramname:'file',
+
+            maxfiles: 1,
+            maxfilesize: <?=intval(ini_get('post_max_size')); ?>,
+            url: '?e=create-post_file',
+
+            allowedfileextensions: ['.jpg','.jpeg','.png','.gif','.bmp','.wbmp'],
+
+            uploadFinished:function(i,file,response){
+            $.data(file).addClass('done');
+            // response is the JSON object that post_file.php returns
+            },
+
+            error: function(err, file) {
+                switch(err) {
+                    case 'BrowserNotSupported':
+                        alert('<?= lr('upload_error_browser_not_supported') ?>');
+                        break;
+                    case 'TooManyFiles':
+                        // user uploaded more than 'maxfiles'
+                        alert('<?= lr('upload_error_more_files',1) ?>');
+                        break;
+                    case 'FileTooLarge':
+                        // program encountered a file whose size is greater than 'maxfilesize'
+                        // FileTooLarge also has access to the file which was too large
+                        // use file.name to reference the filename of the culprit file
+                        alert('<?= lr('upload_error_file_too_large',intval(ini_get('post_max_size'))) ?>');
+                        break;
+                    case 'FileExtensionNotAllowed':
+                        // The file extension is not in the specified list 'allowedfileextensions'
+                        alert('<?= lr('upload_error_wrong_extension','.jpg, .jpeg, .png, .gif, .bmp nebo .wbmp'); ?>');
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            // Called before each upload is started
+            beforeEach: function(file){
+
+                startloading();
+
+                offset =  $("#tabulkamapy").offset();
+
+                xt=(mouseX-offset.left);
+                yt=(mouseY-offset.top);
+                tmp=pos2pos(xt,yt);
+                xxc=tmp[0];
+                yyc=tmp[1];
+
+                //alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));
+
+                this.url=this.url+'&xc='+(xxc)+'&yc='+(yyc);
+
+                if(!file.type.match(/^image\//)){
+                    //alert('Only images are allowed!');
+
+                    // Returning false will cause the
+                    // file to be rejected
+                    return false;
+                }
+            },
+
+
+            uploadFinished: function(i, file, response, time) {
+
+                /*alert('aaa');*/
+                <?php urlx('e=map;noi=1;'.js2('stoploading()'),0) ?>
+            }
+
+
+        });
+        <?php } ?>
+        /*---------------------------------------------------------------------*/
+
+
         /*------------------------------------NEWVALS*/
         xc=<?php echo($xc); ?>;
         yc=<?php echo($yc); ?>;

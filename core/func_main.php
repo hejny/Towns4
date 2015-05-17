@@ -851,12 +851,14 @@ function htmljscss(){
         //$js .= fgc('jquery.mobile.custom.min.js');
 
 
-
+        $js .= fgc('lib/jquery/plugins/filedrop.js');//Zóna pro upload souborů
         $js .= fgc('lib/jquery/plugins/fullscreen-min.js');//Funkce plné obrazovky, která neblbne
         $js .= fgc('lib/jquery/plugins/mousewheel.js');//Potřeba pro mousewheel
         $js .= fgc('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
         $js .= fgc('lib/jquery/plugins/touch-punch.js');//Pro fungování tahání v mobilech a tabletech
-        $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');
+        $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');//Vstup pro výběr barev
+
+
 
         //-------------------------------------------------Knihovny / TiniMce
         
@@ -906,9 +908,17 @@ function htmljscss(){
         z_index=1000;
 
             $(document).ready(function(){
-            $(document).bind("contextmenu",function(e){
-            return false;
-            });
+
+                $(document).bind("contextmenu",function(e){
+                    return false;
+                });
+
+                $('body').mousemove(function(e){
+                    mouseX=e.pageX;
+                    mouseY=e.pageY;
+                    /*document.title=mouseX+','+mouseY;*/
+                });
+
             });
 
         connectfps=4;
@@ -919,6 +929,22 @@ function htmljscss(){
             $(document).scrollTop(0);
             $(document).scrollLeft(0);
         },200);
+
+        var mouseX=0;
+        var mouseY=0;
+
+        startloading=function(){
+            $('#loading').css('display','block');
+            $('#loading').css('left',mouseX-10);
+            $('#loading').css('top',mouseY-10);
+        }
+
+        stoploading=function(){
+            $('#loading').css('display','none');
+        }
+
+
+
 EOF;
 
         /*$('#html_fullscreen').scrollTop(0);
