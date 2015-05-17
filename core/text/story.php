@@ -22,21 +22,17 @@ contenu_a();
 
 if($html){
 
-    if(strpos($html,'<img')) {
+    if(strpos($html,'<img')!==false) {
 
         $i=0;
         while($img = substr2($html, '<img', '>',$i)){
 
             $src = substr2($img, 'src="', '"',0);
-
-            $src=imgresizewurl(html_entity_decode($src),450);
-
+            $src=imgresizewurl(html_entity_decode($src),600);
             $img=substr2($img, 'src="', '"',0,$src);
-
             $html=substr2($html, '<img', '>',$i,$img);
-
-
             $i++;
+
         }
 
 
