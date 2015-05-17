@@ -17,60 +17,40 @@ if($_GET['menuid']=='menu_chat'){
 
 if($_GET['menuid']=='menu_towns') {
 
-    $iconsize=30;
-    $border0=array(2,'999CFE');//logo
-    $border1=array(2,'699CFE');//profiles
-    $border2=array(2,'998822');//gold
-    $border3=array(2,'665544');//messages
-    $border4=array(2,'444444');//surkey
-    $space=nbsp3;
-
-    border(iconr("e=content;ee=profile;submenu=2","profile_user",lr('stat'),$iconsize),$border1,$iconsize);
-
-    e($space);
+    td(trr(lr('menu_towns'),array(13,'999999')));
+    tr();
 
 
+    td(ahrefr(trr(lr('stat'),12),'e=content;ee=profile;submenu=2'));
+    tr();
 
     //UZ NE//border(iconr('e=content;ee=create-create_master;submenu=3',"create_master_repair",lr('create_master_repair'),$iconsize),$border1,$iconsize);
-
     //UZ NE//e($space);
 
 
-
-    border(iconr("e=content;ee=plus-index","res_gold",lr('title_plus'),$iconsize),$border2,$iconsize);
-
-    e($space);
-
+    td(ahrefr(trr(lr('title_plus'),12),'e=content;ee=plus-index'));
+    tr();
 
 
     if($GLOBALS['inc']['forum']){
 
-        border(iconr($GLOBALS['inc']['forum'],"help",lr('title_forum'),$iconsize),$border2,$iconsize);
-
-        e($space);
+        td(ahrefr(trr(lr('title_forum'),12),$GLOBALS['inc']['forum']));
+        tr();
 
     }
 
 
+    td(ahrefr(trr(lr('title_settings'),12),'e=content;ee=settings;submenu=1'));
+    tr();
 
 
-
-    border(iconr("e=content;ee=settings;submenu=1","settings",lr('title_settings'),$iconsize),$border3,$iconsize);
-
-    e($space);
+    td(ahrefr(trr(lr('fullscreen'),12),'js=$(document).fullScreen(!$(document).fullScreen());'));
+    tr();
 
 
-
-
-
-    border(iconr("js=$(document).fullScreen(!$(document).fullScreen());","fullscreen",lr('fullscreen'),$iconsize),$border3,$iconsize);
-
-    e($space);
-
-
-
-    border(iconr(js2('logout()'),"logout",lr('logout'),$iconsize),$border3,$iconsize);
-
+    td(ahrefr(trr(lr('logout'),12),js2('logout()')));
+    tr();
+    table(150,'',1,'border:0px;border-spacing:2px;');
 }
 
 

@@ -820,9 +820,10 @@ function tableab_c(){echo("</td></tr></table>");}
  * @param integer šířka
  * @param array align,valign
  * @return array cikcak barvy array(barva1,barva2) nebo 1=automaticky
+ * @param string css styl
  *
  * */
-function array2tabler($table,$width=false,$alignvalign=false,$cikcak=false/*,$header=false*/){
+function array2tabler($table,$width=false,$alignvalign=false,$cikcak=false,$style=''/*,$header=false*/){
 	//if(debug)print_r($table);
 
     $buffer='';
@@ -833,8 +834,10 @@ function array2tabler($table,$width=false,$alignvalign=false,$cikcak=false/*,$he
 	if($cikcak==1)$cikcak=array('rgba(30,30,30,0.2)','rgba(10,10,60,0.2)');
 	$i=0;
 
+    if(!$style)$style='border:0px;border-spacing:0px;';
 
-    $buffer.=('<table border="0" cellpadding="0" cellspacing="0" '.((is_string($width) or is_numeric($width))?'width="'.$width.'"':'width="100%"').'>');
+
+    $buffer.=('<table style="'.$style.'" '.((is_string($width) or is_numeric($width))?'width="'.$width.'"':'width="100%"').'>');
 	foreach($table as $row){
 	
 		if(($i/2)==floor($i/2)){
@@ -927,8 +930,8 @@ class table
     * @see array2tabler
     * @return string
     * */
-    public function tabler($width = false, $alignvalign = false, $cikcak = false){
-        return (array2tabler($this->tabledata, $width, $alignvalign, $cikcak));
+    public function tabler($width = false, $alignvalign = false, $cikcak = false, $style=''){
+        return (array2tabler($this->tabledata, $width, $alignvalign, $cikcak,$style));
     }
 }
 //----------------------------------------------------------------Funkcionální obalení
@@ -980,9 +983,9 @@ function tr_table(){//@todo Může fungovat i bez toho
 *
 * */
 //--------------------------------
-function tabler($width=1,$alignvalign=false,$cikcak=false){
+function tabler($width=1,$alignvalign=false,$cikcak=false,$style=''){
     createtable();
-    $return=$GLOBALS['protected']['table']->tabler($width,$alignvalign,$cikcak);
+    $return=$GLOBALS['protected']['table']->tabler($width,$alignvalign,$cikcak,$style);
     unset($GLOBALS['protected']['table']);
     return($return);
 }
@@ -992,8 +995,8 @@ function tabler($width=1,$alignvalign=false,$cikcak=false){
 * @uses tabler
 *
 * */
-function table($width=1,$alignvalign=false,$cikcak=false){
-    e(tabler($width,$alignvalign,$cikcak));
+function table($width=1,$alignvalign=false,$cikcak=false,$style=""){
+    e(tabler($width,$alignvalign,$cikcak,$style));
 }
 //======================================================================================================================LOADBAR
 

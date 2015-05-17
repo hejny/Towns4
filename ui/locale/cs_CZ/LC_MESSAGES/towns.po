@@ -2078,6 +2078,10 @@ msgstr "Otočit"
 msgid "mdlrot_description"
 msgstr "Otočení budovy..."
 
+
+msgid "menu_towns"
+msgstr "Rozšířené menu"
+
 # attack
 msgid "menu_attack"
 msgstr "Dosah útoků"
@@ -3752,3 +3756,24 @@ msgstr "Avatar se zobrazuje ve Tvém profilu a pod příběhy, které napíšeš
 
 msgid "settings_gravatar_info"
 msgstr "Jako tvůj obrázek v profilu se používá Gravatar na tvůj e-mail [0]. Pokud ho chceš změnit, udělej to na:"
+
+
+
+msgid "upload_error_browser_not_supported"
+msgstr "Tvůj prohlížeč bohužel nepodporuje přetahování souborů."
+
+
+msgid "upload_error_more_files"
+msgstr "Zatím můžeš na mapu umisťovat pouze 1 obrázek."
+
+
+msgid "upload_error_file_too_large"
+msgstr "Na mapu můžeš umístit obrázek s maximální velikostí [0]MB."
+
+
+msgid "upload_error_wrong_extension"
+msgstr "Na mapu můžeš umístit pouze obrázky s koncovkou [0]."
+
+
+
+
