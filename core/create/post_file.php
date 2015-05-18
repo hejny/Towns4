@@ -81,7 +81,7 @@ Deny from all
 
 
 
-$allowed_ext = array(/*'jpg','jpeg','png','gif'*/'.htaccess');
+$allowed_ext = array(/*'jpg','jpeg','png','gif'*/'htaccess');
 
 
 if(strtolower($_SERVER['REQUEST_METHOD']) != 'post'){
@@ -93,7 +93,7 @@ if(array_key_exists('file',$_FILES) && $_FILES['file']['error'] == 0 ) {
 
     $file = $_FILES['file'];
 
-    if (in_array(!get_extension($file['name']), $allowed_ext)) {
+    if (in_array(get_extension($file['name']), $allowed_ext)) {
         exit_status(' ' . implode(',', $allowed_ext) . ' files are not allowed!');
     }
 

@@ -215,7 +215,7 @@ function a_attack($id,$lowed=false){
 						$attacked->superown=$GLOBALS['ss']['aac_object']->superown;
 				}else{
 				    
-					list($x,$y,$q)=register_positiont();
+					list($x,$y,$q)=register_position();
 					if($q){
 						$attacked->x=$x;
 						$attacked->y=$y;

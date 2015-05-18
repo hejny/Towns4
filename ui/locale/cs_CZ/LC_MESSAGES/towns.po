@@ -3683,8 +3683,8 @@ msgstr "Odeslat e-maily"
 msgid "admin_page_spawn-register"
 msgstr "Pozice"
 
-msgid "admin_page_spawn-registermap"
-msgstr "Mapa"
+msgid "admin_page_main-registermap"
+msgstr "Mapa pozic"
 
 msgid "admin_page_surkey-addsurkey"
 msgstr "Přidat suroviny"
