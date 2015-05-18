@@ -8,145 +8,68 @@
    Přihlášení / Registrace - funkce systému
 */
 //==============================
+//-------------------------------------------------REGISTER POSITION
+
+function register_position(){
+
+    $border=2;
+    $terrains=array('t3','t4','t6','t7','t8','t9','t12');
+
+    list($x,$y)=sql_row('SELECT x,y FROM [mpx]pos_obj WHERE  type=\'town\' AND  ww='.$GLOBALS['ss']['ww'].' AND '.objt().' ORDER BY starttime DESC');
+    $px=$x=round($x);
+    $py=$y=round($y);
+
+    $limit=1000;
+    while($limit>0){$limit--;
+
+        //e("($x,$y)");
+
+        $terrain=sql_1data('SELECT res FROM [mpx]pos_obj WHERE type=\'terrain\' AND  ww='.$GLOBALS['ss']['ww'].' AND x='.($x).' AND y='.($y).' AND '.objt());
+
+        //e(" - $terrain");
+        if(in_array($terrain,$terrains)){
 
 
-//======================================================================================REGISTER POSITIONX
-function register_positionx($reg1,$reg2,$iiii=0){
-			if($reg1==4){
-				if($tid=sql_1data("SELECT `id` FROM `[mpx]pos_obj` WHERE (`type`='town' OR `type`='town2') AND `name`='$reg2'".' AND '.objt())){
-					$rid=sql_array("SELECT `x`,`y` FROM `[mpx]pos_obj` WHERE `type`='building' AND `own`='$tid' ORDER BY rand();".' AND '.objt());
-					list($rx,$ry)=$rid[0];
-/*$array=sql_array("
-                    SELECT `x`,`y` FROM [mpx]map where `ww`='".$GLOBALS['ss']["ww"]."' AND
-                    (`terrain`='t3' OR `terrain`='t4' OR `terrain`='t7' OR `terrain`='t8' OR `terrain`='t9' OR `terrain`='t12' OR `terrain`='t13')
-                    AND
-                    0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]map.`x` AND X.`y`+4>[mpx]map.`y` AND X.`x`-4<[mpx]map.`x` AND X.`y`-4<[mpx]map.`y`))
-                    ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");*/
-//  AND 9=(SELECT COUNT(1) FROM [mpx]map AS Y where Y.`ww`='".$GLOBALS['ss']["ww"]."' AND (Y.`terrain`='t3' OR Y.`terrain`='t4' OR Y.`terrain`='t7' OR Y.`terrain`='t8' OR Y.`terrain`='t9' OR Y.`terrain`='t12' OR Y.`terrain`='t13') AND (Y.`x`+1>=[mpx]map.`x` AND Y.`y`+1>=[mpx]map.`y` AND Y.`x`-1<=[mpx]map.`x` AND Y.`y`-1<=[mpx]map.`y`))
-					//$q=true;            
-                    //list($x,$y)=$array[0];
-                    //return(array($x,$y,$q));
+            $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (type=\'building\' or type=\'rock\' OR type=\'tree\') AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
+
+            //e(" - $buildingcount");
+            if($buildingcount<=2){
 
 
-				}else{
-					return(false);
-				}
+                //e(" - <b>OK</b>");
+                return(array($x,$y,1));
 
-			}
+                break;
+            }
 
 
-            //-------------------------------------------------------------------------CREATE NEW TOWN
-                $file=tmpfile2("registerx_list","txt","text");
-                if(!file_exists($file) or unserialize(file_get_contents($file))==array()){
+        }
 
-                    $array=sql_array("
-                    SELECT `x`,`y` FROM [mpx]pos_obj WHERE `type`='terrain' AND `ww`='".$GLOBALS['ss']["ww"]."' AND
-            RAND()>0.90 AND
-                    (`res`='t3' OR `res`='t4' OR `res`='t7' OR `res`='t8' OR `res`='t9' OR `res`='t12' OR `res`='t13')  AND
-                    9=(SELECT COUNT(1) FROM [mpx]pos_obj AS Y WHERE `Y`.`type`='terrain' AND Y.`ww`='".$GLOBALS['ss']["ww"]."' AND
-                    (Y.`res`='t3' OR Y.`res`='t4' OR Y.`res`='t7' OR Y.`res`='t8' OR Y.`res`='t9' OR Y.`res`='t12' OR Y.`res`='t13') AND (Y.`x`+1>=[mpx]pos_obj.`x` AND Y.`y`+1>=[mpx]pos_obj.`y` AND Y.`x`-1<=[mpx]pos_obj.`x` AND Y.`y`-1<=[mpx]pos_obj.`y`))
-                    AND
-                    0=(SELECT COUNT(1) FROM `[mpx]pos_obj` AS X where X.`ww`='".$GLOBALS['ss']["ww"]."' AND  X.`own`!='0' AND (X.`x`+4>[mpx]pos_obj.`x` AND X.`y`+4>[mpx]pos_obj.`y` AND X.`x`-4<[mpx]pos_obj.`x` AND X.`y`-4<[mpx]pos_obj.`y`) AND ".objt('X').")
-                    ORDER BY RAND()");
-                    
-                }else{
-                    $array=unserialize(file_get_contents($file));
-   
-                }
-                if($array){ 
-                    $q=true;
+        $q=(rand(1,2)==1)?1:-1;
 
-					if($reg1==4){
-						$i=0;$min=100*100;$sp=0;
-						while($array[$i]){
-							list($x,$y)=$array[$i];
-							$dist=sqrt(pow($rx-$x,2)+pow($ry-$y,2));
-							if($dist<=$min){
-								$min=$dist;
-								$sp=$i;
-							}
-							$i++;
-						}
-					}else{
-						$sp=$iiii;
-					}
+        if(rand(1,2)==1){
+            $x+=$q*($border+1);
+            $y+=rand(-$border+1,$border+1);
+        }else{
+            $y+=$q*($border+1);
+            $x+=rand(-$border+1,$border+1);
+        }
 
-                    list($x,$y)=$array[$sp];
-                    array_splice($array,$sp,1);
-                }
-                fpc($file,serialize($array));
-               //--------------------------------------------------------------------------------
-		return(array($x,$y,$q));
-}
 
-//-------------------------------------------------REVIDOVAT POZICE
+        if($x<1)$x=$px;
+        if($y<1)$y=$py;
+        if($x>mapsize)$x=$px;
+        if($y>mapsize)$y=$py;
 
-define('register_min_distance',2);
-define('register_max_distance',15);
+        //e('<br>');
 
-function register_test($x,$y){
-	$ok=true;
-	//-------------------Zda není pozice moc blízko nebo daleko ostatním
-	if($ok){
-		if(!$GLOBALS['buildin_count']){
-			$GLOBALS['buildin_count']=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']["ww"]."' AND type='building' AND ".objt());
-			r($GLOBALS['buildin_count']);
-		}
-		$array=sql_array("SELECT `x`,`y` FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']["ww"]."' AND type='building' AND ".objt()." ORDER BY ABS(x-$x)+ABS(y-$y) LIMIT 1");
-			/** /foreach($array as $row){
-				list($xt,$yt)=$row;
-				$distance=sqrt(pow($x-$xt,2)+pow($y-$yt,2));
-				e(nbspo."$xt,$yt - $distance");br();
-			}/**/
-		list($xt,$yt)=$array[0];
-		$distance=sqrt(pow($x-$xt,2)+pow($y-$yt,2));
-		
-		if($distance<register_min_distance){$ok=false;if(debug)e('min distance '.$distance.'<'.register_min_distance);}
-		//if($GLOBALS['buildin_count'] and $distance>register_max_distance){$ok=false;if(debug)e('max distance '.$distance.'>'.register_max_distance);}
-	}
-	//-------------------Zda není pozice moc daleko stromům/skalám
-	if($ok){
-		//zatím ne
-	}
-	//-------------------
-	return($ok);
-}
+    }
 
-//-------------------------------------------------REGISTER POSITIONT - už otestované pozice
 
-function register_positiont($reg1=1,$reg2=0){
-	
-	$iiii=0;
-	$i=100;
-	while($i>1){$i--;
-		$position=register_positionx($reg1,$reg2,$iiii);
-		$iiii++;
-		if(!$position){return(false);}
 
-		list($x,$y)=$position;
-		if(register_test($x,$y)){
-			return($position);
-		}
-	}
 	return(array(0,0,0));
 
 }
-
-/*    $file=tmpfile2("registerx_list","txt","text");
-    if(!file_exists($file) or unserialize(file_get_contents($file))==array()){
-        if(debug)e('No rewid pos to rewid');
-    }else{
-        $array=unserialize(file_get_contents($file));
-
-    }
-    $i=0;
-    while($array[$i]){
-     	list($x,$y)=$array[$i];
-
-
-
-		$i++;
-    }*/
 
 
 //======================================================================================REGISTER WORLD 
@@ -155,7 +78,7 @@ function register_on_world($userid,$username){
      $q=false;             
 
     //-------------------------------------------------------------------------CREATE NEW TOWN
-    list($x,$y,$q)=register_positiont(/*$reg1,$reg2*/);
+    list($x,$y,$q)=register_position();
 
 
     if($q){
