@@ -20,6 +20,11 @@ function register_position(){
     $py=$y=round($y);
 
     $limit=8000;
+
+
+    $q=(rand(1,2)==1)?1:-1;
+    $way=rand(1,2);
+
     while($limit>0){$limit--;
 
         //e("($x,$y)");
@@ -45,14 +50,13 @@ function register_position(){
 
         }
 
-        $q=(rand(1,2)==1)?1:-1;
 
-        if(rand(1,2)==1){
-            $x+=$q*($border+1);
-            $y+=rand(-$border+1,$border+1);
+        if($way==1){
+            $x+=$q*($border);
+            $y+=rand(-$border*2,$border*2);
         }else{
-            $y+=$q*($border+1);
-            $x+=rand(-$border+1,$border+1);
+            $y+=$q*($border);
+            $x+=rand(-$border*2,$border*2);
         }
 
 
