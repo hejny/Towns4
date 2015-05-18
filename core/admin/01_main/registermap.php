@@ -19,9 +19,12 @@ $scale=2;
 $limit=10;
 while($limit>0){$limit--;
 
+$ms=microtime();
 list($x,$y)=register_position();
-		
-//e("($x,$y)");
+$ms=microtime()-$ms;
+$ms=$ms*1000;
+$ms=round($ms,2);
+//e(round($ms,2).' ms<br/>');
 		
 
 for($yy=0;$yy<3;$yy++){
@@ -29,14 +32,14 @@ for($yy=0;$yy<3;$yy++){
 
 				e('<div style="position:absolute;z-index:'.(($xx==1 and $yy==1)?20:1).';"><div style="position:relative;top:'.(($y*$scale)+$yy-8).';left:'.(($x*$scale)+$xx-11).';width:20px;text-align:center;font-size:11px;">');
 				e('<a style="color:#'.(($xx==1 and $yy==1)?'ffffff':'000000').';e(" href="#">');
-				e('<b>'.($i+1).'</b>');
+				e('<b>'.$ms.'</b>');
 				e('</a></div></div>');
 			}
 		}
 		
 //if($i<5){
 			e('<div style="position:absolute;"><div style="position:relative;top:'.(($y*$scale)-9).';left:'.(($x*$scale)-9).';">');
-			imge('design/register'.(($i<5)?'2':'').'.png','',18,18);
+			imge('design/register.png','',18,18);
 			e('</div></div>');
 		
 //}
