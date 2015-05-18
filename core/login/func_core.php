@@ -19,7 +19,7 @@ function register_position(){
     $px=$x=round($x);
     $py=$y=round($y);
 
-    $limit=1000;
+    $limit=8000;
     while($limit>0){$limit--;
 
         //e("($x,$y)");
