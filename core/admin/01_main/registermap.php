@@ -23,7 +23,7 @@ $ms=microtime();
 list($x,$y)=register_position();
 $ms=microtime()-$ms;
 $ms=$ms*1000;
-$ms=round($ms,2);
+$ms=round($ms);
 //e(round($ms,2).' ms<br/>');
 		
 
@@ -39,7 +39,7 @@ for($yy=0;$yy<3;$yy++){
 		
 //if($i<5){
 			e('<div style="position:absolute;"><div style="position:relative;top:'.(($y*$scale)-9).';left:'.(($x*$scale)-9).';">');
-			imge('design/register.png','',18,18);
+			imge('design/register2.png','',18,18);
 			e('</div></div>');
 		
 //}
