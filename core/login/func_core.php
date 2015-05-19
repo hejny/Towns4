@@ -15,7 +15,7 @@ function register_position(){
     $border=3;
     $terrains=array('t3','t4','t6','t7','t8','t9','t12');
 
-    list($x,$y)=sql_row('SELECT x,y FROM [mpx]pos_obj WHERE  type=\'town\' AND  ww='.$GLOBALS['ss']['ww'].' AND '.objt().' ORDER BY starttime DESC');
+    list($x,$y)=sql_row('SELECT x,y FROM [mpx]pos_obj WHERE  type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND '.objt().' ORDER BY starttime DESC');
     $px=$x=round($x);
     $py=$y=round($y);
 
