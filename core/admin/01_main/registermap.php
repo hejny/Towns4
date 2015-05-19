@@ -16,23 +16,28 @@ $scale=2;
 
 
 //-------
+
+$positions=array();
+
 $limit=10;
+$i=0;
 while($limit>0){$limit--;
 
-$ms=microtime();
+$ms=time()+microtime();
 list($x,$y)=register_position();
-$ms=microtime()-$ms;
+
+$ms=time()+microtime()-$ms;
 $ms=$ms*1000;
 $ms=round($ms);
 //e(round($ms,2).' ms<br/>');
-		
+    $positions[]=array($i,$x,$y,$ms);
 
 for($yy=0;$yy<3;$yy++){
 			for($xx=0;$xx<3;$xx++){
 
 				e('<div style="position:absolute;z-index:'.(($xx==1 and $yy==1)?20:1).';"><div style="position:relative;top:'.(($y*$scale)+$yy-8).';left:'.(($x*$scale)+$xx-11).';width:20px;text-align:center;font-size:11px;">');
 				e('<a style="color:#'.(($xx==1 and $yy==1)?'ffffff':'000000').';e(" href="#">');
-				e('<b>'.$ms.'</b>');
+				e('<b>'.($i+1).'</b>');
 				e('</a></div></div>');
 			}
 		}
@@ -60,6 +65,18 @@ if(!file_exists($file)){
 	$mapdata=unserialize(fgc($file));
 }
 	e('<img id="minimap" src="../'.worldmap(mapsize*$scale,50,false,true,$mapdata)/**/.'" />');
+
+
+
+foreach($positions as $position){
+
+    td($position[0]);
+    td($position[1]);
+    td($position[2]);
+    td($position[3]);
+    tr();
+}
+table(200,NULL,1);
 ?>
 <br>
 <i>

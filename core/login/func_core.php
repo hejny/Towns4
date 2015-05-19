@@ -10,7 +10,7 @@
 //==============================
 //-------------------------------------------------REGISTER POSITION
 
-function register_position(){
+function register_position($test=0){
 
     $border=3;
     $terrains=array('t3','t4','t6','t7','t8','t9','t12');
@@ -19,36 +19,39 @@ function register_position(){
     $px=$x=round($x);
     $py=$y=round($y);
 
-    $limit=8000;
+    $limit=10000;
 
-
-    $q=(rand(1,2)==1)?1:-1;
-    $way=rand(1,2);
 
     while($limit>0){$limit--;
 
-        //e("($x,$y)");
+        if($test)e("($x,$y)");
 
         $terrain=sql_1data('SELECT res FROM [mpx]pos_obj WHERE type=\'terrain\' AND  ww='.$GLOBALS['ss']['ww'].' AND x='.($x).' AND y='.($y).' AND '.objt());
 
-        //e(" - $terrain");
+        if($test)e(" - $terrain");
         if(in_array($terrain,$terrains)){
 
             $treerockcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (type=\'rock\' OR type=\'tree\') AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
             $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
-            //e(" - $buildingcount");
+            if($test)e(" - $buildingcount");
             if($treerockcount<=2 and $buildingcount==0){
 
 
-                //e(" - <b>OK</b>");
+                if($test)e(" - <b>OK</b><hr>");
                 return(array($x,$y,1));
 
                 break;
             }
 
 
+        }
+
+        if(!$q or rand(1,10)==1){
+
+            $q=(rand(1,2)==1)?1:-1;
+            $way=rand(1,2);
         }
 
 
@@ -60,14 +63,14 @@ function register_position(){
             $x+=rand(-$border*2,$border*2);
         }
 
-
-        if($x<5 and $y<5){$x=$px;$y=$py;}
+        //if(!$limit%100){$x=$px;$y=$py;}
+        //if($x<5 and $y<5){$x=$px;$y=$py;}
         if($x<1)$x=$px;
         if($y<1)$y=$py;
         if($x>mapsize)$x=$px;
         if($y>mapsize)$y=$py;
 
-        //e('<br>');
+        if($test)e('<br>');
 
     }
 
