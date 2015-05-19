@@ -752,7 +752,7 @@ function supportF($id,$function,$value=""){
 
 //======================================================================================nextid
 function nextid($id){
-    $id=sql_1data('SELECT max(id) FROM `[mpx]pos_obj`')-1+101;
+    $id=sql_1data('SELECT max(id) FROM `[mpx]objects`')-1+101;
     return($id);
 }
 
