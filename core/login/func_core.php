@@ -61,6 +61,7 @@ function register_position(){
         }
 
 
+        if($x<5 and $y<5){$x=$px;$y=$py;}
         if($x<1)$x=$px;
         if($y<1)$y=$py;
         if($x>mapsize)$x=$px;
