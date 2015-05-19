@@ -48,6 +48,12 @@ function register_position($test=0){
 
         }
 
+        if(!$limit%100){
+            $x=$px;
+            $y=$py;
+        }
+
+
         if(!$q or rand(1,10)==1){
 
             $q=(rand(1,2)==1)?1:-1;
