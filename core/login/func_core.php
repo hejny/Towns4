@@ -34,11 +34,12 @@ function register_position(){
         //e(" - $terrain");
         if(in_array($terrain,$terrains)){
 
+            $treerockcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (type=\'rock\' OR type=\'tree\') AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
-            $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (type=\'building\' or type=\'rock\' OR type=\'tree\') AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
+            $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
             //e(" - $buildingcount");
-            if($buildingcount<=2){
+            if($treerockcount<=2 and $buildingcount==0){
 
 
                 //e(" - <b>OK</b>");
