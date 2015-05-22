@@ -3775,5 +3775,79 @@ msgid "upload_error_wrong_extension"
 msgstr "Na mapu můžeš umístit pouze obrázky s koncovkou [0]."
 
 
+msgid "title_apps_control"
+msgstr "Aplikace"
+
+msgid "apps_all"
+msgstr "Všechny"
+
+msgid "apps_my"
+msgstr "Moje"
+
+msgid "app_create"
+msgstr "Importovat aplikaci"
+
+msgid "app_status_ok"
+msgstr "Aplikace je schválená a běží"
+
+msgid "title_apps_create"
+msgstr "Import nové aplikace "
+
+msgid "title_apps_edit"
+msgstr "Úprava aplikace"
+
+msgid "apps_name"
+msgstr "Jméno"
+
+msgid "apps_description"
+msgstr "Popis"
+
+msgid "apps_index"
+msgstr "Zadej název souboru, který se má spustit."
+
+msgid "apps_editor"
+msgstr "Pokud se jedná o editor, zadej typy objektů, které umí upravovat oddělené čárkou."
+
+msgid "apps_send"
+msgstr "Odeslat"
 
 
+msgid "apps_error_noname"
+msgstr "Zadej prosím jméno aplikace."
+
+msgid "apps_error_notext"
+msgstr "Zadej prosím popis aplikace."
+
+msgid "apps_permalink"
+msgstr "Odkaz na aplikaci:"
+
+
+msgid "apps_edit_files"
+msgstr "Soubory"
+
+msgid "apps_files"
+msgstr "Sem přetáhni jednotlivé soubory aplikace."
+
+msgid "app_edit"
+msgstr "Upravit"
+
+msgid "app_delete"
+msgstr "Smazat"
+
+msgid "app_delete_prompt"
+msgstr "Opravdu chceš smazat tuto aplikaci?"
+
+msgid "app_status_waiting"
+msgstr "Čeká na schválení..."
+
+msgid "app_turn_off"
+msgstr "Vypnout běh na pozadí"
+
+msgid "app_turn_off_prompt"
+msgstr "Chceš aplikaci zastavit dokud ji znovu nezapneš?"
+
+msgid "app_delete_my_data"
+msgstr "Smazat moje data"
+
+msgid "app_delete_my_data_prompt"
+msgstr "Smazat všechna Tvá nastavení a data v rámci této aplikace?"
