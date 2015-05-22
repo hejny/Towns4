@@ -88,7 +88,19 @@ function backup_text($text){
     
 }
 //======================================================================================
+function send_check($from,$to,$title,$text){
+    $id = sql_1number('SELECT id FROM [mpx]text WHERE `from`='.sqlx($from).' AND `to`='.sqlx($to).' AND `title`='.sqlx($title).' AND `text`='.sqlx($text).' AND `time`> '.(time()-2));
+
+    if($id)
+        return false;
+    else
+        return true;
+}
+//======================================================================================
+
 function send_report($from,$to,$title="",$text="",$idle=false){
+if(send_check($from,$to,$title,$text)){
+
     if(!$idle)$idle=sql_1data("SELECT MAX(idle) FROM `[mpx]text`")-(-1);
     $from=topobject($from);
     $to=topobject($to);
@@ -127,10 +139,12 @@ function send_report($from,$to,$title="",$text="",$idle=false){
     }else{
         //e('time');
     }
-}
+}}
 //fb_notify(fb_user($to),lr('fb_new_report','text'));
 //======================================================================================
 function send_message($from,$to,$title="",$text="",$idle=false){
+if(send_check($from,$to,$title,$text)){
+
     if(!$idle)$idle=sql_1number("SELECT MAX(idle) FROM `[mpx]text`")+1;
     //$from=topobject($from);
     $to=topobject($to);
@@ -138,7 +152,7 @@ function send_message($from,$to,$title="",$text="",$idle=false){
     
     
     $time=sql_1data("SELECT time FROM `[mpx]text` WHERE `to`='".$to."' AND type='message' ORDER BY time DESC LIMIT 1");
-    
+
     $nextid=sql_1number('SELECT MAX(id) FROM `[mpx]text`')+1;
     sql_query("INSERT INTO `[mpx]text`(`id` ,`idle` ,`type` ,`from` ,`to` ,`title` ,`text` ,`time` ,`timestop`) VALUES($nextid,'$idle','message','".sql($from)."','".sql($to)."','".sql($title)."','".sql($text)."','".(time())."','')");
     
@@ -183,7 +197,7 @@ function send_message($from,$to,$title="",$text="",$idle=false){
         }
     }
     
-}
+}}
 //======================================================================================CHAT
 define("a_chat","text");
 function a_chat($text){

@@ -486,7 +486,7 @@ function sql_1data($q,$w=false){
     t();
     $response->execute();
     t('sql_1data',$q);
-    $err=($response->errorInfo());if($err=$err[2] and debug)e($err);
+    $err=($response->errorInfo());if($err=$err[2] and debug)e("($err;$q)");
     $response = $response->fetchAll();
     //print_r($response);
     while(is_array($response))$response=$response[0];
@@ -507,7 +507,7 @@ function sql_array($q,$w=false){
     t();
     $array->execute();
     t('sql_array',$q);
-    $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
+    $err=($array->errorInfo());if($err=$err[2] and debug)e("($err;$q)");
     $array = $array->fetchAll(/*PDO::FETCH_NUM*/);
     return($array);
 }
@@ -521,7 +521,7 @@ function sql_assoc($q,$w=false){
     t();
     $array->execute();
     t('sql_assoc',$q);
-    $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
+    $err=($array->errorInfo());if($err=$err[2] and debug)e("($err;$q)");
     $array = $array->fetchAll(PDO::FETCH_ASSOC);
     return($array);
 }
@@ -543,7 +543,7 @@ function sql_csv($q,$w=false){
     t();
     $array->execute();
     t('sql_csv',$q);
-    $err=($array->errorInfo());if($err=$err[2] and debug)e($err);
+    $err=($response->errorInfo());if($err=$err[2] and debug)e("($err;$q)");
     $array = $array->fetchAll();
     //r($array);
     $array=array2csv($array);
@@ -729,6 +729,8 @@ if(!$array){
     foreach($array as $row){
         list($key,$value)=$row;
         if(!strpos($key,':')){
+
+            //ebr("define($key,$value);");
             if(!defined($key))define($key,$value);
             $GLOBALS['config'][$key]=$value;
             //e($key."='$value'");br();

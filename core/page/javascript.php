@@ -530,7 +530,7 @@ $(document).ready(function(){
 
 
 
-    if(w_name=='content'){
+    if(w_name=='content' || w_name=='apps-app'){
     <?=permalink(0,0,0)?>
     }
 
@@ -567,7 +567,7 @@ $(document).ready(function(){
         if(!yy)yy=1;
         if(!ww)ww=449;
         if(!hh)hh=$(document).height()-118;*/
-        if(w_name!='content'){
+        if(w_name!='content' && w_name!='apps-app'){
             if(!xx)xx=50;
             if(!yy)yy=50;
             if(!ww)ww=5;

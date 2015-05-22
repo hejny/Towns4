@@ -56,7 +56,7 @@ if(!TownsBackend) {
 
     ?>
 
-    <form method="post" action="?">
+    <form method="post" action="<?=TownsAppURL?>">
         <input type="hidden" name="delay_change" value="r">
         V jakém intervalu se má spouštět aplikace na pozadí:<br>
         <input type="number" name="delay" value="<?=$TownsUser['delay']?>"><br>
@@ -87,7 +87,7 @@ if(!TownsBackend) {
     if($buildings)
         foreach($buildings as $building){
             ?>
-            <a href="?selected_wall=<?=$building['id']?>">
+            <a href="<?=TownsAppURL?>&selected_wall=<?=$building['id']?>">
                 <img width="50" src="<?=$building['resurl']?>" border="<?=($building['id']==$TownsUser['selected_wall']?2:0)?>" alt="<?=$building['_name']?>" title="<?=$building['_name']?>">
             </a>
         <?php
@@ -105,7 +105,7 @@ if(!TownsBackend) {
         foreach ($buildings as $building) TownsApi('dismantle', $building['id']);
     }
     ?>
-    <a href="?dismantleAll"  onclick="return confirm('Rozebrat všechny hradby kolem města?');">Rozebrat jednoránově všechny hradby</a>
+    <a href="<?=TownsAppURL?>&dismantleAll"  onclick="return confirm('Rozebrat všechny hradby kolem města?');">Rozebrat jednoránově všechny hradby</a>
 
 
 
