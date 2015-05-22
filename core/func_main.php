@@ -928,6 +928,8 @@ function htmljscss(){
         fps_quick=60;
 
         setInterval(function() {
+                    $('div').scrollTop(0);
+
             $(document).scrollTop(0);
             $(document).scrollLeft(0);
         },200);
