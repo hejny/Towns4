@@ -12,7 +12,7 @@
 define('TownsBackend', true);
 $GLOBALS['ss']['query_output']= new vals();
 
-$crons=sql_array('SELECT * FROM [mpx]ai WHERE `time`<='.time().' ORDER BY `time` LIMIT 1');
+$crons=sql_array('SELECT * FROM [mpx]ai WHERE `time`<='.time().' ORDER BY `time`');
 
 
 foreach($crons as $cron){
