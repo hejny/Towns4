@@ -149,12 +149,18 @@ function TownsStyle(){
 
 
 
+
+define('TownsAppURL', 'app.php?appName=' . $_SESSION['appName']);
+
+
 if(substr($_SESSION['appName'],0,strlen('internal'))=='internal') {
     $app_dir='internal';
-    define('TownsAppURL','internal/');
+    define('TownsAppPath','internal/');
+
 }else{
     $app_dir='external';
-    define('TownsAppURL','external/');
+    define('TownsAppPath','external/');
+
 
 }
 //----------------------------------------------------------------Stránka

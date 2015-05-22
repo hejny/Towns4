@@ -206,6 +206,19 @@ CREATE TABLE `[mpx]memory` (
 #----------------------------------------------
 
 
+CREATE TABLE `[mpx]ai` (
+  `appid` int(11) NOT NULL COMMENT 'ID aplikace z objects',
+  `userid` int(11) NOT NULL COMMENT 'ID hráče z objects',
+  `time` int(11) NOT NULL COMMENT 'Kdy se má zase spustit',
+  `count` int(11) NOT NULL COMMENT 'Kolikrát se spustilo',
+  UNIQUE KEY `appid_userid` (`appid`,`userid`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
+
+#----------------------------------------------
+
+
 CREATE TABLE `[mpx]log` (
  `time` int(11) NOT NULL ,
  `ip` varchar(20) COLLATE utf8_czech_ci NOT NULL , 

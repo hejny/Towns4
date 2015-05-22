@@ -29,7 +29,7 @@ Tato funkce slouží k vytvoření stavebních plánů.<br/>
     <tr>
  <td><strong>Own:</strong></td>
     <td><label>
-<input name="own" type="text" id="own" value="1000078" />
+<input name="own" type="text" id="own" value="<?=$GLOBALS['inc']['write_id']?>" />
     </label></td>
   </tr>
     <tr>

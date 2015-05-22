@@ -56,7 +56,7 @@ Tato aplikace byla spuštěna dohromady všemi hráči i nepřihlášenými lidm
 if($_POST['message_type']=='app')
     $TownsApp['message']=$_POST['message'];
 ?>
-<form method="post">
+<form method="post" action="<?=TownsAppURL?>">
     <input type="hidden" name="message_type" value="app">
     Veřejný vzkaz pro všechny, kteří používají tuto aplikaci:<br>
     <textarea name="message"><?=htmlspecialchars($TownsApp['message'])?></textarea><br>
@@ -81,7 +81,7 @@ if(TownsLogged) {
     if($_POST['message_type']=='user')
         $TownsUser['message']=$_POST['message'];
     ?>
-    <form method="post">
+    <form method="post" action="<?=TownsAppURL?>">
         <input type="hidden" name="message_type" value="user">
         Vaše soukromá poznámka v této aplikaci:<br>
         <textarea name="message"><?=htmlspecialchars($TownsUser['message'])?></textarea><br>
@@ -91,6 +91,21 @@ if(TownsLogged) {
 <?php
 }
 ?>
+
+
+<hr>
+
+Všechny odkazy uvnitř aplikace(např. &lt;a href= nebo &lt;form action=) by měly obsahovat její URL TownsAppURL (<?=htmlspecialchars(TownsAppURL)?>).<br>
+<a href="<?=TownsAppURL?>&parametr=abc"><?=htmlspecialchars(TownsAppURL.'&parametr=abc')?></a><br>
+<br>
+Nebo otevírat nové okno:<br>
+<a href="http://www.itnetwork.cz/" target="_blank">http://www.itnetwork.cz/</a><br>
+<hr>
+
+<div style="float: right;"><img src="<?=TownsAppPath?>image.png" width="200"></div>
+
+Pokud aplikace načítá externí soubory do prohlížeče např. obrázky, externí js, css.., je cesta k souborům definovaná v konstantě TownsAppPath (<?=htmlspecialchars(TownsAppPath)?>).<br>
+
 
 </body>
 </html>

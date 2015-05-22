@@ -660,7 +660,6 @@ if(!$GLOBALS['mapzoom']){
 //==============================
 //-------------------------------
 //exit;
-//e('d');
 
 
 if($sitemap){
@@ -670,7 +669,7 @@ if($sitemap){
 
 
 if($_GET['e']){
-    if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='text-email' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac'){
+    if(logged() or $_GET['e']=='-html_fullscreen' or $_GET['e']=='test' or $_GET['e']=='text-email' or $_GET['e']=='-html_fullscreen_nologin' or $_GET['e']=='map' or $_GET['e']=='map_units' or substr($_GET['e'],0,6)=='login-' or $_GET['e']=='help' or  substr($_GET['e'],0,5)=='text-' or  substr($_GET['e'],0,12)=='plus-paypal-' or $_GET['e']=='create-editor' or $_GET['e']=='attack-cron' or $_GET['e']=='aac' or $_GET['e']=='apps-app' or $_GET['e']=='apps-cron'){
 
 
 

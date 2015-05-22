@@ -55,7 +55,7 @@ if (!TownsLogged) {
         $buildings = $buildings['objects'];
 
         foreach ($buildings as $building) {
-            echo('<a href="?id=' . $building['id'] . '">' . $building['_name'] . ' (' . $building['id'] . ')</a><br>');
+            echo('<a href="'.TownsAppURL.'&id=' . $building['id'] . '">' . $building['_name'] . ' (' . $building['id'] . ')</a><br>');
 
         }
 
@@ -84,7 +84,7 @@ if (!TownsLogged) {
         <a href="http://forum.towns.cz/wiki/439-2/api/modely-budov/" target="_blank">Více o modelech budov</a><br><br>
 
 
-    <form method="post" action="?id=<?=$_GET['id']?>">
+    <form method="post" action="<?=TownsAppURL?>&id=<?=$_GET['id']?>">
         <input type="hidden" name="edit" value="1">
         <b>Jméno:</b><br>
         <input type="text" name="name" value="<?=addslashes($editBuilding['name'])?>"><br><br>
