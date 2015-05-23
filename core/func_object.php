@@ -347,7 +347,7 @@ class object{
                     //------------------------------Permalink
 
                     if(!$this->permalink_/** or true/**/) {
-                        if(in_array($this->type,array('story','building','user','town','town2'))) {
+                        if(in_array($this->type,array('story','app'))) {
 
                             $own_permalink = '';
                             if ($this->own)
