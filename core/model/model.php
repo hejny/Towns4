@@ -214,7 +214,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             imagesavealpha($img2, true);
 
              imagefilter($img2, IMG_FILTER_COLORIZE,9,0,5);
-             imagefilter($img2, IMG_FILTER_CONTRAST,-5);
+             imagefilter($img2, IMG_FILTER_CONTRAST,-8);
 
             ImagePng($img2,$file);
             chmod($file,0777);
@@ -698,7 +698,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         //$file=tmpfile2("model,$res,$s,$rot,$slnko,$ciary,$zburane,$hore","png");
 
         imagefilter($GLOBALS['ss']["im"], IMG_FILTER_COLORIZE,9,0,5);
-        imagefilter($GLOBALS['ss']["im"], IMG_FILTER_CONTRAST,-5);
+        imagefilter($GLOBALS['ss']["im"], IMG_FILTER_CONTRAST,-10);
 
         ImagePng($GLOBALS['ss']["im"],$file,png_quality,png_filters);
         chmod($file,0777);
