@@ -69,7 +69,11 @@ if(!$GLOBALS['map_units_ids']){
 
 	//if(!mobile){
 	/*dafaq*/
-	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+
+    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
+	$range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+
+
 	//}else{
 	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	//}
