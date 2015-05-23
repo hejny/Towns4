@@ -84,7 +84,7 @@ if(!$GLOBALS['map_units_ids']){
 	$hlname=id2name($GLOBALS['config']['register_building']);
 
 
-	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay );
+	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay . ' ORDER BY x+y');
 }else{
 
     //------------------------------------------------------------------------------------------------------SELECT ONLY
@@ -377,7 +377,8 @@ foreach($objects as $object) {
                         $alltree[] = modelx($object_['res']);
                     cache('alltree',$alltree);
                 }else{
-                    $GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
+                    //$GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
+                    //$GLOBALS['model_resize']=1;
                 }
             }
 
@@ -386,7 +387,7 @@ foreach($objects as $object) {
 
             $modelurl=$alltree[$rand];
 
-        }else{
+        }else/**/{
 
             $modelurl = modelx($object['res'], $fpfs/*$_GLOBALS['map_night']*/, $usercolor);
         }
