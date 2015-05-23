@@ -1113,7 +1113,8 @@ for($y=$yc; $y<=$ym+$yc; $y++){
 		$divplace='<div style="width:'.round(424/$zoom).'px;height:'.round(211/$zoom).'px;overflow:hidden;"></div>';
 
         if($q){$stream1.=movebyr(htmlmap($x,$y,1,NULL,$y-$yc/*,$_GLOBALS['map_night']*/),0,0).$divplace;}else{$stream1.=htmlmap(-5,0,2,NULL,$y-$yc);}
-        if($q){$stream2.=movebyr(htmlmap($x,$y,2,NULL,$y-$yc/*,$_GLOBALS['map_night']*/),0,0).$divplace;}else{$stream2.=htmlmap(-5,0,2,NULL,$y-$yc);}
+        /*if($q){$stream2.=movebyr(htmlmap($x,$y,2,NULL,$y-$yc),0,0).$divplace;}else{$stream2.=htmlmap(-5,0,2,NULL,$y-$yc);}*/
+
         if($q)$stream3.='<img src="'.mapgrid().'"  width="'.round(424/$zoom).'" class="clickmap">';
         t();
         $ad=("</td>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
@@ -1148,8 +1149,10 @@ e('</div></div>');
 
 
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:200;display:none;" id="grid">'.$stream3.'</div></div>');
-e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:300;">'.$stream2.'</div></div>');
-e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:400;" id="units_stream">'.$GLOBALS['units_stream']/**/.'</div></div>');
+
+//e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:300;">'.$stream2.'</div></div>');
+
+    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:400;" id="units_stream">'.$GLOBALS['units_stream']/**/.'</div></div>');
 e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:500;" class="clickmap" id="units_new"></div></div>');
 
 }

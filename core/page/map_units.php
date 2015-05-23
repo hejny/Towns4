@@ -47,7 +47,7 @@ if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 
         $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
-//------------------------------------------------------------------------------------------------------SELECT - ONLY
+//------------------------------------------------------------------------------------------------------SELECT - ALLES
 if(!$GLOBALS['map_units_ids']){
 
 	/*if($_GET['uzidsid']){
@@ -80,10 +80,10 @@ if(!$GLOBALS['map_units_ids']){
 	$hlname=id2name($GLOBALS['config']['register_building']);
 
 
-	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story') AND ".$range.$whereplay );
+	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay );
 }else{
 
-    //------------------------------------------------------------------------------------------------------SELECT ALLES
+    //------------------------------------------------------------------------------------------------------SELECT ONLY
         $where=$GLOBALS['map_units_ids'];
 	$where=implode("' OR `id`='",$where);
 	$where="(`id`='$where')";
@@ -118,7 +118,7 @@ foreach($objects as $object) {
         $onmap = true;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
-        if ($object['type'] == 'building') {
+        if(in_array($object['type'],array('building','tree','rock'))) {
 
             if ($object['readytime'] > time()) {
 
@@ -352,17 +352,46 @@ foreach($objects as $object) {
         <img src="' . $src . '"width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
             </div></div>';
         }
+    }
 
-
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building, Tree and rock
+    if(in_array($object['type'],array('building','tree','rock'))) {
         //--------------------------------------------------------------------------------------------------------------MODEL
-
         t($object['name'] . ' - beforeunit');
 
-        $modelurl = modelx($object['res'], $fpfs/*$_GLOBALS['map_night']*/, $usercolor);
+
+
+
+
+        if($object['type']=='tree' and $fpfs==1){
+
+            if(!$alltree){
+                if(!$alltree=cache('alltree')) {
+                    $alltree = array();
+                    $objects_ = sql_array('SELECT DISTINCT `res` FROM [mpx]pos_obj WHERE `type`=\'tree\' AND ' . objt() . ' AND `res`!=\'\' ORDER BY id LIMIT 200');
+                    foreach ($objects_ as $object_)
+                        $alltree[] = modelx($object_['res']);
+                    cache('alltree',$alltree);
+                }else{
+                    $GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
+                }
+            }
+
+            $rand=((pow($object['x'],3)+pow($object['y'],2))%count($alltree));
+            //rand(0,1);
+
+            $modelurl=$alltree[$rand];
+
+        }else{
+
+            $modelurl = modelx($object['res'], $fpfs/*$_GLOBALS['map_night']*/, $usercolor);
+        }
+
+
         t($object['name'] . ' - afrer modelx');
         //TOTÁLNÍ MEGASRAČKA - //list($width, $height) = getimagesize($modelurl);
         //TOTÁLNÍ MEGASRAČKA - echo("$width, $height");
-        if (in_array(substr($object['res'], 0, 1) , array('[','{'))) {
+        if (in_array(substr($object['res'], 0, 1), array('[', '{'))) {
             $width = 133;
             $height = 254;
         } else {
@@ -426,19 +455,18 @@ foreach($objects as $object) {
 
         //--------------------------------------------------------------------------------------------------------------UNIT CLICKMAP
 
+        if ($object['type'] == 'building')
+            if ($onmap) {
 
-        if ($onmap) {
-
-            $GLOBALS['units_stream'] .= '
+                $GLOBALS['units_stream'] .= '
                 <div style="position:absolute;z-index:' . ($ry + 2000) . ';" >
             <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px;" ' . $yourid . '>
             <img src="' . imageurl('design/blank.png') . '" class="unit" id="' . ($object['id']) . '" border="0" alt="' . addslashes($object['name']) . '" title="' . addslashes($object['name']) . '" width="' . (round(70 / $GLOBALS['mapzoom'])) . '" height="' . (round(35 / $GLOBALS['mapzoom'])) . '"/>
             </div>
             </div>';
-            t($object['name'] . ' - afrer show shit');
+                t($object['name'] . ' - afrer show shit');
 
-        }
-
+            }
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF Only Building
     //------------------------------------------------------------------------------------------------------------------Nápis nad městem / budovou

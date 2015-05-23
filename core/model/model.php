@@ -74,7 +74,7 @@ function modelx($res,$fpfs=1,$usercolor=false){
     $GLOBALS['model_noimg']=true;
     $GLOBALS['model_resize']=0.75/(0.75*gr);
     t('modelx - a');
-    model($res,0.75*gr,NULL,1.5,NULL,$fpfs,0,true,$usercolor);//1
+    model($res,0.75*gr,NULL,1.5,NULL,$fpfs,0,true,$usercolor);//todo Modely na mapě 1:1
     t('modelx - b');
     $GLOBALS['model_noimg']=false;
     return(rebase(url.$GLOBALS['model_file']));
@@ -114,7 +114,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
     }//e($res);
     //--------------------------------------------------------------------------ROCK
      if(substr($res,0,4)=='rock'){
-         $file=tmpfile2("model,$res","png","model");
+         $file=tmpfile2("model,$res","png","modelrock");
          if(file_exists($file)/** and false/**/){
             $img=imagecreatefrompng($file);
             imagealphablending($img,true);
@@ -130,7 +130,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             r('create new rock');
             $s=$s*height2/500;
             $img = imagecreatetruecolor($s*200,$s*380);
-            $img2 = imagecreatetruecolor($s*200,$s*380);   
+            $img2 = imagecreatetruecolor($s*200,$s*380);
             $alpha=  imagecolorallocatealpha($img, 0, 0, 0, 127);
             imagefill($img,0,0,$alpha);
             $alpha=  imagecolorallocatealpha($img2, 0, 0, 0, 127);
@@ -212,6 +212,10 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             imagecopy($img2, $img,0,0,0,0,imagesx($img2),imagesy($img2));
             
             imagesavealpha($img2, true);
+
+             imagefilter($img2, IMG_FILTER_COLORIZE,9,0,5);
+             imagefilter($img2, IMG_FILTER_CONTRAST,-5);
+
             ImagePng($img2,$file);
             chmod($file,0777);
             //return($img2);
@@ -226,9 +230,9 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         }
     }
         //----------------------------------------------------------------------TREE
-     if(substr($res,0,4)=='tree'){
-         $file=tmpfile2("model,$res","png","model");
-         if(file_exists($file)/** and false/**/){
+     /*if(substr($res,0,4)=='tree'){
+         $file=tmpfile2("model,$res","png","modeltree");
+         if(file_exists($file)){
             $img=imagecreatefrompng($file);
             imagealphablending($img,true);
             imagesavealpha($img,true);
@@ -285,10 +289,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
                 if($a<1)$a=1;if($a>127)$a=127;
                 //$a=50;
                 //$ii=$gr;
-                /*if(!$tmpcolors[$ii]){
-                    $tmpcolors[$ii]=  imagecolorallocatealpha($img, $gr, $gr, $gr,$a);
-                }
-                imagefilledellipse($img, $xx, $yy-$lvl, $rx, $ry, $tmpcolors[$ii]);*/
+
                 
                 $r=$ra+($gr*($rb-$ra));
                 $g=$ga+($gr*($gb-$ga));
@@ -342,7 +343,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             chmod($file,0777);
             return($img2);
         }
-    }
+    }*/
     //--------------------------------------------------------------------------NORES - POKUD $res NENí MODEL
     if(substr($res,0,1)=='('){
         $res=str_replace(array('(',')'),'',$res);
@@ -449,7 +450,6 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             $t=21;
             if($x<0-$t){$x=0-$t;}if($x>100+$t){$x=100+$t;}
             if($y<0-$t){$y=0-$t;}if($y>100+$t){$y=100+$t;}
-            if($z<0){$z=0;}if($z>250){$z=250;}/**/
             //-------------------------
             $points[$i][0]=$x;
             $points[$i][1]=$y;
@@ -457,12 +457,13 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
             //---
             }
         }
-        //---------------------------rotace
+        //---------------------------rotace a limit
         $i=-1;
         foreach($points as $ii){
         $i=$i+1;
         $x=$points[$i][0];
         $y=$points[$i][1];
+        $z=$points[$i][2];
         //echo("(".$x.",".$y.")");
         //-------------------------
         $x=$x+0.1;
@@ -477,9 +478,17 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         $x=intval($x);
         $y=intval($y);
         //-------------------------
+
+            if($x<0){$x=0;} if($x>100){$x=100;}
+            if($y<0){$y=0;} if($y>100){$y=100;}
+            if($z<0){$z=0;} if($z>250){$z=250;}
+
+
+            //$x=0;
         //echo("(".$x.",".$y.")<br/>");
         $points[$i][0]=$x;
         $points[$i][1]=$y;
+        $points[$i][2]=$z;
         //---
         }
         //---------------------------polygons
@@ -529,9 +538,9 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         }
         //---------------------------vykresleni
         if($hore!=1){
-        $GLOBALS['ss']["im"] = imagecreatetruecolor($s*200,$s*380);
+        $GLOBALS['ss']["im"] = imagecreate/*truecolor*/($s*200,$s*380);
         }else{
-        $GLOBALS['ss']["im"] = imagecreatetruecolor($s*150,$s*150);
+        $GLOBALS['ss']["im"] = imagecreatetruecolor($s*150,$s*150);//todo truecolor vs xxx
         }
         //imagealphablending($GLOBALS['ss']["im"],false);
         $GLOBALS['ss']["bg"] = imagecolorallocatealpha($GLOBALS['ss']["im"],0,0,0,127);
@@ -687,6 +696,10 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
 	//imagetruecolortopalette($GLOBALS['ss']["im"],true,8);
 	//imagesavealpha($GLOBALS['ss']["im"], true);
         //$file=tmpfile2("model,$res,$s,$rot,$slnko,$ciary,$zburane,$hore","png");
+
+        imagefilter($GLOBALS['ss']["im"], IMG_FILTER_COLORIZE,9,0,5);
+        imagefilter($GLOBALS['ss']["im"], IMG_FILTER_CONTRAST,-5);
+
         ImagePng($GLOBALS['ss']["im"],$file,png_quality,png_filters);
         chmod($file,0777);
         //chmod($file);
