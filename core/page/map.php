@@ -1113,7 +1113,7 @@ for($y=$yc; $y<=$ym+$yc; $y++){
 		$divplace='<div style="width:'.round(424/$zoom).'px;height:'.round(211/$zoom).'px;overflow:hidden;"></div>';
 
         if($q){$stream1.=movebyr(htmlmap($x,$y,1,NULL,$y-$yc/*,$_GLOBALS['map_night']*/),0,0).$divplace;}else{$stream1.=htmlmap(-5,0,2,NULL,$y-$yc);}
-        if($q){$stream2.=movebyr(htmlmap($x,$y,2,NULL,$y-$yc/*,$_GLOBALS['map_night']*/),0,0).$divplace;}else{$stream2.=htmlmap(-5,0,2,NULL,$y-$yc);}
+        /*if($q){$stream2.=movebyr(htmlmap($x,$y,2,NULL,$y-$yc),0,0).$divplace;}else{$stream2.=htmlmap(-5,0,2,NULL,$y-$yc);}*/
         if($q)$stream3.='<img src="'.mapgrid().'"  width="'.round(424/$zoom).'" class="clickmap">';
         t();
         $ad=("</td>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
