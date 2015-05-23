@@ -84,7 +84,7 @@ if(!$GLOBALS['map_units_ids']){
 	$hlname=id2name($GLOBALS['config']['register_building']);
 
 
-	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay . ' ORDER BY x+y');
+	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay );
 }else{
 
     //------------------------------------------------------------------------------------------------------SELECT ONLY
