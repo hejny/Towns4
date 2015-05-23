@@ -365,7 +365,7 @@ foreach($objects as $object) {
 
 
 
-
+        $GLOBALS['model_resize'] = 1;
 
         if($object['type']=='tree' and $fpfs==1){
 
@@ -386,6 +386,7 @@ foreach($objects as $object) {
             //rand(0,1);
 
             $modelurl=$alltree[$rand];
+            $GLOBALS['model_resize'] = 0.75/(0.75*gr);
 
         }else/**/{
 
@@ -404,7 +405,7 @@ foreach($objects as $object) {
             $height = 123;
         }
         t($object['name'] . ' - afrer getimagesize');
-        if (!$GLOBALS['model_resize']) $GLOBALS['model_resize'] = 1;
+        //if (!$GLOBALS['model_resize'])
         $width = $width * $GLOBALS['model_resize'];
         $height = $height * $GLOBALS['model_resize'];
         // width="83"
