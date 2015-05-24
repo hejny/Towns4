@@ -416,7 +416,7 @@ foreach($objects as $object) {
             }
 
             $modelurl = $allrock[$object['res']];
-            $GLOBALS['model_resize'] = 0.75 / (0.75 * gr);
+            $GLOBALS['model_resize'] = 1;
 
         //------------------------------------------------------
         }else/**/{
