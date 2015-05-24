@@ -50,41 +50,27 @@ if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 //------------------------------------------------------------------------------------------------------SELECT - ALLES
 if(!$GLOBALS['map_units_ids']){
 
-	/*if($_GET['uzidsid']){
-		$uzids=explode(',',$_GET['uzidsid']);
-		$where=$uzids;
-		$where=implode("' OR `id`='",$where);
-		$where="(`id`='$where')";
-	}else{
-		$uzids=array();
-		$where="0";
-	}*/
-	/*$arange=-5;
-	$range=45;
-	$xpp=5;//5;
-	$ypp=-5;//-5;
-	$range="x>$xu-$arange+$xpp AND y>$yu-$arange+$ypp AND x<$xu+$range+$xpp AND y<$yu+$range+$ypp";
-	$range="(x-y)>($xu-$yu) AND (y-x)>($yu-$xu)-30 AND (x-y)<($xu-$yu)+5 AND (y-x)<($yu-$xu)+20";*/
 
 
-	//if(!mobile){
-	/*dafaq*/
-
+    //$range='1';
     $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
 	$range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 
 
-	//}else{
-	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
-	//}
-
-
-	//$range=1;
-	//echo($range);
 	$hlname=id2name($GLOBALS['config']['register_building']);
 
+    $objects=array_merge(
+        sql_assoc("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND ".$range.$whereplay )
 
-	$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story' OR `type`='tree' OR `type`='rock' ) AND ".$range.$whereplay );
+
+        ,sql_assoc("SELECT `x`,`y`,`type`,'t' as `res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='tree' AND ".$range.$whereplay ." UNION
+        SELECT `x`,`y`,`type`,`res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='rock' AND ".$range.$whereplay )
+
+
+        ,sql_assoc("SELECT `x`,`y`,`type`,'' as `res`,`name`,`id`,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='story' AND ".$range.$whereplay )
+    );
+
+
 }else{
 
     //------------------------------------------------------------------------------------------------------SELECT ONLY
@@ -100,6 +86,7 @@ if(!$GLOBALS['map_units_ids']){
 
 //======================================================================================================================FOREACH
 foreach($objects as $object) {
+    t($object['name'] . ' - start');
     //------------------------------------------------------------------------------------------------------------------Příprava proměnných
 
     $uzids[] = $object['id'];
@@ -129,7 +116,9 @@ foreach($objects as $object) {
         $onmap = true;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
-        if(in_array($object['type'],array('building','tree','rock'))) {
+
+        //Způsob in_array($object['type'],array('building','tree','rock')) je pomalejší
+        if($object['type']=='building' or $object['type']=='tree' or $object['rock']=='building') {
 
             if ($object['readytime'] > time()) {
 
@@ -366,7 +355,7 @@ foreach($objects as $object) {
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building, Tree and rock
-    if(in_array($object['type'],array('building','tree','rock'))) {
+    if($object['type']=='building' or $object['type']=='tree' or $object['rock']=='building') {
         //--------------------------------------------------------------------------------------------------------------MODEL
         t($object['name'] . ' - beforeunit');
 
@@ -441,7 +430,9 @@ foreach($objects as $object) {
         t($object['name'] . ' - afrer modelx');
         //TOTÁLNÍ MEGASRAČKA - //list($width, $height) = getimagesize($modelurl);
         //TOTÁLNÍ MEGASRAČKA - echo("$width, $height");
-        if (in_array(substr($object['res'], 0, 1), array('[', '{'))) {
+
+        $first=substr($object['res'], 0, 1);
+        if ($first=='[' or $first=='{') {
             $width = 133;
             $height = 254;
         } else {
@@ -454,10 +445,6 @@ foreach($objects as $object) {
         $height = $height * $GLOBALS['model_resize'];
         // width="83"
 
-        ?>
-        <?php
-        //ob_start();
-        /**/
 
         $GLOBALS['units_stream'] .= '
             <div style="position:absolute;z-index:' . ($ry + 1000) . ';display:' . ($onmap ? 'block' : 'none') . ';"  class="timeplay" starttime="' . ($object['starttime'] ? $object['starttime'] : 0) . '" stoptime="' . ($object['stoptime'] ? $object['stoptime'] : 0) . '" >
@@ -469,8 +456,7 @@ foreach($objects as $object) {
 
             //------------------------------------------------First Buildings for help
 
-            //$yourid=id2name($object['own'])."-$object['own']=sagfdr=".$GLOBALS['ss']['useid'];
-            $yourid = '';
+            /*$yourid = '';
             if ($object['own'] == $GLOBALS['ss']['useid']) {
                 $specialname = $object['pname'];
                 $specialname = str_replace(array('{', '}'), '', $specialname);
@@ -484,9 +470,7 @@ foreach($objects as $object) {
                     $yourid = 'id="first_' . $specialname . '"';
                 }
                 //}
-
-
-            }
+            }*/
             //------------------------------------------------
 
             $GLOBALS['units_stream'] .= '
@@ -620,7 +604,7 @@ foreach($objects as $object) {
 
     //------------------------------------------------------------------------------------------------------
 
-	t($object['name'].' - konec');
+	t($object['name'].' - end');
 
 }
 //======================================================================================================================
