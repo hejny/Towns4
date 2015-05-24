@@ -105,7 +105,14 @@ foreach($objects as $object) {
     $uzids[] = $object['id'];
 
     $object['pname'] = $object['name'];
-    $object['name'] = contentlang(trim($object['name']));
+
+
+    if($object['type']=='building')
+        $object['name'] = contentlang(trim($object['name']));
+    elseif($object['type']=='tree' or $object['type']=='rock')
+        $object['name'] = '';
+
+
 
     $object['expand'] = floatval($object['expand']);
     $object['block'] = floatval($object['block']);
