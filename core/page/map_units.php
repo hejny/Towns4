@@ -367,31 +367,67 @@ foreach($objects as $object) {
 
         $GLOBALS['model_resize'] = 1;
 
+        //------------------------------------------------------
         if($object['type']=='tree' and $fpfs==1){
 
-            if(!$alltree){
-                if(!$alltree=cache('alltree')) {
+            if (!$alltree) {
+                if (!$alltree = cache('alltree')) {
                     $alltree = array();
                     $objects_ = sql_array('SELECT DISTINCT `res` FROM [mpx]pos_obj WHERE `type`=\'tree\' AND ' . objt() . ' AND `res`!=\'\' ORDER BY id LIMIT 200');
                     foreach ($objects_ as $object_)
                         $alltree[] = modelx($object_['res']);
-                    cache('alltree',$alltree);
-                }else{
+                    cache('alltree', $alltree);
+                    t('after alltree');
+                } else {
                     //$GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
                     //$GLOBALS['model_resize']=1;
                 }
             }
 
-            $rand=((pow($object['x'],3)+pow($object['y'],2))%count($alltree));
+            $rand = ((pow($object['x'], 3) + pow($object['y'], 2)) % count($alltree));
             //rand(0,1);
 
-            $modelurl=$alltree[$rand];
-            $GLOBALS['model_resize'] = 0.75/(0.75*gr);
+            $modelurl = $alltree[$rand];
+            $GLOBALS['model_resize'] = 0.75 / (0.75 * gr);
 
+        //------------------------------------------------------
+        }elseif($object['type']=='rock' and $fpfs==1){
+        //------------------------------------------------------
+
+            if (!$allrock) {
+                if (!$allrock = cache('allrock')) {
+                    $allrock = array();
+                    $objects_ = sql_array('SELECT DISTINCT `res` FROM [mpx]pos_obj WHERE `type`=\'rock\' AND ' . objt() . ' AND `res`!=\'\' ORDER BY id LIMIT 400');
+                    foreach ($objects_ as $object_)
+                        $allrock[$object_['res']] = modelx($object_['res']);
+                        cache('allrock', $allrock);
+                        t('after allrock');
+                } else {
+                    //$GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
+                    //$GLOBALS['model_resize']=1;
+                }
+            }
+
+            $modelurl = $allrock[$object['res']];
+            $GLOBALS['model_resize'] = 0.75 / (0.75 * gr);
+
+        //------------------------------------------------------
         }else/**/{
+        //------------------------------------------------------
 
             $modelurl = modelx($object['res'], $fpfs/*$_GLOBALS['map_night']*/, $usercolor);
+
+        //------------------------------------------------------
         }
+        //------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
         t($object['name'] . ' - afrer modelx');
