@@ -417,6 +417,7 @@ foreach($objects as $object) {
 
             $modelurl = $allrock[$object['res']];
             $GLOBALS['model_resize'] = 1;
+            $ry-=35/$GLOBALS['mapzoom'];
 
         //------------------------------------------------------
         }else/**/{
@@ -460,7 +461,7 @@ foreach($objects as $object) {
 
         $GLOBALS['units_stream'] .= '
             <div style="position:absolute;z-index:' . ($ry + 1000) . ';display:' . ($onmap ? 'block' : 'none') . ';"  class="timeplay" starttime="' . ($object['starttime'] ? $object['starttime'] : 0) . '" stoptime="' . ($object['stoptime'] ? $object['stoptime'] : 0) . '" >
-            <div id="object' . $object['id'] . '" style="position:relative; top:' . ($ry + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 2) / $GLOBALS['mapzoom'])) . 'px;">
+            <div id="object' . $object['id'] . '" style="position:relative; top:' . round($ry + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])) . 'px; left:' . round($rx + round((-43 + 2) / $GLOBALS['mapzoom'])) . 'px;">
         ';
 
         if ($object['res'] and $object['t'] > $mapunitstime) {
