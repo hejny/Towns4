@@ -77,7 +77,7 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 	//}
     //----
     
-	if($_GET['map_units_time']!=-1){
+	/*if($_GET['map_units_time']!=-1){
 
 		if($_GET['map_units_time'])$map_units_time=sql($_GET['map_units_time']);
 		
@@ -96,7 +96,7 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 			
 			
 		}
-	}
+	}*/
 
 //-----------------------------
 ?>
