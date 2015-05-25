@@ -137,6 +137,11 @@ function rebase($url){
 	$url=preg_replace('(\/[^\/]*\/\.\.\/)', '/', $url);
 	//$i=strpos($url,'/'.w.'/');$c=strlen(w);//
 	//$url=substr($url,0,$i).substr($url,$i+$c+1);
+
+    $cacheurl=url.cache;
+    $cacheurl=str_replace(w,'',$cacheurl);
+    $url=str_replace($cacheurl,$GLOBALS['inc']['cacheurl'],$url);
+
 	return($url);
 }
 //echo('ahoj/www/../debile/index.php');
