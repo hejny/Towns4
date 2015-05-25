@@ -353,7 +353,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             $GLOBALS['attack_stream'] .= '<div style="position:absolute;z-index:150;" id="attack' . $object['id'] . '">
             <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >' ./*$object['attack']x.*/
                 '
-        <img src="' . $src . '"width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
+        <img src="' . $src . '" width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
             </div></div>';
         }
     }

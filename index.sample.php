@@ -9,7 +9,7 @@ $inc=array(
     'world' => 'small',                         //Deafultní svět
     'url' => 'http://localhost/www/[world]/',   //URL adresa [world] se nahradí za jméno světa
     'cache' => 'tmp/[world]',             	    //Pomocné soubory
-
+    'cacheurl' => 'http://127.0.0.1/towns/tmp/',//Přístup k pomocným souborům (např. z CDN)
     'mysql_host' => 'localhost',            
     'mysql_user' => 'root',                
     'mysql_password' => '',
