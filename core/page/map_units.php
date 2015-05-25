@@ -52,8 +52,8 @@ if(!$GLOBALS['map_units_ids']){
 
 
 
-    //$range='1';
-    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
+    $range='1';
+    //$range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
 	$range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 
 
@@ -118,7 +118,7 @@ foreach($objects as $object) {
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
 
         //Způsob in_array($object['type'],array('building','tree','rock')) je pomalejší
-        if($object['type']=='building' or $object['type']=='tree' or $object['rock']=='building') {
+        if($object['type']=='building' or $object['type']=='tree' or $object['type']=='rock') {
 
             if ($object['readytime'] > time()) {
 
@@ -355,7 +355,7 @@ foreach($objects as $object) {
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building, Tree and rock
-    if($object['type']=='building' or $object['type']=='tree' or $object['rock']=='building') {
+    if($object['type']=='building' or $object['type']=='tree' or $object['type']=='rock') {
         //--------------------------------------------------------------------------------------------------------------MODEL
         t($object['name'] . ' - beforeunit');
 
