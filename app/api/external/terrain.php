@@ -17,8 +17,8 @@
     <title>Terény | Ukázka Towns API</title>
     <meta charset="UTF-8">
     <meta name="description" content="Zobrazení terénů v html tabulce" />
-    <script src="<?=TownsAppURL?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
-    <link rel="stylesheet" href="<?=TownsAppURL?>map.lib.css">
+    <script src="<?=TownsAppPath?>map.lib.js"></script><!--Při importu do Towns potřeba buď zabalit oba soubory do .zip, nebo vše sloučit do jediného .php souboru.-->
+    <link rel="stylesheet" href="<?=TownsAppPath?>map.lib.css">
 </head>
 <body>
 
