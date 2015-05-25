@@ -18,34 +18,34 @@
 //==============================
 
 
-    $GLOBALS['units_stream']='';
-    $GLOBALS['area_stream']='';
-    $GLOBALS['attack_stream']='';
+$GLOBALS['units_stream']='';
+$GLOBALS['area_stream']='';
+$GLOBALS['attack_stream']='';
 
 //------------------------------------------------------------------------------------------------------WHERE PREPARE
 
-	$say="''";//"(SELECT IF((`[mpx]text`.`timestop`=0 OR ".time()."<=`[mpx]text`.`timestop`),`[mpx]text`.`text`,'')  FROM `[mpx]text` WHERE `[mpx]text`.`from`=`[mpx]pos_obj`.id AND `[mpx]text`.`type`='chat' ORDER BY `[mpx]text`.time DESC LIMIT 1)";
-	//$say="'ahoj'";
-	$profileown="(SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own` LIMIT 1) as `profileown`";
-	    $xcu=0;
-	    $ycu=0;
-	    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
-	    if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
-	    //echo($xcu.','.$ycu);
-	    
-	    $xu=($ycu+$xcu)*5+1;
-	    $yu=($ycu-$xcu)*5+1;
-	    
-	    //echo(tab(150).$xxu);
-	$rxp=424*2.5;//+$xxu;
-	$ryp=0;//+$yyu;
-	//$p=(200*0.75*((212)/375));
-	$px=424/10;$py=$px/2;
+$say="''";//"(SELECT IF((`[mpx]text`.`timestop`=0 OR ".time()."<=`[mpx]text`.`timestop`),`[mpx]text`.`text`,'')  FROM `[mpx]text` WHERE `[mpx]text`.`from`=`[mpx]pos_obj`.id AND `[mpx]text`.`type`='chat' ORDER BY `[mpx]text`.time DESC LIMIT 1)";
+//$say="'ahoj'";
+$profileown="(SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own` LIMIT 1) as `profileown`";
+$xcu=0;
+$ycu=0;
+if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
+if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
+//echo($xcu.','.$ycu);
+
+$xu=($ycu+$xcu)*5+1;
+$yu=($ycu-$xcu)*5+1;
+
+//echo(tab(150).$xxu);
+$rxp=424*2.5;//+$xxu;
+$ryp=0;//+$yyu;
+//$p=(200*0.75*((212)/375));
+$px=424/10;$py=$px/2;
 
 
 if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 
-        $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
+$whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
 //------------------------------------------------------------------------------------------------------SELECT - ALLES
 if(!$GLOBALS['map_units_ids']){
@@ -53,31 +53,34 @@ if(!$GLOBALS['map_units_ids']){
 
 
     $range='1';
-    //$range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
-	$range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
+    $range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 
 
-	$hlname=id2name($GLOBALS['config']['register_building']);
+    $hlname=id2name($GLOBALS['config']['register_building']);
 
-    $objects=array_merge(
+    /*$objects=array_merge(
         sql_assoc("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND ".$range.$whereplay )
+        ,sql_assoc("SELECT `x`,`y`,`type`,'t' as `res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='tree' AND ".$range.$whereplay )
+        ,sql_assoc("SELECT `x`,`y`,`type`,`res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='rock' AND ".$range.$whereplay )
+        ,sql_assoc("SELECT `x`,`y`,`type`,`res`,`name`,`id`,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='story' AND ".$range.$whereplay )
+    );*/
 
 
-        ,sql_assoc("SELECT `x`,`y`,`type`,'t' as `res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='tree' AND ".$range.$whereplay ." UNION
-        SELECT `x`,`y`,`type`,`res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='rock' AND ".$range.$whereplay )
-
-
-        ,sql_assoc("SELECT `x`,`y`,`type`,'' as `res`,`name`,`id`,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='story' AND ".$range.$whereplay )
-    );
-
+    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay );
+    $objects= $GLOBALS['pdo']->query($sql);
 
 }else{
 
     //------------------------------------------------------------------------------------------------------SELECT ONLY
-        $where=$GLOBALS['map_units_ids'];
-	$where=implode("' OR `id`='",$where);
-	$where="(`id`='$where')";
-    $objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
+    $where=$GLOBALS['map_units_ids'];
+    $where=implode("' OR `id`='",$where);
+    $where="(`id`='$where')";
+    //$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
+
+    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
+    $objects= $GLOBALS['pdo']->query($sql);
+
 }
 
 
@@ -85,7 +88,8 @@ if(!$GLOBALS['map_units_ids']){
 
 
 //======================================================================================================================FOREACH
-foreach($objects as $object) {
+while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
+
     t($object['name'] . ' - start');
     //------------------------------------------------------------------------------------------------------------------Příprava proměnných
 
@@ -386,9 +390,9 @@ foreach($objects as $object) {
             $modelurl = $alltree[$rand];
             $GLOBALS['model_resize'] = 0.75 / (0.75 * gr);
 
-        //------------------------------------------------------
+            //------------------------------------------------------
         }elseif($object['type']=='rock' and $fpfs==1){
-        //------------------------------------------------------
+            //------------------------------------------------------
 
             if (!$allrock) {
                 if (!$allrock = cache('allrock')) {
@@ -396,8 +400,8 @@ foreach($objects as $object) {
                     $objects_ = sql_array('SELECT DISTINCT `res` FROM [mpx]pos_obj WHERE `type`=\'rock\' AND ' . objt() . ' AND `res`!=\'\' ORDER BY id LIMIT 400');
                     foreach ($objects_ as $object_)
                         $allrock[$object_['res']] = modelx($object_['res']);
-                        cache('allrock', $allrock);
-                        t('after allrock');
+                    cache('allrock', $allrock);
+                    t('after allrock');
                 } else {
                     //$GLOBALS['model_resize']=0.75/(0.75*gr);//todo Nepěkné řešení
                     //$GLOBALS['model_resize']=1;
@@ -408,13 +412,13 @@ foreach($objects as $object) {
             $GLOBALS['model_resize'] = 1;
             $ry-=35/$GLOBALS['mapzoom'];
 
-        //------------------------------------------------------
+            //------------------------------------------------------
         }else/**/{
-        //------------------------------------------------------
+            //------------------------------------------------------
 
             $modelurl = modelx($object['res'], $fpfs/*$_GLOBALS['map_night']*/, $usercolor);
 
-        //------------------------------------------------------
+            //------------------------------------------------------
         }
         //------------------------------------------------------
 
@@ -604,13 +608,13 @@ foreach($objects as $object) {
 
     //------------------------------------------------------------------------------------------------------
 
-	t($object['name'].' - end');
+    t($object['name'].' - end');
 
 }
 //======================================================================================================================
 
 
-        
+
 $GLOBALS['units_stream'].=jsr('map_units_time='.time());
 
 
