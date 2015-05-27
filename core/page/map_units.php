@@ -20,9 +20,10 @@
 if(!$GLOBALS['all_images'])
 $GLOBALS['all_images']=array();
 
-$GLOBALS['units_stream']='';//@deprecated;
-$GLOBALS['area_stream']='';//@deprecated;
-$GLOBALS['attack_stream']='';//@deprecated;
+
+$all_images_spec=array();
+
+$GLOBALS['units_stream']='';
 
 //------------------------------------------------------------------------------------------------------WHERE PREPARE
 
@@ -44,8 +45,6 @@ $ryp=0;//+$yyu;
 //$p=(200*0.75*((212)/375));
 $px=424/10;$py=$px/2;
 
-
-if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 
 $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
@@ -273,10 +272,11 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             }
 
             $src = rebase(url . $file);
-            $GLOBALS['area_stream'] .= '<div style="position:absolute;z-index:150;" id="expand' . $object['id'] . '">
+            /*$GLOBALS['area_stream'] .= '<div style="position:absolute;z-index:150;" id="expand' . $object['id'] . '">
         <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >
         <img src="' . $src . '" widht="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
-        </div></div>';
+        </div></div>';*/
+            $all_images_spec[]=array($src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'expand');
         }
 
         //--------------------------------------------------------------------------------------------------------------ATTACK
@@ -353,11 +353,17 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
 
             //die($src);
-            $GLOBALS['attack_stream'] .= '<div style="position:absolute;z-index:150;" id="attack' . $object['id'] . '">
-            <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >' ./*$object['attack']x.*/
+
+
+            /*$GLOBALS['attack_stream'] .= '<div style="position:absolute;z-index:150;" id="attack' . $object['id'] . '">
+            <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >' .
                 '
         <img src="' . $src . '" width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
-            </div></div>';
+            </div></div>';*/
+
+
+            $all_images_spec[]=array($src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack');
+
         }
     }
 
@@ -497,7 +503,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
             ');*/
 
-            $GLOBALS['all_images'][]=array($modelurl,round($rx + round((-43 + 2) / $GLOBALS['mapzoom'])),round($ry -htmlbgc/*+ htmlunitc*/ - round((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(round(82 / $GLOBALS['mapzoom'])) , (round(156 / $GLOBALS['mapzoom'])));
+            $GLOBALS['all_images'][]=array($modelurl,($rx + ((-43 + 2) / $GLOBALS['mapzoom'])),($ry -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(82 / $GLOBALS['mapzoom']) , (156 / $GLOBALS['mapzoom']),$object['type']);
 
 
         } else {
@@ -517,7 +523,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
                 $GLOBALS['units_stream'] .= '
                 <div style="position:absolute;z-index:' . ($ry + 2000) . ';" >
-            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px;" ' . $yourid . '>
+            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px;cursor:hand;" ' . $yourid . '>
             <img src="' . imageurl('design/blank.png') . '" class="unit" id="' . ($object['id']) . '" border="0" alt="' . addslashes($object['name']) . '" title="' . addslashes($object['name']) . '" width="' . (round(70 / $GLOBALS['mapzoom'])) . '" height="' . (round(35 / $GLOBALS['mapzoom'])) . '"/>
             </div>
             </div>';
@@ -632,7 +638,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 }
 //======================================================================================================================
 
-
+$GLOBALS['all_images']=array_merge($all_images_spec, $GLOBALS['all_images']);
 
 $GLOBALS['units_stream'].=jsr('map_units_time='.time());
 

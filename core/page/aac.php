@@ -103,7 +103,6 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 
 
 <?php /*if(!$_GET['onlyc'])*/subjs('surkey');/*$GLOBALS['ss']['use_object']->hold->showjs();*/ ?>
-<?php subjs('chat_aac'); ?>
 
 
 <?php
@@ -136,7 +135,7 @@ if($_GET['q'] and !$_GET['onlyc']){
 			}
 		}
 		//e('alert(1);');*/
-		if(!defined('onlyremove')){
+		//if(!defined('onlyremove')){
 			/*subexec('map_units');
 
 
@@ -148,9 +147,9 @@ if($_GET['q'] and !$_GET['onlyc']){
 			e('aac_clickset();');*/
 
 
-            //todo subjs('map');
+            subjs('map');
 
-		}
+		//}
 	}
 
 }

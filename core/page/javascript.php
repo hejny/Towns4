@@ -10,6 +10,49 @@
 //==============================
 ?>
 <script>
+    /*------------------------------drawmap*/
+
+    var drawmaplayers=['','terrain','building','tree','rock'];
+
+    var turnmap=function(wtf,state='x') {
+
+        var i=jQuery.inArray(wtf,drawmaplayers);
+
+        if(i==-1 && state===false)return;
+        if(i!=-1 && state===true)return;
+
+
+        if(i!=-1)
+            delete drawmaplayers[i]
+        else
+            drawmaplayers.push(wtf);
+
+
+        //alert(i);
+        //alert(drawmaplayers);
+        drawmap();
+    }
+
+    var drawmap=function() {
+
+        //alert(123);
+        var imgs_count = all_images.length;
+        i=0;while(i<imgs_count){
+
+            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
+                ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
+
+
+            i++;
+        }
+
+
+    }
+
+
+
+
+
 /*------------------------------parseMap*/
             xc=0/*<?php echo($GLOBALS['xc']); ?>*/;
             yc=0/*<?php echo($GLOBALS['yc']); ?>*/;

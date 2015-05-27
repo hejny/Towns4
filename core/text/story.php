@@ -39,7 +39,15 @@ if($html){
     }
 }
 
-e('<div style="width: 440px;" class="story">');
+
+
+e('
+<style>
+.story img{
+    max-width: 440px;
+}
+</style>
+<div style="width: 440px;" class="story">');
 e($html);
 e('</div>');
 
