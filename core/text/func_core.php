@@ -89,7 +89,7 @@ function backup_text($text){
 }
 //======================================================================================
 function send_check($from,$to,$title,$text){
-    $id = sql_1number('SELECT id FROM [mpx]text WHERE `from`='.sqlx($from).' AND `to`='.sqlx($to).' AND `title`='.sqlx($title).' AND `text`='.sqlx($text).' AND `time`> '.(time()-2));
+    $id = sql_1number('SELECT id FROM [mpx]text WHERE `from`='.sqlx($from).' AND `to`='.sqlx($to).' AND `title`='.sqlx($title).' AND `text`='.sqlx($text).' AND `time`> '.(time()-30));
 
     if($id)
         return false;

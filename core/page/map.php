@@ -1205,9 +1205,12 @@ if(!$_GLOBALS['noxmap']){
         $(all_images).load(function() {
 
 
+            //ctx.drawImage(this,this.x,this.y,this.width,this.height);
+
             imgs_loaded++;
 
             if(imgs_loaded === imgs_count) {
+
 
                 setTimeout(function(){
 
