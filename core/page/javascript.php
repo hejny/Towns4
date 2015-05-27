@@ -9,7 +9,7 @@
 */
 //==============================
 ?>
-
+<script>
 /*------------------------------parseMap*/
             xc=0/*<?php echo($GLOBALS['xc']); ?>*/;
             yc=0/*<?php echo($GLOBALS['yc']); ?>*/;
@@ -84,36 +84,39 @@
                            
                             //alert(vystup.url);
                             if(true){
-                                /*$( "#draglayer" ).draggable( "option", "disabled", false );
-                                /*------Výřez jouu*/
-                                /*jouu_stream=$('#jouu').html();
-                                //alert(_xc+','+_yc);
-                                _pxc=_xc;
-                                _pyc=_yc;*/
-                                //alert('loaded');
+
                                 document.parseMapxloading=false;
                                 zaloha_a=$('#create-build').css('display');
                                 zaloha_t=$('#terrain-build').css('display');
                                 zaloha_e=$('#expandarea').css('display');
-				zaloha_at=$('#attackarea').css('display');
+				                zaloha_at=$('#attackarea').css('display');
                                 zaloha_gr=$('#grid').css('display');
     			                zaloha_mb=$('.mapbox').css('display');
     			                zaloha_sb=$('.mapbox').css('saybox');
                                 zaloha_u=$('#units_stream').html();
                                 offset=$('#draglayer').offset();
-                                /*xx=parseFloat($('#draglayer')./*offset.left*css("left"));/*alert(xx);*/
-                                /*yy=parseFloat($('#draglayer')./*offset.top*css("top"));
-                                /*zaloha_uxc=offset.left/*pxx-lxx+xx/*parseFloat($('#draglayer').offset.left/*css('left'))-pxx*/
-                                /*zaloha_uyc=offset.top/*pyy-lyy+yy/*parseFloat($('#draglayer').offset.top/*css('top'))-pyy*/
-                                
+
+                                //top1=parseInt($('#draglayer').css('top'));
+                                //left1=parseInt($('#draglayer').css('left'));
+                                zaloha_img=document.getElementById("map_canvas");
                                 $('#map').html(vystup);
+                                //top2=parseInt($('#draglayer').css('top'));
+                                //left2=parseInt($('#draglayer').css('left'));
+
+                                //ctx.drawImage(zaloha_img,left2-left1,top2-top1);
+                                //alert(123);
+                                //alert(left2+'-'+left1+','+top2+'-'+top1);
+
+
+
                                 if(zaloha_a=='block')build(window.build_master,window.build_id,window.build_func);
-                                if(zaloha_t=='block')terrain(window.tbuild_master,window.tbuild_id,window.tbuild_func);                           
+                                if(zaloha_t=='block')terrain(window.tbuild_master,window.tbuild_id,window.tbuild_func);
+
        							$('#expandarea').css('display',zaloha_e);
-							$('#attackarea').css('display',zaloha_at);
+							    $('#attackarea').css('display',zaloha_at);
     							$('#grid').css('display',zaloha_gr);
-    								$('.mapbox').css('display',zaloha_mb);
-    								$('.saybox').css('display',zaloha_sb);
+                                $('.mapbox').css('display',zaloha_mb);
+                                $('.saybox').css('display',zaloha_sb);
 
                                 fff();
     
@@ -632,3 +635,4 @@ $(document).ready(function(){
 
  
        /*===========================================================================*/
+</script>

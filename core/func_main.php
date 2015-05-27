@@ -849,7 +849,7 @@ function htmljscss(){
     $filejs = tmpfile2(array('js',1,$GLOBALS['inc']['url'],url), 'min.js', 'page');
     $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
-    if (!file_exists($filejs)/** or 1/**/) {
+    if (!file_exists($filejs) or newpage/** or 1/**/) {
 
         $js = '';
 
@@ -1003,6 +1003,8 @@ EOF;
         ob_start();
         require(root . core . '/page/javascript.php');
         $js .= ob_get_contents();
+        $js = str_replace(array('<script>','</script>'),'',$js);
+
         ob_end_clean();
         //-------------------------------------------------Minifikace @todo Zprovoznit minifikacri
         //require_once(root.'lib/jsmin.php');
@@ -1015,7 +1017,7 @@ EOF;
         fpc($filejs, $js);
     }
 
-    if (!file_exists($filecss)/** or 1/**/){
+    if (!file_exists($filecss) or newpage/** or 1/**/){
 
         $css = '';
 

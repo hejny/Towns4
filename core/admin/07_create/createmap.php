@@ -51,32 +51,7 @@ echo("<br/>");
 
 if($action=="config"){
 $im = imagecreatefrompng($imgurl);
-/*$file=root."world/".w.".txt";
-$content=file_get_contents($file);
-$content.=nln.'mapsize='.imagesx($im).';';
-file_put_contents($file,$content);*/ //Nepřidávat mapsize do konfigurace
 
-
-/*
-$im = imagecreatefrompng($GLOBALS['ss']["image"]);
-$content="url=http://localhost/towns4/;
-cache=tmp/".w.";
-mysql_server=localhost;
-mysql_user=root;
-mysql_password=;
-mysql_db=towns;
-mysql_prefix=".w."_;
-lang=cz;
-lem=0;
-mapsize=".imagesx($im).";
-notmpimg=0;
-timeplan=0;";
-	$file="../config/w/".w.".txt";
-	if(!file_exists($file)){
-		file_put_contents($file,$content);
-		chmod($file,0777);
-	}
-imagedestroy($im);*/
 }
 
 $datastream=file_get_contents(adminfile."files/".$GLOBALS['ss']["image"].".png");
@@ -506,15 +481,28 @@ if($post["kmennuholnik"]){
 <?php
 //-=====================================================================================
 if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){echo("<br>mapgenerator<br>");
+
+
+    $objects=array();
     if($action=="map"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `type`='terrain' AND ww='".$GLOBALS['ss']["ww"]."'",3);
+        $objects=sql_array("SELECT `id` FROM `[mpx]pos_obj` WHERE `type`='terrain' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
     if($action=="tree"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
+        sql_query("SELECT `id` FROM `[mpx]pos_obj` WHERE `name` LIKE '%tree%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
     if($action=="rock"){
-        sql_query("DELETE FROM `[mpx]pos_obj` WHERE `name` LIKE '%rock%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
+        sql_query("SELECT `id` FROM `[mpx]pos_obj` WHERE `name` LIKE '%rock%' AND ww='".$GLOBALS['ss']["ww"]."'",3);
     }
+    foreach($objects as $object){
+        //$object=new object($object['id']);
+        //$object->deletex();
+        //unset($object);
+        //sql_query("DELETE FROM [mpx]objects WHERE id=".$object['id']);
+        //sql_query("DELETE FROM [mpx]objects_tmp WHERE id=".$object['id']);
+        sql_query("DELETE FROM [mpx]positions WHERE id=".$object['id']);
+    }
+
+
     $im = imagecreatefrompng($imgurl);
     $bgs=array(
     array("t0",0,0,"000000"),//temnota
@@ -580,7 +568,7 @@ if($action=="map" or $action=="tree" or $action=="rock" or $action=="finish"){ec
     //-----
         //@todo Funguje To???
     if($action=="map" and $q==0){
-        $query="INSERT INTO `[mpx]positions` (`x`, `y`, `ww`, `id`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','".(1000+intval($terrain))."')";
+        $query="INSERT INTO `[mpx]positions` (`x`, `y`, `ww`, `id`) VALUES ('$x','$y','".$GLOBALS['ss']["ww"]."','".(1000+intval(substr($terrain,1)))."')";
         sql_query($query,3);
     }
     //-----
