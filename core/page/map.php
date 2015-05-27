@@ -417,7 +417,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 xxc=tmp[0];
                 yyc=tmp[1];
 
-                document.title=(xxc+','+yyc);
+                //document.title=(xxc+','+yyc);
 
                 /*alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));*/
                 /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
