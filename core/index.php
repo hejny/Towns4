@@ -54,6 +54,7 @@ $real_url=$protocol.$_SERVER['HTTP_HOST'].$uri;
 $uri_keywords=
     array(
     'debug',
+    'newpage',
     'timeplan',
     //'edit',
     //'notmp',
@@ -232,6 +233,7 @@ define('base',$GLOBALS['inc']['base']);
 
 if(!in_array('debug',$used_keywords))define('debug',0);
 if(in_array('timeplan',$used_keywords)){define('timeplan',1);}else{define('timeplan',0);}
+if(in_array('newpage',$used_keywords)){define('newpage',1);}else{define('newpage',0);}
 if(in_array('onlymap',$used_keywords)){define('onlymap',1);}else{define('onlymap',0);}
 if(in_array('fblogin',$used_keywords)){define('fblogin',1);}else{define('fblogin',0);}
 if(in_array('sitemap.xml',$used_keywords)){$sitemap=true;}else{$sitemap=false;}

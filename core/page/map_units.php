@@ -17,10 +17,12 @@
 }*/
 //==============================
 
+if(!$GLOBALS['all_images'])
+$GLOBALS['all_images']=array();
 
-$GLOBALS['units_stream']='';
-$GLOBALS['area_stream']='';
-$GLOBALS['attack_stream']='';
+$GLOBALS['units_stream']='';//@deprecated;
+$GLOBALS['area_stream']='';//@deprecated;
+$GLOBALS['attack_stream']='';//@deprecated;
 
 //------------------------------------------------------------------------------------------------------WHERE PREPARE
 
@@ -48,7 +50,7 @@ if($_GET['id'])$GLOBALS['map_units_ids']=array($_GET['id']);
 $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
 //------------------------------------------------------------------------------------------------------SELECT - ALLES
-if(!$GLOBALS['map_units_ids']){
+//if(!$GLOBALS['map_units_ids']){ todo zrušit uplně
 
 
 
@@ -67,10 +69,11 @@ if(!$GLOBALS['map_units_ids']){
     );*/
 
 
-    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay );
+    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
+    //echo($sql);
     $objects= $GLOBALS['pdo']->query($sql);
 
-}else{
+/*}else{
 
     //------------------------------------------------------------------------------------------------------SELECT ONLY
     $where=$GLOBALS['map_units_ids'];
@@ -81,7 +84,7 @@ if(!$GLOBALS['map_units_ids']){
     $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
     $objects= $GLOBALS['pdo']->query($sql);
 
-}
+}*/
 
 
 //print_r($array);
@@ -441,7 +444,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             $height = 254;
         } else {
             $width = 82;
-            $height = 123;
+            $height = 156;//123;
         }
         t($object['name'] . ' - afrer getimagesize');
         //if (!$GLOBALS['model_resize'])
@@ -450,10 +453,10 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         // width="83"
 
 
-        $GLOBALS['units_stream'] .= '
+        /*$GLOBALS['units_stream'] .= '
             <div style="position:absolute;z-index:' . ($ry + 1000) . ';display:' . ($onmap ? 'block' : 'none') . ';"  class="timeplay" starttime="' . ($object['starttime'] ? $object['starttime'] : 0) . '" stoptime="' . ($object['stoptime'] ? $object['stoptime'] : 0) . '" >
             <div id="object' . $object['id'] . '" style="position:relative; top:' . round($ry + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])) . 'px; left:' . round($rx + round((-43 + 2) / $GLOBALS['mapzoom'])) . 'px;">
-        ';
+        ';*/
 
         if ($object['res'] and $object['t'] > $mapunitstime) {
 
@@ -477,9 +480,25 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             }*/
             //------------------------------------------------
 
-            $GLOBALS['units_stream'] .= '
+            /*$GLOBALS['units_stream'] .= '
                 <img src="' . ($modelurl) . '"   width="' . (round(82 / $GLOBALS['mapzoom'])) . '" class="clickmap" border="0" alt="' . addslashes($object['name']) . '" title="' . addslashes($object['name']) . '"/>
-            ';
+            ';*/
+
+            /*$GLOBALS['units_stream'].=jsr('
+
+
+                  var allImages['.md5($modelurl).'] = new Image();
+
+                  allImages['.md5($modelurl).'].onload = function() {
+                    ctx.drawImage(allImages['.md5($modelurl).'], '.round($rx + round((-43 + 2) / $GLOBALS['mapzoom'])).', '.round($ry - htmlbgc + round((-132 - $height + 157 + 4) / $GLOBALS['mapzoom'])).',' . (round(82 / $GLOBALS['mapzoom'])) . ',' . (round(156 / $GLOBALS['mapzoom'])) . ');
+
+                  };
+                  allImages['.md5($modelurl).'].src = "'.$modelurl.'";
+
+            ');*/
+
+            $GLOBALS['all_images'][]=array($modelurl,round($rx + round((-43 + 2) / $GLOBALS['mapzoom'])),round($ry -htmlbgc/*+ htmlunitc*/ - round((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(round(82 / $GLOBALS['mapzoom'])) , (round(156 / $GLOBALS['mapzoom'])));
+
 
         } else {
             r('!res');
@@ -488,8 +507,8 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
         t($object['name'] . ' - afrer show res');
 
-        $GLOBALS['units_stream'] .= '</div>';
-        $GLOBALS['units_stream'] .= '</div>';
+        /*$GLOBALS['units_stream'] .= '</div>';
+        $GLOBALS['units_stream'] .= '</div>';*/
 
         //--------------------------------------------------------------------------------------------------------------UNIT CLICKMAP
 

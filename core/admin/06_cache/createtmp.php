@@ -36,17 +36,13 @@ $percent=intval($actual/$total*100);
 echo("<h2>$percent% ($actual/$total)</h2>");
 echo("<b>[$x,$y]</b><br>");
 //echo("<table border=\"1\" width=\"424\" height=\"211\"><tr><td>");
-htmlmap($x,$y);
 
-htmlmap($x,$y,NULL,NULL,NULL,false);
 
-if(!$_GET['onlyn'])htmlmap($x,$y);
-if(!$_GET['onlyn'])htmlmap($x,$y,NULL,NULL,NULL,true);
+e(htmlmap($x,$y1,1));
+
 
 if($actual==1){
-htmlmap(1,11);
-
-htmlmap(1,11,NULL,NULL,NULL,true);
+    e(htmlmap(1,11,1));
 }
 
 
@@ -66,14 +62,13 @@ echo($croncron);
 echo("loading: $nx,$ny<br/>");
 echo("<a href=\"?page=createtmp&amp;world=".w."\">znovu</a><br/>");
 if($actual!=1 or $_GET["start"]){
-echo("<a href=\"?page=createtmp&amp;xc=$nx&amp;yc=$ny&amp;onlyn=".$_GET['onlyn']."&amp;world=".w."\">next</a><br/>");
+echo("<a href=\"?page=createtmp&amp;xc=$nx&amp;yc=$ny&amp;&amp;world=".w."\">next</a><br/>");
 echo('<script language="javascript">
-    window.location.replace("?page=createtmp&xc='.$nx.'&yc='.$ny.'&onlyn='.$_GET['onlyn'].'&world='.w.'&cron='.urlencode($_GET['cron']).'");
+    window.location.replace("?page=createtmp&xc='.$nx.'&yc='.$ny.'&world='.w.'&cron='.urlencode($_GET['cron']).'");
     </script>');/**/
 $croncron='';
 }else{
 echo("<a href=\"?page=createtmp&amp;xc=$nx&amp;yc=$ny&amp;world=".w."\"><h3>start</h3></a><br/>");
-echo("<a href=\"?page=createtmp&amp;xc=$nx&amp;yc=$ny&amp;onlyn=1&amp;world=".w."\"><h3>start only normal</h3></a><br/>");
 }
 }
 

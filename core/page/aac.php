@@ -122,23 +122,32 @@ if($_GET['q'] and !$_GET['onlyc']){
 	//e('alert(1);');
 	//e('alert('.object_id.');');
 	if(defined('object_id') or ($GLOBALS['object_ids'] and $GLOBALS['object_ids']!=array())){
-		$GLOBALS['map_units_ids']=/*object_id*/$GLOBALS['object_ids'];
+
+
+
+		/*$GLOBALS['map_units_ids']=/*object_id* /$GLOBALS['object_ids'];
 		//e('alert('.implode(',',$GLOBALS['object_ids']).');');
-		if(/*defined('join_id') or */count($GLOBALS['object_ids'])){
+		if(/*defined('join_id') or * /count($GLOBALS['object_ids'])){
 			foreach($GLOBALS['object_ids'] as $id){
 				//e('alert('.$id.');');
-				echo('$(\'#object'./*object_id*/$id.'\').remove();');
-				echo('$(\'#expand'./*object_id*/$id.'\').remove();');
-				echo('$(\'#collapse'./*object_id*/$id.'\').remove();');
+				echo('$(\'#object'./*object_id* /$id.'\').remove();');
+				echo('$(\'#expand'./*object_id* /$id.'\').remove();');
+				echo('$(\'#collapse'./*object_id* /$id.'\').remove();');
 			}
 		}
-		//e('alert(1);');
+		//e('alert(1);');*/
 		if(!defined('onlyremove')){
-			subexec('map_units');		
-			subjs('units_stream',$GLOBALS['units_stream'],true);
+			/*subexec('map_units');
+
+
+			//subjs('units_stream',$GLOBALS['units_stream'],true);
+
+
 			subjs('expandarea',$GLOBALS['area_stream'],true);
 			echo('$(\'#units_new\').html("");');
-			e('aac_clickset();');
+			e('aac_clickset();');*/
+            subjs('map');
+
 		}
 	}
 

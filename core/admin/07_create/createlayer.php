@@ -8,6 +8,17 @@
    Towns4Admin - Nástroje pro správu Towns
 */
 //==============================
+
+
+
+
+
+
+
+
+
+
+die('!!!!');
 ?>
 <h3>CreateMap</h3>
 Tyto nástroje slouží k vytvoření mapy z průvodního mapového podkladu.<br/>
