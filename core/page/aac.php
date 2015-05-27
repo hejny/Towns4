@@ -146,7 +146,9 @@ if($_GET['q'] and !$_GET['onlyc']){
 			subjs('expandarea',$GLOBALS['area_stream'],true);
 			echo('$(\'#units_new\').html("");');
 			e('aac_clickset();');*/
-            subjs('map');
+
+
+            //todo subjs('map');
 
 		}
 	}
