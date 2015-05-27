@@ -660,7 +660,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                 window.build_master=master;
                 window.build_id=id;
                 window.build_func=func;
-                $("#expandarea").css("display","block");
+                turnmap('expand',true);
                 $("#create-build").css("display","block");
 		
                 $("#create-build").draggable({ distance:<?php e($GLOBALS['dragdistance']); ?>});
@@ -1108,24 +1108,14 @@ if(!$_GLOBALS['noxmap']){
     ';
 
     $aii=0;
-    $ad=("<table cellspacing=\"0\" cellpadding=\"0\" width=\"".$screen."\" id=\"tabulkamapy\">");
-    $stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
+
+
     for($y=$yc; $y<=$ym+$yc; $y++){
 
-        //if(connection_aborted()){die();}
 
-        $ad=("<tr>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
         for ($x=-$xm+$xc; $x<=$xm+$xc+$xmp; $x++) {
-            $ad=(dnln.'<td width="'.round(424/$zoom).'" height="'.round(211/$zoom).'">');$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
-            //r("$x,$y");
-        //$stream1.="($x,$y)";
 
         $q=1;
-
-            $divplace='<div style="width:'.round(424/$zoom).'px;height:'.round(211/$zoom).'px;overflow:hidden;"></div>';
-
-            if($q){$stream1.=movebyr(htmlmap($x,$y,1,NULL,$y-$yc/*,$_GLOBALS['map_night']*/),0,0).$divplace;}else{$stream1.=htmlmap(-5,0,2,NULL,$y-$yc);}
-            //if($q){$stream2.=movebyr(htmlmap($x,$y,2,NULL,$y-$yc),0,0).$divplace;}else{$stream2.=htmlmap(-5,0,2,NULL,$y-$yc);}
 
             $url=htmlmap($x,$y,1,1,$y-$yc/*,$_GLOBALS['map_night']*/);
             /*$canvasjs.='
@@ -1144,23 +1134,24 @@ if(!$_GLOBALS['noxmap']){
             $canvasjs.="all_images[$aii].yy=".(round(211/$zoom)*($y-$yc)).";";
             $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
             $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
+            $canvasjs.="all_images[$aii].ll='terrain';";
             $aii++;
 
 
-            if($q)$stream3.='<img src="'.mapgrid().'"  width="'.round(424/$zoom).'" class="clickmap">';
-            t();
-            $ad=("</td>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
+            $canvasjs.="all_images[$aii] = new Image();";
+            $canvasjs.="all_images[$aii].src='".mapgrid()."';";
+            $canvasjs.="all_images[$aii].xx=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
+            $canvasjs.="all_images[$aii].yy=".(round(211/$zoom)*($y-$yc)).";";
+            $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
+            $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
+            $canvasjs.="all_images[$aii].ll='grid';";
+            $aii++;
+
+
+
         }
-        $ad=("</tr>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;
+
     }
-    $ad=("</table>");$stream1.=$ad;$stream2.=$ad;$stream3.=$ad;/**/
-
-
-
-
-
-
-
     //-------------------------------
 
     //e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:100;">'.$stream1.'</div></div>');
@@ -1178,6 +1169,7 @@ if(!$_GLOBALS['noxmap']){
         $canvasjs.="all_images[$aii].yy={$image[2]};";
         $canvasjs.="all_images[$aii].width={$image[3]};";
         $canvasjs.="all_images[$aii].height={$image[4]};";
+        $canvasjs.="all_images[$aii].ll='{$image[5]}';";
 
         //var allImages['.md5($modelurl).'] = new Image();
         //$canvasjs.='all_images[]=['.implode(',',$image).'];';
@@ -1196,7 +1188,8 @@ if(!$_GLOBALS['noxmap']){
         ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
         i=0;while(i<imgs_count){
 
-            ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
+            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
+                ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
             i++;
         }
 
@@ -1204,23 +1197,18 @@ if(!$_GLOBALS['noxmap']){
 
         $(all_images).load(function() {
 
-
-            //ctx.drawImage(this,this.x,this.y,this.width,this.height);
+            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
+                ctx.drawImage(this,this.x,this.y,this.width,this.height);
 
             imgs_loaded++;
 
             if(imgs_loaded === imgs_count) {
 
+                drawmap();
 
                 setTimeout(function(){
-
-
-                i=0;while(i<imgs_count){
-
-                    ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
-                    i++;
-                }
-                },1);
+                    drawmap();
+                },1000);
 
 
             }
@@ -1233,24 +1221,14 @@ if(!$_GLOBALS['noxmap']){
     js($canvasjs);
 
 
-    e('<div style="position:absolute;width:0px;height:0px;" class="clickmap"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:100;">
-    <canvas id="map_canvas" class="clickmap" width="'./*round(424/$zoom)*(($xm*2)+2)*/round($GLOBALS['ss']['screenwidth']*gr).'" height="'./*round(211/$zoom)*($ym+1)*/round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
+    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:100;">
+    <canvas id="map_canvas" style="cursor:move;" class="clickmap" width="'./*round(424/$zoom)*(($xm*2)+2)*/round($GLOBALS['ss']['screenwidth']*gr).'" height="'./*round(211/$zoom)*($ym+1)*/round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
     </div></div>');
 
 
-
-    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:200;">');
-
-        e('<div id="expandarea" style="display:none;z-index:210;">'.$GLOBALS['area_stream'].'</div>');
-        e('<div id="attackarea" style="display:none;z-index:220;">'.$GLOBALS['attack_stream'].'</div>');
-
-    e('</div></div>');
-
-
-
-    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:200;display:none;" id="grid">'.$stream3.'</div></div>');
-    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:300;">'.$stream2.'</div></div>');
     e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:400;" id="units_stream">'.$GLOBALS['units_stream']/**/.'</div></div>');
+
+
     e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:500;" class="clickmap" id="units_new"></div></div>');
 
 }

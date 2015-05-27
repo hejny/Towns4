@@ -69,7 +69,7 @@ if($id and $GLOBALS['ss']['master']){//e(1);
     if(!$q){
     ?>
 	<script type="text/javascript">
-    	$('#grid').css('display','block');
+        turnmap('grid',true);
 	</script>
     <?php
     }
@@ -85,7 +85,7 @@ if($id and $GLOBALS['ss']['master']){//e(1);
 <div style="position:absolute;"><div style="position:relative;left:80;top:120;">
 <?php icon("e=object_build;rot=".($rot+5).";noi=1","none","{rotate}",25); ?>
 </div></div>*/
-$hidex="\$('#create-build').css('display','none');\$('#expandarea').css('display','none');";
+$hidex="\$('#create-build').css('display','none');turnmap('expand',false);";
 if($q){
 	$hide=$hidex;
 }else{
@@ -105,7 +105,7 @@ if($q){
 <!--==========-->
 <?php } ?>
 <div style="position:absolute;"><div style="position:relative;left:4;top:4;z-index:20;">
-<?php icon(js2($hidex.(!$q?"\$('#grid').css('display','none');map_units_time=0;":'')),"cancel",lr('cancel'),20); ?>
+<?php icon(js2($hidex.(!$q?"turnmap('grid',false);map_units_time=0;":'')),"cancel",lr('cancel'),20); ?>
 </div></div>
 <!--==========-->
 <div style="position:absolute;"><div id="build_button" style="display:none;position:relative;left:-1;top:<?php e(round(160/$GLOBALS['mapzoom'])); ?>;">

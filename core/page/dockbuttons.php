@@ -20,7 +20,7 @@
     $url2=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
     
     if(sql_1data('SELECT count(1) FROM `[mpx]pos_obj` WHERE type=\'building\' AND own='.$GLOBALS['ss']['useid'].' AND attack!=0 ')){
-    	$url3=js2('if($(\'#attackarea\').css(\'display\')==\'block\'){$(\'#attackarea\').css(\'display\',\'none\')}else{$(\'#attackarea\').css(\'display\',\'block\')}1');
+    	$url3=js2("turnmap('attack',true);");
 	$noattack=0;
     }else{
 	$url3=js2("alert('".lr('attack_nomaster')."');");

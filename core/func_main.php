@@ -854,6 +854,7 @@ function htmljscss(){
         $js = '';
 
         //-------------------------------------------------Knihovny
+        $js .= fgc('lib/modernizr.custom.js');//Načtení modernizr
 
         $js .= fgc('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
         $js .= fgc('lib/jquery/jquery-ui.min.js');
@@ -902,7 +903,7 @@ function htmljscss(){
         $js .= fgc('lib/tinymce/plugins/colorpicker/plugin.min.js');
         $js .= fgc('lib/tinymce/plugins/textpattern/plugin.min.js');
         $js .= fgc('lib/tinymce/plugins/jbimages/plugin.min.js');
-        
+
 
         //-------------------------------------------------FPS, Context, ToTop
         //<?php if(!debug){
