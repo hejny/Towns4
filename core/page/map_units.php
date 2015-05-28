@@ -69,7 +69,9 @@ $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
 
     $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
-    //echo($sql);
+
+    $GLOBALS['tmp']=($sql);
+
     $objects= $GLOBALS['pdo']->query($sql);
 
 /*}else{
