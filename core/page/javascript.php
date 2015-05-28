@@ -14,9 +14,22 @@
 
     var drawmaplayers=['','terrain','building','tree','rock'];
 
-    var turnmap=function(wtf,state='x') {
 
-        var i=jQuery.inArray(wtf,drawmaplayers);
+
+
+    var turnmap=function(/*wtf,state='x'*/) {
+
+        if (arguments.length == 2) {
+            var wtf = arguments[0];
+            var state = arguments[1];
+
+        }else{
+            var wtf = arguments[0];
+            var state = 'x';
+        }
+
+
+            var i=jQuery.inArray(wtf,drawmaplayers);
 
         if(i==-1 && state===false)return;
         if(i!=-1 && state===true)return;
