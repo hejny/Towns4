@@ -1102,6 +1102,10 @@ if(!$_GLOBALS['noxmap']){
 
         var all_images=[];
         var canvas = document.getElementById("map_canvas");
+
+        $(canvas).width=$(window).width();
+        $(canvas).height=$(window).height();
+
         var ctx = canvas.getContext("2d");
 
 
@@ -1163,6 +1167,11 @@ if(!$_GLOBALS['noxmap']){
 
     foreach($GLOBALS['all_images'] as $image){
 
+        $image[1]=round($image[1]);
+        $image[2]=round($image[2]);
+        $image[3]=round($image[3]);
+        $image[4]=round($image[4]);
+
         $canvasjs.="all_images[$aii] = new Image();";
         $canvasjs.="all_images[$aii].src='{$image[0]}';";
         $canvasjs.="all_images[$aii].xx={$image[1]};";
@@ -1197,7 +1206,7 @@ if(!$_GLOBALS['noxmap']){
 
         $(all_images).load(function() {
 
-            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
+            if(jQuery.inArray(this.ll,drawmaplayers)!=-1)
                 ctx.drawImage(this,this.x,this.y,this.width,this.height);
 
             imgs_loaded++;
