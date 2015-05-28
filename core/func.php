@@ -387,6 +387,8 @@ function subescape($sub){
 }
 //---------------------------------------------------------
 
+//$bufferx=str_replace(array("\r","\n","'",'"'),array("\\\r","\\\n","\\'",'\\"'),$buffer);
+
 function subjsr($sub,$buffer=false,$plus=false,$alert=false){
     if(!$ee)$ee=$sub;
     list($dir,$ee)=explode('-',$ee);
@@ -399,14 +401,18 @@ function subjsr($sub,$buffer=false,$plus=false,$alert=false){
     }
      //-------
         //$buffer=contentlang($buffer);
+
         $bufferx="";
-        foreach(str_split($buffer) as $char){
-            if(strtr($char,"ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮqwertyuiopasdfghjkl","0000000000000000000000000000000000000000000000000000000000")==$char){
+        $buffer=str_split($buffer);
+        $nochars=str_split('ěščřžýáíéúůĚŠČŘŽÝÁÍÉÚŮqwertyuiopasdfghjkl');
+
+        foreach($buffer as $char){
+            if(!in_array($char,$nochars)){
                 $char=dechex(ord($char));
                 if(strlen($char)==1){ $char=("0".$char); }
                 $char="%".$char;
             }
-            $bufferx=$bufferx.$char;
+            $bufferx.=$char;
         }     
      //-------
     $return='';

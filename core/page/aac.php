@@ -148,7 +148,7 @@ if($_GET['q'] and !$_GET['onlyc']){
 
 
             subjs('map');
-            e("alert('".addslashes($GLOBALS['tmp'])."');");
+            //e("alert('".addslashes($GLOBALS['tmp'])."');");
 		//}
 	}
 
