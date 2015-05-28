@@ -127,7 +127,7 @@ if($_GET['q'] and !$_GET['onlyc']){
 		/*$GLOBALS['map_units_ids']=/*object_id* /$GLOBALS['object_ids'];
 		//e('alert('.implode(',',$GLOBALS['object_ids']).');');
 		if(/*defined('join_id') or * /count($GLOBALS['object_ids'])){
-			foreach($GLOBALS['object_ids'] as $id){
+			foreach($GLOBALS['object_ids'] snesas $id){
 				//e('alert('.$id.');');
 				echo('$(\'#object'./*object_id* /$id.'\').remove();');
 				echo('$(\'#expand'./*object_id* /$id.'\').remove();');
@@ -148,7 +148,7 @@ if($_GET['q'] and !$_GET['onlyc']){
 
 
             subjs('map');
-
+            e("alert('".addslashes($GLOBALS['tmp'])."');");
 		//}
 	}
 

@@ -22,7 +22,7 @@
 
 //==============================
 
-
+$GLOBALS['mapzoom']=1;//todo Ne natrvdo
 if($_GET['glob']){$glob=true;}else{$glob=false;}
 $zoom=$GLOBALS['mapzoom'];
 if(!$zoom)$zoom=1;
