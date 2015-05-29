@@ -946,7 +946,12 @@ function trackobject($id){
 function ifobject($id,$noobjt=false){
 	$id=trim($id);
     //r("SELECT id FROM objects WHERE id='$id' OR name='$id'");
-    $result = sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE ".(is_numeric($id)?'id':'name')."='$id' ".' AND '.($noobjt?'1':objt()));// OR profile LIKE '%mail=$id;%'
+
+    if(is_numeric($id))
+        $result = sql_1data("SELECT id FROM `[mpx]positions` WHERE `id`='$id' ".' AND '.($noobjt?'1':objt()));
+    else
+        $result = sql_1data("SELECT id FROM `[mpx]pos_obj` WHERE `name`='$id' ".' AND '.($noobjt?'1':objt()));
+
     //r($result);
     if($result){
         return($result);
