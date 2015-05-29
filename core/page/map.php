@@ -1099,6 +1099,7 @@ if(!$_GLOBALS['noxmap']){
 
     $canvasjs='
 
+        document.maptime='.time().';
 
         var all_images=[];
         var canvas = document.getElementById("map_canvas");

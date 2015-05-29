@@ -52,8 +52,10 @@
 
         if (arguments.length == 1) {
             var time = arguments[0];
+            document.maptime=time;
         }else{
-            var time = Math.floor(new Date().getTime() / 1000)
+            //var time = Math.floor(new Date().getTime() / 1000);
+            time=document.maptime;
         }
 
         document.maptime=time;
