@@ -10,11 +10,11 @@
 //==============================
 ?>
 <script>
-    /*------------------------------drawmap*/
+    //=====================================================================================Vykreslování mapy pomocí canvas
+
+    //----------------------------------------------------------------turnmap
 
     var drawmaplayers=['','terrain','building','tree','rock'];
-
-
 
 
     var turnmap=function(/*wtf,state='x'*/) {
@@ -36,7 +36,7 @@
 
 
         if(i!=-1)
-            delete drawmaplayers[i];
+            drawmaplayers.splice(i,1);
         else
             drawmaplayers.push(wtf);
 
@@ -46,15 +46,35 @@
         drawmap();
     }
 
+    //----------------------------------------------------------------drawmap
+
     var drawmap=function() {
 
-        //alert(123);
+        if (arguments.length == 1) {
+            var time = arguments[0];
+        }else{
+            var time = Math.floor(new Date().getTime() / 1000)
+        }
+
+        document.maptime=time;
+
+
         var imgs_count = all_images.length;
         var i=0;
         while(i<imgs_count){
 
-            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
-                ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
+
+            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1) {
+
+
+                if ((all_images[i].starttime <= time) && (all_images[i].stoptime == 0 || all_images[i].stoptime > time)) {
+
+                    ctx.drawImage(all_images[i], all_images[i].xx, all_images[i].yy, all_images[i].width, all_images[i].height);
+
+                }
+
+
+            }
 
 
             i++;
@@ -63,9 +83,27 @@
 
     }
 
+    //----------------------------------------------------------------removeobject
+
+    var removeobject=function(id) {
+
+        var imgs_count = all_images.length;
+        var i=0;
+        while(i<imgs_count){
+
+            if(all_images[i].objectid==id) {
+                all_images.splice(i,1);
+                imgs_count--;
+            }
+            i++;
+        }
+
+        drawmap();
+    }
 
 
 
+    //=====================================================================================
 
 /*------------------------------parseMap*/
             xc=0/*<?php echo($GLOBALS['xc']); ?>*/;

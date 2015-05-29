@@ -446,7 +446,7 @@ if($sql and $id?ifobject($id):true){
 
 
                    border(
-                       iconr(($timetoready?'':'e=map_context;ee=minimenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id),
+                       iconr(($timetoready?'':'e=map_context;ee=minimenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id.';'.jsa2('removeobject('.$id.');')),
                        'f_dismantle',lr('f_dismantle'),$iconsize,NULL,$timetoready)
                        ,0,$iconsize,NULL,NULL,$timetoready?$timetoready:lr('f_dismantle'));
 

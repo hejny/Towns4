@@ -277,7 +277,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >
         <img src="' . $src . '" widht="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
         </div></div>';*/
-            $all_images_spec[]=array($src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'expand');
+            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'expand',$object['starttime'],$object['readytime'],$object['stoptime']);
         }
 
         //--------------------------------------------------------------------------------------------------------------ATTACK
@@ -363,7 +363,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             </div></div>';*/
 
 
-            $all_images_spec[]=array($src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack');
+            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
 
         }
     }
@@ -504,7 +504,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
             ');*/
 
-            $GLOBALS['all_images'][]=array($modelurl,($rx + ((-43 + 2) / $GLOBALS['mapzoom'])),($ry -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(82 / $GLOBALS['mapzoom']) , (156 / $GLOBALS['mapzoom']),$object['type']);
+            $GLOBALS['all_images'][]=array($object['id'],$modelurl,($rx + ((-43 + 2) / $GLOBALS['mapzoom'])),($ry -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(82 / $GLOBALS['mapzoom']) , (156 / $GLOBALS['mapzoom']),$object['type'],$object['starttime'],$object['readytime'],$object['stoptime']);
 
 
         } else {

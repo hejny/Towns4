@@ -135,7 +135,7 @@ if($_GET['q'] and !$_GET['onlyc']){
 			}
 		}
 		//e('alert(1);');*/
-		//if(!defined('onlyremove')){
+		if(!defined('onlyremove')){
 			/*subexec('map_units');
 
 
@@ -146,10 +146,12 @@ if($_GET['q'] and !$_GET['onlyc']){
 			echo('$(\'#units_new\').html("");');
 			e('aac_clickset();');*/
 
-
+            e("zaloha_a=$('#create-build').css('display');");
             subjs('map');
+            e("if(zaloha_a=='block')build(window.build_master,window.build_id,window.build_func);");
+
             //e("alert('".addslashes($GLOBALS['tmp'])."');");
-		//}
+		}
 	}
 
 }
