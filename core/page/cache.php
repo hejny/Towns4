@@ -53,7 +53,7 @@ if(!file_exists($fileMM)){
 $groups=array('master','main','wall','bridge','path','terrain');
 
 foreach($groups as $group){
-    $master=sql_1data("SELECT `id` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `group`=".sqlx($group)." AND `type`='building'  ORDER by id LIMIT 1 ");
+    $master=sql_1data("SELECT `id` FROM `[mpx]pos_obj` WHERE `own`='".$GLOBALS['ss']['useid']."' AND `group`=".sqlx($group)." AND `type`='building' LIMIT 1 ");
     
     if($master){
     
