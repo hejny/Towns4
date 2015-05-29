@@ -1103,8 +1103,8 @@ if(!$_GLOBALS['noxmap']){
         var all_images=[];
         var canvas = document.getElementById("map_canvas");
 
-        $(canvas).width=$(window).width();
-        $(canvas).height=$(window).height();
+        $("#map_canvas").attr("width",parseInt($(window).width()*1.6));
+        $("#map_canvas").attr("height",parseInt($(window).height()*1.6));
 
         var ctx = canvas.getContext("2d");
 
@@ -1139,6 +1139,8 @@ if(!$_GLOBALS['noxmap']){
             $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
             $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
             $canvasjs.="all_images[$aii].ll='terrain';";
+            $canvasjs.="all_images[$aii].starttime=0;";
+            $canvasjs.="all_images[$aii].stoptime=0;";
             $aii++;
 
 
@@ -1149,6 +1151,8 @@ if(!$_GLOBALS['noxmap']){
             $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
             $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
             $canvasjs.="all_images[$aii].ll='grid';";
+            $canvasjs.="all_images[$aii].starttime=0;";
+            $canvasjs.="all_images[$aii].stoptime=0;";
             $aii++;
 
 
@@ -1167,18 +1171,23 @@ if(!$_GLOBALS['noxmap']){
 
     foreach($GLOBALS['all_images'] as $image){
 
-        $image[1]=round($image[1]);
+
         $image[2]=round($image[2]);
         $image[3]=round($image[3]);
         $image[4]=round($image[4]);
+        $image[5]=round($image[5]);
 
         $canvasjs.="all_images[$aii] = new Image();";
-        $canvasjs.="all_images[$aii].src='{$image[0]}';";
-        $canvasjs.="all_images[$aii].xx={$image[1]};";
-        $canvasjs.="all_images[$aii].yy={$image[2]};";
-        $canvasjs.="all_images[$aii].width={$image[3]};";
-        $canvasjs.="all_images[$aii].height={$image[4]};";
-        $canvasjs.="all_images[$aii].ll='{$image[5]}';";
+        $canvasjs.="all_images[$aii].objectid={$image[0]};";
+        $canvasjs.="all_images[$aii].src='{$image[1]}';";
+        $canvasjs.="all_images[$aii].xx={$image[2]};";
+        $canvasjs.="all_images[$aii].yy={$image[3]};";
+        $canvasjs.="all_images[$aii].width={$image[4]};";
+        $canvasjs.="all_images[$aii].height={$image[5]};";
+        $canvasjs.="all_images[$aii].ll='{$image[6]}';";
+        $canvasjs.="all_images[$aii].starttime='{$image[7]}';";
+        //$canvasjs.="all_images[$aii].readytime='{$image[8]}';"; @todo udělat postupné stavění v timeplay
+        $canvasjs.="all_images[$aii].stoptime='{$image[9]}';";
 
         //var allImages['.md5($modelurl).'] = new Image();
         //$canvasjs.='all_images[]=['.implode(',',$image).'];';

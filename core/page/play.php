@@ -39,7 +39,7 @@ ihydepark('timetable');
 <script type="text/javascript">
     document.maptimespeed=0;
     //---------------------------------------------------
-    maptimectl = function(time){
+    /*maptimectl = function(time){
         document.maptime=time;
         $(".timeplay").each(function( i ) {
             //console.log('start - '+$(this).attr('starttime'));
@@ -47,7 +47,7 @@ ihydepark('timetable');
             //timestamp = Math.round(+new Date()/1000);
             starttime = $(this).attr('starttime')-1+1;
             stoptime = $(this).attr('stoptime')-1+1;
-            
+
             if((starttime<=time) && (stoptime==0 || stoptime>time)){
                 $(this).css('display','block');
                 //console.log('block');
@@ -55,10 +55,10 @@ ihydepark('timetable');
                 $(this).css('display','none');
                 //console.log('none');
             }
-            
+
         });
-        
-    };
+
+    };*/
     //---------------------------------------------------
     maptimesctlref = function(){
         buffer='';
@@ -86,7 +86,7 @@ ihydepark('timetable');
                 maptime_i=i;
                 buffer += ( '<?php imge('quest/quest_finished.png','',10,10) ?>' );
             }else{
-                buffer += ( '<a onclick="maptimectl('+unittimes[i]+');maptimesctlref();"><?php imge('quest/quest_nonefinished.png','',10,10) ?></a>' );
+                buffer += ( '<a onclick="drawmap('+unittimes[i]+');maptimesctlref();"><?php imge('quest/quest_nonefinished.png','',10,10) ?></a>' );
             }
         }
         
@@ -96,13 +96,13 @@ ihydepark('timetable');
         
         /*buffer += '1 ... ';*/
         /*if(maptime_prev!=false)
-            buffer += '<a onclick="maptimectl('+maptime_prev+');maptimesctlref();">&lt;</a>';*/
+            buffer += '<a onclick="drawmap('+maptime_prev+');maptimesctlref();">&lt;</a>';*/
         /*buffer += ' ('+(maptime_i+1)+') ';*/
         
         buffer += (maptime_i+1)+'/'+unittimes.length;
         
         /*if(maptime_next!=false)
-            buffer += '<a onclick="maptimectl('+maptime_next+');maptimesctlref();">&gt;</a>';*/
+            buffer += '<a onclick="drawmap('+maptime_next+');maptimesctlref();">&gt;</a>';*/
         /*buffer += ' ... '+unittimes.length;*/
         
         $('#maptimesctl').html(buffer);
@@ -150,17 +150,17 @@ ihydepark('timetable');
             }
             
             if(maptime_next!==false){
-                maptimectl(maptime_next);
+                drawmap(maptime_next);
                 maptimesctlref();
             }else{
                 
                 if(document.mapstartonstart){
                     //alert('replay');
                     if(!document.mapreverse){
-                        maptimectl(unittimes[0]);
+                        drawmap(unittimes[0]);
                         maptimesctlref();
                     }else{
-                        maptimectl(unittimes[unittimes.lenght-1]);
+                        drawmap(unittimes[unittimes.lenght-1]);
                         maptimesctlref();
                     }
                     
