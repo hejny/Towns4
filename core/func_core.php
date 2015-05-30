@@ -834,7 +834,7 @@ function a_ad($w=160,$h=160,$new=false){
 //=======================================================================================Ad
 function a_model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,$fpfs=1,$hore=0,$usercolor=false){
 
-    model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,$fpfs=1,$hore=0,true,$usercolor=false);
+    model($res,$s,$rot,$slnko,$ciary,$fpfs,$hore,true,$usercolor);
 
     $file=(rebase(url.$GLOBALS['model_file']));
 
