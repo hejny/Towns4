@@ -56,7 +56,7 @@ foreach($result as $story) {
 
     $story['res'] = substr($story['res'], 1, strlen($story['res']) - 2);
 
-    if($story['res']){
+    if(trim($story['res'])){
     ?>
             </p>
 
