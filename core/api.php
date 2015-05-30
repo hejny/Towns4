@@ -57,7 +57,7 @@ require(core."/model/func_map.php");
 $response=TownsApi($query);
 
 
-if(isset($response['url'])){
+if(isset($response['url']) and $_GET['output']!='json'){
     //rebase(url.worldmap(0,0,$ww,$top))
     //die($response['url']);
 

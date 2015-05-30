@@ -24,21 +24,20 @@ class TownsApi{
     private $token='';
     private $locale='';
 
-    public function __construct($url,$token,$locale){
+    public function __construct($url='https://towns.cz/',$token='',$locale=''){
 
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
             trigger_error('Not a valid URL', E_USER_ERROR);
         }
         if(!$token){
-
             $token = md5(uniqid(mt_rand(), true));
 
             //$token='none';
             //trigger_error("No token", E_USER_NOTICE);
         }
-        if(!$locale){
+        /*if(!$locale){
             trigger_error("No locale", E_USER_ERROR);
-        }
+        }*/
 
         $this->url=$url;
         $this->token=$token;
@@ -52,11 +51,13 @@ class TownsApi{
      */
     public function q(){
 
-        $url=$this->url.'/api?token='.urlencode($this->token).'&locale='.urlencode($this->locale);
+        //output=json - Některé funkce např ad nebo model vrací přímo obrázek. Pokud je v GET parametrech output=json je místo toho vrácen json s klíčem url na daný obrázek.
+        $url=$this->url.'/api?token='.urlencode($this->token).'&locale='.urlencode($this->locale).'&output=json';
 
         $params = func_get_args();
         $query='';
 
+        //----------------------Následující escapování se dá udělat výrazně elegantněji, tohle by ale mělo fungovat i ve starších verzích PHP
         $separator='';
         foreach($params as $param){
 
@@ -74,6 +75,7 @@ class TownsApi{
             $query.=$separator./*urlencode*/($param);
             $separator=',';
         }
+        //----------------------
 
         $postdata=array(
             'q' => $query
