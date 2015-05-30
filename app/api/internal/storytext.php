@@ -56,6 +56,7 @@ foreach($result as $story) {
 
     $story['res'] = substr($story['res'], 1, strlen($story['res']) - 2);
 
+    $story['res']=strip_tags($story['res']);//Zobrazení pouze textu, ne html tagy
     if(trim($story['res'])){
     ?>
             </p>
