@@ -1135,8 +1135,8 @@ if(!$_GLOBALS['noxmap']){
 
             $canvasjs.="all_images[$aii] = new Image();";
             $canvasjs.="all_images[$aii].src='{$url}';";
-            $canvasjs.="all_images[$aii].xx=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
-            $canvasjs.="all_images[$aii].yy=".(round(211/$zoom)*($y-$yc)).";";
+            $canvasjs.="all_images[$aii].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
+            $canvasjs.="all_images[$aii].style.top=".(round(211/$zoom)*($y-$yc)).";";
             $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
             $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
             $canvasjs.="all_images[$aii].ll='terrain';";
@@ -1147,8 +1147,8 @@ if(!$_GLOBALS['noxmap']){
 
             $canvasjs.="all_images[$aii] = new Image();";
             $canvasjs.="all_images[$aii].src='".mapgrid()."';";
-            $canvasjs.="all_images[$aii].xx=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
-            $canvasjs.="all_images[$aii].yy=".(round(211/$zoom)*($y-$yc)).";";
+            $canvasjs.="all_images[$aii].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
+            $canvasjs.="all_images[$aii].style.top=".(round(211/$zoom)*($y-$yc)).";";
             $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
             $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
             $canvasjs.="all_images[$aii].ll='grid';";
@@ -1181,8 +1181,8 @@ if(!$_GLOBALS['noxmap']){
         $canvasjs.="all_images[$aii] = new Image();";
         $canvasjs.="all_images[$aii].objectid={$image[0]};";
         $canvasjs.="all_images[$aii].src='{$image[1]}';";
-        $canvasjs.="all_images[$aii].xx={$image[2]};";
-        $canvasjs.="all_images[$aii].yy={$image[3]};";
+        $canvasjs.="all_images[$aii].style.left={$image[2]};";
+        $canvasjs.="all_images[$aii].style.top={$image[3]};";
         $canvasjs.="all_images[$aii].width={$image[4]};";
         $canvasjs.="all_images[$aii].height={$image[5]};";
         $canvasjs.="all_images[$aii].ll='{$image[6]}';";
@@ -1208,7 +1208,7 @@ if(!$_GLOBALS['noxmap']){
         i=0;while(i<imgs_count){
 
             if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
-                ctx.drawImage(all_images[i],all_images[i].xx,all_images[i].yy,all_images[i].width,all_images[i].height);
+                ctx.drawImage(all_images[i],parseInt(all_images[i].style.left),parseInt(all_images[i].style.top),all_images[i].width,all_images[i].height);
             i++;
         }
 
@@ -1216,8 +1216,9 @@ if(!$_GLOBALS['noxmap']){
 
         $(all_images).load(function() {
 
-            if(jQuery.inArray(this.ll,drawmaplayers)!=-1)
-                ctx.drawImage(this,this.x,this.y,this.width,this.height);
+            if(jQuery.inArray(this.ll,drawmaplayers)!=-1){
+                ctx.drawImage(this,parseInt(this.style.left),parseInt(this.style.top),this.width,this.height);
+            }
 
             imgs_loaded++;
 

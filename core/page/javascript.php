@@ -71,7 +71,7 @@
 
                 if ((all_images[i].starttime <= time) && (all_images[i].stoptime == 0 || all_images[i].stoptime > time)) {
 
-                    ctx.drawImage(all_images[i], all_images[i].xx, all_images[i].yy, all_images[i].width, all_images[i].height);
+                    ctx.drawImage(all_images[i], parseInt(all_images[i].style.left), parseInt(all_images[i].style.top), all_images[i].width, all_images[i].height);
 
                 }
 

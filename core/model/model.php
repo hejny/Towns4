@@ -386,7 +386,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
     //print_r(array('model',$res,$s,$rot,$slnko,$ciary,$zburane,$postavene,$hore,$usercolor));
 
 
-    $file=tmpfile2(array('model',$res,$s,$rot,$slnko,$ciary,$zburane,$postavene,$hore,$usercolor),'png','model');
+    $file=tmpfile2(array('model',1,$res,$s,$rot,$slnko,$ciary,$zburane,$postavene,$hore,$usercolor),'png','model');
     //e($file);
 
     $GLOBALS['model_file']=$file;
@@ -538,7 +538,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         }
         //---------------------------vykresleni
         if($hore!=1){
-        $GLOBALS['ss']["im"] = imagecreate/*truecolor*/($s*200,$s*380);
+        $GLOBALS['ss']["im"] = imagecreatetruecolor($s*200,$s*380);
         }else{
         $GLOBALS['ss']["im"] = imagecreatetruecolor($s*150,$s*150);//todo truecolor vs xxx
         }
