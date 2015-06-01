@@ -420,7 +420,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
             $modelurl = $allrock[$object['res']];
             $GLOBALS['model_resize'] = 1;
-            $ry-=35/$GLOBALS['mapzoom'];
+            //$ry-=35/$GLOBALS['mapzoom'];
 
             //------------------------------------------------------
         }else/**/{
