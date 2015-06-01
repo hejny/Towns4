@@ -846,7 +846,7 @@ function check_email($email) {
 
 function htmljscss(){
 
-    $filejs = tmpfile2(array('js',5,$GLOBALS['inc']['url'],url), 'min.js', 'page');
+    $filejs = tmpfile2(array('js',6,$GLOBALS['inc']['url'],url), 'min.js', 'page');
     $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs) or newpage/** or 1/**/) {

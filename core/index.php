@@ -689,14 +689,13 @@ if($_GET['e']){
             if(file_exists($file)){
                 require($file);
             }else{
-                refresh();
+                //refresh();
             }
         }
 
 
     }else{
-        //die('aaa');
-        refresh();
+        //refresh();
     }
 }else{
     define("subpage", false);
