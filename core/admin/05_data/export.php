@@ -81,7 +81,7 @@ if($_GET['export']){
     }
 
     ob_start();
-    terminal('mysqldump --user '.$GLOBALS['inc']['mysql_user'].' --password='.$GLOBALS['inc']['mysql_password'].' '.$GLOBALS['inc']['mysql_db'].' > '.$file_name);
+    terminal('mysqldump --user '.$GLOBALS['inc']['mysql_user'].' --password='.$GLOBALS['inc']['mysql_password'].' --create-options  --complete-insert '.$GLOBALS['inc']['mysql_db'].' > '.$file_name);
     //br();
     $contents=ob_get_contents();
     ob_end_clean();
