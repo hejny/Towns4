@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/map.php
@@ -231,69 +231,6 @@ if($GLOBALS['get']['play']){
 }
 
 js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
-//============================================================časování staré
-
-/*if($_GET['history'] or $_GET['play']){
-
-	//--------------------------------------------------------
-	/*function script_($script){e('<script type="text/javascript" src="'.rebase(url.base.'/'.$script).'"></script>');}
-	function css_($css){e('<link rel="stylesheet" href="'.rebase(url.base.'/'.$css).'" type="text/css" />');}
-	script_('lib/jquery/js/jquery-1.6.2.min.js');
-	js('w_open=function(){alert(1);};');* /
-	//--------------------------------------------------------
-	$play=$_GET['play'];
-	$history=$_GET['history']-1+1;
-	if(!$history)$history=1;
-
-	$timenow=time();
-    $xcu=0;
-    $ycu=0;
-    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
-    if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
-    $xu=($ycu+$xcu)*5+1;
-    $yu=($ycu-$xcu)*5+1;
-	if(!mobile){
-	$range="(x-y)>($xu-$yu)-".((!$_GET['first'])?20:26)." AND (x+y)>($xu+$yu)+".((!$_GET['first'])?5:2)." AND (x-y)<($xu-$yu)+".((!$_GET['first'])?35:22)." AND (x+y)<($xu+$yu)+".((!$_GET['first'])?60:55)."";
-	}else{
-	$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
-	}
-	$starttimes=sql_array('SELECT DISTINCT starttime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
-	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
-	$times=array();
-	foreach($starttimes as $row){$times[]=$row[0];}
-	foreach($stoptimes as $row){$times[]=$row[0];}
-	$times[]=$timenow;
-	$times=array_unique($times,SORT_NUMERIC);
-	sort($times);
-
-	$lasttime=false;$i=0;
-	foreach($times as $time){
-		if($time!=0 and $time!=$timenow){
-			$timex=timer($time);
-		}elseif($time==$timenow){
-			$timex=lr('time_now');
-		}else{
-			$timex=lr('time_beginning');
-		}
-		if($lasttime!==false){
-			if($history==$i){
-				$GLOBALS['showtime']=$lasttime?$lasttime:1;
-				e(imgr('quest/quest_finished.png',$lasttimex,17,17));
-			}else{
-				e('<a href="?e=map&amp;history='.$i.'&amp;play='.$play.'">'.imgr('quest/quest_nonefinished.png',$lasttimex,17,17).'</a>');
-			}
-		}
-		$lasttime=$time;
-		$lasttimex=$timex;
-		$i++;
-	}
-
-	if($play)
-	if($history<$i-1){
-		js('setTimeout(function(){window.location.href = "?e=map&history='.($history+1).'&play=1";},200);');
-	}
-	if(debug)e(objt());
-}*/
 
 //============================================================
 ?>
@@ -309,37 +246,31 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
    if(logged()){ ?>
 
 
-        <script type="text/javascript">
+
+    <script type="text/javascript">
 
 
     /*---------------------------------POSITION*/
-        function pos2pos(xt,yt){
-                yt=yt+<?php e(htmlbgc); ?>;
-                xt=xt*<?php e($GLOBALS['mapzoom']); ?>;
-                yt=yt*<?php e($GLOBALS['mapzoom']); ?>;
-                xxt=(yt/212*5)+(xt/424*5);
-                yyt=(yt/212*5)-(xt/424*5); /*aaa*/
-                xc=<?php e($xc); ?>;
-                yc=<?php e($yc); ?>;
-                /*alert(yc);*/
-                xxc=(yc*5)+(xc*5)-12.5+xxt; /*-17.5*/
-                yyc=(yc*5)-(xc*5)+12.5+yyt; /*+17.5*/
-                return([xxc,yyc]);
-        }
+    var pos2pos= function(xt,yt){
+        yt=yt+<?php e(htmlbgc); ?>;
+        xt=xt*<?php e($GLOBALS['mapzoom']); ?>;
+        yt=yt*<?php e($GLOBALS['mapzoom']); ?>;
+        xxt=(yt/212*5)+(xt/424*5);
+        yyt=(yt/212*5)-(xt/424*5); /*aaa*/
+        xc=<?php e($xc); ?>;
+        yc=<?php e($yc); ?>;
+        /*alert(yc);*/
+        xxc=(yc*5)+(xc*5)-12.5+xxt; /*-17.5*/
+        yyc=(yc*5)-(xc*5)+12.5+yyt; /*+17.5*/
+        return([xxc,yyc]);
+    }
+
+
+
+
+
+
     $(function() {
-
-		/*---------------------------------ANTISRAČKA*/
-		$('#draglayer').attr('unselectable','on')
-			 .css({'-moz-user-select':'-moz-none',
-				   '-moz-user-select':'none',
-				   '-o-user-select':'none',
-				   '-khtml-user-select':'none', /* you could also put this in a class */
-				   '-webkit-user-select':'none',/* and add the CSS class here instead */
-				   '-ms-user-select':'none',
-				   'user-select':'none'
-
-
-			 }).bind('selectstart', function(){ return false; });
 
 
 
@@ -349,183 +280,26 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
 
-		$('#draglayer').draggable({ disabled: <?php e($_GET['first']?'true':'false') ?>, distance:<?php e($GLOBALS['dragdistance']); ?> });
+        $('#draglayer').draggable({ disabled: <?php e($_GET['first']?'true':'false') ?>, distance:<?php e($GLOBALS['dragdistance']); ?> });
         $( "#draglayer" ).bind( "dragstart", function(event, ui){
-	    /*alert('startdrag');*/
+            /*alert('startdrag');*/
             drag=1;
-	       $('#draglayer').disableSelection();
+            $('#draglayer').disableSelection();
             $('#map_context').css('display','none');
-	    $('#build_button').css('display','none');
-	    $('#create-build_message').html('<?php info(lr('create_move')); ?>');
+            $('#build_button').css('display','none');
+            $('#create-build_message').html('<?php info(lr('create_move')); ?>');
         });
-	   $('#draglayer').disableSelection();
-         $( "#draglayer" ).bind( "dragstop", function(event, ui){
+        $('#draglayer').disableSelection();
+        $( "#draglayer" ).bind( "dragstop", function(event, ui){
 
             setTimeout(function(){drag=0;},100);
             parseMap();
 
-            
+
 
         });
 
 
-
-    	/*$(".drag")
-            .hammer({ drag_max_touches:0})
-            .on("touch drag", function(ev) {
-                var touches = ev.gesture.touches;
-
-                ev.gesture.preventDefault();
-
-                for(var t=0,len=touches.length; t<len; t++) {
-                    var target = $(touches[t].target);
-                    target.css({
-                        zIndex: 1337,
-                        left: touches[t].pageX-50,
-                        top: touches[t].pageY-50
-                    });
-                }
-            });*/
-
-
-
-
-
-        /*---------------------------------POSITIONCLICK*/
-        $("#map_context").click(function() {
-            /*$('#map_context').css('display','none');*/
-        });/**/
-
-
-
-        /*$(".tabulkamapy").draggable();*/
-        $(".clickmap").click(function(hovno) {
-		/*alert(drag);*/
-            if(drag!=1){
-                /*alert("click");/**/
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-		        $('#map_context').css('border-color','#22222');
-                $('#map_context').css('display','block');/**/
-                offset =  $("#map_canvas").offset();
-
-
-
-                xt=(hovno.pageX-offset.left);/*pozice myši px*/
-                yt=(hovno.pageY-offset.top);
-                tmp=pos2pos(xt,yt);
-                xxc=tmp[0];
-                yyc=tmp[1];
-
-                //document.title=(xxc+','+yyc);
-
-                /*alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));*/
-                /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
-                */
-                tmp=1;
-                title='...';/*(Math.round(xxc*tmp)/tmp)+","+Math.round(Math.round(yyc*tmp)/tmp);*/
-                
-                $('#map_context').html(title);
-                 <?php if(logged){ ?>
-		//alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
-                 <?php } ?>
-            }
-        });
-
-        /*---------------------------------CONTEXTCLICK*/
-        /*$(document).bind("contextmenu",function(hovno){
-            if(drag!=1){   
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-                $('#map_context').css('display','block');
-		$('#map_context').css('border-color','#22222');
-                $('#map_context').html('context');
-            }
-        });*/
-	$(document).bind("contextmenu",function(hovno){
-            if(drag!=1){
-
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-		        $('#map_context').css('border-color','#22222');
-                $('#map_context').css('display','block');/**/
-                offset =  $("#map_canvas").offset();
-                /*alert(hovno.pageX);*/
-                xt=(hovno.pageX-offset.left);/*pozice myši px*/
-                yt=(hovno.pageY-offset.top);
-                tmp=pos2pos(xt,yt);
-                xxt=tmp[0];
-                yyt=tmp[1];
-                /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
-                */
-                tmp=1;
-                title='...';/*(Math.round(xxc*tmp)/tmp)+","+Math.round(Math.round(yyc*tmp)/tmp);*/
-                
-                $('#map_context').html(title);
-                 <?php if(logged){ ?>
-		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&token='+yyc);*/
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid=menu_map', function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
-                 <?php } ?>
-            }
-        });
-
-
-
-        /*---------------------------------MENUCLICK*/
-		  aac_clickset=function(hovno) {
-
-        $(".menu").not(".x-menu-registered").click(function(hovno) {
-            if(drag!=1){   
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-		$('#map_context').css('border-color','#999999');
-                $('#map_context').css('display','block');
-                $('#map_context').html('...');
-		name=$(this).attr('id');
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
-            }
-        }).addClass("x-menu-registered");
-
-
-        /*---------------------------------UNITCLICK*/
-        $(".unit").not(".x-unit-minimenu-registered").click(function(hovno) {
-            if(drag!=1){   
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-		$('#map_context').css('border-color','#22222');
-                $('#map_context').css('display','block');
-                title=$(this).attr('title');
-                name=$(this).attr('id');
-
-
-
-                offset =  $("#map_canvas").offset();
-                /*alert(hovno.pageX);*/
-                xt=(hovno.pageX-offset.left);/*pozice myši px*/
-                yt=(hovno.pageY-offset.top);
-                tmp=pos2pos(xt,yt);
-                xxt=tmp[0];
-                yyt=tmp[1];
-
-
-
-		if(ifcache('minimenu_'+name)){
-			$('#map_context').html(cache('minimenu_'+name));
-		}else{
-            $('#map_context').html(title);
-		}
-		
-		
-                 <?php if(logged){ ?>
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title+'&xc='+xxc+'&yc='+yyc, function(vystup){$('#map_context').html(vystup);});});
-                 <?php } ?>
-            }
-        }).addClass("x-unit-minimenu-registered");/**/
-
-
-		  };/**/
-		  aac_clickset();
         /*---------------------------------CENTER*/
         <?php if($GLOBALS['get']['center']){ ?>
         
@@ -551,94 +325,19 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
 
-        /*---------------------------------------------------------------------Upload to map*/
-
-        <?php if(logged){ ?>
-
-        $('.clickmap').filedrop({
-
-
-            paramname:'file',
-
-            maxfiles: 1,
-            maxfilesize: <?=intval(ini_get('post_max_size')); ?>,
-            url: '?e=create-post_file',
-
-            allowedfileextensions: ['.jpg','.jpeg','.png','.gif','.bmp','.wbmp'],
-
-            uploadFinished:function(i,file,response){
-            $.data(file).addClass('done');
-            // response is the JSON object that post_file.php returns
-            },
-
-            error: function(err, file) {
-                switch(err) {
-                    case 'BrowserNotSupported':
-                        alert('<?= lr('upload_error_browser_not_supported') ?>');
-                        break;
-                    case 'TooManyFiles':
-                        // user uploaded more than 'maxfiles'
-                        alert('<?= lr('upload_error_more_files',1) ?>');
-                        break;
-                    case 'FileTooLarge':
-                        // program encountered a file whose size is greater than 'maxfilesize'
-                        // FileTooLarge also has access to the file which was too large
-                        // use file.name to reference the filename of the culprit file
-                        alert('<?= lr('upload_error_file_too_large',intval(ini_get('post_max_size'))) ?>');
-                        break;
-                    case 'FileExtensionNotAllowed':
-                        // The file extension is not in the specified list 'allowedfileextensions'
-                        alert('<?= lr('upload_error_wrong_extension','.jpg, .jpeg, .png, .gif, .bmp nebo .wbmp'); ?>');
-                        break;
-                    default:
-                        break;
-                }
-            },
-
-            // Called before each upload is started
-            beforeEach: function(file){
-
-                startloading();
-
-                offset =  $("#map_canvas").offset();
-
-                xt=(mouseX-offset.left);
-                yt=(mouseY-offset.top);
-                tmp=pos2pos(xt,yt);
-                xxc=tmp[0];
-                yyc=tmp[1];
-
-                //alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));
-
-                this.url=this.url+'&xc='+(xxc)+'&yc='+(yyc);
-
-                if(!file.type.match(/^image\//)){
-                    //alert('Only images are allowed!');
-
-                    // Returning false will cause the
-                    // file to be rejected
-                    return false;
-                }
-            },
-
-
-            uploadFinished: function(i, file, response, time) {
-
-                /*alert('aaa');*/
-                <?php urlx('e=map;noi=1;'.js2('stoploading()'),0) ?>
-            }
-
-
-        });
-        <?php } ?>
-        /*---------------------------------------------------------------------*/
-
 
         /*------------------------------------NEWVALS*/
         xc=<?php echo($xc); ?>;
         yc=<?php echo($yc); ?>;
         countdowns=[ ];
         windows="";
+
+
+
+        aac_clickset();
+
+
+
 });
 </script>
 
@@ -680,200 +379,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
                     
                     
                     $('#create-build_message').html(nacitacihtml);
-                    //=======================================================================================================================MEGATEST
-                    <?php /*
 
-                        $res=sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE id='$id' AND ".objt());
-                        //mail('ph@towns.cz','tmp',$res);
-
-                        if(substr($res,0,1)=='{' or strpos($res,'{}')){           
-                        $x=round($x);
-                        $y=round($y);
-                        $GLOBALS['ss']['query_output']->add("nocd",1);
-                        }
-                        $rx=round($x);
-                        $ry=round($y);    
-
-                            if(true){    
-
-                            //OLD COLLAPSE//$hard=hard($rx,$ry);
-                            //OLD COLLAPSE//if($x>=0 and $y>=0 and $x<=mapsize and $y<=mapsize and $hard<supportF($id,'resistance','hard')){
-                                //OLD COLLAPSE//if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND POW($x-x,2)+POW($y-y,2)<=POW(collapse,2)"))==0){
-
-                                if(!($walltype=sql_1data("SELECT `type` FROM `[mpx]pos_obj` WHERE own!='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND block!=0 AND POW($x-x,2)+POW($y-y,2)<=POW(".distance_wall.",2)"))){
-
-
-                                $resistance=supportF($id,'resistance','resistance');
-                                if(!$resistance){
-                                        $q=(!($blocktest=block1test('B',$x,$y)));
-                                }else{
-                                        $q=true;
-                                }
-
-
-                                if($q){
-
-                                if(!($blocktest=block2test('B',$x,$y))){
-
-
-                            if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."'AND `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()." AND POW($x-x,2)+POW($y-y,2)<=POW(expand,2)"))>=1){
-
-
-                                $fc=new hold(sql_1data("SELECT fc FROM `[mpx]pos_obj` WHERE id='$id' AND ".objt()));
-                                if((!$test)?($GLOBALS['ss']['use_object']->hold->takehold($fc)):($GLOBALS['ss']['use_object']->hold->testchange($fc))){
-
-                                    if($rot and strpos($res,'/1.png'))$res=str_replace('1.png',(($rot/15)+1).'.png',$res);
-
-                                    if(substr($res,0,1)!='{' and !strpos($res,'{}')){
-                                        $res=explode(':',$res);$res=$res[0].':'.$res[1].':'.$res[2];
-                                    }
-
-
-                                    $tol=sqrt(2)/2;
-                                    //define('create_error',"SELECT id FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol AND `own`='".$GLOBALS['ss']['useid']."' ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");
-
-                                   //foreach(sql_array("SELECT id,name,own FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `own`='".$GLOBALS['ss']['useid']."' AND  `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2)") as $row){print_r($row);br();}
-
-
-                                    $func=func2list(sql_1data('SELECT func FROM `[mpx]pos_obj` WHERE id='.$id.' AND '.objt()));
-                                    list(list($jid,$jname,$jown,$jfs,$jfp,$jfunc,$jorigin,$jres))=sql_array("SELECT id,name,own,fs,fp,func,origin,res FROM `[mpx]pos_obj`  WHERE `ww`=".$GLOBALS['ss']["ww"]." AND ".objt()."  AND `own`='".$GLOBALS['ss']['useid']."' AND type='building' AND `x`>$rx-$tol AND `y`>$ry-$tol AND  `x`<$rx+$tol AND `y`<$ry+$tol ORDER BY POW(`x`-$rx,2)+POW(`y`-$ry,2) LIMIT 1");// AND `own`='".$GLOBALS['ss']['useid']."'
-                                    if(!$jid){//e('ahoj');
-
-
-                                        if($func['join']['profile']['type']==2){
-                                                define('object_build',true);
-                                                define('create_error',lr('create_error_join_type2'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr("create_error_join_type2"));
-                                                return;
-                                        }else{
-
-                                        if(!$test){
-                                                $nextid=nextid();
-                                                define('object_id',$nextid);
-                                                $GLOBALS['object_ids']=array($nextid);
-                                                sql_query("INSERT INTO `[mpx]pos_obj` (`id`, `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, `res`, `profile`, `set`, `hard`, `expand`, `block`, `attack`, `own`, `superown`, `in`, `ww`, `x`, `y`, `t`, `starttime`)
-                        SELECT ".$nextid.", `name`, `type`, `origin`, `fs`, `fp`, `fc`, `fr`, `fx`, `func`, `hold`, CONCAT('$res',':$rot'), `profile`, 'x', `hard`, `expand`, `block`, `attack`,'".$GLOBALS['ss']['useid']."','".$GLOBALS['ss']['logid']."', `in`, ".$GLOBALS['ss']["ww"].", $x, $y, ".time().", ".time()." FROM `[mpx]pos_obj` WHERE id='$id'");
-                                        }
-
-                                        $GLOBALS['ss']['query_output']->add("1",1);
-
-                                        }
-                                        //define('create_ok','{create_ok_place}');
-
-                                    }else{
-                                        //e('bhoj');
-
-                                        $jfunc=func2list($jfunc);
-
-                                        if($func['join']['profile']['type']==3){
-                                                define('object_build',true);//die(1);
-                                                define('create_error',lr('create_error_join_type3'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type3'));
-                                                return;
-                                        }elseif($jfunc['join']['profile']['type']==3){
-                                                define('object_build',true);//die(2);
-                                                define('create_error',lr('create_error_join_type3x'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type3x'));
-                                                return;
-                                        }elseif($func['join']['profile']['type']==1 or $func['join']['profile']['type']==4){
-                                                define('object_build',true);//die(3);
-                                                define('create_error',lr('create_error_join_type1'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type1'));
-                                                return;
-                                        }elseif($jfunc['join']['profile']['type']==4 and strpos($jres,'[-4,-4,')===false){
-                                                define('object_build',true);//die(4);
-                                                define('create_error',lr('create_error_join_type4'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_type4'));
-                                                return;
-                                        }elseif(!$jorigin){
-                                                define('object_build',true);//die(5);
-                                                define('create_error',lr('create_error_join_noorigin'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_noorigin'));
-                                                return;
-                                        }elseif($jown!=$GLOBALS['ss']['useid']){
-                                                define('object_build',true);
-                                                define('create_error',lr('create_error_join_noown'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_noown'));
-                                                return;
-                                        }elseif($jname==id2name($GLOBALS['config']['register_building'])){
-                                                define('object_build',true);
-                                                define('create_error',lr('create_error_join_main'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_main'));
-                                                return;
-                                        }elseif($tmaster?$jid==$tmaster:$jid==$GLOBALS['ss']['aac_object']->id){
-                                                define('object_build',true);
-                                                define('create_error',lr('create_error_join_self'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_self'));
-                                                return;
-                                        }elseif($jfs!=$jfp){
-                                                define('object_build',true);
-                                                define('create_error',lr('create_error_join_fsfp'));
-                                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_join_fsfp'));
-                                                return;
-                                        }else{
-
-
-                                                define('create_ok',contentlang(lr('create_ok_join',$jname)));
-                                                if(!$test){
-                                                        define('join_id',$jid);
-                                                        define('object_id',$jid);
-
-
-                                                        trackobject($jid);//záloha původního objektu, nastavení časů
-
-                                                        $GLOBALS['object_ids']=array($jid);
-                                                        $joint=new object($jid);
-                                                        $joint->join($id,$res.':'.$rot,$rot);
-                                                        $joint->update(true,true);
-                                                        unset($joint);
-                                                }
-                                                $GLOBALS['ss']['query_output']->add("1",1);
-
-
-
-                                        }
-
-
-                                    }
-
-                                    //POZDEJI//changemap($x,$y);
-
-                                if(!$test){
-                        //==============================OPRAVA SPOJů
-
-                        //==============================
-
-
-                                 }else{
-                                    define('object_build',true);
-                                    define('create_error',lr('create_error_price'));
-                                    $GLOBALS['ss']['query_output']->add('error',lr('create_error_price'));
-                                }
-                            }else{
-                                define('object_build',true);
-                                define('create_error',lr('create_error_expand'));
-                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_expand'));
-                            }
-                                }else{
-                                define('object_build',true);
-                                        if(is_numeric($blocktest))$blocktest='object';
-                                define('create_error',lr('create_error_block_'.$blocktest));
-                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_block_'.$blocktest));
-                            }}else{
-                                define('object_build',true);
-                                //$sql="SELECT (SELECT IF(`terrain`='t1' OR `terrain`='t11',1,0) FROM `[mpx]map`  WHERE `[mpx]map`.`ww`=".$GLOBALS['ss']["ww"]." AND  `[mpx]map`.`x`=$y AND `[mpx]map`.`y`=$x)+(SELECT SUM(`[mpx]pos_obj`. `hard`) FROM `[mpx]pos_obj` WHERE `[mpx]pos_obj`.`ww`=".$GLOBALS['ss']["ww"]." AND  ROUND(`[mpx]pos_obj`.`x`)=$y AND ROUND(`[mpx]pos_obj`.`y`)=$x)";
-                                //$hard=sql_1data($sql);// WHERE `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y");
-                                define('create_error',lr('create_error_resistance_'.$blocktest));
-                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_resistance_'.$blocktest));
-                            }}else{
-                                define('object_build',true);
-                                define('create_error',lr('create_error_'.$walltype.'_distance'));
-                                $GLOBALS['ss']['query_output']->add('error',lr('create_error_wall_distance'));
-                            }
-                    */ ?>
-                            
-                    //======================================================================================================================END OF MEGATEST
-                    
                     
                     //alert('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y);
                     
@@ -912,7 +418,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 	    buildx = function(master,id,func,build_x,build_y,_rot) {
 		/*alert(_rot);*/
 		/*$.get('?token=<?php e($_GET['token']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
-		qbuffer=master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot;
+		qbuffer.push(master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot);
 		//prompt('qbuffer',master);
 		//prompt('qbuffer',qbuffer);
 
@@ -961,46 +467,6 @@ if(defined('object_hybrid')){
 ?>
 
 
-<!--================TERRAIN===================-->
-<?php /* ?><div  id="terrain-build"  name="terrain-build" style="position:absolute;display:none;top:0; left:0;z-index:25;">&nbsp;</div>
-<script type="text/javascript">
-            tbuild_x=0;
-            tbuild_y=0;
-            $("#terrain-build").css("left",(screen.width/2)-55);
-            $("#terrain-build").css("top",(screen.height/2)-154);
-            terrain=function(master,id,func) {
-                window.tbuild_master=master;
-                window.tbuild_id=id;
-                window.tbuild_func=func;
-                $("#expandarea").css("display","block");
-                $("#terrain-build").css("display","block");
-                $("#terrain-build").draggable();
-                $( "#terrain-build" ).bind( "dragstop", function(event, ui){
-                    bx=parseFloat($("#terrain-build").css("left"));
-                    by=parseFloat($("#terrain-build").css("top"));
-                    offset =  $("#tabulkamapy").offset();
-                    xt=(bx-offset.left);
-                    yt=(by-offset.top);
-                    tmp=pos2pos(xt,yt);
-                    xxc=xxc+4.57;
-                    yyc=yyc+3.67;
-                    tbuild_x=xxc;
-                    tbuild_y=yyc;
-                });
-                $.get('?token=<?php e($_GET['token']); ?>&e=terrain-build&master='+master+'&func='+func+'&id='+id, function(vystup){$('#terrain-build').html(vystup);});
-		
-            }
-            <?php
-                if(defined('terrain_build')){
-                    e('terrain('.$GLOBALS['ss']['master'].',\''.$GLOBALS['ss']['object_build_id'].'\',\''.$GLOBALS['ss']['object_build_func'].'\');');
-                }
-                if(defined('terrain_error')){
-                    e('alert("'.terrain_error.'");');
-                }
-            ?>
-</script><?php */ ?>
-
-
 
 <?php } ?>
 
@@ -1042,23 +508,6 @@ onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
 </a>
 </div></div>
 
-<?php /*<script type="text/javascript" >
-        /*----------------------------------------------------------NAVIGATOR---/
-        //$('#navigation_up').mousedown(function() {key_up=true;});
-        $('#navigation_down').mousedown(function() {key_down=true;});
-        $('#navigation_left').mousedown(function() {key_left=true;});
-        $('#navigation_right').mousedown(function() {key_right=true;});
-
-        $(document).mouseup(function(e) {
-            /*---------UP,DOWN,LEFT,RIGHT/
-            //key_up=false;
-            key_down=false;
-            key_left=false;
-            key_right=false;
-            /*---------/
-        });
-        /*------------------------------------/
-</script>*/ ?>
 
 
 <?php } ?>
@@ -1110,9 +559,20 @@ if(!$_GLOBALS['noxmap']){
         var ctx = canvas.getContext("2d");
 
 
+
+
+        var all_images_bg=[];
+        var canvas_bg = document.getElementById("map_canvas_bg");
+
+        $("#map_canvas_bg").attr("width",parseInt($(window).width()*1.6));
+        $("#map_canvas_bg").attr("height",parseInt($(window).height()*1.6));
+
+        var ctx_bg = canvas_bg.getContext("2d");
+
+
     ';
 
-    $aii=0;
+    $aii_bg=0;
 
 
     for($y=$yc; $y<=$ym+$yc; $y++){
@@ -1122,7 +582,7 @@ if(!$_GLOBALS['noxmap']){
 
         $q=1;
 
-            $url=htmlmap($x,$y,1,1,$y-$yc/*,$_GLOBALS['map_night']*/);
+            $url=htmlmap($x,$y,1);
             /*$canvasjs.='
               var imageObj'.md5($url).' = new Image();
 
@@ -1133,28 +593,33 @@ if(!$_GLOBALS['noxmap']){
 
             ';*/
 
-            $canvasjs.="all_images[$aii] = new Image();";
-            $canvasjs.="all_images[$aii].src='{$url}';";
-            $canvasjs.="all_images[$aii].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
-            $canvasjs.="all_images[$aii].style.top=".(round(211/$zoom)*($y-$yc)).";";
-            $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
-            $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
-            $canvasjs.="all_images[$aii].ll='terrain';";
-            $canvasjs.="all_images[$aii].starttime=0;";
-            $canvasjs.="all_images[$aii].stoptime=0;";
-            $aii++;
+            $url=rebase(url.$url);
+
+            //ebr($url);
 
 
-            $canvasjs.="all_images[$aii] = new Image();";
-            $canvasjs.="all_images[$aii].src='".mapgrid()."';";
-            $canvasjs.="all_images[$aii].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
-            $canvasjs.="all_images[$aii].style.top=".(round(211/$zoom)*($y-$yc)).";";
-            $canvasjs.="all_images[$aii].width=".round(424/$zoom).";";
-            $canvasjs.="all_images[$aii].height=".round(211/$zoom).";";
-            $canvasjs.="all_images[$aii].ll='grid';";
-            $canvasjs.="all_images[$aii].starttime=0;";
-            $canvasjs.="all_images[$aii].stoptime=0;";
-            $aii++;
+            $canvasjs.="all_images_bg[$aii_bg] = new Image();";
+            $canvasjs.="all_images_bg[$aii_bg].src='{$url}';";
+            $canvasjs.="all_images_bg[$aii_bg].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
+            $canvasjs.="all_images_bg[$aii_bg].style.top=".(round(211/$zoom)*($y-$yc)).";";
+            $canvasjs.="all_images_bg[$aii_bg].width=".round(424/$zoom).";";
+            $canvasjs.="all_images_bg[$aii_bg].height=".round(211/$zoom).";";
+            $canvasjs.="all_images_bg[$aii_bg].ll='terrain';";
+            $canvasjs.="all_images_bg[$aii_bg].starttime=0;";
+            $canvasjs.="all_images_bg[$aii_bg].stoptime=0;";
+            $aii_bg++;
+
+
+            $canvasjs.="all_images_bg[$aii_bg] = new Image();";
+            $canvasjs.="all_images_bg[$aii_bg].src='".mapgrid()."';";
+            $canvasjs.="all_images_bg[$aii_bg].style.left=".(round(424/$zoom)*($x-(-$xm+$xc))).";";
+            $canvasjs.="all_images_bg[$aii_bg].style.top=".(round(211/$zoom)*($y-$yc)).";";
+            $canvasjs.="all_images_bg[$aii_bg].width=".round(424/$zoom).";";
+            $canvasjs.="all_images_bg[$aii_bg].height=".round(211/$zoom).";";
+            $canvasjs.="all_images_bg[$aii_bg].ll='grid';";
+            $canvasjs.="all_images_bg[$aii_bg].starttime=0;";
+            $canvasjs.="all_images_bg[$aii_bg].stoptime=0;";
+            $aii_bg++;
 
 
 
@@ -1168,7 +633,7 @@ if(!$_GLOBALS['noxmap']){
 
     subexec('map_units');
 
-
+    $aii=0;
 
     foreach($GLOBALS['all_images'] as $image){
 
@@ -1177,18 +642,43 @@ if(!$_GLOBALS['noxmap']){
         $image[3]=round($image[3]);
         $image[4]=round($image[4]);
         $image[5]=round($image[5]);
+        $image[6]=round($image[6]);
+        $image[7]=round($image[7]);
+
+        $image[9]=round($image[9]);
+        $image[10]=round($image[10]);
+        $image[11]=round($image[11]);
 
         $canvasjs.="all_images[$aii] = new Image();";
-        $canvasjs.="all_images[$aii].objectid={$image[0]};";
+        $canvasjs.="all_images[$aii].setAttribute('objectid',{$image[0]});";
         $canvasjs.="all_images[$aii].src='{$image[1]}';";
-        $canvasjs.="all_images[$aii].style.left={$image[2]};";
-        $canvasjs.="all_images[$aii].style.top={$image[3]};";
-        $canvasjs.="all_images[$aii].width={$image[4]};";
-        $canvasjs.="all_images[$aii].height={$image[5]};";
-        $canvasjs.="all_images[$aii].ll='{$image[6]}';";
-        $canvasjs.="all_images[$aii].starttime='{$image[7]}';";
-        //$canvasjs.="all_images[$aii].readytime='{$image[8]}';"; @todo udělat postupné stavění v timeplay
-        $canvasjs.="all_images[$aii].stoptime='{$image[9]}';";
+
+        $canvasjs.="all_images[$aii].setAttribute('x',{$image[2]});";
+        $canvasjs.="all_images[$aii].setAttribute('y',{$image[3]});";
+        $canvasjs.="all_images[$aii].setAttribute('x2',{$image[4]});";
+        $canvasjs.="all_images[$aii].setAttribute('y2',{$image[5]});";
+
+        $canvasjs.="all_images[$aii].width={$image[6]};";
+        $canvasjs.="all_images[$aii].height={$image[7]};";
+
+
+        /*$canvasjs.="all_images[$aii].setAttribute('ll',{$image[8]});";
+        $canvasjs.="all_images[$aii].setAttribute('starttime',{$image[9]});";
+        $canvasjs.="all_images[$aii].setAttribute('readytime',{$image[10]});"; //@todo udělat postupné stavění v timeplay
+        $canvasjs.="all_images[$aii].setAttribute('stoptime',{$image[11]});";*/
+
+
+        $canvasjs.="all_images[$aii].ll='{$image[8]}';";
+        $canvasjs.="all_images[$aii].starttime={$image[9]};";
+        $canvasjs.="all_images[$aii].readytime={$image[10]};";
+        $canvasjs.="all_images[$aii].stoptime={$image[11]};";
+
+
+        $canvasjs.="all_images[$aii].speed=".intval($image[12]).';'.nln;
+
+        //$canvasjs.="all_images[$aii].starttime=0;";
+        //$canvasjs.="all_images[$aii].readytime=0;";
+        //$canvasjs.="all_images[$aii].stoptime=0;";
 
         //var allImages['.md5($modelurl).'] = new Image();
         //$canvasjs.='all_images[]=['.implode(',',$image).'];';
@@ -1196,7 +686,26 @@ if(!$_GLOBALS['noxmap']){
         $aii++;
     }
 
+    $canvasjs.='
 
+        var imgs_count_bg = all_images_bg.length;
+        var imgs_loaded_bg = 0;
+
+
+        ctx_bg.clearRect ( 0 , 0 , canvas.width, canvas.height );
+        i=0;while(i<imgs_count_bg){
+
+            if(jQuery.inArray(all_images_bg[i].ll,drawmaplayers)!=-1){
+
+                ctx_bg.drawImage(all_images_bg[i], parseInt(all_images_bg[i].style.left), parseInt(all_images_bg[i].style.top), all_images_bg[i].width, all_images_bg[i].height);
+
+            }
+
+
+
+            i++;
+        }
+        ';
 
     $canvasjs.='
 
@@ -1207,17 +716,50 @@ if(!$_GLOBALS['noxmap']){
         ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
         i=0;while(i<imgs_count){
 
-            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1)
-                ctx.drawImage(all_images[i],parseInt(all_images[i].style.left),parseInt(all_images[i].style.top),all_images[i].width,all_images[i].height);
+            if(jQuery.inArray(all_images[i].ll,drawmaplayers)!=-1){
+
+
+                 pos = position(
+                    all_images[i].getAttribute(\'x\'),
+                    all_images[i].getAttribute(\'y\'),
+                    all_images[i].getAttribute(\'x2\'),
+                    all_images[i].getAttribute(\'y2\'),
+
+                    all_images[i].starttime,
+                    all_images[i].readytime
+
+                );
+                ctx.drawImage(all_images[i], Math.round(pos[0]), Math.round(pos[1]), all_images[i].width, all_images[i].height);
+
+            }
+
+
+
             i++;
         }
+        ';
 
 
-
+        /*
         $(all_images).load(function() {
 
             if(jQuery.inArray(this.ll,drawmaplayers)!=-1){
-                ctx.drawImage(this,parseInt(this.style.left),parseInt(this.style.top),this.width,this.height);
+
+
+
+                pos = position(
+                    this.getAttribute(\'x\'),
+                    this.getAttribute(\'y\'),
+                    this.getAttribute(\'x2\'),
+                    this.getAttribute(\'y2\'),
+
+                    this.starttime,
+                    this.readytime
+
+                );
+                ctx.drawImage(this,pos[0],pos[1],this.width,this.height);
+
+
             }
 
             imgs_loaded++;
@@ -1226,17 +768,16 @@ if(!$_GLOBALS['noxmap']){
 
                 drawmap();
 
-                setTimeout(function(){
+                setInterval(function(){
                     drawmap();
                 },1000);
 
 
             }
 
-        });
+        });*/
 
 
-    ';
 
     js($canvasjs);
 
@@ -1244,6 +785,13 @@ if(!$_GLOBALS['noxmap']){
     e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:100;">
     <canvas id="map_canvas" style="cursor:move;" class="clickmap" width="'./*round(424/$zoom)*(($xm*2)+2)*/round($GLOBALS['ss']['screenwidth']*gr).'" height="'./*round(211/$zoom)*($ym+1)*/round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
     </div></div>');
+
+    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:90;">
+    <canvas id="map_canvas_bg" width="'.round($GLOBALS['ss']['screenwidth']*gr).'" height="'.round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
+    </div></div>');
+
+
+
 
 
     e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlunitc/$zoom).'px;left:0px;z-index:400;" id="units_stream">'.$GLOBALS['units_stream']/**/.'</div></div>');

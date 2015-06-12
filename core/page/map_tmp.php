@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/map.php
@@ -34,7 +34,9 @@ if(!$zoom)$zoom=1;
 
 
 ?>
-
+<?php
+error('Potřeba zprovoznit htmlmap!');
+?>
 <?php
     
     if($GLOBALS['get']['ww']){
@@ -487,7 +489,7 @@ if(!$zoom)$zoom=1;
 	    buildx = function(master,id,func,build_x,build_y,_rot) {
 		/*alert(_rot);*/
 		/*$.get('?token=<?php e($_GET['token']) ?>&e=map_units&q='+master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot, function(vystup){$('#map_units').html(vystup);});*/
-		qbuffer=master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot;
+		qbuffer.push(master+'.'+func+' '+id+','+build_x+','+build_y+','+_rot);
 		//prompt('qbuffer',master);
 		//prompt('qbuffer',qbuffer);
 

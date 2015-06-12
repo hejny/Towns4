@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/cache.php
@@ -16,7 +16,11 @@
 /*==================================================================================================cache_minimenu_[id]=*/
 //e('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
 
-$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','minimenu');
+//MINIMENU FROM ID
+//Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání minimenu
+
+
+/*$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','minimenu');
 if(!file_exists($fileMM)){
     
     $pages=array();
@@ -42,7 +46,7 @@ if(!file_exists($fileMM)){
 }else{
     $pages=unserialize(file_get_contents($fileMM));
 
-}
+}*/
 
 
 /*==================================================================================================cache_create-unique_[id]=*/

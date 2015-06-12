@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/minimenu.php
@@ -33,6 +33,11 @@ $terrains=array(
 );
 //--------------------------
 t("minimenu - start");
+
+
+
+
+
 
 
 
@@ -80,6 +85,13 @@ if($sql and $id?ifobject($id):true){
 
 
         list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
+
+
+
+
+        if($type=='building' or $type=='tree' or $type=='rock')
+        js('mapselected='.$id.';drawmap();');
+
 
 
 

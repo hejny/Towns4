@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_object.php
@@ -14,8 +14,15 @@
 
 
 
-/**
- *
+
+
+/*
+ ██████╗ ██████╗      ██╗███████╗██╗  ██╗████████╗
+██╔═══██╗██╔══██╗     ██║██╔════╝██║ ██╔╝╚══██╔══╝
+██║   ██║██████╔╝     ██║█████╗  █████╔╝    ██║
+██║   ██║██╔══██╗██   ██║██╔══╝  ██╔═██╗    ██║
+╚██████╔╝██████╔╝╚█████╔╝███████╗██║  ██╗   ██║
+ ╚═════╝ ╚═════╝  ╚════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝
  */
 class object{
     //======================================================================================object->__construct
@@ -46,7 +53,9 @@ class object{
 
 
             //$sql_ownname="(SELECT name FROM `[mpx]pos_obj` as tmp WHERE tmp.id=`[mpx]pos_obj` LIMIT 1) AS ownname";,$sql_ownname
-            $result = sql_array("SELECT * FROM `[mpx]pos_obj` WHERE $where AND ".objt()." ORDER BY `id` LIMIT 1");
+            $result = sql_array("SELECT * FROM `[mpx]pos_obj` WHERE ($where) AND ".objt()." ORDER BY `id` LIMIT 1");
+
+
             $row = $result[0];
             if($row){
                 //---------------
@@ -80,6 +89,7 @@ class object{
                 $this->expand_=$row["expand"];
                 $this->block_=$row["block"];
                 $this->attack_=$row["attack"];
+                $this->speed_=$row["speed"];
                 $this->group_=$row["group"];
                 $this->permalink_=$row["permalink"];
                 $this->own=$row["own"];
@@ -90,6 +100,8 @@ class object{
                 $this->pt=$row["pt"];
                 $this->x=$row["x"];
                 $this->y=$row["y"];
+                $this->x2=$row["x2"];
+                $this->y2=$row["y2"];
                         //$this->fs=$this->func->fs();
                         //$this->fr=$this->fp+$this->hold->fp();
 		t("object - create - before sum");
@@ -100,6 +112,15 @@ class object{
                 $this->orig_sum2=$this->sum(true);
                 if(!$this->x){$this->x=0;}
                 if(!$this->y){$this->y=0;}
+                if(!$this->x2){$this->x2=$this->x;}
+                if(!$this->y2){$this->y2=$this->y;}
+
+                /* Objekt neřeží pozice, pracuje pouze s aktuální pozicí*/
+
+                $this->starttime=$row["starttime"];
+                $this->readytime=$row["readytime"];
+                $this->stoptime=$row["stoptime"];
+
 
                 t("object - create - c");
 
@@ -145,6 +166,7 @@ class object{
                 'expand' => '',
                 'block' => '',
                 'attack' => '',
+                'speed' => '',
                 'group' => '',
                 'permalink' => '',
                 'create_lastused' => '',
@@ -162,15 +184,15 @@ class object{
                 'ww' => '',
                 'x' => '0',
                 'y' => '0',
-                'traceid' => '',
+                'x2' => '0',
+                'y2' => '0',
+                'traceid' => ''
+                /* Objekt neřeží pozice, pracuje pouze s aktuální pozicí
                 'starttime' => '',
                 'readytime' => '',
-                'stoptime' => ''
+                'stoptime' => ''*/
             ));
             //------------------
-
-            /*sql_query("INSERT INTO `[mpx]pos_obj` (`id`,`name`, `type`, `fp`, `fs`, `origin`, `func`, `set`, `res`, `profile`, `hold`, `own`, `hard`, `expand`, `block`, `attack`, `ww`,`in`, `t`, `x`, `y`) VALUES ('$id','$name', 'hybrid', '', NULL,NULL, NULL, NULL,NULL, NULL, NULL, NULL, 0, 0,0, 0,'1', NULL, NULL, '0', '0')",1);*/
-
 
             $this->id=$id;
             $this->name=$name;
@@ -189,6 +211,7 @@ class object{
             $this->expand_="";
             $this->block_="";
 	        $this->attack_="";
+	        $this->speed_="";
             $this->group_="";
             $this->permalink_="";
             $this->own="";
@@ -198,6 +221,13 @@ class object{
             $this->t="";
             $this->x="";
             $this->y="";
+            $this->x2="";
+            $this->y2="";
+            /* Objekt neřeží pozice, pracuje pouze s aktuální pozicí
+            $this->starttime="";
+            $this->readytime="";
+            $this->stoptime="";*/
+
             $this->orig_sum="update";
         }
 	
@@ -245,43 +275,13 @@ class object{
      */
 
     function update($force=false,$fpfs=false){
-        //echo("destructing ".$this->id);
-        //echo("<br>");
-        //echo($this->orig_sum);
-        //echo("<br>");
-        //echo($this->sum());
-        //echo("<br>");
-        //load_file('/path/to/file')
-        if($this->loaded){
-            /*if(!$this->resfile){
-                 //$res="'".(addslashes($this->res))."'";
-            }else{
-                //r(file_get_contents($this->res));
-                //$res="'".(addslashes(file_get_contents($this->res)))."'";
-                //echo("copy(".$this->res.",".root."data/image/".$this->id.".jpg);");
-                $file=root."data/image/".$this->id.".jpg";
-                copy($this->res,$file);
-                chmod($file,0777);
-            }
-            $res="''";*/
-            //if($this->id==1){cleartmp($this->id);}
-			
-			//e($this->orig_sum.'!='.$this->sum());
 
-            
-                //PREVENCE REWRITE
-                /*if(!$GLOBALS['objects_updated']){
-                    $GLOBALS['objects_updated']=array();
-                }
-                if(in_array($this->id,$GLOBALS['objects_updated'])){
-                    return;
-                }
-                $GLOBALS['objects_updated'][]=$this->id;*/
+        if($this->loaded){
+
             
             if($this->orig_sum!=$this->sum() or $force){//$this->loaded=false;
                 if($this->orig_sum2!=$this->sum(true)){cleartmp($this->id);}
-                //echo("updating ".$this->id);
-                //echo("<br>");
+
                 //==================================================================ARYYD
                 if(($this->orig_sum_!=$this->sum_() and !$this->noupdate) or $force){
                     r("updating sumaries - ".$this->id." + FS/FP");
@@ -290,9 +290,9 @@ class object{
                     $funcs=$this->func->vals2list();
                     foreach($funcs as $name=>$func){
                         $class=$func["class"];
-			    //e($GLOBALS['config']["f"][$class]["create"]["q"]);br();e($GLOBALS['config']["f"][$class]["create"]["w"]);hr();
-                        if($c1=$GLOBALS['config']["f"][$class]["create"]["q"] and $c2=$GLOBALS['config']["f"][$class]["create"]["w"]){//r('xxx');
-			    //e('OK');br();
+
+                        if($c1=$GLOBALS['config']["f"][$class]["create"]['q'] and $c2=$GLOBALS['config']["f"][$class]["create"]["w"]){
+
                             $constants=$func["params"];
                             foreach($constants as &$value_c)$value_c=$value_c[0]*$value_c[1];
                             //r($constants);
@@ -302,19 +302,14 @@ class object{
                                 }
                             }
                             foreach($GLOBALS['config']["f"]["global"]["create"] as $key=>$value){$key="_".$key;
-                                    //r("$key=>$value");
+
                                     if(!defined($key))define($key,$value);
                             }
-                            //foreach($constants as $key=>$value){echo('$_'.$key."=$value;");br();}
-                            //r($constants);
-                            //foreach($params as $key=>$value){echo('$'.$key."=$value;");br();}
+
                             foreach($constants as $key=>$value)eval('$_'.$key.'=$value;');
-                            //foreach($params as $key=>$value)eval('$'.$key.'=$value;');
-                            
-                            //r($GLOBALS['config']["f"]["create"]);
-                            //e('$price='.$c1.";");br();
+
                             eval('$price='.$c1.";");
-			    //e($price);br();
+
                             //--------------------------------
                             $count=0;
                             $c2=explode("+",$c2);
@@ -337,7 +332,7 @@ class object{
 		    if($fpfs)$this->fp=$this->fs;
                     $this->fc=($fc->vals2str());
                     //------------------------------FR
-                    //$this->hold->show();
+
                     $this->fr=$this->hold->fp();  
                     //------------------------------FX
                     $this->fx=$this->fp+$this->fr;
@@ -376,10 +371,11 @@ class object{
                     }
 
                     //------------------------------EXPAND,BLOCK,ATTACK
-                    //$tmp=$funcs["hard"]["params"]["hard"];$this->hard=$tmp[0]*$tmp[1];//r(444);r($tmp);
+
 					$tmp=$funcs["expand"]["params"]["distance"];$this->expand_=$tmp[0]*$tmp[1];    
 					$tmp=$funcs["block"]["params"]["block"];$this->block_=$tmp[0]*$tmp[1];
 					$tmp=$funcs["attack"]["params"]["distance"];$this->attack_=$tmp[0]*$tmp[1];
+					$tmp=$funcs["move"]["params"]["speed"];$this->speed_=$tmp[0]*$tmp[1];
 
                     //------------------------------TIME
                     $this->t=time();   
@@ -388,13 +384,7 @@ class object{
                     //------------------------------ORIGIN
 		    sort($this->origin);
                     //------------------------------REPORT
-                    /*r($this->fs);
-                    r($this->fp);
-                    r($this->fr);
-                    r($this->fx);
-                    r($this->fc);
-                    r($this->hard);*/
-                    //r($this->expand_);
+
                 }else{
                     r("updating sumaries -".$this->id);
                 }
@@ -406,7 +396,6 @@ class object{
                     //'id' => $this->xxx,
                     'name' => $this->name,
                     'type' => $this->type,
-                    //'userid' => $this->xxx,
                     'origin' => implode(',',$this->origin),
                     'permalink' => $this->permalink_,
                     'fp' => $this->fp,
@@ -433,6 +422,7 @@ class object{
                         'expand' => $this->expand_,
                         'block' => $this->block_,
                         'attack' => $this->attack_,
+                        'speed' => $this->speed_,
                         'group' => $this->group_
                         //@todo Zprovoznit rušení  staveb
                         /*'create_lastused' => $this->xxx,
@@ -455,20 +445,24 @@ class object{
                         'expand' => $this->expand_,
                         'block' => $this->block_,
                         'attack' => $this->attack_,
+                        'speed' => $this->speed_,
                         'group' => $this->group_
                     ));
 
                 }
                 //------------------UPDATE positions
-                sql_update('positions',"id='".$this->id."'",array(
+                sql_update('positions',"id='".$this->id."' AND ".objt(),array(
                     //'id' => $this->xxx,
                     'ww' => $this->ww,
                     'x' => $this->x,
-                    'y' => $this->y
-                    //'traceid' => $this->xxx,
-                    //'starttime' => $this->xxx,
-                    //'readytime' => $this->xxx,
-                    //'stoptime' => $this->xxx
+                    'y' => $this->y,
+                    'x2' => $this->x2,
+                    'y2' => $this->y2
+                    /* Objekt neřeží pozice, pracuje pouze s aktuální pozicí
+                    'traceid' => $this->xxx,
+                    'starttime' => $this->starttime,
+                    'readytime' => $this->readytime,
+                    'stoptime' => $this->stoptime*/
                 ));
                 //------------------
 
@@ -491,7 +485,6 @@ class object{
 	
 	foreach(array('tree','rock') as $type){
 
-                //ABS(A.x-B.x)+ABS(A.y-B.y)
                 
 		foreach(sql_array('SELECT `id`,`func`,x,y FROM `[mpx]pos_obj` WHERE `own`='.$this->id.' AND `func` LIKE \'%class[5]mine%limit[7]5[10]'.$type.'%\' AND '.objt()) as $row){
 
@@ -653,7 +646,9 @@ class object{
      *
      */
     function position(){
-        $position=array($this->x,$this->y);
+
+
+        $position=position($this->x,$this->y,$this->x2,$this->y2,$this->starttime,$this->readytime);
         return($position);
     }
     //======================================================================================object->join
@@ -730,7 +725,17 @@ class object{
 	return($res);
     }
 }
+
+
 //============================================================================================================================================================================
+/*
+███████╗██╗   ██╗███╗   ██╗██╗  ██╗ ██████╗███████╗
+██╔════╝██║   ██║████╗  ██║██║ ██╔╝██╔════╝██╔════╝
+█████╗  ██║   ██║██╔██╗ ██║█████╔╝ ██║     █████╗
+██╔══╝  ██║   ██║██║╚██╗██║██╔═██╗ ██║     ██╔══╝
+██║     ╚██████╔╝██║ ╚████║██║  ██╗╚██████╗███████╗
+╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝╚══════╝
+*/
 //======================================================================================resc
 //--------------------------------------------resc out
     function resc($res,$own){
@@ -904,6 +909,7 @@ function trackobject($id){
         'expand' => true,
         'block' => true,
         'attack' => true,
+        'speed' => true,
         'group' => true,
         'permalink' => true,
         'create_lastused' => true,
@@ -921,6 +927,8 @@ function trackobject($id){
         'ww' => true,
         'x' => true,
         'y' => true,
+        'x2' => true,
+        'y2' => true,
         'traceid' => $id,
         'starttime' => true,
         'readytime' => true,
@@ -936,8 +944,33 @@ function trackobject($id){
 }
 
 
-//trackobject(2289241);
-//die();
+//======================================================================================trackposition
+/*
+ * Funkce ukončí starou pozici a založí novou
+ *
+ *
+ * */
+function trackposition($id,$readytime=false){
+
+    //------------------REINSERT positions
+    sql_reinsert('positions',"id='$id' AND ".objt(),array(
+        'id' => true,
+        'ww' => true,
+        'x' => true,
+        'y' => true,
+        'x2' => true,
+        'y2' => true,
+        'traceid' => true,
+        'starttime' => true,
+        'readytime' => true,
+        'stoptime' => time()
+    ));
+    //------------------
+
+    sql_query("UPDATE `[mpx]pos_obj` SET `starttime`='".time()."'".($readytime?",`readytime`=".sqlx($readytime):'')." WHERE id='".sql($id)."' AND ".objt());
+
+
+}
 //======================================================================================ifobject
 /**
  * @param $id
@@ -1259,6 +1292,51 @@ function name2name($name1,$name2){
 
 	return($name);
 }
+
+//======================================================================================
+/*
+ * Funkce spočítá aktuální pozici a vrátí pole s x,y
+ *
+ * @param int x
+ * @param int y
+ * @param int x2
+ * @param int y2
+ * @param int Čas 1
+ * @param int Čas 2
+ * @param int Aktuální čas
+ * @return array $x,$y
+ *
+ * */
+function position($x,$y,$x2,$y2,$starttime,$readytime,$time=0){
+
+    //$GLOBALS['ss']['query_output']->add('ppp',"$x,$y,$x2,$y2,$starttime,$readytime,$time=0");
+
+    if(!$time)$time=time();
+
+    if(!$x2 && !$y2){}
+    elseif(!$readytime){}
+    elseif(!$starttime){}
+
+    elseif($time<=$starttime){//Předtím
+
+    }elseif($time>=$readytime){//Potom
+        $x=$x2;
+        $y=$y2;
+    }else{
+
+        $q=($time-$starttime)/($readytime-$starttime);
+
+        $x=$x+(($x2-$x)*$q);
+        $y=$y+(($y2-$y)*$q);
+
+
+    }
+
+    return(array($x,$y));
+//======================================================================================
+}
+
+
 
 
 //======================================================================================

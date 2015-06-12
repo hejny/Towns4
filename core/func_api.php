@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_query.php
@@ -488,7 +488,7 @@ function use_price($func,$params,$constants=false,$mode=0){//0=take, 1=test, 2=h
     foreach($constants as $key=>$value)eval('$_'.$key.'=$value;');
     foreach($params as $key=>$value)eval('$'.$key.'=$value;');
     //echo('ahoj'.$func);
-    $c1=$GLOBALS['config']["f"][$func]["use"]["q"];
+    $c1=$GLOBALS['config']["f"][$func]["use"]['q'];
     //print_r($GLOBALS['config']);
     //echo('$price='.$c1.";");br();
     eval('$price='.$c1.";");

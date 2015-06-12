@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/create/upgrade.php
@@ -260,6 +260,8 @@ if($myversion){
 			'ww' => -1,
 			'x' => true,
 			'y' => true,
+            'x2' => true,
+            'y2' => true,
 			'traceid' => true,
 			'starttime' => true,
 			'readytime' => true,

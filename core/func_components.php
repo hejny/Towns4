@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
    core/func_components.php
    HTML komponenty
@@ -367,7 +367,7 @@ function trr($text,$size=0,$style=false,$html='',$tracetext='',$tag='img',$split
         $stream='';
         //$tracetext=$
         $text=str_replace('[15]',' ',$text);
-        if(!$tracetext)$tracetext='X1PavelHejný';
+        if(!$tracetext)$tracetext='X1PavolHejný';
         if(is_array($size)){
             list($size,$color)=$size;
             //echo('ahoj');

@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/javascript.php
@@ -14,22 +14,23 @@
 
     //----------------------------------------------------------------turnmap
 
-    var drawmaplayers=['','terrain','building','tree','rock'];
+    var drawmaplayers=['','terrain','building','tree','rock'];//Co za mapové vrstvy se zobrazuje
+    var mapselected=0;//Co za objekt je označený?
+    var mapselectedi=0;//Co za objekt je označený - pořadí v all_images?
 
-
-    var turnmap=function(/*wtf,state='x'*/) {
+    var turnmap=function() {
 
         if (arguments.length == 2) {
-            var wtf = arguments[0];
+            var layer = arguments[0];
             var state = arguments[1];
 
         }else{
-            var wtf = arguments[0];
+            var layer = arguments[0];
             var state = 'x';
         }
 
 
-            var i=jQuery.inArray(wtf,drawmaplayers);
+        var i=jQuery.inArray(layer,drawmaplayers);
 
         if(i==-1 && state===false)return;
         if(i!=-1 && state===true)return;
@@ -38,7 +39,7 @@
         if(i!=-1)
             drawmaplayers.splice(i,1);
         else
-            drawmaplayers.push(wtf);
+            drawmaplayers.push(layer);
 
 
         //alert(i);
@@ -46,16 +47,46 @@
         drawmap();
     }
 
+    //----------------------------------------------------------------drawEllipse
+
+    function drawEllipse(ctx, x, y, w, h) {
+        var kappa = .5522848,
+            ox = (w / 2) * kappa, // control point offset horizontal
+            oy = (h / 2) * kappa, // control point offset vertical
+            xe = x + w,           // x-end
+            ye = y + h,           // y-end
+            xm = x + w / 2,       // x-middle
+            ym = y + h / 2;       // y-middle
+
+        ctx.beginPath();
+        ctx.moveTo(x, ym);
+        ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+        ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+        ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+        ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+        ctx.closePath(); // not used correctly, see comments (use to close off open path)
+        ctx.stroke();
+        ctx.fill();
+    }
+
     //----------------------------------------------------------------drawmap
 
+    var all_images=[];
+
     var drawmap=function() {
+
+        if(typeof(ctx)==='undefined')return;
+
+        /*console.log(all_images);*/
+
+        ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
 
         if (arguments.length == 1) {
             var time = arguments[0];
             document.maptime=time;
         }else{
             //var time = Math.floor(new Date().getTime() / 1000);
-            time=document.maptime;
+            time=timestamp();//document.maptime;
         }
 
         document.maptime=time;
@@ -71,9 +102,74 @@
 
                 if ((all_images[i].starttime <= time) && (all_images[i].stoptime == 0 || all_images[i].stoptime > time)) {
 
-                    ctx.drawImage(all_images[i], parseInt(all_images[i].style.left), parseInt(all_images[i].style.top), all_images[i].width, all_images[i].height);
 
+                    //console.log(all_images[i]);
+                    pos = position(
+                        all_images[i].getAttribute('x'),
+                        all_images[i].getAttribute('y'),
+                        all_images[i].getAttribute('x2'),
+                        all_images[i].getAttribute('y2'),
+
+                        all_images[i].starttime,
+                        all_images[i].readytime,
+                        time
+
+                    );
+
+                    /*pos[0]-=(Math.random()+10)-5;
+                    pos[1]-=(Math.random()+10)-5;*/
+
+                    all_images[i].setAttribute('xx',pos[0]);
+                    all_images[i].setAttribute('yy',pos[1]);
+
+
+                    if(all_images[i].getAttribute('objectid')==mapselected) {
+
+                        mapselectedi=i;
+
+
+
+                        ctx.strokeStyle="#FF0000";
+                        ctx.lineWidth=3;
+                        ctx.fillStyle = 'rgba(255, 50,50, 0.2)';
+
+                        /*console.log(all_images[i]);*/
+
+                        drawEllipse(
+                            ctx,
+                            parseInt(all_images[i].getAttribute('xx')),
+                            parseInt(all_images[i].getAttribute('yy'))+parseInt(all_images[i].height)-parseInt(all_images[i].width/2),
+                            parseInt(all_images[i].width),
+                            parseInt(all_images[i].width/2)/*,
+                            rotation,
+                            startAngle,
+                            endAngle,
+                            anticlockwise*/
+                        );
+                    }
+
+                    objmin=$('#objmin'+all_images[i].getAttribute('objectid'));
+                    if(typeof objmin!='undefined'){
+                        /*console.log(objmin);*/
+                        objmin.css('left',pos[0] /*- (all_images[i].width)*/);
+                        objmin.css('top',pos[1] + all_images[i].height + (all_images[i].width/4)  );
+
+                    }
+
+
+
+                    ctx.drawImage(all_images[i], all_images[i].getAttribute('xx'), all_images[i].getAttribute('yy'), all_images[i].width, all_images[i].height);
+
+                    //console.log(all_images[i]);
                 }
+
+                /*all_images.sort(function(a, b){/*console.log(a);* /return a.yy-b.yy});
+
+                if ((all_images[i].starttime <= time) && (all_images[i].stoptime == 0 || all_images[i].stoptime > time)) {
+
+                    ctx.drawImage(all_images[i], all_images[i].getAttribute('xx'), all_images[i].getAttribute('yy'), all_images[i].width, all_images[i].height);
+
+                }*/
 
 
             }
@@ -84,6 +180,11 @@
 
 
     }
+
+
+    setInterval(function(){
+        drawmap();
+    },150);
 
     //----------------------------------------------------------------removeobject
 
@@ -103,9 +204,39 @@
         drawmap();
     }
 
+    //----------------------------------------------------------------position
+
+    function position(x,y,x2,y2,starttime,readytime,time){
+
+        if(!x2 && !y2)return([Math.round(x),Math.round(y)]);
+        if(!readytime)return([Math.round(x),Math.round(y)]);
+        if(!starttime)return([Math.round(x),Math.round(y)]);
+
+        if(!time)time=timestamp();
+
+        /*console.log([x,y,x2,y2,starttime,readytime,time]);/**/
+
+        if(time<=starttime){//Předtím
+
+        }else
+        if(time>=readytime){//Potom
+            x=x2;
+            y=y2;
+        }else{
+
+            var q=(time-starttime)/(readytime-starttime);
+            x=parseInt(x)+(x2-x)*q;
+            y=parseInt(y)+(y2-y)*q;
 
 
-    //=====================================================================================
+        }
+
+        return([Math.round(x),Math.round(y)]);
+
+
+    }
+
+    //=====================================================================================Zpracování mapy
 
 /*------------------------------parseMap*/
             xc=0/*<?php echo($GLOBALS['xc']); ?>*/;
@@ -375,7 +506,7 @@ $(document).ready(function(){
 
 	
     rvrao=false;
-	qbuffer='';
+	qbuffer=[];
 	windows='';
 	setset='';
 	nmr=false;
@@ -397,18 +528,18 @@ $(document).ready(function(){
             //document.title='NE';
         }	
 		
-	    if(qbuffer || windows || setset || qii>40){qii=0;
+	    if(qbuffer.length>0 || windows || setset || qii>40){qii=0;
                  /*if(rvrao){alert('hybaa')}*/
                 
                 
                 if(playing){
 					if(nmr){
-                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time=-1';
+                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer.join(';')+'&set='+setset+'&map_units_time=-1';
 						nmr=false;
 					}else{
-                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer+'&set='+setset+'&map_units_time='+map_units_time;
+                    	urlpart='?token='+token+'&e=aac&i='+windows+'&q='+qbuffer.join(';')+'&set='+setset+'&map_units_time='+map_units_time;
 					}
-    		    qbuffer=''
+    		    qbuffer=[];
                     windows='';
                     setset='';
                 }
@@ -612,8 +743,10 @@ $(document).ready(function(){
         },10);
         /*===========================================================================*/
     });
-       /*=====================================================================WINDOWS======*/
 
+
+
+    //==================================================================================================================Okna ve hře
 
 	/*----------------------------------*/
 	function w_close(w_name){
@@ -717,19 +850,345 @@ $(document).ready(function(){
 	/*$('#loading').css('visibility','visible');/*
 	/*----------------------------------*/
 	w_drag();
-	/*----------------------------------*/
-        function r(text){/*alert(text);*/
-            contents=$("#output").html();
-            /*alert(contents);*/
-            if(contents){
-                $("#output").html(text+'<br>'+contents);
-             }
-        }/**/
-	/*----------------------------------*/
+
+    //==================================================================================================================Mapa
+
+
+    /*---------------------------------ANTISRAČKA*/
+    $('#draglayer').attr('unselectable','on')
+        .css({'-moz-user-select':'-moz-none',
+            '-moz-user-select':'none',
+            '-o-user-select':'none',
+            '-khtml-user-select':'none', /* you could also put this in a class */
+            '-webkit-user-select':'none',/* and add the CSS class here instead */
+            '-ms-user-select':'none',
+            'user-select':'none'
+
+
+        }).bind('selectstart', function(){ return false; });
 
 
 
 
- 
-       /*===========================================================================*/
+
+
+    //==================================================================================================================Interakce s mapou
+    aac_clickset=function(hovno) {
+
+        //alert('clickset');
+
+        offset =  $("#map_canvas").offset();
+
+        //--------------------------------------------------------------------------------------------------------------
+
+        $(".menu").not(".x-menu-registered").click(function(hovno) {
+            if(drag!=1){
+                $('#map_context').css('left',hovno.pageX-10);
+                $('#map_context').css('top',hovno.pageY-10);
+                $('#map_context').css('border-color','#999999');
+                $('#map_context').css('display','block');
+                $('#map_context').html('...');
+                name=$(this).attr('id');
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
+            }
+        }).addClass("x-menu-registered");
+
+
+        //--------------------------------------------------------------------------------------------------------------Kliknutí na podklad konkrétní budovy
+
+
+        $(".unit").not(".x-unit-minimenu-registered").click(function(hovno) {
+            if(drag!=1){
+                $('#map_context').css('left',hovno.pageX-10);
+                $('#map_context').css('top',hovno.pageY-10);
+                $('#map_context').css('border-color','#22222');
+                $('#map_context').css('display','block');
+                title=$(this).attr('title');
+                name=parseInt($(this).attr('id').split('objmin').join(''));
+
+
+                /*offset =  $("#map_canvas").offset();
+                 xt=(hovno.pageX-offset.left);//pozice myši px
+                 yt=(hovno.pageY-offset.top);
+                 tmp=pos2pos(xt,yt);
+                 xxt=tmp[0];
+                 yyt=tmp[1];*/
+
+
+
+                if(ifcache('minimenu_'+name)){
+                    $('#map_context').html(cache('minimenu_'+name));
+                }else{
+                    $('#map_context').html(title);
+                }
+
+
+                <?php if(logged){ ?>
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title/*+'&xc='+xxc+'&yc='+yyc*/, function(vystup){$('#map_context').html(vystup);});});
+                <?php } ?>
+            }
+        }).addClass("x-unit-minimenu-registered");
+
+        //--------------------------------------------------------------------------------------------------------------Upload to map
+
+        <?php if(logged){ ?>
+
+        $('.clickmap').filedrop({
+
+
+            paramname:'file',
+
+            maxfiles: 1,
+            maxfilesize: <?=intval(ini_get('post_max_size')); ?>,
+            url: '?e=create-post_file',
+
+            allowedfileextensions: ['.jpg','.jpeg','.png','.gif','.bmp','.wbmp'],
+
+            uploadFinished:function(i,file,response){
+                $.data(file).addClass('done');
+                // response is the JSON object that post_file.php returns
+            },
+
+            error: function(err, file) {
+                switch(err) {
+                    case 'BrowserNotSupported':
+                        alert('<?= lr('upload_error_browser_not_supported') ?>');
+                        break;
+                    case 'TooManyFiles':
+                        // user uploaded more than 'maxfiles'
+                        alert('<?= lr('upload_error_more_files',1) ?>');
+                        break;
+                    case 'FileTooLarge':
+                        // program encountered a file whose size is greater than 'maxfilesize'
+                        // FileTooLarge also has access to the file which was too large
+                        // use file.name to reference the filename of the culprit file
+                        alert('<?= lr('upload_error_file_too_large',intval(ini_get('post_max_size'))) ?>');
+                        break;
+                    case 'FileExtensionNotAllowed':
+                        // The file extension is not in the specified list 'allowedfileextensions'
+                        alert('<?= lr('upload_error_wrong_extension','.jpg, .jpeg, .png, .gif, .bmp nebo .wbmp'); ?>');
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            // Called before each upload is started
+            beforeEach: function(file){
+
+                startloading();
+
+                offset =  $("#map_canvas").offset();
+
+                xt=(mouseX-offset.left);
+                yt=(mouseY-offset.top);
+                tmp=pos2pos(xt,yt);
+                xxc=tmp[0];
+                yyc=tmp[1];
+
+                //alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));
+
+                this.url=this.url+'&xc='+(xxc)+'&yc='+(yyc);
+
+                if(!file.type.match(/^image\//)){
+                    //alert('Only images are allowed!');
+
+                    // Returning false will cause the
+                    // file to be rejected
+                    return false;
+                }
+            },
+
+
+            uploadFinished: function(i, file, response, time) {
+
+                /*alert('aaa');*/
+                <?php urlx('e=map;noi=1;'.js2('stoploading()'),0) ?>
+            }
+
+
+        });
+        <?php } ?>
+        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na papu
+        $("#map_context").click(function() {
+            /*$('#map_context').css('display','none');*/
+        });/**/
+
+
+
+        /*$(".tabulkamapy").draggable();*/
+        $(".clickmap").click(function(hovno) {
+            /*alert(drag);*/
+            if(drag!=1){
+                /*alert("click");/**/
+                $('#map_context').css('left',hovno.pageX-10);
+                $('#map_context').css('top',hovno.pageY-10);
+                $('#map_context').css('border-color','#22222');
+                $('#map_context').css('display','block');/**/
+                offset =  $("#map_canvas").offset();
+
+
+
+                xt=(hovno.pageX-offset.left);/*pozice myši px*/
+                yt=(hovno.pageY-offset.top);
+                tmp=pos2pos(xt,yt);
+                xxc=tmp[0];
+                yyc=tmp[1];
+
+                //document.title=(xxc+','+yyc);
+
+                /*alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));*/
+                /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
+                 */
+                tmp=1;
+                title='...';/*(Math.round(xxc*tmp)/tmp)+","+Math.round(Math.round(yyc*tmp)/tmp);*/
+
+                $('#map_context').html(title);
+                <?php if(logged){ ?>
+                //alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+                <?php } ?>
+            }
+        });
+        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na mapu pravým tlačítkem
+
+        $(document).unbind("contextmenu");
+        $(document).bind("contextmenu",function(hovno){
+
+
+
+
+            /*if(drag!=1){
+
+             $('#map_context').css('left',hovno.pageX-10);
+             $('#map_context').css('top',hovno.pageY-10);
+             $('#map_context').css('border-color','#22222');
+             $('#map_context').css('display','block');
+             offset =  $("#map_canvas").offset();
+             xt=(hovno.pageX-offset.left);//pozice myši px
+             yt=(hovno.pageY-offset.top);
+             tmp=pos2pos(xt,yt);
+             xxt=tmp[0];
+             yyt=tmp[1];
+             tmp=1;
+             title='...';
+             $('#map_context').html(title);
+            <?php if(logged){ ?>
+             $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid=menu_map', function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+            <?php } ?>
+             }*/
+
+
+
+
+            if(drag!=1){
+
+                if(all_images[mapselectedi].speed>0) {
+                    xt = (hovno.pageX - offset.left);
+                    /*pozice myši px*/
+                    yt = (hovno.pageY - offset.top);
+                    tmp = pos2pos(xt, yt);
+                    xxc = tmp[0];
+                    yyc = tmp[1];
+
+                    //alert(all_images[mapselectedi].speed);
+
+                    var time = timestamp();
+
+                    pos = position(
+                        all_images[mapselectedi].getAttribute('x'),
+                        all_images[mapselectedi].getAttribute('y'),
+                        all_images[mapselectedi].getAttribute('x2'),
+                        all_images[mapselectedi].getAttribute('y2'),
+
+                        all_images[mapselectedi].starttime,
+                        all_images[mapselectedi].readytime,
+                        time
+                    );
+
+
+                    all_images[mapselectedi].setAttribute('x', pos[0]);
+                    all_images[mapselectedi].setAttribute('y', pos[1]);
+
+
+                    all_images[mapselectedi].setAttribute('x2', xt - (all_images[mapselectedi].width / 2));
+                    all_images[mapselectedi].setAttribute('y2', yt - all_images[mapselectedi].height + (all_images[mapselectedi].width / 4));
+
+
+                    all_images[mapselectedi].starttime = (time);
+                    all_images[mapselectedi].readytime = (time + Math.sqrt(
+                        Math.pow((all_images[mapselectedi].getAttribute('x') - all_images[mapselectedi].getAttribute('x2'))/all_images[mapselectedi].width, 2) +
+                        Math.pow((all_images[mapselectedi].getAttribute('y') - all_images[mapselectedi].getAttribute('y2'))/(all_images[mapselectedi].width/2), 2)
+
+                    ) / (all_images[mapselectedi].speed / 3600));
+
+
+                    /*all_images[mapselectedi].setAttribute('starttime',Math.round(timestamp()));
+                     all_images[mapselectedi].setAttribute('readytime',Math.round(timestamp()+300));*/
+
+                    qbuffer.push(mapselected + '.move,' + xxc + ',' + yyc);
+
+                }else{
+
+                    ion.sound.play('branch_break');
+                }
+            }
+
+
+
+        });
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+
+    };
+
+
+    aac_clickset();
+
+
+    //==================================================================================================================
+
+
+    /*---------------------------------------------------------------------*/
+
+
+    //=====================================================================================Zvuky
+
+
+    ion.sound({
+        sounds: [
+            {name: "beer_can_opening"},
+            {name: "bell_ring"},
+            {name: "branch_break"},
+            {name: "button_click"}
+        ],
+
+        // main config
+        path: "<?=url?>ui/sound/",
+        preload: true,
+        multiplay: true,
+        volume: 1
+    });
+
+    /*setInterval(function(){
+        alert(123);
+        ion.sound.play('branch_break');
+    },200);*/
+
+
+
+    //=====================================================================================Ostatní
+
+    function r(text){/*alert(text);*/
+        contents=$("#output").html();
+        /*alert(contents);*/
+        if(contents){
+            $("#output").html(text+'<br>'+contents);
+        }
+    }/**/
+
+
+    //=====================================================================================
+
 </script>

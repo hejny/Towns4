@@ -1,6 +1,6 @@
 <?php
 /* Towns4Admin, www.towns.cz
-   © Pavel Hejný | 2011-2014
+   © Pavol Hejný | 2011-2014
    _____________________________
 
    admin/...

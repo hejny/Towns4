@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/page/map_units.php
@@ -60,34 +60,12 @@ $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
     $hlname=id2name($GLOBALS['config']['register_building']);
 
-    /*$objects=array_merge(
-        sql_assoc("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND ".$range.$whereplay )
-        ,sql_assoc("SELECT `x`,`y`,`type`,'t' as `res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='tree' AND ".$range.$whereplay )
-        ,sql_assoc("SELECT `x`,`y`,`type`,`res`,`id`,t,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='rock' AND ".$range.$whereplay )
-        ,sql_assoc("SELECT `x`,`y`,`type`,`res`,`name`,`id`,t,`func`,`fp`,`fs`,`starttime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='story' AND ".$range.$whereplay )
-    );*/
 
-
-    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
+    $sql=sql_mpx("SELECT `x`,`y`,`x2`,`y2`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,speed,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
 
 
     $objects= $GLOBALS['pdo']->query($sql);
 
-/*}else{
-
-    //------------------------------------------------------------------------------------------------------SELECT ONLY
-    $where=$GLOBALS['map_units_ids'];
-    $where=implode("' OR `id`='",$where);
-    $where="(`id`='$where')";
-    //$objects=sql_array("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
-
-    $sql=sql_mpx("SELECT `x`,`y`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND `type`='building' AND $where".$whereplay);
-    $objects= $GLOBALS['pdo']->query($sql);
-
-}*/
-
-
-//print_r($array);
 
 
 //======================================================================================================================FOREACH
@@ -111,6 +89,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
     $object['expand'] = floatval($object['expand']);
     $object['block'] = floatval($object['block']);
     $object['attack'] = floatval($object['attack']);
+    $object['speed'] = floatval($object['speed']);
 
     $object['t'] = intval($object['t']);
 
@@ -127,7 +106,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         //Způsob in_array($object['type'],array('building','tree','rock')) je pomalejší
         if($object['type']=='building' or $object['type']=='tree' or $object['type']=='rock') {
 
-            if ($object['readytime'] > time()) {
+            if ($object['x']==$object['x2'] and $object['y']==$object['y2'] and $object['readytime'] > time()) {
 
                 $fpfs = 1 + ($object['readytime'] - time()) / ($object['readytime'] - $object['starttime']);
 
@@ -178,14 +157,36 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
     $xx=$_xc-$xu;
     $yy=$_yc-$yu;
 
-    //------------------------------------------------
 
     $rx=round((($px*$xx)-($px*$yy)+$rxp)/$GLOBALS['mapzoom']);
     $ry=round((($py*$xx)+($py*$yy)+$ryp)/$GLOBALS['mapzoom']);
+
+
     if($object['id']==$GLOBALS['ss']['useid']){
         $built_rx=$rx;
         $built_ry=$ry;
     }
+    //------------------------------------------------2
+
+    $_xc2=$object['x2'];
+    $_yc2=$object['y2'];
+
+    /*Testování pohybu - chodící stromy
+    if($object['type']=='tree'){
+
+        $_xc2=$object['x2']-(rand(1,2)==1?1:-1)*(100+rand(0,100));
+        $_yc2=$object['y2']-(rand(1,4)<2?1:-1)*(100+rand(0,100));
+
+        $object['starttime']=time();
+        $object['readytime']=time()+600;
+    }*/
+
+    $xx2=$_xc2-$xu;
+    $yy2=$_yc2-$yu;
+
+
+    $rx2=round((($px*$xx2)-($px*$yy2)+$rxp)/$GLOBALS['mapzoom']);
+    $ry2=round((($py*$xx2)+($py*$yy2)+$ryp)/$GLOBALS['mapzoom']);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
     if($object['type']=='building') {
@@ -277,7 +278,14 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >
         <img src="' . $src . '" widht="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
         </div></div>';*/
-            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'expand',$object['starttime'],$object['readytime'],$object['stoptime']);
+            $all_images_spec[]=array($object['id'],$src
+
+            ,($rx - ($s / $y / 2 / $GLOBALS['mapzoom']))
+            ,($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom']))
+            ,0
+            ,0
+
+            ,'expand',$object['starttime'],$object['readytime'],$object['stoptime']);
         }
 
         //--------------------------------------------------------------------------------------------------------------ATTACK
@@ -363,7 +371,8 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             </div></div>';*/
 
 
-            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
+            //@todo x2,y2
+            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),0,0,($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
 
         }
     }
@@ -468,23 +477,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         if ($object['res'] and $object['t'] > $mapunitstime) {
 
 
-            //------------------------------------------------First Buildings for help
 
-            /*$yourid = '';
-            if ($object['own'] == $GLOBALS['ss']['useid']) {
-                $specialname = $object['pname'];
-                $specialname = str_replace(array('{', '}'), '', $specialname);
-                $yourid = 'id="first_' . $specialname . '"';
-                //if(in_array($specialname,array('building_name'))){
-                if (!isset($GLOBALS['first'])) {
-                    $GLOBALS['first'] = array();
-                }
-                if (!isset($GLOBALS['first'][$specialname])) {
-                    $GLOBALS['first'][$specialname] = true;
-                    $yourid = 'id="first_' . $specialname . '"';
-                }
-                //}
-            }*/
             //------------------------------------------------
 
             /*$GLOBALS['units_stream'] .= '
@@ -504,7 +497,21 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
             ');*/
 
-            $GLOBALS['all_images'][]=array($object['id'],$modelurl,($rx + ((-43 + 2) / $GLOBALS['mapzoom'])),($ry -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom'])),(82 / $GLOBALS['mapzoom']) , (156 / $GLOBALS['mapzoom']),$object['type'],$object['starttime'],$object['readytime'],$object['stoptime']);
+            $GLOBALS['all_images'][]=array(
+                $object['id']
+                ,$modelurl
+                ,($rx + ((-43 + 2) / $GLOBALS['mapzoom']))
+                ,($ry -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom']))
+                ,($rx2 + ((-43 + 2) / $GLOBALS['mapzoom']))
+                ,($ry2 -htmlbgc/*+ htmlunitc*/ - ((132 - $height + 157 + 4) / $GLOBALS['mapzoom']))
+                ,(82 / $GLOBALS['mapzoom'])
+                , (156 / $GLOBALS['mapzoom'])
+                ,$object['type']
+                ,$object['starttime']
+                ,$object['readytime']
+                ,$object['stoptime']
+                ,$object['speed']
+            );
 
 
         } else {
@@ -517,20 +524,24 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         /*$GLOBALS['units_stream'] .= '</div>';
         $GLOBALS['units_stream'] .= '</div>';*/
 
-        //--------------------------------------------------------------------------------------------------------------UNIT CLICKMAP
+        //--------------------------------------------------------------------------------------------------------------MINIMENU FROM ID
+        //Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání minimenu, ale je nutná k pohybujícím se jednotkám
 
-        if ($object['type'] == 'building')
+        if ($object['speed']>0 or $object['own']==$GLOBALS['ss']['useid']) {
             if ($onmap) {
 
                 $GLOBALS['units_stream'] .= '
                 <div style="position:absolute;z-index:' . ($ry + 2000) . ';" >
-            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px;cursor:hand;" ' . $yourid . '>
-            <img src="' . imageurl('design/blank.png') . '" class="unit" id="' . ($object['id']) . '" border="0" alt="' . addslashes($object['name']) . '" title="' . addslashes($object['name']) . '" width="' . (round(70 / $GLOBALS['mapzoom'])) . '" height="' . (round(35 / $GLOBALS['mapzoom'])) . '"/>
-            </div>
-            </div>';
+            <div title="' . addslashes($object['name']) . '" style="position:relative; top:' . ($ry + round((-132 - 40 + 157) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx + round((-43 + 7) / $GLOBALS['mapzoom'])) . 'px; width:' . (round(70 / $GLOBALS['mapzoom'])) . 'px; height:' . (round(35 / $GLOBALS['mapzoom'])) . 'px;'.(debug?'border: 2px solid #ff0000;':'').'cursor:hand;" class="unit" id="objmin'.$object['id'].'"></div></div>';
                 t($object['name'] . ' - afrer show shit');
 
             }
+        }else{
+
+
+        }
+
+
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF Only Building
     //------------------------------------------------------------------------------------------------------------------Nápis nad městem / budovou

@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_main.php
@@ -686,7 +686,7 @@ function contentlang($buffer){//if(rr())r();
     //-------------
     for($i=0;($tmp=substr2($buffer,"{","}",$i) and $i<200);$i++){
 
-        list($key,$params)=explode(";",$tmp,2);
+        list($key,$params)=explode(';',$tmp,2);
 
 
         $text=lr($key,$params);
@@ -710,7 +710,7 @@ $array=sql_array('SELECT `key`,`value` FROM [mpx]config');
 
 if(!$array){
 
-    if(!$GLOBALS['admin']){
+    if(!admin){
 
         $url='../'.$GLOBALS['inc']['default_world'];
         ?>
@@ -846,7 +846,7 @@ function check_email($email) {
 
 function htmljscss(){
 
-    $filejs = tmpfile2(array('js',6,$GLOBALS['inc']['url'],url), 'min.js', 'page');
+    $filejs = tmpfile2(array('js',7,$GLOBALS['inc']['url'],url,logged), 'min.js', 'page');
     $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs) or newpage/** or 1/**/) {
@@ -855,6 +855,8 @@ function htmljscss(){
 
         //-------------------------------------------------Knihovny
         $js .= fgc('lib/modernizr.custom.js');//Načtení modernizr
+
+
 
         $js .= fgc('lib/jquery/jquery-1.6.2.min.js');//Načtení jQuery
         $js .= fgc('lib/jquery/jquery-ui.min.js');
@@ -867,6 +869,10 @@ function htmljscss(){
         $js .= fgc('lib/jquery/plugins/scrollbar.js');//Ona s vlastním scrollbarem
         $js .= fgc('lib/jquery/plugins/touch-punch.js');//Pro fungování tahání v mobilech a tabletech
         $js .= fgc('lib/jquery/plugins/colorpicker/colorpicker.js');//Vstup pro výběr barev
+
+
+
+        $js .= fgc('lib/ion.sound.js');//Sound
 
 
 
