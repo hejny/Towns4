@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_map.php
@@ -810,7 +810,7 @@ function mapbg($xc,$yc){
 die();
  * */
 
-//--------------------------------------------------------------UNITS
+//--------------------------------------------------------------UNITS //@todo je to potřeba? @deprecated
 function mapunits($gx,$gy,$xy,$buildings=false){
     define("xx",0);
     define("yy",0);
@@ -919,208 +919,143 @@ sql_array("SELECT x,y,res,name,id,fp,fs,$profileown FROM `[mpx]pos_obj` WHERE  w
 }
 //r(mapunits(20,128));
 //exit;
-//------------------------------------------------------------------------------------------------------------PROPOJENI2 HTMLMAP
-/*$gx=2;$gy=15;
-$x=($gy+$gx)*5+1;
-$y=($gy-$gx)*5+1;
-$treerock=mapunits($x,$y);
-r($treerock);*/
-//=============================================================
-function htmlmap($gx=false,$gy=false,$w=0,$only=false,$row=1,$buildings=false/*$width=424*/){
+//================================================================================================================================htmlmap
+
+/* Funkce vrátí [<5x5>] blok mapy
+ *
+ * @param int blok-x
+ * @param int blok-y
+ * @param int 1 = Terén , 2 = Units
+ * @param bool Vrátit pouze url adresu
+ *
+ * */
+
+function htmlmap($gx=false,$gy=false,$what=1,$only=false){
 
 	if(!$GLOBALS['mapzoom'])$GLOBALS['mapzoom']=1;
 	$zoom=$GLOBALS['mapzoom'];
 
-
-            //$gx=-10;            
-            //$gy=0;
-            $width=424;
-    //NOCACHE//ile$file=tmpfile2("output6,".root.",$gx,$gy,".$GLOBALS['ss']["ww"],"txt","map");
-    //NOCACHE//if(!file_exists($file) and !notmp){
-        //if($_GET["x"]){$gx=$_GET["x"];}else{$gx=0;}
-        //if($_GET["y"]){$gy=$_GET["y"];}else{$gy=0;}
-            
-            //echo(mapsize);
-            $ym=ceil(mapsize/5);//-1;
-            $xm=ceil((mapsize/5-1)/2);
-            $x=($gy+$gx)*5+1;
-            $y=($gy-$gx)*5+1;            
-            
-            //echo("($gx>$xm) or ($gx<-$xm) or ($gy>$ym) or ($gy<0)");
-            // or ($gx>$xm) or ($gx<-$xm) or ($gy>$ym) or ($gy<0)
-            $t=11;
-            if(is_bool($gx) or is_bool($gy) or ($x<-$t) or ($y<-$t) or ($x>mapsize+$t) or ($x>mapsize+$t)){$gx=-$xm-1;$gy=-1;}//$gx=-$xm;$gy=0;
-            if($w!=2)$outimg=tmpfile2("outimgbg,".$gx.",".$gy.",".$GLOBALS['ss']["ww"].',quality'.jpg_quality.','.t_,/*lvl?'png':*/"jpg","mapbg");
-			if($w!=1)$outimgunits=tmpfile2("outimgunits".$gx.",".$gy.",".$GLOBALS['ss']["ww"].',quality'.png_quality.','.t_,(png_quality=='gif'?'gif':'png'),"mapunits".($buildings?'b':''));
-
-            if($w==1 and $only)return($outimg);
-            if($w==2 and $only)return($outimgunits);
-            
-            $border=0;
-            $html='';
-            //======================================================BACKGROUND
-	    //$border=3;
-            if($w!=2){
-            if(!file_exists($outimg) or notmp/** or 1/**/){if(debug)$border=3;
-                //r('generate new bg');
-                
-                $x=($gy+$gx)*5+1-5;
-                $y=($gy-$gx)*5+1-5;
-                
-                
-                
-                $img1=mapbg($x,$y/*,"x".$gx."y".$gy*/);
-                $img2=mapbg($x+5,$y+5/*,"x".$gx."y".$gy*/);
-
-                
-                $img=imagecreatetruecolor(imagesx($img1), round($width/424*212));
-                
-                $posuvy=0;
-                imagecopy($img, $img1, 0, imagesy($img)*(-1/5)+$posuvy, 0, 0, imagesx($img1), imagesy($img1));
-                imagecopy($img, $img2, 0, imagesy($img)*(4/5)+$posuvy, 0, 0, imagesx($img1), imagesy($img2));
-//                imagefilter($img, IMG_FILTER_COLORIZE,9,0,5);
-//                imagefilter($img, IMG_FILTER_CONTRAST,-10);
-//                $emboss = array(array(0, 0.05, 0), array(0.05, 0.8,0.05), array(0, 0.05, 0));
-//                imageconvolution($img, $emboss, 1, 0);
-            
-                /*if(lvl){
-                    imagesavealpha($img,true);
-                    imagepng($img,$outimg);
-                }else{*/
-			imagejpeg($img,$outimg,jpg_quality);
-                //}
-                chmod($outimg,0777);
-                ImageDestroy($img);
-            }
-            //-----------------------
-            if(lvl){
-                //$row=1;
-                //$clvla='<span style="position: relative;top:'.(htmlbgc+(-clvl-(height/5))*$row).'px;">';
-                //$clvlb='</span>';
-                //$clvlh=6/5;
-                $clvla='';$clvlb='';
-                $clvlh=1;
-            }else{
-                $clvla='';$clvlb='';
-                $clvlh=1;
-            }
-            //-----------------------
-            
-            $datastream=rebase(url.str_replace('../','',$outimg).'?'.filemtime($outimg));
-            //$datastream='data:image/png;base64,'.base64_encode(file_get_contents($outimg));
-            if($w==0)$html.=$clvla.'<img src="'.$datastream.'" border="'.$border.'" width="'.(ceil($width/$zoom)).'" height="'.(ceil($width/424*212*$clvlh/$zoom)).'" style="z-index:1;" "/>'.$clvlb;//class="clickmap"   usemap="#x'.$gx.'y'.$gy.'"
-            else     $html.=$clvla.'<img src="'.$datastream.'" border="'.$border.'" width="'.(1+ceil($width/$zoom)).'" height="'.(1+ceil($width/424*212*$clvlh/$zoom)).'" />'.$clvlb;            
-            }
-            //======================================================UNITS
-            if($w!=1){
-            if(!file_exists($outimgunits) or notmp/** or 1/**/){if(debug)$border=3;
-                //r('generate new units');
-            
-                $x=($gy+$gx)*5+1;
-                $y=($gy-$gx)*5+1;
-                if($img=mapunits($x,$y/*,"x".$gx."y".$gy*/,NULL,$buildings)){
-                    //$img=imgresizew($img,424);
-                    //r($GLOBALS['ss']["area"]);exit;
-                    imagefilter($img, IMG_FILTER_COLORIZE,9,0,5);
-                    imagefilter($img, IMG_FILTER_CONTRAST,-5);
-                    //$emboss = array(array(0, 0.05, 0), array(0.05, 0.8,0.05), array(0, 0.05, 0));
-                    //imageconvolution($img, $emboss, 1, 0);
-                
-                    //header('Content-Type: image/jpeg');
-		    if(png_quality=='gif'){
-			$black = imagecolorallocatealpha($img, 0, 0, 0,127);
-			imagecolortransparent($img,$black);
-			imagegif($img,$outimgunits);
-                    }else{
-			
-			//imagecolortransparent($img, imagecolorat($im,100,100));
-
-			$widthx=png_height*2;
-			$heightx=png_height;
-			if(!$buildings){
-				$img2=imagecreate/*truecolor*/($widthx,$heightx);
-			}else{
-				$img2=imagecreatetruecolor($widthx,$heightx);
-			}
-			imagesavealpha($img2,true);
+    $width=424;
 
 
-			/*$model_rock=model('rock4',1,20,1.5,0,1);
-			$model_tree=model(sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." AND id='1172015'  LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);
-			imagealphablending($model_tree,true); 
-			                        
-                        imagecopyresized($model_rock,$model_tree,0,0,0,0,imagesx($model_rock),imagesy($model_rock),imagesx($model_rock),imagesy($model_rock));*/
-			$treerock=imagecreatefrompng(root.'ui/image/design/treerock.png');
-                        
-                        
-                        
-			/*$gx=2;$gy=15;
-			$x=($gy+$gx)*5+1;
-                	$y=($gy-$gx)*5+1;
-			$treerock=mapunits($x,$y);*/
-                        
-                        
-                        
-			//r($treerock);
-			//$model_tree=model(sql_1data("SELECT res FROM `[mpx]pos_obj` WHERE res!='' AND ww=".$GLOBALS['ss']["ww"]." "."AND (`type`='tree')"." LIMIT 1"),1,20,1.5,0,1);//model('tree4',1,20,1.5,0,1);
-			//imagealphablending($model_tree,true); 
-			//imagecopyresized($treerock,$model_tree,0,0,0,0,imagesx($model_tree),imagesy($model_tree),imagesx($model_tree),imagesy($model_tree));
-			
-			//r($treerock);
-			//r($model_tree);
-			//echo('ahoj');
-			//r($treerock);                    
-                 	//imagealphablending($img2,true);
-                        imagecopyresized($img2,$treerock,0,0,0,0,imagesx($treerock),imagesy($treerock),imagesx($treerock),imagesy($treerock));
-                     //imagealphablending($img2,true);
+    $ym=ceil(mapsize/5);//-1;
+    $xm=ceil((mapsize/5-1)/2);
+    $x=($gy+$gx)*5+1;
+    $y=($gy-$gx)*5+1;
 
-			//imageantialias($img2, true);
-			imagealphablending($img2,false);
-			//imagesavealpha($img2,true);
-			//imagesavealpha($img,true);
-			//$fill=imagecolorallocatealpha($img2, 0, 0, 0, 127);
-			//imagefill($img2, 0, 0, $fill);
-			imagecopyresized($img2,$img,0,0,0,0,$widthx,$heightx,imagesx($img),imagesy($img));
-			imagepng($img2,$outimgunits,png_quality,png_filters);
-			
+
+    $t=11;
+    if(is_bool($gx) or is_bool($gy) or ($x<-$t) or ($y<-$t) or ($x>mapsize+$t) or ($x>mapsize+$t)){$gx=-$xm-1;$gy=-1;}
+
+    if($what==1)
+        $outimg=tmpfile2("outimgbg,".$gx.",".$gy.",".$GLOBALS['ss']["ww"].',quality'.jpg_quality.','.t_,"jpg","mapbg");
+    else
+        $outimg=tmpfile2("outimgunits".$gx.",".$gy.",".$GLOBALS['ss']["ww"].',quality'.png_quality.','.t_,(png_quality=='gif'?'gif':'png'),"mapunits".($buildings?'b':''));
+
+
+    if($only==1)return($outimg);
+
+
+    if($what==1) {
+        //======================================================BACKGROUND
+        if (!file_exists($outimg) or notmp/** or 1/**/) {
+
+            $x = ($gy + $gx) * 5 + 1 - 5;
+            $y = ($gy - $gx) * 5 + 1 - 5;
+
+
+            $img1 = mapbg($x, $y/*,"x".$gx."y".$gy*/);
+            //$img2=mapbg($x+5,$y+5/*,"x".$gx."y".$gy*/);
+
+
+            //$img=imagecreatetruecolor(imagesx($img1), round($width/424*212));
+
+            //$posuvy=0;
+            //imagecopy($img, $img1, 0, imagesy($img)*(-1/5)+$posuvy, 0, 0, imagesx($img1), imagesy($img1));
+            //imagecopy($img, $img2, 0, imagesy($img)*(4/5)+$posuvy, 0, 0, imagesx($img1), imagesy($img2));
+
+            /*imagefilter($img, IMG_FILTER_COLORIZE,9,0,5);imagefilter($img, IMG_FILTER_CONTRAST,-5);*/
+
+            imagejpeg($img1, $outimg, jpg_quality);
+
+
+            chmod($outimg, 0777);
+            ImageDestroy($img1);
+        }
+        //======================================================
+    }else {
+        //======================================================UNITS
+
+        if (!file_exists($outimg) or notmp/** or 1/**/) {
+
+            $x = ($gy + $gx) * 5 + 1;
+            $y = ($gy - $gx) * 5 + 1;
+            if ($img = mapunits($x, $y/*,"x".$gx."y".$gy*/, NULL, $buildings)) {
+
+                imagefilter($img, IMG_FILTER_COLORIZE, 9, 0, 5);
+                imagefilter($img, IMG_FILTER_CONTRAST, -5);
+
+                if (png_quality == 'gif') {
+                    $black = imagecolorallocatealpha($img, 0, 0, 0, 127);
+                    imagecolortransparent($img, $black);
+                    imagegif($img, $outimg);
+                } else {
+
+                    //imagecolortransparent($img, imagecolorat($im,100,100));
+
+                    $widthx = png_height * 2;
+                    $heightx = png_height;
+                    if (!$buildings) {
+                        $img2 = imagecreate/*truecolor*/
+                        ($widthx, $heightx);
+                    } else {
+                        $img2 = imagecreatetruecolor($widthx, $heightx);
                     }
-                    
-                    chmod($outimgunits,0777);
-                    ImageDestroy($img);
-                }else{
-                    fpc($img,'');    
+                    imagesavealpha($img2, true);
+
+                    //$treerock = imagecreatefrompng(root . 'ui/image/design/treerock.png');
+                    //imagecopyresized($img2, $treerock, 0, 0, 0, 0, imagesx($treerock), imagesy($treerock), imagesx($treerock), imagesy($treerock));
+
+                    imagealphablending($img2, false);
+
+                    imagecopyresized($img2, $img, 0, 0, 0, 0, $widthx, $heightx, imagesx($img), imagesy($img));
+                    imagepng($img2, $outimg, png_quality, png_filters);
+
                 }
-            }
-            //-----------------------
-            if(filesize($outimgunits)>1){
-                $datastream=rebase(url.str_replace('../','',$outimgunits).'?'.filemtime($outimgunits));
-                //$datastream='data:image/png;base64,'.base64_encode(file_get_contents($outimg));
-                if($w==0)$html.='<span style="position:absolute;width:0px;z-index:2;"><img src="'.$datastream.'" style="position:relative;left:-'.round(($width+htmlunitc)/$zoom).'px;z-index:2;" class="clickmap" width="'.ceil($width/$zoom).'" height="'.(ceil($width/424*212/$zoom)).'" border="'.$border.'"/></span>';//class="clickmap"   usemap="#x'.$gx.'y'.$gy.'"
-                else     $html.='<img src="'.$datastream.'" width="'.(1+ceil($width/$zoom)).'" height="'.(1+ceil($width/424*212/$zoom)).'" class="clickmap" border="'.$border.'"/>';
-            }elseif($w!=0){
-                $html.='<table width="'.ceil($width/$zoom).'" height="'.ceil($width/(2*$zoom)).'" border="0" cellpadding="0" cellspacing="0" class="clickmap" ><tr><td></td></tr></table>';
 
+                chmod($outimg, 0777);
+                ImageDestroy($img);
+            } else {
+                fpc($img, '');
             }
-            }
-            //======================================================
+        }
+    }
+    //$datastream=rebase(url.str_replace('../','',$outimg).'?'.filemtime($outimg));
+    //======================================================
 
-                    //NOCACHE//    file_put_contents2($file,$html);
-        //NOCACHE// }else{
-        //NOCACHE//     //r($file);
-        //NOCACHE//    $html=file_get_contents($file);
-        //NOCACHE//}
-    //if(root)$html=str_replace("src=\"","src=\"".root,$html);
-    if(!$w)echo($html);
-    else   return($html);
+
+
+    return($outimg);
+
 }
+
 //htmlmap(-3,2);
 //br();
 /*htmlmap(-3,3);
 //htmlmap(-2,3);
 br();*/
 //htmlmap(-3,4);
-//htmlmap(-2,4);
-//die();
+/*e('<img src="'.htmlmap(1,7).'">');
+e('<img src="'.htmlmap(2,7).'">');
+e('<img src="'.htmlmap(3,7).'"><br>');
+e('<img src="'.htmlmap(1,8).'">');
+
+
+e('<img src="'.htmlmap(1,7,2).'">');
+e('<img src="'.htmlmap(2,7,2).'">');
+e('<img src="'.htmlmap(3,7,2).'"><br>');
+e('<img src="'.htmlmap(1,8,2).'">');
+die();*/
 
 //=============================================================GRID
 function mapgrid(){

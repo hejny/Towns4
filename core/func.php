@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func.php
@@ -139,8 +139,7 @@ function changemap($x,$y,$files=false){
         //$file=tmpfile2("outimgunits,".size.",".zoom.",".$gx.",".$gy.",".w.",".gird.",".t_sofb.",".t_pofb.",".t_brdcc.",".t_brdca.",".t_brdcb.','.$GLOBALS['ss']["ww"],"png","map");/*if(debug){e("<img src=\"$file\" width=\"200\"/>");}*/
         //r($gx,$gy);        
         //htmlmap($gx,$gy);
-        $file=htmlmap($gx,$gy,2,true);        
-        unlink2($file);
+
         //---
         //NOCACHE//$file=tmpfile2("output6,".root.",$gx,$gy,".$GLOBALS['ss']["ww"],"txt","map");unlink2($file);
     }
@@ -161,7 +160,7 @@ function changemap($x,$y,$files=false){
 	    foreach($gs as $g){list($gx,$gy)=$g;
 		
 		//e("$gx,$gy");br();
-		$file=htmlmap($gx,$gy,1,true);   
+		$file=htmlmap($gx,$gy,1);
 		define('terrain_error',$file);  
 		unlink2($file);
 
@@ -251,14 +250,16 @@ function target($sub,$w="",$ee="",$q,$only=false,$rot="",$noi=false,$prompt='',$
     if($prompt)$prompt="pokracovat = confirm('$prompt');if(pokracovat)";
     $apart=("w_open('$sub','$ee','$w$q$set');");
     //oldwindow
+
     $vi="
 if(typeof event === 'undefined'){1;}else{
+ion.sound.play('beer_can_opening');
 \$('#loading').css('display','block');
 \$('#loading').css('left',event.pageX-10);
 \$('#loading').css('top',event.pageY-10);
 }
 ";
-    $iv="\$('#loading').css('display','none');";
+    $iv="\$('#loading').css('display','none');ion.sound.play('bell_ring');";
     if($jsa)$iv.=$jsa;
     
     
@@ -454,13 +455,13 @@ function urlr($tmp){//$tmpx="&amp;tmp=".$tmp;$tmpxx="&tmp=".$tmp;
             $md5=md52($tmp);
         }
         $GLOBALS['ss'][$md5]=array();
-        $tmp=explode(";",$tmp);
+        $tmp=explode(';',$tmp);
         foreach($tmp as $row){
             list($a,$b)=explode("=",$row);
             $GLOBALS['ss'][$md5][$a]=$b;
         }
-        $e=$GLOBALS['ss'][$md5]["e"];
-        $q=$GLOBALS['ss'][$md5]["q"];$qq=$q;
+        $e=$GLOBALS['ss'][$md5]['e'];
+        $q=$GLOBALS['ss'][$md5]['q'];$qq=$q;
         $ee=$GLOBALS['ss'][$md5]["ee"];
         $js=$GLOBALS['ss'][$md5]["js"];
         $jsa=$GLOBALS['ss'][$md5]["jsa"];
@@ -522,16 +523,6 @@ function js2($js){
 function jsa2($js){
 	return("jsa=".x2xx($js));
 }
-//======================================================================================
-/*function file2hex($file){
-    $string=file_get_contents($file);
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}*/
 //======================================================================================
 function logged(){
     if($GLOBALS['ss']['logid']){
@@ -606,8 +597,6 @@ function substr2($input,$a,$b,$i=0,$change=false,$startstop=true){if(rr()){echo(
         return(false);
     }
 }
-//$endshow="radb{x1}ewsdf{ff}erds{x2}ss";
-//substr2($endshow,"{","}",2,"_");
 //--------------------------------------------
 function part3($input,$aa,$bb){
     if(strpos($input,$aa)){
@@ -711,7 +700,7 @@ $GLOBALS['ss']["vals_b"]=array("[star]","[comma]","[semicolon]","[colon]","[equa
 }
 //--------------------------------------------
  function csv2array($string){
-    $string=explode(";",$string);
+    $string=explode(';',$string);
     $i=0;
     foreach($string as $row){
         $string[$i]=explode(",",$string[$i]);
@@ -793,7 +782,7 @@ function fb_user($id){//$GLOBALS['ss']['logid']
 }
 
 //==========================================================================================create_zip
-function create_zip($files,$zipfile){
+function create_zip($files,$zipfile,$unlink=true){
     //e($files); e($zipfile);
 
 	if(is_string($files))$files=array($files);
@@ -806,11 +795,12 @@ function create_zip($files,$zipfile){
 	}
 
 	$zip->close();
-	
-	foreach($files as $file) {
-		unlink($file);
-	}
 
+    if($unlink and file_exists($zipfile)) {
+        foreach ($files as $file) {
+            unlink($file);
+        }
+    }
 
 	chmod($zipfile,0777);
 	return file_exists($zipfile);
@@ -819,12 +809,21 @@ function create_zip($files,$zipfile){
 //[PH] Rozbalení .zip souboru složky $to
 //http://php.net/manual/en/ziparchive.open.php
 
-function extract_zip($zipfile,$to){
+function extract_zip($zipfile,$to,$files=false){
+
+    if(is_string($files))$files=array($files);
+
 	$zip = new ZipArchive;
 	$res = $zip->open($zipfile);
 	if ($res === TRUE) {//Vše je OK
-	    $zip->extractTo($to);
-	    $zip->close();
+
+        if(!$files) {
+            $zip->extractTo($to);
+        }else{
+	        $zip->extractTo($to,$files);
+        }
+
+        $zip->close();
 	} else {
 	    //echo 'failed, code:' . $res;
 	}

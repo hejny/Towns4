@@ -1,6 +1,6 @@
 <?php
 /* Towns4Admin, www.towns.cz 
-   © Pavel Hejný | 2011-2014
+   © Pavol Hejný | 2011-2014
    _____________________________
 
    admin/...
@@ -207,12 +207,9 @@ if($_GET['create']){
 
             
             $file1=htmlmap($x,$y,1,true);
-            $file2=htmlmap($x,$y,2,true,NULL,true);
+            $file2=htmlmap($x,$y,2,true);
             unlink($file2);
-            
-            ob_start();
-            htmlmap($x,$y,NULL,NULL,NULL,true);
-            ob_end_clean();
+
             //r($file2);
             //$file=tmpfile2("outimg,".size.",".zoom.",".$x.",".$y.",".w.",".gird.",".t_sofb.",".t_pofb.",".t_brdcc.",".t_brdca.",".t_brdcb.','.$GLOBALS['ss']["ww"],'jpg','map');
 

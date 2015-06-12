@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/index.php
@@ -233,6 +233,7 @@ define('base',$GLOBALS['inc']['base']);
 
 if(!in_array('debug',$used_keywords))define('debug',0);
 if(in_array('timeplan',$used_keywords)){define('timeplan',1);}else{define('timeplan',0);}
+if(in_array('admin',$used_keywords)){define('admin',1);}else{define('admin',0);}
 if(in_array('newpage',$used_keywords)){define('newpage',1);}else{define('newpage',0);}
 if(in_array('onlymap',$used_keywords)){define('onlymap',1);}else{define('onlymap',0);}
 if(in_array('fblogin',$used_keywords)){define('fblogin',1);}else{define('fblogin',0);}
@@ -416,7 +417,7 @@ if(!$GLOBALS['ss']['useid'])$GLOBALS['ss']['useid']=$GLOBALS['ss']['logid'];
 
 //------------------------------------------------------------------QUERY
 
-if($_GET["q"]){$q=($_GET["q"]);}
+if($_GET['q']){$q=($_GET['q']);}
 //if($GLOBALS['get']["query"]){$q=($GLOBALS['get']["query"]);}
 if($q){
     $q=valsintext($q,$_POST,true);
@@ -559,7 +560,7 @@ define('nofb',$tmp['fbid']?0:1);
 $nwindows=$_GET["i"];
 if(logged() and $nwindows){
     //r($nwindows);
-    $nwindows=explode(";",$nwindows);
+    $nwindows=explode(';',$nwindows);
     foreach($nwindows as $nwindow){if($nwindow){
         list($w_name,$w_content,$w_x,$w_y)=explode(",",$nwindow);
         //r($w_name);
@@ -589,7 +590,7 @@ $nsets=$_GET["set"];
 if(logged() and $nsets){
     //e("alert('$nsets');");
     //r($nwindows);
-    $nsets=explode(";",$nsets);
+    $nsets=explode(';',$nsets);
     foreach($nsets as $nset){if($nset){
         list($s_key,$s_value)=explode(",",$nset);
         //r($w_name);

@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_core.php
@@ -55,6 +55,9 @@ function a_dismantle($id){
 
 //======================================================================================INFO
 
+/* @deprecated
+ *
+ * */
 function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
 
     //----------------Injection
@@ -667,12 +670,9 @@ function a_view($id=false,$s=1,$xsize=3,$ysize=4){
 
 
                 $file1 = htmlmap($x, $y, 1, true);
-                $file2 = htmlmap($x, $y, 2, true, NULL, true);
+                $file2 = htmlmap($x, $y, 2, true);
                 unlink($file2);
 
-                ob_start();
-                htmlmap($x, $y, NULL, NULL, NULL, true);
-                ob_end_clean();
                 //r($file2);
                 //$file=tmpfile2("outimg,".size.",".zoom.",".$x.",".$y.",".w.",".gird.",".t_sofb.",".t_pofb.",".t_brdcc.",".t_brdca.",".t_brdcb.','.$GLOBALS['ss']["ww"],'jpg','map');
 
@@ -842,6 +842,51 @@ function a_model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,$fpfs=1,$hore=0,$usercolor
     $GLOBALS['ss']['query_output']->add('url',$file);
 
 }
+
+
+//=======================================================================================Ad
+
+
+function a_move($x2,$y2){
+
+    list($x,$y)=$GLOBALS['ss']['aac_object']->position();
+
+
+    $GLOBALS['ss']['query_output']->add('x1',$GLOBALS['ss']['aac_object']->x);
+    $GLOBALS['ss']['query_output']->add('y1',$GLOBALS['ss']['aac_object']->y);
+    $GLOBALS['ss']['query_output']->add('x2',$GLOBALS['ss']['aac_object']->x2);
+    $GLOBALS['ss']['query_output']->add('y2',$GLOBALS['ss']['aac_object']->y2);
+    $GLOBALS['ss']['query_output']->add('x',$x);
+    $GLOBALS['ss']['query_output']->add('y',$y);
+
+
+
+    if(substr($x2,0,1)=='+'){
+        $x2=$x-(-floatval(substr($x2,1)));
+    }
+    if(substr($y2,0,1)=='+'){
+        $y2=$y-(-floatval(substr($y2,1)));
+    }
+
+
+
+    $speed=paramvalue($GLOBALS['ss']["aac_func"]['params']['speed']);
+    $distance=sqrt(pow($x-$x2,2)+pow($y-$y2,2));
+
+    trackposition($GLOBALS['ss']['aac_object']->id,time()+ceil($distance/($speed/3600)));
+
+
+
+
+    $GLOBALS['ss']['aac_object']->x=$x;
+    $GLOBALS['ss']['aac_object']->y=$y;
+
+    $GLOBALS['ss']['aac_object']->x2=$x2;
+    $GLOBALS['ss']['aac_object']->y2=$y2;
+
+
+}
+
 //=======================================================================================
 
 ?>

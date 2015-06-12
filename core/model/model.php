@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/model/model.php
@@ -492,7 +492,7 @@ function model($res,$s=1,$rot=0,$slnko=1.5,$ciary=0,/*$zburane=0*/$fpfs=1,$hore=
         //---
         }
         //---------------------------polygons
-        $polygons=explode(";",$polygons);
+        $polygons=explode(';',$polygons);
         $i=-1;
         foreach($polygons as $tmp){
         $i=$i+1;
@@ -753,7 +753,7 @@ function model2array($res){
 	
 	$array['points']=$points;
         //---------------------------polygons
-        $polygons=explode(";",$polygons);
+        $polygons=explode(';',$polygons);
         $i=-1;
         foreach($polygons as $tmp){
         $i=$i+1;

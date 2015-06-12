@@ -1,6 +1,6 @@
 <?php
 /* Towns4Admin, www.towns.cz 
-   © Pavel Hejný | 2011-2014
+   © Pavol Hejný | 2011-2014
    _____________________________
 
    admin/...
@@ -16,6 +16,9 @@ ini_set('memory_limit','500M');
 //session_start();
  ?>
 <h3>Analýza backup souboru</h3>
+<?php
+error('Stará funkce!');
+?>
 Tato funkce analýzu MySQL Dump...<br/>
 <b>Upozornění: </b>Tento proces může trvat i několik mintut.<br/>
 <b>Upozornění: </b>Aby byla analýza přesná, je potřeba, aby proběhla celá bez přerušení.<br/>
@@ -31,11 +34,11 @@ if($_GET['filename']){
 			$tmpsql=substr($tmp,0,strlen($tmp)-3).'sql';
 
 			if(!file_exists($tmpsql)){
-				extract_zip($tmp,adminfile.'files/backup/');
+				extract_zip($tmp,adminfile.'files/backup/',basename($tmpsql));
 			}
 			
 			$tmp=$tmpsql;
-			$tmp='app/admin/files/backup/backup.sql';
+			//$tmp='app/admin/files/backup/backup.sql';
 			//e($tmp);
 			if(file_exists($tmp)){
 				chmod($tmp,0777);

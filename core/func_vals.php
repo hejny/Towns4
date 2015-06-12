@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný | 2011-2015
+   © Pavol Hejný | 2011-2015
    _____________________________
 
    core/func_vals.php
@@ -22,7 +22,7 @@ class vals{
 	    //t('a1'); 
             //if($q){r($str);}
             $tmp=str_replace(";\r\n",";",$str);
-            $tmp=explode(";",$tmp);
+            $tmp=explode(';',$tmp);
             foreach($tmp as $row){
             list($a,$b)=explode("=",$row,2);
             //$this->add($a,$b);

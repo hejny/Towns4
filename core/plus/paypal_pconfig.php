@@ -1,6 +1,6 @@
 <?php
 /* Towns4, www.towns.cz 
-   © Pavel Hejný, Přemysl Černý | 2011-2015
+   © Pavol Hejný, Přemysl Černý | 2011-2015
    _____________________________
 
    core/plus/paypal/pconfig.php
