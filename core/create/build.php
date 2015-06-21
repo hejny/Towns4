@@ -63,7 +63,7 @@ if($id and $GLOBALS['ss']['master']){//e(1);
     //$js="\$.get('?token=".$_GET['token']."&e=map&q=".$GLOBALS['ss']['master'].".".$GLOBALS['ss']["object_build_func"]." $id,'+build_x+','+build_y+','+_rot, function(vystup){\$('#map').html(vystup);});";
     if(substr($res,0,1)!='{' and (substr($res,0,1)!='(' or strpos($res,'1.png'))){$q=true;}else{$q=false;}
 
-    $js="buildx('".$GLOBALS['ss']['master']."','$id','".$GLOBALS['ss']["object_build_func"]."',build_x,build_y,".($q?('_rot'):(0)).");";
+    $js="buildx('".$GLOBALS['ss']['master']."','$id','".$GLOBALS['ss']["object_build_func"]."',build_x,build_y,".($q?('_rot'):(0)).");";$js="buildx('".$GLOBALS['ss']['master']."','$id','".$GLOBALS['ss']["object_build_func"]."',build_x,build_y,".($q?('_rot'):(0)).");";
 
     
     if(!$q){
@@ -110,7 +110,7 @@ if($q){
 <!--==========-->
 <div style="position:absolute;"><div id="build_button" style="display:none;position:relative;left:-1;top:<?php e(round(160/$GLOBALS['mapzoom'])); ?>;">
 <?php /*icon(js2(($q?$hide.',':'').$js),"f_create_building_submit","{f_create_building_submit}",25);*/
-    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,14,3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js.';'.(!$q?'nmr=true;':'')));
+    ahref(trr(nbsp2.lr('f_create_building_submit').nbsp2,14,3),js2(/*($q?$hide.';':$hide.';'."build('".$GLOBALS['ss']['master']."$master','$id','".$GLOBALS['get']['func']."');".';')*/$hide.';'.$js.';'.(!$q?'nmr=true;':'')),NULL,NULL,'buildbutton');
  ?>
 </div></div>
 <div style="position:absolute;"><div style="position:relative;left:<?php e(round(-150+(110*0.75*0.5))); ?>px;width:300px;text-align:center;top:<?php e(round(160/$GLOBALS['mapzoom'])+20); ?>;">

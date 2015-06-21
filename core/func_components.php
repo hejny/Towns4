@@ -705,6 +705,8 @@ function movebyr($text,$x=0,$y=0,$id="",$style=""){
 function moveby($text,$x=0,$y=0,$id="",$style=""){
     echo(movebyr($text,$x,$y,$id,$style));
 }
+
+//--------------------------------------------//@deprecated
 function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
 	 if(is_array($brd)){
 		list($brd,$brdcolor)=$brd;
@@ -720,7 +722,7 @@ function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
         setInterval(function(){ 
             /*alert(($("#'.$md5.'").html()));*/
             $("#'.$md5.'").html(parseFloat($("#'.$md5.'").html())-1);
-            if(parseFloat($("#'.$md5.'").html())<=0){'.urlxr('e=map_context;ee=minimenu',false).'}
+            if(parseFloat($("#'.$md5.'").html())<=0){'.urlxr('e=objectmenu;ee=objectmenu',false).'}
 		html="";
 		    t=parseFloat($("#'.$md5.'").html());
 		    if(t>0){
@@ -740,11 +742,14 @@ function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
 
         },1000);
         </script>';
+
 	$countdownx=(movebyr(textcolorr('<span id="'.$md5.'" style="display:none;">'.$countdown.'</span><span id="'.$md5.'x">'.timecr(time()+$countdown,true,true).'</span>','dddddd').$md5js,-34+$brd,18+$brd,NULL,'z-index:2001'));
+
+
 	}else{
 	list($countdown)=explode(' ',$countdown,2);
 	//$countdown=capital($countdown);
-	$countdownx=(movebyr(textcolorr('<span style="display:block;">'.buttonr($countdown,11).'</span>','dddddd'),-$w+$brd,$w,NULL,'z-index:2001'));
+	//$countdownx=(movebyr(textcolorr('<span style="display:block;">'.buttonr($countdown,11).'</span>','dddddd'),-$w+$brd,$w,NULL,'z-index:2001'));
 	}
     }
 
@@ -754,6 +759,7 @@ function borderr($html,$brd=1,$w=10,$id="",$category="",$countdown=0){
     return('<div style="display:inline-block;">'.$puvodni.'</div>');
 }
 //<table id=\"\" width=\"$w\" height=\"$w\" style=\"position:absolute;border: ".$brd."px solid #ffffff\" cellpadding=\"0\" cellspacing=\"0\"><tr><td>$html</td></tr></table>
+      //--------------------------------------------//@deprecated
 function border($html,$brd=1,$w=10,$id="",$category="",$countdown=0){echo(borderr($html,$brd,$w,$id,$category,$countdown));}
 function borderjs($id,$sendid="",$category="",$brd=1,$q=true){
     //return("border_".$category."='#border_".$category."_".$id."';alert(border_".$category.")");
@@ -762,9 +768,11 @@ function borderjs($id,$sendid="",$category="",$brd=1,$q=true){
     return("\$('#border_".$category."_".$id."').css('border',$style_a);$('#border_".$category."_".$id."').css('z-index',z_index);if(typeof border_".$category."!='undefined')if('#border_".$category."_".$id."'!=border_".$category.")$(border_".$category.").css('border',$style_b);border_".$category."='#border_".$category."_".$id."';z_index++;".($q?"setset='$category,$sendid';map_units_time=1;":''));
 /*"$(function(){\$.get('?token=".$_GET['token']."&e=aac&set=".$category.",".$sendid."');});"*/
 }
+      //--------------------------------------------//@deprecated
 function borderr2($html,$brd=1){
     return('<span style="border: '.$brd.'px solid #cccccc;z_index:1000">'.$html.'</span>');
 }
+      //--------------------------------------------//@deprecated
 function border2($html,$brd=1){echo( borderr2($html,$brd));}
 //======================================================================================================================IDčka
 
@@ -1157,17 +1165,59 @@ function imageurl($file,$rot=1,$grey=false){
 //--------------------------------------------
 function imageurle($file){echo(imageurl($file));}
 //--------------------------------------------
+
+
+/* Zobrazení ikonky - obrázek + odkaz + help
+*
+*@param string obrázek
+*@param string alt
+*@param int šířka
+*@param int výška
+*@param int rotace 1-bez otočení,2,3,4
+*@param array okraj (tloušťka, barva, radius)
+*@param int zašednutí 0=ne, 1=ano
+*@return string html kód obrázku
+*
+* */
+
+
 function imgr($file,$alt="",$width="",$height="",$rot=1,$border=0,$grey=0){
     $alt=tr($alt,true);
     if($width){$width="width=\"$width\"";}
     if($height){$height="height=\"$height\"";}
     $stream=imageurl($file,$rot,$grey);
     t('imgr - after imageurl');
-    if($border)
-        $border='style="border: '.$border.'px solid #cccccc;"';
-    else
-        $border='border="0"';
-    $stream="<img src=\"$stream\" $border alt=\"$alt\" $width $height />";
+
+
+    if(is_numeric($border)){
+
+        $border_size=$border;
+        $border_color='000000';
+        $border_radius=0;
+        $background_color=false;
+
+    }elseif(is_array($border)){
+
+        list($border_size,$border_color,$border_radius,$background_color)=$border;
+
+    }
+
+    $style='';
+
+    if($border_size)
+        $style.='border: '.$border_size.'px solid #'.$border_color.';';
+
+    if($border_radius)
+        $style.='border-radius:'.$border_radius.'px;';
+
+    if($background_color)
+        $style.='background-color:#'.$background_color.';';
+
+
+    //e("list($border_size,$border_color,$border_radius)$border");
+
+
+    $stream="<img src=\"$stream\" style=\"$style\" alt=\"$alt\" $width $height />";
     $stream=labelr($stream,$alt);
     return($stream);
 }
@@ -1177,19 +1227,40 @@ function imge($file,$alt="",$width="",$height="",$rot=1,$border=0,$grey=0){
 }
 //imge("id_69");
 //--------------------------------------------
-function iconr($url,$icon,$name="",$s=22,$rot=1,$grey=0){
+
+
+/* Zobrazení ikonky - obrázek + odkaz + help
+*
+*@param string odkaz
+*@param string ikonka
+*@param string jméno
+*@param int velikost
+*@param int rotace 1-bez otočení,2,3,4
+*@param int zašednutí 0=ne, 1=ano
+*@param array okraj (tloušťka, barva, radius)
+*@return string html kód ikonky
+*
+* */
+function iconr($url,$icon,$name="",$s=22,$rot=1,$grey=0,$border=0){
+
+    $md5=md5(serialize(array($url,$icon,$name,$s,$rot,$grey,$border)));
+
     $target='';
     if(is_array($s)){
         list($w,$h)=$s;
     }else{
         list($w,$h)=array($s,$s);   
     }
-    
+
+    if($rot==0)$rot=1;
+
     //$s=22;
 	//e($icon);
 	//e(substr($icon,-4,1));
-    if(substr($icon,-4,1)=='.'){
-	$file=$icon;
+    if(substr($icon,-4,1)=='.') {
+        $file = $icon;
+    }elseif(substr($icon,0,3)=='id_'){//ikonka budovy
+        $file = $icon;
     }else{
     	$file="icons/".$icon.".png";
     }
@@ -1204,15 +1275,40 @@ function iconr($url,$icon,$name="",$s=22,$rot=1,$grey=0){
     if($url){$url="href=\"".$tmp."\"";}
     if($onclick){$onclick="onclick=\"$onclick\"";}   
 
-    if(1 or !$class){
-    	$a="<a $url $onclick $class $target >";
-    	$b="</a>";
-    }else{
-    	$a="<span $class >";
-    	$b="</span>";    }
-    return($a.imgr($file,$name,$w,$h,$rot,NULL,$grey).$b);
+    $help='';
+
+    $help.=' onmouseover="'
+    .'var pos=$(this).offset();'
+    .'var ww=parseInt($(this).css(\'width\'));'
+    //.'var hh=parseInt($(this).css(\'height\'));'
+    //.'console.log(this);console.log([pos,ww,hh]);'
+    .'$(\'#hover\').css(\'top\',pos.top-(ww/2));'
+    .'$(\'#hover\').css(\'left\',pos.left+ww);'
+    .'$(\'#hoverText\').html(\''.addslashes($name).'\');'
+    .'$(\'#hover\').stop(true,true);'
+    .'$(\'#hover\').fadeIn({duration:100});'
+    .'" ';
+
+    $help.=' onmouseout="'
+        .'$(\'#hover\').stop(true,true);'
+        .'$(\'#hover\').fadeOut({duration:100});'
+        //.'console.log(\'out\');'
+        //.'$(\'#hover\').css(\'display\',\'none\');'
+        //.'setTimeout(function(){$(\'#hover\').css(\'display\',\'none\');},100);'
+
+        .'" ';
+    $help.=' onmousedown="'
+        .'$(\'#hover\').stop(true,true);'
+        .'$(\'#hover\').fadeOut({duration:100});'
+        .'" ';
+
+
+    $a="<a $url $onclick $help $class $target >";
+    $b="</a>";
+
+    return($a.imgr($file,'',$w,$h,$rot,$border,$grey).$b);
 }
-function icon($url,$icon,$name="",$s=22,$rot=1,$grey=0){echo(iconr($url,$icon,$name,$s,$rot,$grey));}
+function icon($url,$icon,$name="",$s=22,$rot=1,$grey=0,$border=0){echo(iconr($url,$icon,$name,$s,$rot,$grey,$border));}
 //--------------------------------------------
 function iconpr($prompt,$url,$icon,$name="",$s=22){
     //$s=22;

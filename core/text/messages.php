@@ -16,7 +16,7 @@ window(lr('title_messages')/*,400,400*/);
 sg("textclass");
 
 
-if(!$textclass)$q=submenu(array("content","text-messages"),array(/*"messages_public",*/chat?"messages_chat":false,"messages_unread","messages_all","messages_report","messages_new"),3,'messages');
+if(!$textclass)$q=submenu(array("content","text-messages"),array("messages_unread","messages_all","messages_report","messages_new"),3,'messages');
 $q=$GLOBALS['ss']['submenu'];
 r('textclass: '.$textclass);
 

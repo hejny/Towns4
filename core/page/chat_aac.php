@@ -9,8 +9,8 @@
 */
 //==============================
 
-$iconsize=27;
-$border3=array(2,'665544');
+/*$iconsize=27;
+$border3=array(2,'665544');*/
 
 
 
@@ -26,23 +26,22 @@ $border3=array(2,'665544');
  //ahref($stream,$url);
 //e($q); 
 
+
+
  if($q){
-    $stream.=imgr("icons/f_text_new.png",lr('f_text_new',$q),$iconsize);
-    $streamx=lr('f_text_new',$q);
-    $url="e=content;ee=text-messages;subpage=2;ref=chat;id=".$GLOBALS['ss']['useid'];
-    //$streamx=(movebyr(textcolorr('<span style="display:block;">'.lr('f_text_new',$q).'</span>','dddddd'),-$iconsize,$iconsize,NULL,'z-index:2001'));
-	//border(iconr($url,'f_text_new',lr('f_text_new',$q),$iconsize),$border3,$iconsize,NULL,NULL,lr('f_text_new',$q));  
-    //echo($q);
+
+
+    icon('menu:text','f_text_new',lr('f_text_new'),$iconsize,0,0,$border3);
+
+
  }else{
-    $stream.=imgr("icons/f_text.png",lr('f_text'),$iconsize);
-    $url="e=content;ee=text-messages;subpage=3;ref=chat;id=".$GLOBALS['ss']['useid'];
-	//border(iconr($url,'f_text',lr('f_text'),$iconsize),$border3,$iconsize); 
+
+
+     //$url="e=content;ee=text-messages;subpage=2;id=".$GLOBALS['ss']['useid'];
+     icon('menu:text','f_text',lr('f_text'),$iconsize,0,0,$border3);
+
  }
  
-
-//print_r(str2list($url));
-
-border(ahrefr($stream,$url),$border3,$iconsize,NULL,NULL,$streamx); 
 
 
 if(debug)echo(rand(1111,9999));

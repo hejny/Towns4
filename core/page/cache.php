@@ -9,51 +9,59 @@
 */
 //==============================
 
+$pages=array();
 
-
-
-
-/*==================================================================================================cache_minimenu_[id]=*/
+/*==================================================================================================cache_contextmenu_[id]=*/
 //e('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
 
-//MINIMENU FROM ID
-//Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání minimenu
+foreach(array('types','text','map','user') as $menuid) {
+    //ebr($menuid);
+    $menuid='menu_'.$menuid;
+    $GLOBALS['menuid'] = $menuid;
+    $key = 'contextmenu_' . $menuid;
+    $value = subescape("menu");
+    $pages[$key] = $value;
+}
+
+/*==================================================================================================cache_objectmenu_[id]=*/
+//e('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
+
+//objectmenu FROM ID
+//Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání objectmenu
 
 
-/*$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','minimenu');
+$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','objectmenu');
 if(!file_exists($fileMM)){
-    
-    $pages=array();
+
+    $pagesx=array();
     //$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
     $array=sql_array('SELECT `id` FROM `[mpx]pos_obj` WHERE `ww`=\''.$GLOBALS['ss']['ww'].'\' AND `type`=\'building\' AND `own`='.$GLOBALS['ss']['useid']);
     foreach($array as $row){
         list($id)=$row;
-        t('cache minimenu '.$id);
+        t('cache objectmenu '.$id);
         $GLOBALS['get']["contextid"]=$id;
 
 
-        $key='minimenu_'.$id;
-        $value=subescape("minimenu");
+        $key='objectmenu_'.$id;
+        $value=subescape("objectmenu");
         //e(unescape($value));br();
-        $pages[$key]=$value;
+        $pagesx[$key]=$value;
 
 
 
     }
     
-    fpc($fileMM, serialize($pages));
+    fpc($fileMM, serialize($pagesx));
 
 }else{
-    $pages=unserialize(file_get_contents($fileMM));
+    $pagesx=unserialize(file_get_contents($fileMM));
 
-}*/
+}
 
-
+$pages=array_merge($pages,$pagesx);
 /*==================================================================================================cache_create-unique_[id]=*/
 
-
-
-
+/*
 $groups=array('master','main','wall','bridge','path','terrain');
 
 foreach($groups as $group){
@@ -68,15 +76,11 @@ foreach($groups as $group){
         $key='create-unique_'.$group;
         $value=subescape("create-unique");
         $pages[$key]=$value;
-        /*?>
-        <div id="cache_create-unique_<?php e($group); ?>" style="display:none;">
-        <?php eval(subpage("create-unique")); ?>
-        </div>
-        <?php*/
+
     
     }
     
-}
+}*/
 
 /*==================================================================================================cache_create-build_[id]=*/
 
@@ -108,8 +112,8 @@ foreach($buildings as $building){
 //================================================================================
 
 
-$js1=nln.'cache=function(xkey){'.nln;
-$js2=nln.'ifcache=function(xkey){'.nln;
+$js1=nln.'var cache=function(xkey){'.nln;
+$js2=nln.'var ifcache=function(xkey){'.nln;
 
 $i=0;
 foreach($pages as $key=>$value){

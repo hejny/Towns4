@@ -160,7 +160,7 @@ if($id?ifobject($id):false){
 			if(xsuccess()){
 			  ?>
 			<script>
-			<?php urlx('e=map_context;ee=minimenu',false); ?>
+			<?php urlx('e=map_context;ee=objectmenu',false); ?>
 			</script>
 			<?php
 			}

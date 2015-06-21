@@ -14,11 +14,13 @@
 
     //----------------------------------------------------------------turnmap
 
-    var drawmaplayers=['','terrain','building','tree','rock'];//Co za mapové vrstvy se zobrazuje
+    var drawmaplayers=['','building','tree','rock'];//Co za mapové vrstvy se zobrazuje
     var mapselected=0;//Co za objekt je označený?
     var mapselectedi=0;//Co za objekt je označený - pořadí v all_images?
+    var mapselectedcolor='cccccc';//Co za barvu má označený objekt
 
     var turnmap=function() {
+
 
         if (arguments.length == 2) {
             var layer = arguments[0];
@@ -43,7 +45,7 @@
 
 
         //alert(i);
-        //alert(drawmaplayers);
+        console.log(drawmaplayers);
         drawmap();
     }
 
@@ -129,7 +131,7 @@
 
 
 
-                        ctx.strokeStyle="#FF0000";
+                        ctx.strokeStyle="#"+mapselectedcolor;
                         ctx.lineWidth=3;
                         ctx.fillStyle = 'rgba(255, 50,50, 0.2)';
 
@@ -727,7 +729,7 @@ $(document).ready(function(){
                 
                 if(q==true){
                 
-                $('#map_context').css('display','none');
+                /*$('#map_context').css('display','none');*/
                 $('#draglayer').css("left",xx+'px');
                 $('#draglayer').css("top",yy+'px');
                 if(!freeze){
@@ -881,28 +883,78 @@ $(document).ready(function(){
 
         //--------------------------------------------------------------------------------------------------------------
 
-        $(".menu").not(".x-menu-registered").click(function(hovno) {
+        var menuhide=setTimeout(function(){},100);
+
+
+        $(".menu").not("#contextmenu").not(".x-menu-registered").mouseover(function() {
             if(drag!=1){
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-                $('#map_context').css('border-color','#999999');
-                $('#map_context').css('display','block');
-                $('#map_context').html('...');
+
+
+                $('#hover').stop(true,true);
+                $('#hover').hide();
+                //console.log('A')
+                clearTimeout(menuhide);
+                var pos=$(this).offset();
+                $('#contextmenu').css('left',pos.left-parseInt($(this).css('height')));
+                $('#contextmenu').css('top',pos.top);
+                $('#contextmenu').css('border-color','#999999');
                 name=$(this).attr('id');
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#map_context').html(vystup);});});
+
+                //console.log('contextmenu_'+name);
+
+                if(ifcache('contextmenu_'+name)){
+
+                    $('#contextmenu').css('display','block');
+                    $('#contextmenu').html(cache('contextmenu_'+name));
+
+                }else{
+
+                    $('#contextmenu').css('display','block');
+                    $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid='+name, function(vystup){$('#contextmenu').html(vystup);});});
+
+                }
+
+
+
             }
         }).addClass("x-menu-registered");
 
+        //-------------------------------------------------
+
+        $("#contextmenu").not(".x-menu-registered-2").mouseover(function() {
+            if(drag!=1){
+                //console.log('B');
+                clearTimeout(menuhide);
+            }
+        }).addClass("x-menu-registered-2");
+
+        //-------------------------------------------------
+
+        $(".menu").not(".x-menu-registered-3").mouseleave(function() {
+            if(drag!=1){
+
+                menuhide=setTimeout(function(){
+                    //console.log('C');
+                    $('#contextmenu').css('display','none');
+                },100);
+
+
+            }
+        }).addClass("x-menu-registered-3");
 
         //--------------------------------------------------------------------------------------------------------------Kliknutí na podklad konkrétní budovy
 
 
-        $(".unit").not(".x-unit-minimenu-registered").click(function(hovno) {
+        $(".unit").not(".x-unit-objectmenu-registered").click(function(hovno) {
             if(drag!=1){
-                $('#map_context').css('left',hovno.pageX-10);
+
+                ion.sound.play('water_droplet');
+
+
+                /*$('#map_context').css('left',hovno.pageX-10);
                 $('#map_context').css('top',hovno.pageY-10);
                 $('#map_context').css('border-color','#22222');
-                $('#map_context').css('display','block');
+                $('#map_context').css('display','block');*/
                 title=$(this).attr('title');
                 name=parseInt($(this).attr('id').split('objmin').join(''));
 
@@ -915,20 +967,142 @@ $(document).ready(function(){
                  yyt=tmp[1];*/
 
 
+                $('#window_objectmenu').stop(true,true);
+                $("#window_objectmenu").animate({left:0}, 200);
+                mapselected=name;
 
-                if(ifcache('minimenu_'+name)){
-                    $('#map_context').html(cache('minimenu_'+name));
+                if(ifcache('objectmenu_'+name)){
+                    $('#objectmenu').html(cache('objectmenu_'+name));
                 }else{
-                    $('#map_context').html(title);
+                    $('#objectmenu').html(title);
                 }
 
 
                 <?php if(logged){ ?>
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title/*+'&xc='+xxc+'&yc='+yyc*/, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+name+'&contextname='+title/*+'&xc='+xxc+'&yc='+yyc*/, function(vystup){$('#objectmenu').html(vystup);});});
                 <?php } ?>
             }
-        }).addClass("x-unit-minimenu-registered");
+        }).addClass("x-unit-objectmenu-registered");
 
+
+        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na papu
+
+
+        $(".clickmap").click(function(hovno) {
+
+            if(drag!=1){
+
+                mapselected=0;
+                $('#window_objectmenu').stop(true,true);
+                $("#window_objectmenu").animate({left:-50}, 200);
+
+                ion.sound.play('branch_break');
+
+
+                /*offset =  $("#map_canvas").offset();
+
+
+
+                xt=(hovno.pageX-offset.left);
+                yt=(hovno.pageY-offset.top);
+                tmp=pos2pos(xt,yt);
+                xxc=tmp[0];
+                yyc=tmp[1];
+
+
+                tmp=1;
+
+                mapselected=0;
+
+                <?php if(logged){ ?>
+                //alert('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&xc='+xxc+'&yc='+yyc);
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){
+
+
+
+                    if(vystup.length>30){
+
+                        $('#objectmenu').html(vystup);
+                        $("#window_objectmenu").animate({left:0}, 500);
+
+                    }else{
+
+
+                    }
+
+
+                });});
+                <?php } ?>*/
+            }
+        });
+        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na mapu pravým tlačítkem
+
+        $(document).unbind("contextmenu");
+        $(document).bind("contextmenu",function(hovno){
+
+            hovno.preventDefault();
+
+            if(drag!=1){
+
+                if(all_images[mapselectedi].speed>0) {
+
+                    ion.sound.play('cd_tray');
+
+                    xt = (hovno.pageX - offset.left);
+                    /*pozice myši px*/
+                    yt = (hovno.pageY - offset.top);
+                    tmp = pos2pos(xt, yt);
+                    xxc = tmp[0];
+                    yyc = tmp[1];
+
+                    //alert(all_images[mapselectedi].speed);
+
+                    var time = timestamp();
+
+                    pos = position(
+                        all_images[mapselectedi].getAttribute('x'),
+                        all_images[mapselectedi].getAttribute('y'),
+                        all_images[mapselectedi].getAttribute('x2'),
+                        all_images[mapselectedi].getAttribute('y2'),
+
+                        all_images[mapselectedi].starttime,
+                        all_images[mapselectedi].readytime,
+                        time
+                    );
+
+
+                    all_images[mapselectedi].setAttribute('x', pos[0]);
+                    all_images[mapselectedi].setAttribute('y', pos[1]);
+
+
+                    all_images[mapselectedi].setAttribute('x2', xt - (all_images[mapselectedi].width / 2));
+                    all_images[mapselectedi].setAttribute('y2', yt - all_images[mapselectedi].height + (all_images[mapselectedi].width / 4));
+
+
+                    all_images[mapselectedi].starttime = (time);
+                    all_images[mapselectedi].readytime = (time + Math.sqrt(
+                        Math.pow((all_images[mapselectedi].getAttribute('x') - all_images[mapselectedi].getAttribute('x2'))/all_images[mapselectedi].width, 2) +
+                        Math.pow((all_images[mapselectedi].getAttribute('y') - all_images[mapselectedi].getAttribute('y2'))/(all_images[mapselectedi].width/2), 2)
+
+                    ) / (all_images[mapselectedi].speed / 3600));
+
+
+                    /*all_images[mapselectedi].setAttribute('starttime',Math.round(timestamp()));
+                     all_images[mapselectedi].setAttribute('readytime',Math.round(timestamp()+300));*/
+
+                    qbuffer.push(mapselected + '.move,' + xxc + ',' + yyc);
+
+
+
+                }else{
+
+                    ion.sound.play('branch_break');
+                }
+            }
+
+
+
+        });
         //--------------------------------------------------------------------------------------------------------------Upload to map
 
         <?php if(logged){ ?>
@@ -1009,134 +1183,6 @@ $(document).ready(function(){
 
         });
         <?php } ?>
-        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na papu
-        $("#map_context").click(function() {
-            /*$('#map_context').css('display','none');*/
-        });/**/
-
-
-
-        /*$(".tabulkamapy").draggable();*/
-        $(".clickmap").click(function(hovno) {
-            /*alert(drag);*/
-            if(drag!=1){
-                /*alert("click");/**/
-                $('#map_context').css('left',hovno.pageX-10);
-                $('#map_context').css('top',hovno.pageY-10);
-                $('#map_context').css('border-color','#22222');
-                $('#map_context').css('display','block');/**/
-                offset =  $("#map_canvas").offset();
-
-
-
-                xt=(hovno.pageX-offset.left);/*pozice myši px*/
-                yt=(hovno.pageY-offset.top);
-                tmp=pos2pos(xt,yt);
-                xxc=tmp[0];
-                yyc=tmp[1];
-
-                //document.title=(xxc+','+yyc);
-
-                /*alert(mouseX+','+mouseY+','+Math.round(xxc)+','+Math.round(yyc));*/
-                /*$("#copy").html(xt+","+yt+" = "+(Math.round(xxc*100)/100)+","+Math.round(Math.round(yyc*100)/100)+";"+xxt+","+yyt);
-                 */
-                tmp=1;
-                title='...';/*(Math.round(xxc*tmp)/tmp)+","+Math.round(Math.round(yyc*tmp)/tmp);*/
-
-                $('#map_context').html(title);
-                <?php if(logged){ ?>
-                //alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
-                <?php } ?>
-            }
-        });
-        //--------------------------------------------------------------------------------------------------------------Kliknutí kamkoliv na mapu pravým tlačítkem
-
-        $(document).unbind("contextmenu");
-        $(document).bind("contextmenu",function(hovno){
-
-
-
-
-            /*if(drag!=1){
-
-             $('#map_context').css('left',hovno.pageX-10);
-             $('#map_context').css('top',hovno.pageY-10);
-             $('#map_context').css('border-color','#22222');
-             $('#map_context').css('display','block');
-             offset =  $("#map_canvas").offset();
-             xt=(hovno.pageX-offset.left);//pozice myši px
-             yt=(hovno.pageY-offset.top);
-             tmp=pos2pos(xt,yt);
-             xxt=tmp[0];
-             yyt=tmp[1];
-             tmp=1;
-             title='...';
-             $('#map_context').html(title);
-            <?php if(logged){ ?>
-             $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=menu&menuid=menu_map', function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
-            <?php } ?>
-             }*/
-
-
-
-
-            if(drag!=1){
-
-                if(all_images[mapselectedi].speed>0) {
-                    xt = (hovno.pageX - offset.left);
-                    /*pozice myši px*/
-                    yt = (hovno.pageY - offset.top);
-                    tmp = pos2pos(xt, yt);
-                    xxc = tmp[0];
-                    yyc = tmp[1];
-
-                    //alert(all_images[mapselectedi].speed);
-
-                    var time = timestamp();
-
-                    pos = position(
-                        all_images[mapselectedi].getAttribute('x'),
-                        all_images[mapselectedi].getAttribute('y'),
-                        all_images[mapselectedi].getAttribute('x2'),
-                        all_images[mapselectedi].getAttribute('y2'),
-
-                        all_images[mapselectedi].starttime,
-                        all_images[mapselectedi].readytime,
-                        time
-                    );
-
-
-                    all_images[mapselectedi].setAttribute('x', pos[0]);
-                    all_images[mapselectedi].setAttribute('y', pos[1]);
-
-
-                    all_images[mapselectedi].setAttribute('x2', xt - (all_images[mapselectedi].width / 2));
-                    all_images[mapselectedi].setAttribute('y2', yt - all_images[mapselectedi].height + (all_images[mapselectedi].width / 4));
-
-
-                    all_images[mapselectedi].starttime = (time);
-                    all_images[mapselectedi].readytime = (time + Math.sqrt(
-                        Math.pow((all_images[mapselectedi].getAttribute('x') - all_images[mapselectedi].getAttribute('x2'))/all_images[mapselectedi].width, 2) +
-                        Math.pow((all_images[mapselectedi].getAttribute('y') - all_images[mapselectedi].getAttribute('y2'))/(all_images[mapselectedi].width/2), 2)
-
-                    ) / (all_images[mapselectedi].speed / 3600));
-
-
-                    /*all_images[mapselectedi].setAttribute('starttime',Math.round(timestamp()));
-                     all_images[mapselectedi].setAttribute('readytime',Math.round(timestamp()+300));*/
-
-                    qbuffer.push(mapselected + '.move,' + xxc + ',' + yyc);
-
-                }else{
-
-                    ion.sound.play('branch_break');
-                }
-            }
-
-
-
-        });
         //--------------------------------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------------------------------
@@ -1158,10 +1204,27 @@ $(document).ready(function(){
 
     ion.sound({
         sounds: [
-            {name: "beer_can_opening"},
-            {name: "bell_ring"},
-            {name: "branch_break"},
-            {name: "button_click"}
+            <?php
+                $sounds=array();
+
+                $files=glob(root.'ui/sound/*');
+
+                foreach($files as $file){
+                    $file=basename($file);
+                    $file=explode('.',$file);
+                    $file=$file[0];
+                    $sounds[]=$file;
+
+                }
+
+                $sounds=array_unique($sounds);
+
+
+                $sounds=implode('"},{name: "',$sounds);
+                $sounds='{name: "'.$sounds.'"}';
+
+                e($sounds);
+            ?>
         ],
 
         // main config

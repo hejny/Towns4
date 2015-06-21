@@ -233,7 +233,7 @@ error('Potřeba zprovoznit htmlmap!');
 	    /*alert('startdrag');*/
             drag=1;
 	       $('#draglayer').disableSelection();
-            $('#map_context').css('display','none');
+            //$('#map_context').css('display','none');
 	    $('#build_button').css('display','none');
 	    $('#create-build_message').html('<?php info(lr('create_move')); ?>');
         });
@@ -267,18 +267,13 @@ error('Potřeba zprovoznit htmlmap!');
             });*/
 
 
-
-
-
         /*---------------------------------POSITIONCLICK*/
-        $("#map_context").click(function() {
-            /*$('#map_context').css('display','none');*/
-        });/**/
-        /*$(".tabulkamapy").draggable();*/
+
+
         $(".clickmap").click(function(hovno) {
 		/*alert(drag);*/
             if(drag!=1){
-                /*alert("click");/**/
+
                 $('#map_context').css('left',hovno.pageX-10);
                 $('#map_context').css('top',hovno.pageY-10);
 		$('#map_context').css('border-color','#22222');
@@ -297,8 +292,8 @@ error('Potřeba zprovoznit htmlmap!');
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		//alert('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+xxc+'&yc='+yyc);
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		//alert('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&xc='+xxc+'&yc='+yyc);
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&xc='+(xxc)+'&yc='+(yyc), function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -334,8 +329,8 @@ error('Potřeba zprovoznit htmlmap!');
                 
                 $('#map_context').html(title);
                  <?php if(logged){ ?>
-		/*alert('?e=minimenu&w=&terrain=1&x='+xxc+'&token='+yyc);*/
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
+		/*alert('?e=objectmenu&w=&terrain=1&x='+xxc+'&token='+yyc);*/
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&terrain=1&xc='+xxc+'&yc='+yyc, function(vystup){if(vystup.length>30)$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });
@@ -368,23 +363,23 @@ error('Potřeba zprovoznit htmlmap!');
                 title=$(this).attr('title');
                 name=$(this).attr('id');
                 
-		/*if($('#cache_minimenu_'+name).length!=0){
-			cache=$('#cache_minimenu_'+name).html();
+		/*if($('#cache_objectmenu_'+name).length!=0){
+			cache=$('#cache_objectmenu_'+name).html();
 			//alert(cache);
 			$('#map_context').html(cache);
 		}else{
                 	$('#map_context').html(title);
 		}*/
 		
-		if(ifcache('minimenu_'+name)){
-			$('#map_context').html(cache('minimenu_'+name));
+		if(ifcache('objectmenu_'+name)){
+			$('#map_context').html(cache('objectmenu_'+name));
 		}else{
             $('#map_context').html(title);
 		}
 		
 		
                  <?php if(logged){ ?>
-                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
+                $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+name+'&contextname='+title, function(vystup){$('#map_context').html(vystup);});});
                  <?php } ?>
             }
         });/**/
@@ -406,7 +401,7 @@ error('Potřeba zprovoznit htmlmap!');
         $('#map_context').css('left',645<?php if($GLOBALS['get']['center']){e('-'.$GLOBALS['get']['posuv']);} ?>);
         $('#map_context').css('top',195);
         $('#map_context').css('display','block');
-        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
+        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
 		}
 		);
         },23);/**/

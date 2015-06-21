@@ -168,12 +168,19 @@ function imgresizeh($img,$height) {
 function map1($param,$xc=false,$yc=false,$outfile=false){
     //echo($param);
     if(!$param){$param=sql_1data("SELECT res from `[mpx]pos_obj` WHERE `type`='terrain' AND ww=".$GLOBALS['ss']["ww"]." AND `x`=1 AND `y`=1");}
-    if($xc===false or $yc===false){
-        $rand=rand(1,7);
+    if($xc===false) {
+        $rand = rand(1, 7);
+
+    }elseif($yc===false){
+
+        $rand=$xc+1;
+
     }else{
         $rand=((pow($xc,2)+pow($yc,3))%7)+1;
     }
-    //echo($rand);
+
+
+    //r($rand);
     
     $t_size=size*424/5;
     $t_sofb=t_sofb;
@@ -250,9 +257,10 @@ function map1($param,$xc=false,$yc=false,$outfile=false){
         chmod($file,0777);
     }
     if($outfile){
-	return($file);
+        imagedestroy($terrain);
+	    return($file);
     }else{
-	return($terrain);
+	    return($terrain);
     }
 }
 /*r(map1('t2'));
