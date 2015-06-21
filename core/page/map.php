@@ -178,7 +178,28 @@ if(!$zoom)$zoom=1;
     
     //e("$xc,$yc,$xx,$yy");
 
+//------------------------------------------------------------------------------------------------------WHERE PREPARE
 
+$say="''";//"(SELECT IF((`[mpx]text`.`timestop`=0 OR ".time()."<=`[mpx]text`.`timestop`),`[mpx]text`.`text`,'')  FROM `[mpx]text` WHERE `[mpx]text`.`from`=`[mpx]pos_obj`.id AND `[mpx]text`.`type`='chat' ORDER BY `[mpx]text`.time DESC LIMIT 1)";
+//$say="'ahoj'";
+$profileown="(SELECT `profile` from `[mpx]pos_obj` as x WHERE x.`id`=`[mpx]pos_obj`.`own` LIMIT 1) as `profileown`";
+$xcu=0;
+$ycu=0;
+if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
+if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
+//echo($xcu.','.$ycu);
+
+$xu=($ycu+$xcu)*5+1;
+$yu=($ycu-$xcu)*5+1;
+
+//echo(tab(150).$xxu);
+$rxp=424*2.5;//+$xxu;
+$ryp=0;//+$yyu;
+//$p=(200*0.75*((212)/375));
+$px=424/10;$py=$px/2;
+
+
+$whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
 //============================================================časování
 
@@ -201,6 +222,8 @@ if($GLOBALS['get']['play']){
 	//}else{
 	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	//}
+
+
 	$starttimes=sql_array('SELECT DISTINCT starttime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$stoptimes=sql_array('SELECT DISTINCT stoptime FROM `[mpx]pos_obj` WHERE ww='.$GLOBALS['ss']["ww"].' AND `type`=\'building\' AND '.$range,1);
 	$times=array();
@@ -228,6 +251,13 @@ if($GLOBALS['get']['play']){
 	*/
 }else{
     $times=array(time());
+
+
+    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
+    $range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+
+
+
 }
 
 js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
@@ -285,7 +315,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
             /*alert('startdrag');*/
             drag=1;
             $('#draglayer').disableSelection();
-            $('#map_context').css('display','none');
+            /*$('#map_context').css('display','none');*/
             $('#build_button').css('display','none');
             $('#create-build_message').html('<?php info(lr('create_move')); ?>');
         });
@@ -312,10 +342,10 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		setTimeout(function(){         
         parseMapF(
 		function(){
-        $('#map_context').css('left',($( window ).width()/2));
+        /*$('#map_context').css('left',($( window ).width()/2));
         $('#map_context').css('top',195);
-        $('#map_context').css('display','block');
-        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=minimenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#map_context').html(vystup);});});
+        $('#map_context').css('display','block');*/
+        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#objectmenu').html(vystup);});});
 		}
 		);
         },23);/**/
@@ -345,7 +375,9 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
 
 
-<!--================BUILD===================-->
+<?php
+       //---------------------------------------------------------------------------------------------------------------build
+?>
 <div  id="create-build"  name="create-build" style="position:absolute;display:none;top:0; left:0;z-index:25;">&nbsp;</div>
 <script type="text/javascript">
             /* 3.66    3.02*/
@@ -355,38 +387,47 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
             //window.build_id=false;
             $("#create-build").css("left",(screen.width/2)-55);
             $("#create-build").css("top",(screen.height/2)-154);
-            build=function(master,id,func) {//alert(master+','+id+','+func);
+
+
+            build=function(master,id,func) {
+
+                console.log(master+','+id+','+func);
                 window.build_master=master;
                 window.build_id=id;
-                window.build_func=func;
-                turnmap('expand',true);
-                $("#create-build").css("display","block");
-		
-                $("#create-build").draggable({ distance:<?php e($GLOBALS['dragdistance']); ?>});
-                $( "#create-build" ).bind( "dragstop", function(event, ui){
-                    bx=parseFloat($("#create-build").css("left"));
-                    by=parseFloat($("#create-build").css("top"));
-                    offset =  $("#map_canvas").offset();
-                    xt=(bx-offset.left);/*pozice myši px*/
-                    yt=(by-offset.top);
-                    tmp=pos2pos(xt,yt);
-                    xxc=xxc+4.57;
-                    yyc=yyc+3.67;
-                    build_x=xxc;
-                    build_y=yyc;
-                    
-                    /*$('#build_button').css('display','none');*/
-                    
-                    
-                    $('#create-build_message').html(nacitacihtml);
+                window.build_func=func
 
-                    
-                    //alert('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y);
-                    
-                    $.get('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
-                    
-                    
-                    
+
+                turnmap('expand',true);
+                $('#create-build').css('display','block');
+		
+                $('#create-build').draggable({
+                    'distance': <?php e($GLOBALS['dragdistance']); ?>,
+                    'stop': function(event, ui){
+
+                        //alert('bbb');
+                        //-----------------------------------------------------@todo sjednotit kopie
+                        bx=parseFloat($("#create-build").css("left"));
+                        by=parseFloat($("#create-build").css("top"));
+                        offset =  $("#map_canvas").offset();
+                        xt=(bx-offset.left);/*pozice myši px*/
+                        yt=(by-offset.top);
+                        tmp=pos2pos(xt,yt);
+                        xxc=xxc+4.57;
+                        yyc=yyc+3.67;
+                        build_x=xxc;
+                        build_y=yyc;
+
+
+                        $('#create-build_message').html(nacitacihtml);
+
+
+                        $.get('?token=<?php e($_GET['token']); ?>&e=create-build_message&id='+window.build_id+'&master='+window.build_master+'&xx='+build_x+'&yy='+build_y, function(vystup){$('#create-build_message').html(vystup);});
+
+                        //-----------------------------------------------------
+
+
+
+                    }
                 });
 		        
 		   
@@ -414,6 +455,10 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
             
 
             }
+
+<?php
+       //---------------------------------------------------------------------------------------------------------------buildx
+?>
 
 	    buildx = function(master,id,func,build_x,build_y,_rot) {
 		/*alert(_rot);*/
@@ -470,47 +515,10 @@ if(defined('object_hybrid')){
 
 <?php } ?>
 
-<!--===================================-->
-<?php /*<div style="position:absolute;width:100%;height:100%;z-index:10;">
-<div style="position:relative;top:0px;left:0px;width:100%;height:100%;z-index:10;">
-<?php htmlmap(false,false,'100%'); ?>
-</div></div>
- onmousedown="alert(1)" onmouseup="alert(2)" onmouseout=""
-onclick="key_up=true" onmouseup="key_up=false" onmouseout="key_up=false"
 
- onmousedown="key_left=true" onmouseup="key_left=false" onmouseout="key_left=false"
-*/ ?>
-
-<?php if((!$_GET['first']) and false){ ?>
-<div style="position:absolute;top:40px;left:0px;width:100%;height:27px;z-index:550;">
-<a onclick="key_up=true;key_count=key_count+2;">
-<img src="<?php imageurle('design/blank.png'); ?>" id="navigation_up" border="0" alt="<?php le('navigation_up'); ?>" title="<?php le('navigation_up'); ?>" width="100%" height="100%">
-</a>
-</div>
-
-<div style="position:absolute;top:0px;left:0px;width:27px;height:100%;z-index:550;">
-<a onclick="key_left=true;key_count=key_count+2;">
-<img src="<?php imageurle('design/blank.png'); ?>" id="navigation_left" border="0" alt="<?php le('navigation_left'); ?>" title="<?php le('navigation_left'); ?>" width="100%" height="100%">
-</a>
-</div>
-
-<div style="position:absolute;top:100%;left:0px;width:100%;height:47px;z-index:550;">
-<div style="position:relative;top:-47px;left:0px;width:100%;height:100%;">
-<a onclick="key_down=true;key_count=key_count+2;">
-<img src="<?php imageurle('design/blank.png'); ?>" id="navigation_down" border="0" alt="<?php le('navigation_down'); ?>" title="<?php le('navigation_down'); ?>" width="100%" height="100%">
-</a>
-</div></div>
-
-<div style="position:absolute;top:0px;left:100%;width:27px;height:100%;z-index:550;">
-<a onclick="key_right=true;key_count=key_count+2;">
-<div style="position:relative;top:0px;left:-27px;width:100%;height:100%;">
-<img src="<?php imageurle('design/blank.png'); ?>" id="navigation_right" border="0" alt="<?php le('navigation_right'); ?>" title="<?php le('navigation_right'); ?>" width="100%" height="100%">
-</a>
-</div></div>
-
-
-
-<?php } ?>
+<?php
+    //------------------------------------------------------------------------------------------------------------------
+?>
 
 
 
@@ -525,7 +533,7 @@ if(!$_GLOBALS['noxmap']){
     $stream2='';
     $stream3='';
     //$mapsize=20;
-    $screen=1270;
+   /* $screen=1270;
 
     if(!$glob){
     if(1){
@@ -543,7 +551,7 @@ if(!$_GLOBALS['noxmap']){
     $xmp=1;
     //echo($xm);
     $ym=$ym-1;$xm=$xm-1;$xm=$xm/2;
-    $size=$screen/($xm+$xm+1);//750;
+    $size=$screen/($xm+$xm+1);//750;*/
 
 
     $canvasjs='
@@ -572,7 +580,7 @@ if(!$_GLOBALS['noxmap']){
 
     ';
 
-    $aii_bg=0;
+    /*$aii_bg=0;
 
 
     for($y=$yc; $y<=$ym+$yc; $y++){
@@ -591,7 +599,7 @@ if(!$_GLOBALS['noxmap']){
               };
               imageObj'.md5($url).'.src = "'.rebase(url.$url).'";
 
-            ';*/
+            ';
 
             $url=rebase(url.$url);
 
@@ -625,7 +633,80 @@ if(!$_GLOBALS['noxmap']){
 
         }
 
+    }*/
+
+
+
+    $maxseed=3;
+
+
+    //$ids=array();
+    $terrains=sql_list("SELECT DISTINCT `res`,`id` FROM `[mpx]pos_obj` WHERE `type`='terrain' ");
+    foreach($terrains as $terrain){
+
+        list($res,$id)=$terrain;
+        $id=$id-1000;
+
+        //$canvasjs.="all_images_bg[$id]=[];";
+        for($seed=0;$seed<$maxseed;$seed++){
+
+
+            $url=map1($res,$seed,false,true);
+
+            $url=rebase(url.$url);
+
+            //e("<img src=\"$url\" border=\"2\" width=\"22\">".(($id*$maxseed)+$seed));
+            //$ids[]=$id;
+
+            $canvasjs.="all_images_bg[".(($id*$maxseed)+$seed)."] = new Image();";
+            $canvasjs.="all_images_bg[".(($id*$maxseed)+$seed)."].src='{$url}';";
+
+
+        }
+
     }
+
+
+    $maparray=sql_list("SELECT `x`,`y`,`id` FROM `[mpx]positions` WHERE ww=".$GLOBALS['ss']["ww"]." AND id>999 AND id<2000 AND ".$range.$whereplay.' ORDER BY `y`,`x`');
+
+
+    /*$maparray=array();
+    $i=-1;
+    $py=false;
+    foreach($sql as $row){
+        list($x,$y,$res)=$row;
+        if($y!=$py){$i++;$maparray[$i]=array();}
+
+        //list($res)=explode(':',$res);
+        //$res=substr($res,1);
+        $maparray[$i][]="'$res'";
+
+    }
+
+
+
+    foreach($maparray as &$row){
+        $row=implode(',',$row);
+        $row="[$row]";
+    }
+    $maparray=implode(',',$maparray);
+    $maparray="maparray=[$maparray];";*/
+
+    foreach($maparray as &$row){
+
+        /*$row[0]=intval($row[0]);
+        $row[1]=intval($row[1]);*/
+        $row[2]=$row[2]-1000;
+
+        $row=implode(',',$row);
+        $row=str_replace('.000','',$row);
+        $row="[$row]";
+
+    }
+    $maparray=implode(',',$maparray);
+    $maparray="maparray=[$maparray];";
+    $canvasjs.=$maparray;
+
     //-------------------------------
 
     //e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.(htmlbgc/$zoom).'px;left:0px;z-index:100;">'.$stream1.'</div></div>');
@@ -688,24 +769,69 @@ if(!$_GLOBALS['noxmap']){
 
     $canvasjs.='
 
-        var imgs_count_bg = all_images_bg.length;
-        var imgs_loaded_bg = 0;
+        var imgs_loaded_bg=0;
+
+        var imgs_count_bg=all_images_bg.length;
+
+        //console.log(all_images_bg);
+        //alert(imgs_loaded_bg+"/"+imgs_count_bg);
+
+        $(all_images_bg).load(function() {
 
 
-        ctx_bg.clearRect ( 0 , 0 , canvas.width, canvas.height );
-        i=0;while(i<imgs_count_bg){
+            //console.log(imgs_loaded_bg+"/"+imgs_count_bg);
 
-            if(jQuery.inArray(all_images_bg[i].ll,drawmaplayers)!=-1){
 
-                ctx_bg.drawImage(all_images_bg[i], parseInt(all_images_bg[i].style.left), parseInt(all_images_bg[i].style.top), all_images_bg[i].width, all_images_bg[i].height);
+            imgs_loaded_bg++;
+
+            if(imgs_loaded_bg === imgs_count_bg) {
+
+                //console.log("loaded");
+                ww=all_images_bg[maparray[0][2]*'.$maxseed.'].width;
+                hh=all_images_bg[maparray[0][2]*'.$maxseed.'].height;
+
+
+                i=0;
+                while(maparray.length>i){
+
+
+                    var x=maparray[i][0];
+                    var y=maparray[i][1];
+
+                    var xx=x-('.$xu.');
+                    var yy=y-('.$yu.');
+
+
+                    var rx=Math.round((('.$px.'*xx)-('.$px.'*yy)+'.$rxp.'-(ww/2))/'.$GLOBALS['mapzoom'].');
+                    var ry=Math.round((('.$py.'*xx)+('.$py.'*yy)+'.$ryp.'-(hh/1.41))/'.$GLOBALS['mapzoom'].');
+
+
+                    //console.log(rx+","+ry+","+ww+","+hh);
+
+                    var seed=((Math.pow(x,2)+Math.pow(y,3))%'.$maxseed.');
+
+                    //console.log(seed);
+
+
+                    ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.$maxseed.'+seed], rx, ry, ww,hh);
+
+                    i++;
+
+                }
+
+
 
             }
 
-
-
-            i++;
-        }
+        });
         ';
+
+
+        /*xx=((x-y)*(ww/3))+($("#map_canvas_bg").attr("width")/2);
+          yy=(x+y)*(hh/3);*/
+
+
+
 
     $canvasjs.='
 

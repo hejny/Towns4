@@ -122,7 +122,7 @@ function t_copy($author=false,$links=false,$startyear=false){
         $author='<a href="http://towns.cz/" target="_blank">Towns.cz</a>';
     }
     if($author=='PH'){
-        $author='Pavel Hejný';
+        $author='Pavol Hejný';
     }
 
 

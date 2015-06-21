@@ -88,7 +88,7 @@ Kvůli rychlosti doporučuju tuto složku dát na SSD disk. (v Linuxu např. pom
 * * *
 ### Autoři
 
-**[PH] Pavel Hejný:** https://www.facebook.com/hejny
+**[PH] Pavol Hejný:** https://www.facebook.com/hejny
 **[DH] David Hrůša:** https://www.facebook.com/dhrusa
 **Přemysl Černý:** https://www.facebook.com/longhorn86
 **[MH] Marek Hám:** https://www.facebook.com/marek.ham

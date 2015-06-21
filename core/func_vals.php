@@ -409,29 +409,33 @@ class func{
          return($return);
     }
     //--------------------------------------------vals2list
-    function vals2list($only=false){
+    function vals2list($only=false){//todo return, return2
         //r('vals2list');
         //r($this->funcs->vals2str());
         $return=$this->funcs->vals2list();
         t('funcs - after vals2list');
         //r(1);
-        //r($return["login"]);
+        //r($return["login"]);3
+        $return2=array();
+
         foreach($return as $i=>$tmp){
-            
-            if(!$only or in_array($i,$only)){//e($i);
+
+            $return[$i]=str2list($return[$i]);
+
+            if(!$only or in_array($return[$i]['class'],$only)){//e($i);
                 //r($return[$i]);
                 //r(gettype($return[$i]));
-                $return[$i]=str2list($return[$i]);//funkce
+                $return2[$i]=$return[$i];//funkce
                 //r(2);
 
                 //$return[$i][1]=str2list($return[$i][1]);//
-                $return[$i]["params"]=str2list($return[$i]["params"]);//params
-                foreach($return[$i]["params"] as $key=>$value){
-                    if(!$return[$i]["params"][$key][0]){$return[$i]["params"][$key][0]=0;}
-                    if(!$return[$i]["params"][$key][1]){$return[$i]["params"][$key][1]=1;}
+                $return2[$i]["params"]=str2list($return2[$i]["params"]);//params
+                foreach($return2[$i]["params"] as $key=>$value){
+                    if(!$return2[$i]["params"][$key][0]){$return2[$i]["params"][$key][0]=0;}
+                    if(!$return2[$i]["params"][$key][1]){$return2[$i]["params"][$key][1]=1;}
                     //if(!$return[$i]["params"][$key][2]){$return[$i]["params"][$key][2]=1;}
                 }
-                $return[$i]["profile"]=str2list($return[$i]["profile"]);//profile
+                $return2[$i]["profile"]=str2list($return2[$i]["profile"]);//profile
                 /*foreach($return[$i]["params"] as $ii=>$tmp2){
                     $return[$i]["params"][$ii]=str2list($return[$i]["params"][$ii]);
                 }*/
@@ -441,7 +445,7 @@ class func{
         }
         //r($return["login"]);
         t('funcs - end');
-        return($return);
+        return($return2);
     }
     //--------------------------------------------func
      function func($func){

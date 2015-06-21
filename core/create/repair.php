@@ -50,7 +50,7 @@ if(xsuccess()){
 setTimeout(function(){
     w_close('content');
 },10);
-<?php urlx('e=map_context;ee=minimenu',false); ?>
+<?php urlx('e=objectmenu;ee=objectmenu',false); ?>
 </script>
 <?php
 }

@@ -10,81 +10,117 @@
 //==============================
 
 
-if($_GET['menuid']=='menu_chat'){
+if(!$GLOBALS['menuid'])
+$GLOBALS['menuid']=$_GET['menuid'];
+
+
+if($GLOBALS['menuid']=='menu_chat'){
 	eval(subpage("chat"));
 }
 
 
-if($_GET['menuid']=='menu_towns') {
-
-    td(trr(lr('menu_towns'),array(13,'999999')));
-    tr();
+if($GLOBALS['menuid']=='menu_towns') {
 
 
-    td(ahrefr(trr(lr('stat'),12),'e=content;ee=profile;submenu=2'));
-    tr();
-
-    //UZ NE//border(iconr('e=content;ee=create-create_master;submenu=3',"create_master_repair",lr('create_master_repair'),$iconsize),$border1,$iconsize);
-    //UZ NE//e($space);
+}
 
 
-    td(ahrefr(trr(lr('title_plus'),12),'e=content;ee=plus-index'));
-    tr();
+
+//----------------------------------------------------------------------------------------------------------------------Typy obsahu
+
+if($GLOBALS['menuid']=='menu_types'){
+
+    tfont(lr('menu_types'),17,'999999');
+    br();
+
+    ahref(tfontr(lr('title_apps_control'),17),'e=content;ee=apps-control');
 
 
-    if($GLOBALS['inc']['forum']){
 
-        td(ahrefr(trr(lr('title_forum'),12),$GLOBALS['inc']['forum']));
-        tr();
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------Komunikace
+
+if($GLOBALS['menuid']=='menu_text'){
+
+    tfont(lr('menu_text'),17,'999999');
+    br();
+
+    ahref(tfontr(lr('messages_unread'),17),'e=content;ee=text-messages;submenu=1');
+    br();
+
+    ahref(tfontr(lr('messages_all'),17),'e=content;ee=text-messages;submenu=2');
+    br();
+
+
+    ahref(tfontr(lr('messages_report'),17),'e=content;ee=text-messages;submenu=3');
+    br();
+
+    ahref(tfontr(lr('messages_new'),17),'e=content;ee=text-messages;submenu=4');
+    br();
+
+
+    if($GLOBALS['inc']['forum']) {
+
+        ahref(tfontr(lr('title_forum'), 17), $GLOBALS['inc']['forum']);
     }
 
 
-    td(ahrefr(trr(lr('title_settings'),12),'e=content;ee=settings;submenu=1'));
-    tr();
+}
+//----------------------------------------------------------------------------------------------------------------------Zobrazit
+
+if($GLOBALS['menuid']=='menu_map'){
+
+    tfont(lr('menu_map'),17,'999999');
+    br();
+
+    $url=centerurl($GLOBALS['hl'],$GLOBALS['hl_x'],$GLOBALS['hl_y'],$GLOBALS['hl_ww'],false);
+    ahref(tfontr(lr('fx_center'),17),$url);
+    br();
+
+    ahref(tfontr(lr('menu_expand'),17),js2("turnmap('expand');"));
+    br();
+
+    ahref(tfontr(lr('menu_attack'),17),js2("turnmap('attack');"));
+    br();
+
+    ahref(tfontr(lr('menu_saybox'),17),js2('if($(\'.saybox\').css(\'display\')==\'block\'){$(\'.saybox\').css(\'display\',\'none\')}else{$(\'.saybox\').css(\'display\',\'block\')}1'));
+    br();
+
+    ahref(tfontr(lr('menu_grid'),17),js2("turnmap('grid');"));
 
 
-    td(ahrefr(trr(lr('fullscreen'),12),'js=$(document).fullScreen(!$(document).fullScreen());'));
-    tr();
+}
+//----------------------------------------------------------------------------------------------------------------------Uživatel
+
+if($GLOBALS['menuid']=='menu_user'){
+
+    tfont(lr('menu_user'),17,'999999');
+    br();
+
+    ahref(tfontr(lr('profile_user'),17),"e=content;ee=profile;submenu=1;id=".$GLOBALS['ss']['logid']);
+    br();
+
+    ahref(tfontr(lr('profile_town'),17),"e=content;ee=profile;submenu=1;id=".$GLOBALS['ss']['useid']);
+    br();
+
+    ahref(tfontr(lr('stat'),17),'e=content;ee=profile;submenu=2');
+    br();
+
+    ahref(tfontr(lr('title_settings'),17),"e=content;ee=settings;submenu=1");
+    br();
+
+    ahref(tfontr(lr('fullscreen'),17),"js=$(document).fullScreen(!$(document).fullScreen());");
+    br();
+
+    ahref(tfontr(lr('logout'),17),js2('logout()'));
+    br();
 
 
-    td(ahrefr(trr(lr('logout'),12),js2('logout()')));
-    tr();
-    table(150,'',1,'border:0px;border-spacing:2px;');
 }
 
-
-
-
-
-if($_GET['menuid']=='menu_map'){
-
-	e('<table border="0" cellpadding="2" cellspacing="0"><tr><td colspan="1">');
-	tee(lr('menu_show'),array(13,'999999'));
-	e("</td></tr><tr><td>");
-
-
-	ahref(trr(lr('menu_expand'),12),js2("turnmap('expand');"));
-
-	e("</td></tr><tr><td>");
-
-	ahref(trr(lr('menu_attack'),12),js2("turnmap('attack');"));
-
-
-	//tee('x',20,3,NULL,'x');
-	//e("</td></tr><tr><td>");
-	//ahref(trr('{menu_mapbox}',12),js2('if($(\'.mapbox\').css(\'display\')==\'block\'){$(\'.mapbox\').css(\'display\',\'none\')}else{$(\'.mapbox\').css(\'display\',\'block\')}1'));
-	
-	e("</td></tr><tr><td>");
-
-	ahref(trr(lr('menu_saybox'),12),js2('if($(\'.saybox\').css(\'display\')==\'block\'){$(\'.saybox\').css(\'display\',\'none\')}else{$(\'.saybox\').css(\'display\',\'block\')}1'));
-	e("</td></tr><tr><td>");
-
-	ahref(trr(lr('menu_grid'),12),js2("turnmap('grid');"));
-
-
-	e("</td></tr></table>");
-}
+//----------------------------------------------------------------------------------------------------------------------
 
 
 ?>

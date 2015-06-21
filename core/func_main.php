@@ -532,6 +532,20 @@ function sql_assoc($q,$w=false){
     $array = $array->fetchAll(PDO::FETCH_ASSOC);
     return($array);
 }
+//--------------------------------------------sql_list //todo přeházet sql_array na sql_list
+function sql_list($q,$w=false){
+    $q=sql_mpx($q);
+    if($w==1){r($q);}
+    if($w==2){echo($q);}
+    if($w==3){echo($q.';');br();}
+    $array= $GLOBALS['pdo']->prepare($q);
+    t();
+    $array->execute();
+    t('sql_assoc',$q);
+    $err=($array->errorInfo());if($err=$err[2] and debug)e("($err;$q)");
+    $array = $array->fetchAll(PDO::FETCH_NUM);
+    return($array);
+}
 //--------------------------------------------sql_row
 function sql_row($q,$w=false){
     if(!strpos($q,'LIMIT') and !strpos($q,'COUNT') and !strpos($q,'MAX') and !strpos($q,'MIN')){$q.=' LIMIT 1';}
@@ -846,7 +860,7 @@ function check_email($email) {
 
 function htmljscss(){
 
-    $filejs = tmpfile2(array('js',7,$GLOBALS['inc']['url'],url,logged), 'min.js', 'page');
+    $filejs = tmpfile2(array('js',7,$GLOBALS['inc']['url'],url,$GLOBALS['ss']['useid'],$_GET['token']), 'min.js', 'page');
     $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs) or newpage/** or 1/**/) {

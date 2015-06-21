@@ -25,7 +25,8 @@ $all_images_spec=array();
 
 $GLOBALS['units_stream']='';
 
-//------------------------------------------------------------------------------------------------------WHERE PREPARE
+
+//------------------------------------------------------------------------------------------------------WHERE PREPARE todo: tohle je kopie z map - potřeba vyřešit
 
 $say="''";//"(SELECT IF((`[mpx]text`.`timestop`=0 OR ".time()."<=`[mpx]text`.`timestop`),`[mpx]text`.`text`,'')  FROM `[mpx]text` WHERE `[mpx]text`.`from`=`[mpx]pos_obj`.id AND `[mpx]text`.`type`='chat' ORDER BY `[mpx]text`.time DESC LIMIT 1)";
 //$say="'ahoj'";
@@ -46,16 +47,19 @@ $ryp=0;//+$yyu;
 $px=424/10;$py=$px/2;
 
 
+
 $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
+
+
+
+$range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
+$range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+
+
+
 
 //------------------------------------------------------------------------------------------------------SELECT - ALLES
 //if(!$GLOBALS['map_units_ids']){ todo zrušit uplně
-
-
-
-    $range='1';
-    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
-    $range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 
 
     $hlname=id2name($GLOBALS['config']['register_building']);
@@ -63,6 +67,8 @@ $whereplay=($GLOBALS['get']['play']?'':' AND '.objt());
 
     $sql=sql_mpx("SELECT `x`,`y`,`x2`,`y2`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,speed,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
 
+
+    //e($sql);
 
     $objects= $GLOBALS['pdo']->query($sql);
 
@@ -282,10 +288,13 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
             ,($rx - ($s / $y / 2 / $GLOBALS['mapzoom']))
             ,($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom']))
-            ,0
-            ,0
+            ,($rx2 - ($s / $y / 2 / $GLOBALS['mapzoom']))
+            ,($ry2 - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom']))
+            ,($s / $y / $GLOBALS['mapzoom'])
+            ,($s / $y / 2 / $GLOBALS['mapzoom'])
 
-            ,'expand',$object['starttime'],$object['readytime'],$object['stoptime']);
+            ,'expand'
+            ,$object['starttime'],$object['readytime'],$object['stoptime']);
         }
 
         //--------------------------------------------------------------------------------------------------------------ATTACK
@@ -372,7 +381,22 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
 
             //@todo x2,y2
-            $all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),0,0,($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
+            //$all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),0,0,($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
+
+            $all_images_spec[]=array($object['id'],$src
+
+            ,($rx - ($s / $y / 2 / $GLOBALS['mapzoom']))
+            ,($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom']))
+            ,($rx2 - ($s / $y / 2 / $GLOBALS['mapzoom']))
+            ,($ry2 - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom']))
+            ,($s / $y / $GLOBALS['mapzoom'])
+            ,($s / $y / 2 / $GLOBALS['mapzoom'])
+
+            ,'attack'
+            ,$object['starttime'],$object['readytime'],$object['stoptime']);
+
+
+
 
         }
     }
@@ -524,10 +548,10 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         /*$GLOBALS['units_stream'] .= '</div>';
         $GLOBALS['units_stream'] .= '</div>';*/
 
-        //--------------------------------------------------------------------------------------------------------------MINIMENU FROM ID
-        //Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání minimenu, ale je nutná k pohybujícím se jednotkám
+        //--------------------------------------------------------------------------------------------------------------objectmenu FROM ID
+        //Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání objectmenu, ale je nutná k pohybujícím se jednotkám
 
-        if ($object['speed']>0 or $object['own']==$GLOBALS['ss']['useid']) {
+        if (/*$object['speed']>0 or $object['own']==$GLOBALS['ss']['useid']*/$object['type']=='building') {
             if ($onmap) {
 
                 $GLOBALS['units_stream'] .= '
