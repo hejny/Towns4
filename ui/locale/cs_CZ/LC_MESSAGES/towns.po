@@ -1074,7 +1074,7 @@ msgid "continue_ok"
 msgstr "Hrát jako [0]"
 
 msgid "copy"
-msgstr "© Pavel Hejný | 2015"
+msgstr "© Pavol Hejný | 2015"
 
 msgid "copy2"
 msgstr "©PH"
