@@ -74,6 +74,8 @@ if($_POST['origin']){
                 'ww' => '-1',
                 'x' => '',
                 'y' => '',
+                'x2' => '',
+                'y2' => '',
                 'traceid' => '',
                 'starttime' => '',
                 'readytime' => '',

@@ -259,7 +259,7 @@ ion.sound.play('beer_can_opening');
 \$('#loading').css('top',event.pageY-10);
 }
 ";
-    $iv="\$('#loading').css('display','none');ion.sound.play('bell_ring');";
+    $iv="\$('#loading').css('display','none');";//ion.sound.play('bell_ring');
     if($jsa)$iv.=$jsa;
     
     

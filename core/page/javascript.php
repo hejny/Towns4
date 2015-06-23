@@ -10,7 +10,7 @@
 //==============================
 ?>
 <script>
-    //=====================================================================================Vykreslování mapy pomocí canvas
+    //===================================================================================================================Vykreslování mapy pomocí canvas
 
     //----------------------------------------------------------------turnmap
 
@@ -45,11 +45,11 @@
 
 
         //alert(i);
-        console.log(drawmaplayers);
+        //console.log(drawmaplayers);
         drawmap();
     }
 
-    //----------------------------------------------------------------drawEllipse
+    //=======================================================================================================drawEllipse
 
     function drawEllipse(ctx, x, y, w, h) {
         var kappa = .5522848,
@@ -71,7 +71,7 @@
         ctx.fill();
     }
 
-    //----------------------------------------------------------------drawmap
+    //===========================================================================================================drawmap
 
     var all_images=[];
 
@@ -104,65 +104,89 @@
 
                 if ((all_images[i].starttime <= time) && (all_images[i].stoptime == 0 || all_images[i].stoptime > time)) {
 
+                    //------------------------------------------------------------------Zjištění pozice
+                        //console.log(all_images[i]);
+                        pos = position(
+                            all_images[i].getAttribute('x'),
+                            all_images[i].getAttribute('y'),
+                            all_images[i].getAttribute('x2'),
+                            all_images[i].getAttribute('y2'),
 
-                    //console.log(all_images[i]);
-                    pos = position(
-                        all_images[i].getAttribute('x'),
-                        all_images[i].getAttribute('y'),
-                        all_images[i].getAttribute('x2'),
-                        all_images[i].getAttribute('y2'),
+                            all_images[i].starttime,
+                            all_images[i].readytime,
+                            time
 
-                        all_images[i].starttime,
-                        all_images[i].readytime,
-                        time
-
-                    );
-
-                    /*pos[0]-=(Math.random()+10)-5;
-                    pos[1]-=(Math.random()+10)-5;*/
-
-                    all_images[i].setAttribute('xx',pos[0]);
-                    all_images[i].setAttribute('yy',pos[1]);
-
-
-                    if(all_images[i].getAttribute('objectid')==mapselected) {
-
-                        mapselectedi=i;
-
-
-
-                        ctx.strokeStyle="#"+mapselectedcolor;
-                        ctx.lineWidth=3;
-                        ctx.fillStyle = 'rgba(255, 50,50, 0.2)';
-
-                        /*console.log(all_images[i]);*/
-
-                        drawEllipse(
-                            ctx,
-                            parseInt(all_images[i].getAttribute('xx')),
-                            parseInt(all_images[i].getAttribute('yy'))+parseInt(all_images[i].height)-parseInt(all_images[i].width/2),
-                            parseInt(all_images[i].width),
-                            parseInt(all_images[i].width/2)/*,
-                            rotation,
-                            startAngle,
-                            endAngle,
-                            anticlockwise*/
                         );
-                    }
 
-                    objmin=$('#objmin'+all_images[i].getAttribute('objectid'));
-                    if(typeof objmin!='undefined'){
-                        /*console.log(objmin);*/
-                        objmin.css('left',pos[0] /*- (all_images[i].width)*/);
-                        objmin.css('top',pos[1] + all_images[i].height + (all_images[i].width/4)  );
+                        /*pos[0]-=(Math.random()+10)-5;
+                        pos[1]-=(Math.random()+10)-5;*/
 
-                    }
+                        all_images[i].setAttribute('xx',pos[0]);
+                        all_images[i].setAttribute('yy',pos[1]);
+
+                        //------------------------------------------------------------------Označená budova
+
+                        if(all_images[i].getAttribute('objectid')==mapselected) {
+
+                            mapselectedi=i;
 
 
 
-                    ctx.drawImage(all_images[i], all_images[i].getAttribute('xx'), all_images[i].getAttribute('yy'), all_images[i].width, all_images[i].height);
+                            ctx.strokeStyle="#"+mapselectedcolor;
+                            ctx.lineWidth=3;
+                            ctx.fillStyle = 'rgba(255, 50,50, 0.2)';
 
-                    //console.log(all_images[i]);
+                            /*console.log(all_images[i]);*/
+
+                            drawEllipse(
+                                ctx,
+                                parseInt(all_images[i].getAttribute('xx')),
+                                parseInt(all_images[i].getAttribute('yy'))+parseInt(all_images[i].height)-parseInt(all_images[i].width/2),
+                                parseInt(all_images[i].width),
+                                parseInt(all_images[i].width/2)/*,
+                                 rotation,
+                                 startAngle,
+                                 endAngle,
+                                 anticlockwise*/
+                            );
+                        }
+
+                        //------------------------------------------------------------------Expanze
+
+                        //console.log(jQuery.inArray('expand',drawmaplayers));
+                        if(all_images[i].expand>0 && jQuery.inArray('expand',drawmaplayers)!=-1) {
+
+                            ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+                            ctx.fillStyle = 'rgba(50,50,50,0.4)';
+                            ctx.lineWidth = 3;
+
+                            drawEllipse(
+                                ctx,
+                                parseInt(all_images[i].getAttribute('xx')) - (all_images[i].width * (all_images[i].expand*1.41 - 1) / 2),
+                                parseInt(all_images[i].getAttribute('yy')) + (all_images[i].height) - (all_images[i].width * (all_images[i].expand*1.41) / 2 )  + (all_images[i].width*(all_images[i].expand*1.41-1)/4),
+                                parseInt(all_images[i].width * (all_images[i].expand*1.41)),
+                                parseInt(all_images[i].width * (all_images[i].expand*1.41) / 2)
+                            );
+
+
+                            //(all_images[i].width*(all_images[i].expand-1)/2)
+
+                        }
+                        //------------------------------------------------------------------Posun klikacího podkladu
+
+                        objmin=$('#objmin'+all_images[i].getAttribute('objectid'));
+                        if(typeof objmin!='undefined'){
+                            /*console.log(objmin);*/
+                            objmin.css('left',pos[0] /*- (all_images[i].width)*/);
+                            objmin.css('top',pos[1] + all_images[i].height + (all_images[i].width/4)  );
+
+                        }
+
+                        //------------------------------------------------------------------Vykreslení objektu
+
+                        ctx.drawImage(all_images[i], all_images[i].getAttribute('xx'), all_images[i].getAttribute('yy'), all_images[i].width, all_images[i].height);
+
+                    //------------------------------------------------------------------
                 }
 
                 /*all_images.sort(function(a, b){/*console.log(a);* /return a.yy-b.yy});
@@ -182,13 +206,13 @@
 
 
     }
-
+    //------------------------------------------------------------------
 
     setInterval(function(){
         drawmap();
     },150);
 
-    //----------------------------------------------------------------removeobject
+    //======================================================================================================removeobject
 
     var removeobject=function(id) {
 
@@ -238,7 +262,7 @@
 
     }
 
-    //=====================================================================================Zpracování mapy
+    //==================================================================================================================Zpracování mapy
 
 /*------------------------------parseMap*/
             xc=0/*<?php echo($GLOBALS['xc']); ?>*/;
@@ -974,7 +998,7 @@ $(document).ready(function(){
                 if(ifcache('objectmenu_'+name)){
                     $('#objectmenu').html(cache('objectmenu_'+name));
                 }else{
-                    $('#objectmenu').html(title);
+                    $('#objectmenu').html(/*title*/'&nbsp;');
                 }
 
 
@@ -994,7 +1018,7 @@ $(document).ready(function(){
 
                 mapselected=0;
                 $('#window_objectmenu').stop(true,true);
-                $("#window_objectmenu").animate({left:-50}, 200);
+                $("#window_objectmenu").animate({left:-60}, 200);
 
                 ion.sound.play('branch_break');
 

@@ -119,6 +119,8 @@ if($_GET['create']){
             'ww' => $aac_ww,
             'x' => $aac_x,
             'y' => $aac_y,
+            'x2' => $aac_x,
+            'y2' => $aac_y,
             'traceid' => '',
             'starttime' => time(),
             'readytime' => '',

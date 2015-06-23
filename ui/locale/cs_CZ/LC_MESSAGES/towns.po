@@ -2079,8 +2079,23 @@ msgid "mdlrot_description"
 msgstr "Otočení budovy..."
 
 
-msgid "menu_towns"
-msgstr "Rozšířené menu"
+msgid "menu_types"
+msgstr "Tvorba"
+
+
+
+
+
+
+msgid "menu_text"
+msgstr "Zprávy"
+
+
+
+
+
+msgid "menu_map"
+msgstr "Mapa"
 
 # attack
 msgid "menu_attack"
@@ -2100,6 +2115,17 @@ msgstr "Názvy měst"
 
 msgid "menu_show"
 msgstr "Zobrazit"
+
+
+
+
+
+msgid "menu_user"
+msgstr "Hráč"
+
+
+
+
 
 # text
 msgid "mesage_forum_info"

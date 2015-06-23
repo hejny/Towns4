@@ -956,7 +956,7 @@ function htmljscss(){
         fps_quick=60;
 
         setInterval(function() {
-                    $('div').scrollTop(0);
+            $('div').not('.scroll').scrollTop(0);
 
             $(document).scrollTop(0);
             $(document).scrollLeft(0);
@@ -1067,6 +1067,17 @@ EOF;
             height: 0.5px;
         }
         a{color: #cccccc;text-decoration: none;}
+
+        .noselect {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+
         .author {
             border:#000000 2px solid;
             border-radius: 50px;

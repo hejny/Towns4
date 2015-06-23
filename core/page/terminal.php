@@ -20,7 +20,7 @@ if($q==1) {
     ?>
 
 
-    <div style="width: 620px;height: 480px;overflow: hidden;" onclick="terminalclick();">
+    <div style="width: 620px;height: 480px;overflow: hidden;" onclick="terminalclick();" class="scroll">
     <div id="terminal_scroll"
          style="color: #ffffff; background-color: #000011; width: 640px;height: 480px;overflow-x: hidden;overflow-y: auto;">
     <?php
