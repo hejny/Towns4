@@ -882,14 +882,52 @@ description={building_description_expand_tower};
  
  
  
+{rock}:
+id=2000001;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:1 
  
  
+{rock}:
+id=2000002;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:2 
  
-
  
-  
+{rock}:
+id=2000003;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:3 
  
  
+{rock}:
+id=2000004;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:4 
+ 
+ 
+{rock}:
+id=2000005;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:5 
+ 
+ 
+{rock}:
+id=2000006;
+type=rock;
+origin=defence,defence;
+group__group=rock;
+rock:6
  
  
  

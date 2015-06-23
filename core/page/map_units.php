@@ -65,10 +65,10 @@ $range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged
     $hlname=id2name($GLOBALS['config']['register_building']);
 
 
-    $sql=sql_mpx("SELECT `x`,`y`,`x2`,`y2`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,speed,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
+    $sql=sql_mpx("SELECT `x`,`y`,`x2`,`y2`,`type`,`res`,`set`,`name`,`id`,`own`,$profileown,expand,block,attack,speed,t,`func`,`fp`,`fs`,`starttime`,`readytime`,`stoptime` FROM `[mpx]pos_obj` WHERE ww=".$GLOBALS['ss']["ww"]." AND (`type`='building' OR `type`='story') AND ".$range.$whereplay.' ORDER BY `x`+`y`' );
+    //(`type`='building' OR `type`='tree' OR `type`='rock' OR `type`='story')
 
-
-    //e($sql);
+    if(debug)e($sql);
 
     $objects= $GLOBALS['pdo']->query($sql);
 
@@ -99,7 +99,8 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
     $object['t'] = intval($object['t']);
 
-    //ebr($object['name']);
+    //r($object['name']);
+    //r($object['type']);
 
     //------------------------------------------------------------------------------------------------------------------Rozestavěnost
 
@@ -110,21 +111,32 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
 
         //Způsob in_array($object['type'],array('building','tree','rock')) je pomalejší
-        if($object['type']=='building' or $object['type']=='tree' or $object['type']=='rock') {
+        if($object['type']=='building'/* or $object['type']=='tree' or $object['type']=='rock'*/) {
 
             if ($object['x']==$object['x2'] and $object['y']==$object['y2'] and $object['readytime'] > time()) {
 
                 $fpfs = 1 + ($object['readytime'] - time()) / ($object['readytime'] - $object['starttime']);
+                //r(a);
 
             } else {
                 $fpfs = $object['fp'] / $object['fs'];
+                if($fpfs>1)$fpfs=1;
+                //r(b);
             }
 
+            //r($fpfs);die();
+
+        }else{
+
+            $fpfs=1;
+
         }
+
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     } else {
         $onmap = false;
     }
+
 
 
     //------------------------------------------------------------------------------------------------------------------Barva uživatele
@@ -195,7 +207,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
     $ry2=round((($py*$xx2)+($py*$yy2)+$ryp)/$GLOBALS['mapzoom']);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building
-    if($object['type']=='building') {
+    /*if($object['type']=='building') {
         //--------------------------------------------------------------------------------------------------------------EXPAND,COLLAPSE
 
         t($object['name'] . ' - beforeexpandcollapse');
@@ -220,7 +232,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             //$object['expand']=0.3;
             //$object['expand']=0.1;
 
-            $file = tmpfile2(size_radius . 'expand' . $object['expand'] . 'block' . $object['block'] . $ad/**.rand(1,9999)/**/, 'png', "image");
+            $file = tmpfile2(size_radius . 'expand' . $object['expand'] . 'block' . $object['block'] . $ad, 'png', "image");
             //e($file);
             $y = 1;//gr;
             $brd = 3 * $y;
@@ -228,7 +240,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             $sc = size_radius * $object['block'] * $y;
             $s = max(array($se, $sc));
 
-            if (!file_exists($file) or notmpimg/** or true/**/) {
+            if (!file_exists($file) or notmpimg) {
 
 
                 //$sesc="$object['expand']=$se,$collapse=$sc";
@@ -265,9 +277,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
                             imagefilledellipse($img, $aa * $s / 2, $aa * $s / 4, $aa * ($sx - $brd), $aa * (($sx / 2) - $brd), $inner);
                         }
                         //-----ATTACK
-                        /*if($key=='sa'){
-                                $inner =  imagecolorallocatealpha($img, 200, 255, 10, 60);
-                        }*/
+
                         //-----DRAW
 
                     }
@@ -280,10 +290,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             }
 
             $src = rebase(url . $file);
-            /*$GLOBALS['area_stream'] .= '<div style="position:absolute;z-index:150;" id="expand' . $object['id'] . '">
-        <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >
-        <img src="' . $src . '" widht="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
-        </div></div>';*/
+
             $all_images_spec[]=array($object['id'],$src
 
             ,($rx - ($s / $y / 2 / $GLOBALS['mapzoom']))
@@ -329,7 +336,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             $brd = 3 * $y;
             $s = size_radius * $object['attack'] * $y;
 
-            if (!file_exists($file) or notmpimg/** or true/**/) {
+            if (!file_exists($file) or notmpimg) {
 
 
                 //$sesc="$object['expand']=$se,$collapse=$sc";
@@ -373,14 +380,6 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
             //die($src);
 
 
-            /*$GLOBALS['attack_stream'] .= '<div style="position:absolute;z-index:150;" id="attack' . $object['id'] . '">
-            <div style="position:relative; top:' . ($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])) . 'px; left:' . ($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])) . 'px;" >' .
-                '
-        <img src="' . $src . '" width="' . ($s / $y / $GLOBALS['mapzoom']) . '" height="' . ($s / $y / 2 / $GLOBALS['mapzoom']) . '"  class="clickmap" border="0" />
-            </div></div>';*/
-
-
-            //@todo x2,y2
             //$all_images_spec[]=array($object['id'],$src,($rx - ($s / $y / 2 / $GLOBALS['mapzoom'])),($ry - ((($s / $y / 4) + htmlbgc) / $GLOBALS['mapzoom'])),0,0,($s / $y / $GLOBALS['mapzoom']),($s / $y / 2 / $GLOBALS['mapzoom']),'attack',$object['starttime'],$object['readytime'],$object['stoptime']);
 
             $all_images_spec[]=array($object['id'],$src
@@ -399,7 +398,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
 
 
         }
-    }
+    }*/
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Only Building, Tree and rock
     if($object['type']=='building' or $object['type']=='tree' or $object['type']=='rock') {
@@ -534,9 +533,11 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
                 ,$object['starttime']
                 ,$object['readytime']
                 ,$object['stoptime']
+                ,$object['expand']
+                ,$object['block']
+                ,$object['attack']
                 ,$object['speed']
             );
-
 
         } else {
             r('!res');
@@ -640,6 +641,7 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
         if($say){
             if($object['type']=='building'){
                 //------------------------------------------------Zobrazení nápisu pro budovy
+                //."({$object['readytime']} - {$object['starttime']})"
 
                 $GLOBALS['units_stream'].='
                 <div class="saybox" style="position:absolute;display:'.(onlymap?'none':'block').';z-index:'.($ry+2000).';" >

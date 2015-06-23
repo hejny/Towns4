@@ -65,6 +65,7 @@ if ($GLOBALS['isie']/** or 1/**/) {
     $GLOBALS['ss']["helppage"]='about';
     $GLOBALS['nowidth']=true;
     eval(subpage('help'));
+    error('Právě měníme celý systém, jak hra funguje, proto mohou některé věci ve hře blbnout nebo úplně nefungovat. Omlouvám se za všechny nefunkčnosti. Vše by mělo být doladěné cca do týdne.');
     br(1);
 ?></div></td></tr>
 

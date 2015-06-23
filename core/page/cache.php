@@ -30,8 +30,8 @@ foreach(array('types','text','map','user') as $menuid) {
 //Zrychlený výběr budov - ze zkušeností vychází, že tato funkce spíše seká tahání mapy, než zrychluje načítání objectmenu
 
 
-$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','objectmenu');
-if(!file_exists($fileMM)){
+//$fileMM=tmpfile2($GLOBALS['ss']['useid'].round(time()/(3600*24)),'html','objectmenu');
+//if(!file_exists($fileMM)){
 
     $pagesx=array();
     //$GLOBALS['get']["contextid"]=$GLOBALS['hl'];
@@ -53,10 +53,9 @@ if(!file_exists($fileMM)){
     
     fpc($fileMM, serialize($pagesx));
 
-}else{
-    $pagesx=unserialize(file_get_contents($fileMM));
-
-}
+//}else{
+//    $pagesx=unserialize(file_get_contents($fileMM));
+//}
 
 $pages=array_merge($pages,$pagesx);
 /*==================================================================================================cache_create-unique_[id]=*/

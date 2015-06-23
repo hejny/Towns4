@@ -41,6 +41,8 @@ if(isset($_GET['xc']) and $GLOBALS['ss']['logid']){
         'ww' => $GLOBALS['ss']["ww"],
         'x' => floatval($_GET['xc']),
         'y' => floatval($_GET['yc']),
+        'x2' => floatval($_GET['xc']),
+        'y2' => floatval($_GET['yc']),
         'traceid' => '',
         'starttime' => time(),
         'readytime' => 0,

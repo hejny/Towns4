@@ -208,7 +208,7 @@ if($GLOBALS['get']['play']){
 
 	//--------------------------------------------------------
 
-	if(!$history)$history=1;
+	/*if(!$history)$history=1;
 
 	$timenow=time();
     $xcu=0;
@@ -218,7 +218,10 @@ if($GLOBALS['get']['play']){
     $xu=($ycu+$xcu)*5+1;
     $yu=($ycu-$xcu)*5+1;
 	//(!mobile){
-	$range="(x-y)>($xu-$yu)-".(logged()?20:26)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
+
+
+
+	$range="(x-y)>($xu-$yu)-".(20)." AND (x+y)>($xu+$yu)+".(5)." AND (x-y)<($xu-$yu)+".(35)." AND (x+y)<($xu+$yu)+".(60)."";
 	//}else{
 	//$range="(x-y)>($xu-$yu)-20 AND (x+y)>($xu+$yu)+5 AND (x-y)<($xu-$yu)+10 AND (x+y)<($xu+$yu)+50";
 	//}
@@ -252,10 +255,13 @@ if($GLOBALS['get']['play']){
 }else{
     $times=array(time());
 
+    $left=20;
+    $rigth=40;
+    $top=5;
+    $down=60;
 
-    $range="x>$xu-5 AND y>$yu-10 AND x<$xu+40 AND y<$yu+40";
-    $range.=" AND (x-y)>($xu-$yu)-".(logged()?20:26)." AND (x-y)<($xu-$yu)+".(logged()?35:22)." AND (x+y)>($xu+$yu)+".(logged()?5:2)." AND (x+y)<($xu+$yu)+".(logged()?60:55)."";
 
+    $range="(x-y)>($xu-$yu)-".($left)." AND (x+y)>($xu+$yu)+".($top)." AND (x-y)<($xu-$yu)+".($rigth)." AND (x+y)<($xu+$yu)+".($down)."";
 
 
 }
@@ -342,10 +348,14 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 		setTimeout(function(){         
         parseMapF(
 		function(){
-        /*$('#map_context').css('left',($( window ).width()/2));
-        $('#map_context').css('top',195);
-        $('#map_context').css('display','block');*/
-        $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#objectmenu').html(vystup);});});
+            /*$('#map_context').css('left',($( window ).width()/2));
+            $('#map_context').css('top',195);
+            $('#map_context').css('display','block');*/
+
+            $('#window_objectmenu').stop(true,true);
+            $("#window_objectmenu").animate({left:0}, 200);
+
+            $(function(){$.get('?token=<?php e($_GET['token']); ?>&e=objectmenu&w=&contextid='+<?php e($GLOBALS['get']['center']); ?>, function(vystup){$('#objectmenu').html(vystup);});});
 		}
 		);
         },23);/**/
@@ -391,7 +401,7 @@ js('unittimes=['.implode(',',$times).'];document.maptime='.time().';');
 
             build=function(master,id,func) {
 
-                console.log(master+','+id+','+func);
+                //console.log(master+','+id+','+func);
                 window.build_master=master;
                 window.build_id=id;
                 window.build_func=func
@@ -525,38 +535,38 @@ if(defined('object_hybrid')){
 <div style="top:<?php  echo($yy); ?>;left:<?php  echo($xx); ?>;z-index:20;" id="draglayer">
 <?php
 
-if(!$_GLOBALS['noxmap']){
+if(!$_GLOBALS['noxmap']) {
 
-    $_GLOBALS['noxmap']=false;
+    $_GLOBALS['noxmap'] = false;
 
-    $stream1='';
-    $stream2='';
-    $stream3='';
+    $stream1 = '';
+    $stream2 = '';
+    $stream3 = '';
     //$mapsize=20;
-   /* $screen=1270;
+    /* $screen=1270;
 
-    if(!$glob){
-    if(1){
-        $ym=6;//6;//$mapsize/5+1;//-1;
-        $xm=5;//5;//5;//ceil(($mapsize/5-1)/2);
-    }else{
-        $ym=3;
-        $xm=2;
-    }
-    }else{
-        $ym=11;
-        $xm=8;
-    }
+     if(!$glob){
+     if(1){
+         $ym=6;//6;//$mapsize/5+1;//-1;
+         $xm=5;//5;//5;//ceil(($mapsize/5-1)/2);
+     }else{
+         $ym=3;
+         $xm=2;
+     }
+     }else{
+         $ym=11;
+         $xm=8;
+     }
 
-    $xmp=1;
-    //echo($xm);
-    $ym=$ym-1;$xm=$xm-1;$xm=$xm/2;
-    $size=$screen/($xm+$xm+1);//750;*/
+     $xmp=1;
+     //echo($xm);
+     $ym=$ym-1;$xm=$xm-1;$xm=$xm/2;
+     $size=$screen/($xm+$xm+1);//750;*/
 
 
-    $canvasjs='
+    $canvasjs = '
 
-        document.maptime='.time().';
+        document.maptime=' . time() . ';
 
         var all_images=[];
         var canvas = document.getElementById("map_canvas");
@@ -570,6 +580,8 @@ if(!$_GLOBALS['noxmap']){
 
 
         var all_images_bg=[];
+        var all_images_tree=[];
+        var all_images_rock=[];
         var canvas_bg = document.getElementById("map_canvas_bg");
 
         $("#map_canvas_bg").attr("width",parseInt($(window).width()*1.6));
@@ -635,36 +647,56 @@ if(!$_GLOBALS['noxmap']){
 
     }*/
 
+    //--------------------------------------------------------Načtení stromů / skal todo javascript
+    foreach(array('tree','rock') as $treerock){
+        $var = 'maxseed_' . $treerock;
+        $$var = 10;//@todo Přesunout do konfigurace
 
+        $objects = sql_assoc("SELECT DISTINCT `res` FROM `[mpx]objects` WHERE `type`='$treerock' LIMIT {$$var}");
+        $i = 0;
+        foreach ($objects as $object) {
 
-    $maxseed=3;
+            //ebr($object['res']);
+            $url = modelx($object['res']);
 
+            $canvasjs .= "all_images_{$treerock}[{$i}] = new Image();";
+            $canvasjs .= "all_images_{$treerock}[{$i}].src='{$url}';";
+            $i++;
+        }
+        $$var = count($objects);
+    }
+
+    //--------------------------------------------------------Načtení podkladů
+
+    $maxseed = 3;//@todo Přesunout do konfigurace
 
     //$ids=array();
-    $terrains=sql_list("SELECT DISTINCT `res`,`id` FROM `[mpx]pos_obj` WHERE `type`='terrain' ");
-    foreach($terrains as $terrain){
+    $terrains = sql_list("SELECT DISTINCT `res`,`id` FROM `[mpx]pos_obj` WHERE `type`='terrain' ");
+    foreach ($terrains as $terrain) {
 
-        list($res,$id)=$terrain;
-        $id=$id-1000;
+        list($res, $id) = $terrain;
+        $id = $id - 1000;
 
         //$canvasjs.="all_images_bg[$id]=[];";
-        for($seed=0;$seed<$maxseed;$seed++){
+        for ($seed = 0; $seed < $maxseed; $seed++) {
 
 
-            $url=map1($res,$seed,false,true);
+            $url = map1($res, $seed, false, true);
 
-            $url=rebase(url.$url);
+            $url = rebase(url . $url);
 
             //e("<img src=\"$url\" border=\"2\" width=\"22\">".(($id*$maxseed)+$seed));
             //$ids[]=$id;
 
-            $canvasjs.="all_images_bg[".(($id*$maxseed)+$seed)."] = new Image();";
-            $canvasjs.="all_images_bg[".(($id*$maxseed)+$seed)."].src='{$url}';";
+            $canvasjs .= "all_images_bg[" . (($id * $maxseed) + $seed) . "] = new Image();";
+            $canvasjs .= "all_images_bg[" . (($id * $maxseed) + $seed) . "].src='{$url}';";
 
 
         }
 
     }
+
+    //--------------------------------------------------------
 
 
     $maparray=sql_list("SELECT `x`,`y`,`id` FROM `[mpx]positions` WHERE ww=".$GLOBALS['ss']["ww"]." AND id>999 AND id<2000 AND ".$range.$whereplay.' ORDER BY `y`,`x`');
@@ -755,7 +787,10 @@ if(!$_GLOBALS['noxmap']){
         $canvasjs.="all_images[$aii].stoptime={$image[11]};";
 
 
-        $canvasjs.="all_images[$aii].speed=".intval($image[12]).';'.nln;
+        $canvasjs.="all_images[$aii].expand=".intval($image[12]).';'.nln;
+        $canvasjs.="all_images[$aii].block=".intval($image[13]).';'.nln;
+        $canvasjs.="all_images[$aii].attack=".intval($image[14]).';'.nln;
+        $canvasjs.="all_images[$aii].speed=".intval($image[15]).';'.nln;
 
         //$canvasjs.="all_images[$aii].starttime=0;";
         //$canvasjs.="all_images[$aii].readytime=0;";
@@ -766,61 +801,141 @@ if(!$_GLOBALS['noxmap']){
 
         $aii++;
     }
-
+    //------------------------------------------------------------------------------------------------------------------drawbg
     $canvasjs.='
 
         var imgs_loaded_bg=0;
 
-        var imgs_count_bg=all_images_bg.length;
+        var imgs_count_btr=all_images_bg.length+'.$maxseed_tree.'+'.$maxseed_rock.';
+        var imgs_count = all_images.length;
 
         //console.log(all_images_bg);
-        //alert(imgs_loaded_bg+"/"+imgs_count_bg);
+        //alert(imgs_loaded_bg+"/"+imgs_count_btr);
 
-        $(all_images_bg).load(function() {
+        drawbg=function(){
+            ww=all_images_bg[maparray[0][2]*'.$maxseed.'].width;
+            hh=all_images_bg[maparray[0][2]*'.$maxseed.'].height;
+        ';
+
+        foreach(array('tree','rock') as $treerock)
+        $canvasjs .= '
+            ww_'.$treerock.'=82*1.11/'.$GLOBALS['mapzoom'].';//119;//all_images_'.$treerock.'[0].width;
+            hh_'.$treerock.'=156*1.11/'.$GLOBALS['mapzoom'].';//254;//all_images_'.$treerock.'[0].height;
+        ';
 
 
-            //console.log(imgs_loaded_bg+"/"+imgs_count_bg);
+        $canvasjs .= '
+            i=0;
+            while(maparray.length>i){
+
+
+                var x=maparray[i][0];
+                var y=maparray[i][1];
+
+                var xx=x-('.$xu.');
+                var yy=y-('.$yu.');
+
+                var rx=Math.round((('.$px.'*xx)-('.$px.'*yy)+'.$rxp.'-(ww/2))/'.$GLOBALS['mapzoom'].');
+                var ry=Math.round((('.$py.'*xx)+('.$py.'*yy)+'.$ryp.'-(hh/1.41))/'.$GLOBALS['mapzoom'].');
+
+
+                //console.log(rx+","+ry+","+ww+","+hh);
+
+                var seed=((Math.pow(x,2)+Math.pow(y,3))%'.$maxseed.');
+
+                //console.log(seed);
+
+
+                ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.$maxseed.'+seed], rx, ry, ww,hh);';
+
+    //--------------------------------------------------------
+
+    foreach(array('tree','rock') as $treerock) {
+        $var = 'maxseed_' . $treerock;
+        $canvasjs .= '
+                if(maparray[i][2]==' . ($treerock == 'tree' ? 10 : 5) . '){
+                    //console.log(rx+","+ry+","+ww+","+hh);
+                    //ctx.drawImage(all_images_' . $treerock . '[0], rx, ry-100, ww_' . $treerock . ',hh_' . $treerock . ');
+                                            all_images[imgs_count] = new Image();
+
+                    var seed=((Math.pow(x,2)+Math.pow(y,3))%' . $$var. ');
+
+                    //console.log(seed);
+                    all_images[imgs_count].src=all_images_' . $treerock . '[seed].src;
+
+
+                    k=' . ($treerock == 'tree' ? 0.1 : 0.5) . ';
+                    q=((Math.sin(x/2)*Math.cos(y)*k)+(1*(1-k)))*' . ($treerock == 'tree' ? 1 : 2) . ';
+                    ww_'.$treerock.'_=ww_'.$treerock.'*q;
+                    hh_'.$treerock.'_=hh_'.$treerock.'*q;
+
+
+                    var rx_' . $treerock . '=((' . $px . '*xx)-(' . $px . '*yy)+' . $rxp . '-(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
+                    var ry_' . $treerock . '=((' . $py . '*xx)+(' . $py . '*yy)+' . $ryp . '-(hh/1.6)-(hh_' . $treerock . '_)+(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
+
+
+                    rx_' . $treerock . '+=Math.sin(x)*(ww/3);
+                    ry_' . $treerock . '+=Math.cos(y)*(hh/3);
+
+                    //rx_' . $treerock . '+=Math.random()*(ww/2);
+                    //ry_' . $treerock . '+=Math.random()*(hh/2);
+
+
+
+                    all_images[imgs_count].setAttribute(\'x\',Math.round(rx_' . $treerock . '));
+                    all_images[imgs_count].setAttribute(\'y\',Math.round(ry_' . $treerock . '));
+
+
+                    //console.log(all_images[0].width+\',\'+all_images[0].height);
+                    all_images[imgs_count].width=ww_' . $treerock . '_;
+                    all_images[imgs_count].height=hh_' . $treerock . '_;
+
+
+                    all_images[imgs_count].setAttribute(\'ll\',\'' . $treerock . '\');
+                    all_images[imgs_count].setAttribute(\'starttime\',timestamp());
+                    all_images[imgs_count].setAttribute(\'readytime\',timestamp());
+                    all_images[imgs_count].setAttribute(\'stoptime\',0);
+
+
+                    all_images[imgs_count].ll=\'' . $treerock . '\';
+                    all_images[imgs_count].starttime=timestamp();
+                    all_images[imgs_count].readytime=timestamp();
+                    all_images[imgs_count].stoptime=0;
+
+                    imgs_count++;
+
+
+                }';
+    }
+
+
+
+    //--------------------------------------------------------
+    $canvasjs.='
+                i++;
+
+            }
+
+            all_images.sort(function(a, b){return parseInt(a.getAttribute(\'y\'))-parseInt(b.getAttribute(\'y\'));});
+            drawmap();
+
+        };';
+
+    //------------------------------------------------------------------------------------------------------------------
+
+
+    foreach(array('all_images_bg','all_images_tree','all_images_rock') as $load)
+    $canvasjs.='
+        $('.$load.').load(function() {
+
+
+            //console.log(imgs_loaded_bg+"/"+imgs_count_btr);
 
 
             imgs_loaded_bg++;
 
-            if(imgs_loaded_bg === imgs_count_bg) {
-
-                //console.log("loaded");
-                ww=all_images_bg[maparray[0][2]*'.$maxseed.'].width;
-                hh=all_images_bg[maparray[0][2]*'.$maxseed.'].height;
-
-
-                i=0;
-                while(maparray.length>i){
-
-
-                    var x=maparray[i][0];
-                    var y=maparray[i][1];
-
-                    var xx=x-('.$xu.');
-                    var yy=y-('.$yu.');
-
-
-                    var rx=Math.round((('.$px.'*xx)-('.$px.'*yy)+'.$rxp.'-(ww/2))/'.$GLOBALS['mapzoom'].');
-                    var ry=Math.round((('.$py.'*xx)+('.$py.'*yy)+'.$ryp.'-(hh/1.41))/'.$GLOBALS['mapzoom'].');
-
-
-                    //console.log(rx+","+ry+","+ww+","+hh);
-
-                    var seed=((Math.pow(x,2)+Math.pow(y,3))%'.$maxseed.');
-
-                    //console.log(seed);
-
-
-                    ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.$maxseed.'+seed], rx, ry, ww,hh);
-
-                    i++;
-
-                }
-
-
-
+            if(imgs_loaded_bg === imgs_count_btr) {
+                drawbg();
             }
 
         });
@@ -908,11 +1023,11 @@ if(!$_GLOBALS['noxmap']){
     js($canvasjs);
 
 
-    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:100;">
+    e('<div style="position:absolute;width:0px;height:0px;" class="noselect"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:100;">
     <canvas id="map_canvas" style="cursor:move;" class="clickmap" width="'./*round(424/$zoom)*(($xm*2)+2)*/round($GLOBALS['ss']['screenwidth']*gr).'" height="'./*round(211/$zoom)*($ym+1)*/round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
     </div></div>');
 
-    e('<div style="position:absolute;width:0px;height:0px;"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:90;">
+    e('<div style="position:absolute;width:0px;height:0px;" class="noselect"><div style="position:relative;top:'.round(htmlbgc/$zoom).'px;z-index:90;">
     <canvas id="map_canvas_bg" width="'.round($GLOBALS['ss']['screenwidth']*gr).'" height="'.round($GLOBALS['ss']['screenheight']*gr).'"></canvas>
     </div></div>');
 

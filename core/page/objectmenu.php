@@ -86,9 +86,10 @@ if($sql and $id?ifobject($id):true){
         //list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $profileown, $set, $hard, $own, $ownname, $owntype, $owncount, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
 
 
-        list($id, $name, $type, $origin, $fs, $fp, $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
+        list($id, $name, $type, $origin, $fs,$fp , $fr, $fx, $fc, $func, $hold, $res, $profile, $set, $hard, $own, $in, $ww, $x, $y, $t,$starttime,$readytime,$creating_id,$creating_function,$creating_starttime,$creating_readytime)=$array[0];
 
-
+        //e("($fs,$fp)");
+        //e("($starttime,$readytime)");
 
 
         if($type=='building' or $type=='tree' or $type=='rock')
@@ -166,12 +167,49 @@ if($sql and $id?ifobject($id):true){
 
             $profileown=str2list($profileown);
 
+            //----------------------------------------------barva objektu
+
+            if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
+
+            t("objectmenu - C");
+
+
+            if($profileown['color']){
+                $color=$profileown['color'];//$own_=('{xtype_own}');
+                $color2=$color;
+            }elseif($own==$GLOBALS['ss']['useid']){
+                $color='699CFE';//$own_=('{xtype_own}');
+                $color2=$color;
+            }elseif($own){
+                $color='ee1111';//$own_='město '.($ownname);
+                $color2=$color;
+            }elseif($type=='tree'){
+                $color='229933';//$own_=('{xtype_nature}');
+                $color2=$color;
+            }elseif($type=='rock'){
+                $color='555555';//$own_=('{xtype_nature}');
+                $color2=$color;
+            }else{
+                $color='cccccc';//$own_=('{xtype_noown}');
+                $color2=$color;
+            }
+
+            t("objectmenu - D");
+
+
+            js("mapselectedcolor='$color2';");
+
+
+            //----------------------------------------------Zobrazení obrázku objektu
+
+            icon('','id_'.$id.'_icon',$name,44,1,0,array(3,$color,2));
+            br();
             //$profilec=$profile;
 
             //e("<div style=\"position: relative;top: -10px;left: 0px;z-index:2;\">".trr($name,13,2)."</div>");
 
-            //----------------------------------------------Zobrazení jména objectu
-
+            //----------------------------------------------Zobrazení jména objektu
+            /*
             //----------------------------------------------Příběhy
             if(!$own or $own==$GLOBALS['ss']['useid'])
             $writeicon=iconr('e=text-storywrite;x='.x2xx($_GET["xc"]).';y='.x2xx($_GET["yc"]),'fx_storywrite',lr('fx_storywrite'),22);
@@ -184,43 +222,14 @@ if($sql and $id?ifobject($id):true){
             e('<span id="objectmenunameb" style="display:none;">'.ahrefr(trr($name,13,2).$writeicon,"e=content;ee=profile;id=".$id,"none",true).'</span>');
             click(js2('$("#objectmenunamea").css("display","none");$("#objectmenunameb").css("display","block");'),0.2);
 
-
-            //----------------------------------------------
-
-            if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
-
-            t("objectmenu - C");
-
-
-            if($profileown['color']){
-                $color=$profileown['color'];//$own_=('{xtype_own}');
-                $color2=$color;
-            }elseif($own==$GLOBALS['ss']['useid']){ 
-                $color='699CFE';//$own_=('{xtype_own}');
-                $color2=$color;
-            }elseif($own){
-                $color='ee1111';//$own_='město '.($ownname);
-                $color2=$color;
-            }elseif($type=='tree'){        
-                $color='229933';//$own_=('{xtype_nature}');
-                $color2=$color;
-            }elseif($type=='rock'){        
-                $color='555555';//$own_=('{xtype_nature}');
-                $color2=$color;
-            }else{
-                $color='cccccc';//$own_=('{xtype_noown}');
-                $color2=$color;
-            }     
-
-            t("objectmenu - D");
-
-
-            js("mapselectedcolor='$color2';");
+            */
 
             //----------------------------zobrazení zdraví + level
-            e("<div style=\"position: relative;top: -4px;left: 2px;Font-size:12px;Color:#ffffff;z-index:2;\">".trr($level,10/*15*/,2)."</div>");
+            e("<div style=\"position: relative;top: -4px;left: 2px;Font-size:12px;Color:#ffffff;z-index:2;\">".trr($level,10,2)."</div>");
             e("<div style=\"position: relative;top: -15px;left: 0px;height:4px;width:100%;Background-color:#000000;z-index:1;\">");
             e("<div style=\"height:4px;width:".(($fp/$fs<=1)?$fp/$fs*100:100)."%;Background-color:#".$color.";z-index:3;\"></div></div>");
+            /**/
+
 
             //----------------------------tlačítko dostavět
             if($timetoready) {
@@ -244,14 +253,66 @@ if($sql and $id?ifobject($id):true){
 
             t("objectmenu - E");
 
-            //===============================================================GOLD
-                /*if(id2name($GLOBALS['config']['register_building'])==$name and $own==$GLOBALS['ss']['useid']){ 
-                        //border(iconr("e=content;ee=plus-index","res_".plus_res,"{title_plus}",$iconsize),0,$iconsize);
-                        border(iconr("e=content;ee=help;page=index;page=tutorial_x",'help',"{help}",$iconsize),$border3,$iconsize); 
-                }*/
-            //===============================================================FUNC
+
+
+
+
+            //==========================================================================================================Zjištění, zda jde objekt rozebrat
+            if($own!=$GLOBALS['ss']['useid']){
+                //if($name)
+                $originres=sql_1data("SELECT `res` FROM `[mpx]pos_obj` WHERE (`ww`='0' OR `ww`='-1') AND `name`='$name' LIMIT 1");
+                //e('ggg');
+                if(substr($originres,0,1)=='{' and substr($originres,-1)=='}'){//e('oiok');
+                    $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".$GLOBALS['ss']['useid']."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
+                    if($nnn){//e('ee1');
+                        $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='$own' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
+                        if(!$nnn){//e('ee2');
+                            $GLOBALS['ss']['candismantle']=$id;
+                            $candismantle=true;
+                        }
+                    }
+                }
+            }else{
+                $candismantle=false;
+            }
+            //==========================================================================================================Zobrazení rozebíracího tlačítka
+            if($own==$GLOBALS['ss']['useid'] or $candismantle){
+
+
+                if($_GET['q']){$GLOBALS['object_ids']=array($GLOBALS['get']['dismantle']);define('onlyremove',true);aac();}
+                if(id2name($GLOBALS['config']['register_building'])!=$name){
+
+
+                    border(
+                        iconr(($timetoready?'':'e=objectmenu;ee=objectmenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id.';'.jsa2('removeobject('.$id.');')),
+                            'f_dismantle',lr('f_dismantle'),$iconsize,NULL,$timetoready)
+                        ,0,$iconsize,NULL,NULL,$timetoready?$timetoready:lr('f_dismantle'));
+
+
+                    //border(iconr('e=map_context;ee=objectmenu;prompt={f_leave_prompt};q=leave '.$id,'f_leave','{f_leave}',$iconsize),0,$iconsize);
+                    //e($space);
+                }
+            }
+            //==========================================================================================================Zobrazení odkazu nepřátelského profilu
+
+
+            if($own and $own!=$GLOBALS['ss']['useid']){
+                //$own_=($ownname);
+                //Zatím nezobrazovat profil města//border(iconr("e=content;ee=profile;id=".$own,"profile_town2","{profile_town2}",$iconsize),0,$iconsize);
+                //Zatím nezobrazovat profil města//e($space);
+                $ownown=sql_1data('SELECT `own` FROM `[mpx]pos_obj` WHERE `id`=\''.$own.'\'');
+                if($ownown){border(iconr("e=content;ee=profile;id=".$ownown,"profile_user2",lr('profile_user2'),$iconsize),0,$iconsize,NULL,NULL,lr('profile_user2'));e($space);}
+            }/*elseif($type=='tree' or $type=='rock'){
+                        //$own_=('příroda');
+                    }else{
+                        //$own_=('opuštěná budova');
+                    }*/
+
+
+
+            //==========================================================================================================FUNC
             if($own==$GLOBALS['ss']['useid']){
-                 $functionlist=array('attack','create','teleport','portal','repair','upgrade','design','replace','change','terrain');   
+                 $functionlist=array('attack','teleport','portal','repair','upgrade','design','replace','change','terrain','create');
             }else{
                  $functionlist=array('portal');   
             }    
@@ -265,7 +326,7 @@ if($sql and $id?ifobject($id):true){
 
             $q=1;$yes=0;
             //e($func);
-            $funcs=func2list($func,array('attack','create','teleport','portal','repair','upgrade','design','replace','change','terrain'));
+            $funcs=func2list($func,array('attack','teleport','portal','repair','upgrade','design','replace','change',/*'terrain',*/'create'));
 
             /*e('<pre>');
             print_r($funcs);
@@ -327,65 +388,6 @@ if($sql and $id?ifobject($id):true){
                                             }
 
                                 break;
-                                case 'create':
-
-
-
-                                        if($func['profile']['group']!='master'/*is_array($func['profile']['limit']) or !$func['profile']['limit']/* or true*/){
-                                            $ahref='e=content;ee=create-unique;type=building;master='.$id.';func='.$fname;
-                                            //$stream="$('#map_context').css('display','none');";
-                                        }else{
-                                            $stream="build($id,1000003,'$fname');";//$('#map_context').css('display','none');";
-                                        }
-                                        //$stream=("attackfunc='$name';".borderjs($name,'attack',iconbrd));
-                                        //if($settings["create"]==$name)$yes=1;
-
-                                        hr();
-                                        //print_r($func);
-
-                                        $group=$func['profile']['group'];
-                                        if($group){
-
-                                            if($groupx!='extended'){
-
-                                                $group='`group`='.sqlx($group).' AND ww=0';
-                                                $groupby='';
-                                            }else{
-                                                $group=' own='.$object->own." AND name!='".mainname()."'";
-                                                $groupby='GROUP BY name';
-                                            }
-
-
-
-
-                                            $order="fs";
-                                            $max=sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE ".$GLOBALS['where'].' AND '.objt());
-
-
-                                            $objects=sql_array("SELECT `id`,`name` FROM `[mpx]pos_obj` WHERE $group AND ".objt()." $groupby ORDER BY $order");
-                                            //`id`,`name`,`type`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,`own`,(SELECT `own`  FROM `[mpx]pos_obj` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `[mpx]pos_obj` as `X` WHERE `X`.`name`=`[mpx]pos_obj`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `rown`,`in`,`x`,`y`,`ww`
-
-                                            foreach($objects as $object){
-
-                                                //imge('id_'.$object['id'].'_icon');
-                                                //e('<div class="dragbuild" objectid="'.$object['id'].'">'.iconr(js2("build($id,{$object['id']},'$fname');"),'id_'.$object['id'].'_icon',contentlang($object['name']),$iconsize,1,0,array(2,'000000',6)).'</div>');
-
-                                            }
-
-                                        }/*else{
-                                            $group='`group`!='.sqlx($group);
-                                        }*/
-
-
-                                        hr();
-
-
-
-
-
-
-
-                                    break;
                                 case 'replace':
                                        /*if(intval(sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE own='".$GLOBALS['ss']['useid']."' AND `ww`=".$GLOBALS['ss']["ww"]))<=1){
                                             $stream="build($id,".$GLOBALS['config']['register_building'].",'$fname')";
@@ -411,14 +413,14 @@ if($sql and $id?ifobject($id):true){
                                 case 'upgrade':
                                    if($fs==$fp and $origin/* and !((substr($name,0,1)=='{' and substr($name,-1)=='}') and !(strpos(substr($name,1),'{')))*/  ){
                                         if(id2name($GLOBALS['config']['register_building'])!=$name){
-                                            $ahref='e=content;ee=create-upgrade;submenu=1;id='.$id; 
+                                            $ahref='e=content;ee=create-upgrade;submenu=1;id='.$id;
                                             //$stream="$('#map_context').css('display','none');";
                                    }}
                                 break;
                                 case 'design':
                                    if($fs==$fp and $origin and !((substr($name,0,1)=='{' and substr($name,-1)=='}') and !(strpos(substr($name,1),'{')))  ){
                                         if(id2name($GLOBALS['config']['register_building'])!=$name){
-                                            $ahref='e=content;ee=create-design;submenu=1;id='.$id; 
+                                            $ahref='e=content;ee=create-design;submenu=1;id='.$id;
                                             //$stream="$('#map_context').css('display','none');";
                                    }}
                                 break;
@@ -429,8 +431,122 @@ if($sql and $id?ifobject($id):true){
                                         if(id2name($GLOBALS['config']['register_building'])!=$name or $gold){
                                             $ahref='e=content;ee=hold-change;id='.$id;
                                             //$stream="$('#map_context').css('display','none');";
-                                        } 
+                                        }
                                 break;
+                                case 'create':
+
+
+
+                                    /*if($func['profile']['group']!='master'/*is_array($func['profile']['limit']) or !$func['profile']['limit']){
+                                        $ahref='e=content;ee=create-unique;type=building;master='.$id.';func='.$fname;
+                                        //$stream="$('#map_context').css('display','none');";
+                                    }else{
+                                        $stream="build($id,1000003,'$fname');";//$('#map_context').css('display','none');";
+                                    }
+                                    //$stream=("attackfunc='$name';".borderjs($name,'attack',iconbrd));
+                                    //if($settings["create"]==$name)$yes=1;
+
+                                    hr();*/
+                                    //print_r($func);
+
+                                    $group=$func['profile']['group'];
+                                if($group) {
+
+                                    if ($groupx != 'extended') {
+
+                                        $group = '`group`=' . sqlx($group) . ' AND ww=0';
+                                        $groupby = '';
+                                    } else {
+                                        $group = ' own=' . $object->own . " AND name!='" . mainname() . "'";
+                                        $groupby = 'GROUP BY name';
+                                    }
+
+
+                                    $order = "fs";
+                                    //$max=sql_1data("SELECT COUNT(1) FROM `[mpx]pos_obj` WHERE ".$GLOBALS['where'].' AND '.objt());
+
+
+                                    $objects = sql_array("SELECT `id`,`name` FROM `[mpx]pos_obj` WHERE $group AND " . objt() . " $groupby ORDER BY $order");
+                                    //`id`,`name`,`type`,`fs`,`fp`,`fr`,`fx`,`fc`,`res`,`profile`,`own`,(SELECT `own`  FROM `[mpx]pos_obj` as `Y` WHERE `Y`.`id`=(SELECT `own` FROM `[mpx]pos_obj` as `X` WHERE `X`.`name`=`[mpx]pos_obj`.`name` ORDER BY ww,t LIMIT 1) LIMIT 1) AS `rown`,`in`,`x`,`y`,`ww`
+
+
+                                    ?>
+
+                                    <div class="noselect" style="width: 50px;height: 20px;"
+                                         onclick="
+                                             $( '#objectmenu_scroll<?= $fname ?>' ).stop(true,true);
+                                             $( '#objectmenu_scroll<?= $fname ?>' ).animate({
+                                             top: '+=200'
+                                             }, 300, function() {
+                                             if(parseInt($( '#objectmenu_scroll<?= $fname ?>' ).css('top'))>0)
+                                             $( '#objectmenu_scroll<?= $fname ?>' ).animate({
+                                             top: '0'
+                                             }, 100);
+                                             });
+                                             ">
+                                        <svg width="50" height="20" style="display: inline-block;">
+                                            <polygon points="25,0,50,20,0,20"
+                                                     style="fill:#151515;stroke:rgba(100,100,100,0.2);stroke-width:2;"/>
+                                        </svg>
+
+                                    </div>
+
+
+                                    <div class="noselect"
+                                        style="width: 50px;height: calc(100vh - 300px);min-height:70px;overflow: hidden;color: #ffffff; backgrund-color: #000011;border 2px solod #444444;">
+                                        <div id="objectmenu_scroll<?= $fname ?>"
+                                             style=" width: 50px;overflow-x: hidden;overflow-y: hidden;text-align: center;"
+                                             class="scroll">
+                                            <?php
+
+                                            foreach ($objects as $object) {
+
+                                                //imge('id_'.$object['id'].'_icon');
+                                                e('<div class="dragbuild" objectid="' . $object['id'] . '" masterid="' . $id . '" masterfunc="' . $fname . '">' . iconr(js2("build($id,{$object['id']},'$fname');"), 'id_' . $object['id'] . '_icon', contentlang($object['name']), $iconsize, 1, 0, array(2, '000000', 6)) . '</div>');
+
+                                            }
+
+
+
+
+                                            ?>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="noselect" style="width: 50px;height: 30px;"
+                                         onclick="
+                                             $( '#objectmenu_scroll<?= $fname ?>' ).stop(true,true);
+                                             $( '#objectmenu_scroll<?= $fname ?>' ).animate({
+                                             top: '+=-200'
+                                             }, 300, function() {
+                                             // Animation complete.
+                                             });
+                                             ">
+                                        <svg width="50" height="20" style="display: inline-block;">
+                                            <polygon points="25,20,50,0,0,0"
+                                                     style="fill:#151515;stroke:rgba(100,100,100,0.2);stroke-width:2;"/>
+                                        </svg>
+                                    </div>
+
+
+
+                                    <script>
+                                        $('#objectmenu_scroll<?=$fname?>').draggable({
+                                            'axis': 'y',
+                                            'distance': 10
+
+                                        });
+
+                                    </script>
+
+                                <?php
+                                }
+
+
+
+
+                                    break;
                         }
                         t("objectmenu $class - middle");
 
@@ -443,7 +559,7 @@ if($sql and $id?ifobject($id):true){
                                 //imge("icons/$icon.png",$xname,22,22);
                                 //echo(nln."</a>");
                                 if($yes){$brd=$iconbrd;}else{$brd=0;}
-                                e(nln);
+                                br();
 
                                 t("objectmenu $class - A");
 
@@ -451,16 +567,16 @@ if($sql and $id?ifobject($id):true){
                                     $lastused=$set['lastused_'.$fname];
                                     $coolround=$params['coolround'][0]*$params['coolround'][1];
                                     if($coolround){
-                                            $time=-(coolround($coolround)-$lastused); 
+                                            $time=-(coolround($coolround)-$lastused);
                                     }else{
                                             $cooldown=$params['cooldown'][0]*$params['cooldown'][1];
                                             if(!$cooldown)$cooldown=$GLOBALS['config']['f']['default']['cooldown'];
                                             $time=($cooldown-time()+$lastused);
-                                    }           
+                                    }
                                     if($time>0){
                                         $countdown=$time;
                                     }
-                                }  
+                                }
 
                                 t("objectmenu $class - B");
 
@@ -482,7 +598,7 @@ if($sql and $id?ifobject($id):true){
                                 (($ahref?$ahref.';':'').($stream?"js=".x2xx($stream).';':''))),
                                 $icon,$xname,$iconsize,NULL,$countdown),$brd,$iconsize,$set_value,$set_key,$buttontext);
                                 $countdown=0;
-                                e($space);
+                                br();
 
 
                          }
@@ -493,63 +609,13 @@ if($sql and $id?ifobject($id):true){
             }
         }
 
-    //---------------------------------------------------------------Zjištění, zda jde objekt rozebrat
-                if($own!=$GLOBALS['ss']['useid']){
-                //if($name)
-                $originres=sql_1data("SELECT `res` FROM `[mpx]pos_obj` WHERE (`ww`='0' OR `ww`='-1') AND `name`='$name' LIMIT 1");
-                //e('ggg');
-                if(substr($originres,0,1)=='{' and substr($originres,-1)=='}'){//e('oiok');
-                        $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='".$GLOBALS['ss']['useid']."' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
-                        if($nnn){//e('ee1');
-                                $nnn=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE `ww`='".$GLOBALS['ss']['ww']."' and `own`='$own' AND `expand`>=SQRT(POW(`x`-$x,2)+POW(`y`-$y,2)) AND `name`!='$name' LIMIT 1");
-                                if(!$nnn){//e('ee2');
-                                        $GLOBALS['ss']['candismantle']=$id;
-                                        $candismantle=true;
-                                }
-                        }
-                }
-                }else{
-                        $candismantle=false;
-                }
-    //---------------------------------------------------------------Zobrazení rozebíracího tlačítka
-            if($own==$GLOBALS['ss']['useid'] or $candismantle){ 
-
-
-                if($_GET['q']){$GLOBALS['object_ids']=array($GLOBALS['get']['dismantle']);define('onlyremove',true);aac();}
-               if(id2name($GLOBALS['config']['register_building'])!=$name){
-
-
-                   border(
-                       iconr(($timetoready?'':'e=objectmenu;ee=objectmenu;prompt='.lr('f_dismantle_prompt').';dismantle='.$id.';q=dismantle '.$id.';'.jsa2('removeobject('.$id.');')),
-                       'f_dismantle',lr('f_dismantle'),$iconsize,NULL,$timetoready)
-                       ,0,$iconsize,NULL,NULL,$timetoready?$timetoready:lr('f_dismantle'));
-
-
-                    //border(iconr('e=map_context;ee=objectmenu;prompt={f_leave_prompt};q=leave '.$id,'f_leave','{f_leave}',$iconsize),0,$iconsize);
-                    //e($space);
-               }
-            }
-    //---------------------------------------------------------------Zobrazení odkazu nepřátelského profilu
-
-
-                if($own and $own!=$GLOBALS['ss']['useid']){
-                //$own_=($ownname);
-                   //Zatím nezobrazovat profil města//border(iconr("e=content;ee=profile;id=".$own,"profile_town2","{profile_town2}",$iconsize),0,$iconsize);
-                   //Zatím nezobrazovat profil města//e($space);
-                $ownown=sql_1data('SELECT `own` FROM `[mpx]pos_obj` WHERE `id`=\''.$own.'\'');
-                if($ownown){border(iconr("e=content;ee=profile;id=".$ownown,"profile_user2",lr('profile_user2'),$iconsize),0,$iconsize,NULL,NULL,lr('profile_user2'));e($space);}
-            }/*elseif($type=='tree' or $type=='rock'){        
-                //$own_=('příroda');
-            }else{
-                //$own_=('opuštěná budova');
-            }*/
     //---------------------------------------------------------------
 
 
         if($own!=$GLOBALS['ss']['useid']){
         if( $type!='tree' and $type!='rock') {
 
-            if(/*id2name($GLOBALS['config']['register_building'])!=$name*/1){ 
+            if(/*id2name($GLOBALS['config']['register_building'])!=$name*/1){
             if($GLOBALS['settings']['attack_mafu']){
                 list($attack_master,$attack_function,$attack_function_name,$attack_function_icon)=explode('-',$GLOBALS['settings']['attack_mafu']);
                 if(ifobject($attack_master)){
@@ -557,48 +623,10 @@ if($sql and $id?ifobject($id):true){
                     $set=new set(sql_1data("SELECT `set` FROM `[mpx]pos_obj` WHERE `id`='$attack_master'"));
                     $set=$set->vals2list();
                     $func=new func(sql_1data("SELECT `func` FROM `[mpx]pos_obj` WHERE `id`='$attack_master'"));
-                    $func=$func->vals2list();                    
-
-
-                   //e($name.'aaa');
-
-
-                                //======================RYCHLé útoky bez hovna - zatím neaktivní
-                                /*if(defined("a_".$class.'_cooldown')){//$fname
-                                    $lastused=$set['lastused_'.$fname];
-                                    $coolround=$func[$attack_function]['params']['coolround'][0]*$func[$attack_function]['params']['coolround'][1];
-                                    if($coolround){
-                                            $time=-(coolround($coolround)-$lastused); 
-                                    }else{
-                                            $cooldown=$func[$attack_function]['params']['cooldown'][0]*$func[$attack_function]['params']['cooldown'][1];
-                                            if(!$cooldown)$cooldown=$GLOBALS['config']['f']['default']['cooldown'];
-                                            $time=($cooldown-time()+$lastused);
-                                    }           
-                                    if($time>0){
-                                        $countdown=$time;
-                                    }
-                                    //e($countdown);
-                                    border(iconr($countdown?'':'e=content;ee=attack-attack;set=attack_id,'.$id.';noshit=1',$attack_function_icon,contentlang("$attack_function_name (".id2name($attack_master).")"),$iconsize,NULL,$countdown),0,$iconsize,NULL,NULL,$countdown>0?$countdown:contentlang($attack_function_name));
-                                        e($space);
-                                        $countdown=0;
-                                }  */
-                                //======================
-
-
-                       /*if(defined('a_attack_cooldown')){//$fname
-                            $cooldown=$func[$attack_function]['params']['cooldown'][0]*$func[$attack_function]['params']['cooldown'][1];
-                            if(!$cooldown)$cooldown=$GLOBALS['config']['f']['default']['cooldown'];
-                            $lastused=$set['lastused_'.$attack_function]; 
-                            $time=($cooldown-time()+$lastused);
-                            //r("$cooldown-time()+$lastused");  
-                            //r($time);       
-                            if($time>0){
-                                $countdown=$time;
-                            }
+                    $func=$func->vals2list();
 
 
 
-                    }*/
 
 
 
@@ -627,6 +655,7 @@ if($sql and $id?ifobject($id):true){
     ?>
     <script>
     $('.dragbuild').draggable({
+        'distance':10,
         //'opacity': 0.7,
         //'helper': 'clone',
         'start':function(){
@@ -638,7 +667,7 @@ if($sql and $id?ifobject($id):true){
 
 
             //turnmap('expand',true);
-            build(13742398,$(this).attr('objectid'),'create');
+            build($(this).attr('masterid'),$(this).attr('objectid'),$(this).attr('masterfunc'));
 
             xpp=$(this).css('left');
             ypp=$(this).css('top');
@@ -683,9 +712,12 @@ if($sql and $id?ifobject($id):true){
 
 
                 $('#create-build_message').html(vystup);
-                alert('ccc');
+                //alert('ccc');
 
-                $('#buildbutton').trigger('click');
+                if($('#build_button').css('display')=='block')
+                    $('#buildbutton').trigger('click');
+
+
                 //(window.build_master,window.build_id,'create',build_x,build_y,_rot);
 
             });
