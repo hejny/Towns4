@@ -579,9 +579,7 @@ if(!$_GLOBALS['noxmap']) {
 
 
 
-        var all_images_bg=[];
-        var all_images_tree=[];
-        var all_images_rock=[];
+
         var canvas_bg = document.getElementById("map_canvas_bg");
 
         $("#map_canvas_bg").attr("width",parseInt($(window).width()*1.6));
@@ -646,55 +644,6 @@ if(!$_GLOBALS['noxmap']) {
         }
 
     }*/
-
-    //--------------------------------------------------------Načtení stromů / skal todo javascript
-    foreach(array('tree','rock') as $treerock){
-        $var = 'maxseed_' . $treerock;
-        $$var = 10;//@todo Přesunout do konfigurace
-
-        $objects = sql_assoc("SELECT DISTINCT `res` FROM `[mpx]objects` WHERE `type`='$treerock' LIMIT {$$var}");
-        $i = 0;
-        foreach ($objects as $object) {
-
-            //ebr($object['res']);
-            $url = modelx($object['res']);
-
-            $canvasjs .= "all_images_{$treerock}[{$i}] = new Image();";
-            $canvasjs .= "all_images_{$treerock}[{$i}].src='{$url}';";
-            $i++;
-        }
-        $$var = count($objects);
-    }
-
-    //--------------------------------------------------------Načtení podkladů
-
-    $maxseed = 3;//@todo Přesunout do konfigurace
-
-    //$ids=array();
-    $terrains = sql_list("SELECT DISTINCT `res`,`id` FROM `[mpx]pos_obj` WHERE `type`='terrain' ");
-    foreach ($terrains as $terrain) {
-
-        list($res, $id) = $terrain;
-        $id = $id - 1000;
-
-        //$canvasjs.="all_images_bg[$id]=[];";
-        for ($seed = 0; $seed < $maxseed; $seed++) {
-
-
-            $url = map1($res, $seed, false, true);
-
-            $url = rebase(url . $url);
-
-            //e("<img src=\"$url\" border=\"2\" width=\"22\">".(($id*$maxseed)+$seed));
-            //$ids[]=$id;
-
-            $canvasjs .= "all_images_bg[" . (($id * $maxseed) + $seed) . "] = new Image();";
-            $canvasjs .= "all_images_bg[" . (($id * $maxseed) + $seed) . "].src='{$url}';";
-
-
-        }
-
-    }
 
     //--------------------------------------------------------
 
@@ -804,17 +753,15 @@ if(!$_GLOBALS['noxmap']) {
     //------------------------------------------------------------------------------------------------------------------drawbg
     $canvasjs.='
 
-        var imgs_loaded_bg=0;
 
-        var imgs_count_btr=all_images_bg.length+'.$maxseed_tree.'+'.$maxseed_rock.';
         var imgs_count = all_images.length;
 
         //console.log(all_images_bg);
         //alert(imgs_loaded_bg+"/"+imgs_count_btr);
 
         drawbg=function(){
-            ww=all_images_bg[maparray[0][2]*'.$maxseed.'].width;
-            hh=all_images_bg[maparray[0][2]*'.$maxseed.'].height;
+            ww=all_images_bg[maparray[0][2]*'.maxseed.'].width;
+            hh=all_images_bg[maparray[0][2]*'.maxseed.'].height;
         ';
 
         foreach(array('tree','rock') as $treerock)
@@ -841,12 +788,12 @@ if(!$_GLOBALS['noxmap']) {
 
                 //console.log(rx+","+ry+","+ww+","+hh);
 
-                var seed=((Math.pow(x,2)+Math.pow(y,3))%'.$maxseed.');
+                var seed=((Math.pow(x,2)+Math.pow(y,3))%'.maxseed.');
 
                 //console.log(seed);
 
 
-                ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.$maxseed.'+seed], rx, ry, ww,hh);';
+                ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.maxseed.'+seed], rx, ry, ww,hh);';
 
     //--------------------------------------------------------
 
@@ -858,7 +805,7 @@ if(!$_GLOBALS['noxmap']) {
                     //ctx.drawImage(all_images_' . $treerock . '[0], rx, ry-100, ww_' . $treerock . ',hh_' . $treerock . ');
                                             all_images[imgs_count] = new Image();
 
-                    var seed=((Math.pow(x,2)+Math.pow(y,3))%' . $$var. ');
+                    var seed=((Math.pow(x,2)+Math.pow(y,3))%' . ($treerock=='tree'?maxseed_tree:maxseed_rock) . ');
 
                     //console.log(seed);
                     all_images[imgs_count].src=all_images_' . $treerock . '[seed].src;
@@ -871,7 +818,7 @@ if(!$_GLOBALS['noxmap']) {
 
 
                     var rx_' . $treerock . '=((' . $px . '*xx)-(' . $px . '*yy)+' . $rxp . '-(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
-                    var ry_' . $treerock . '=((' . $py . '*xx)+(' . $py . '*yy)+' . $ryp . '-(hh/1.6)-(hh_' . $treerock . '_)+(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
+                    var ry_' . $treerock . '=((' . $py . '*xx)+(' . $py . '*yy)+' . $ryp . '-(hh/4)-(hh_' . $treerock . '_))/' . $GLOBALS['mapzoom'] . ';
 
 
                     rx_' . $treerock . '+=Math.sin(x)*(ww/3);
@@ -916,30 +863,21 @@ if(!$_GLOBALS['noxmap']) {
 
             }
 
+
+
+
             all_images.sort(function(a, b){return parseInt(a.getAttribute(\'y\'))-parseInt(b.getAttribute(\'y\'));});
             drawmap();
 
-        };';
+        };
+
+
+        drawbg();
+
+        ';
 
     //------------------------------------------------------------------------------------------------------------------
 
-
-    foreach(array('all_images_bg','all_images_tree','all_images_rock') as $load)
-    $canvasjs.='
-        $('.$load.').load(function() {
-
-
-            //console.log(imgs_loaded_bg+"/"+imgs_count_btr);
-
-
-            imgs_loaded_bg++;
-
-            if(imgs_loaded_bg === imgs_count_btr) {
-                drawbg();
-            }
-
-        });
-        ';
 
 
         /*xx=((x-y)*(ww/3))+($("#map_canvas_bg").attr("width")/2);
