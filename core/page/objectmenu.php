@@ -169,7 +169,7 @@ if($sql and $id?ifobject($id):true){
 
             //----------------------------------------------barva objektu
 
-            if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
+            //if($own and $own!=$GLOBALS['ss']['useid'])ahref(trr(id2name($own),11,2),"e=content;ee=profile;id=".$own,"none",true);
 
             t("objectmenu - C");
 

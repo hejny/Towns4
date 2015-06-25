@@ -533,9 +533,9 @@ while($object = $objects -> fetch(PDO::FETCH_ASSOC)){
                 ,$object['starttime']
                 ,$object['readytime']
                 ,$object['stoptime']
-                ,$object['expand']
-                ,$object['block']
-                ,$object['attack']
+                ,($object['own']==$GLOBALS['ss']['useid']?$object['expand']:0)
+                ,($object['own']!=$GLOBALS['ss']['useid']?0:$object['block'])
+                ,($object['own']==$GLOBALS['ss']['useid']?$object['attack']:0)
                 ,$object['speed']
             );
 

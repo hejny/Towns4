@@ -169,9 +169,45 @@
                             );
 
 
-                            //(all_images[i].width*(all_images[i].expand-1)/2)
 
                         }
+                    //------------------------------------------------------------------Útok
+
+                    if(all_images[i].attack>0 && jQuery.inArray('attack',drawmaplayers)!=-1) {
+
+                        ctx.strokeStyle = 'rgba(255,0,0,0.8)';
+                        ctx.fillStyle = 'rgba(100,40,40,0.4)';
+                        ctx.lineWidth = 3;
+
+                        drawEllipse(
+                            ctx,
+                            parseInt(all_images[i].getAttribute('xx')) - (all_images[i].width * (all_images[i].attack*1.41 - 1) / 2),
+                            parseInt(all_images[i].getAttribute('yy')) + (all_images[i].height) - (all_images[i].width * (all_images[i].attack*1.41) / 2 )  + (all_images[i].width*(all_images[i].attack*1.41-1)/4),
+                            parseInt(all_images[i].width * (all_images[i].attack*1.41)),
+                            parseInt(all_images[i].width * (all_images[i].attack*1.41) / 2)
+                        );
+
+
+                    }
+                    //------------------------------------------------------------------Blokace
+
+                    if(all_images[i].block>0 && jQuery.inArray('block',drawmaplayers)!=-1) {
+
+                        ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+                        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                        ctx.lineWidth = 3;
+
+                        drawEllipse(
+                            ctx,
+                            parseInt(all_images[i].getAttribute('xx')) - (all_images[i].width * (all_images[i].block*1.41 - 1) / 2),
+                            parseInt(all_images[i].getAttribute('yy')) + (all_images[i].height) - (all_images[i].width * (all_images[i].block*1.41) / 2 )  + (all_images[i].width*(all_images[i].block*1.41-1)/4),
+                            parseInt(all_images[i].width * (all_images[i].block*1.41)),
+                            parseInt(all_images[i].width * (all_images[i].block*1.41) / 2)
+                        );
+
+
+
+                    }
                         //------------------------------------------------------------------Posun klikacího podkladu
 
                         objmin=$('#objmin'+all_images[i].getAttribute('objectid'));
@@ -1262,6 +1298,89 @@ $(document).ready(function(){
         alert(123);
         ion.sound.play('branch_break');
     },200);*/
+
+
+    //=====================================================================================
+
+    var all_images_bg=[];
+    var all_images_tree=[];
+    var all_images_rock=[];
+
+    var imgs_loaded_bg=0;
+
+    var imgs_count_btr=all_images_bg.length+'.maxseed_tree.'+'.maxseed_rock.';
+
+    <?php
+    $canvasjsload='';
+
+        //--------------------------------------------------------Načtení stromů / skal
+    foreach (array('tree', 'rock') as $treerock) {
+
+
+        $objects = sql_assoc("SELECT DISTINCT `res` FROM `[mpx]objects` WHERE `type`='$treerock' LIMIT ".($treerock=='tree'?maxseed_tree:maxseed_rock));
+        $i = 0;
+        foreach ($objects as $object) {
+
+            //ebr($object['res']);
+            $url = modelx($object['res']);
+
+            e("all_images_{$treerock}[{$i}] = new Image();");
+            e("all_images_{$treerock}[{$i}].src='{$url}';");
+            $i++;
+        }
+        //$$var = count($objects);
+    }
+
+    //--------------------------------------------------------Načtení podkladů
+
+
+    //$ids=array();
+    $terrains = sql_list("SELECT DISTINCT `res`,`id` FROM `[mpx]pos_obj` WHERE `type`='terrain' ");
+    foreach ($terrains as $terrain) {
+
+        list($res, $id) = $terrain;
+        $id = $id - 1000;
+
+        //$canvasjs.="all_images_bg[$id]=[];";
+        for ($seed = 0; $seed < maxseed; $seed++) {
+
+
+            $url = map1($res, $seed, false, true);
+
+            $url = rebase(url . $url);
+
+            //e("<img src=\"$url\" border=\"2\" width=\"22\">".(($id*maxseed)+$seed));
+            //$ids[]=$id;
+
+            e("all_images_bg[" . (($id * maxseed) + $seed) . "] = new Image();");
+            e("all_images_bg[" . (($id * maxseed) + $seed) . "].src='{$url}';");
+
+
+        }
+
+    }
+
+     foreach(array('all_images_bg','all_images_tree','all_images_rock') as $load)
+        e('
+            $('.$load.').load(function() {
+
+
+                //console.log(imgs_loaded_bg+"/"+imgs_count_btr);
+
+
+                imgs_loaded_bg++;
+
+                if(imgs_loaded_bg === imgs_count_btr) {
+                    drawbg();
+                }
+
+            });
+
+            ');
+
+
+
+    ?>
 
 
 
