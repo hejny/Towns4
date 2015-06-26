@@ -7,7 +7,17 @@
 
    testování
 */
+/*
+ini_set("max_execution_time","1000");
+ini_set('memory_limit', '1000M');
 
+$array=sql_list("SELECT x,y,id-1000 FROM [mpx]positions WHERE id>999 AND id<2000",3);
+
+
+
+echo json_encode($array);
+
+/*
 require('lib/pdf/fpdf.php');
 
 $pdf=new FPDF();
@@ -33,6 +43,6 @@ $pdf->Cell(40,10,'Hello World!',1);
 
 
 $pdf->Output();
-
+*/
 
 ?>

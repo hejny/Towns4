@@ -195,19 +195,6 @@ CREATE TABLE `[mpx]text` (
 #----------------------------------------------
 
 
-CREATE TABLE `[mpx]memory` (
- `id` varchar(64) COLLATE utf8_czech_ci NOT NULL ,
- `key` varchar(100) COLLATE utf8_czech_ci NOT NULL ,
- `value` text COLLATE utf8_czech_ci NOT NULL , 
- `time` int(11) NOT NULL , 
- UNIQUE KEY `id` (`id`,`key`),
- KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT ='vlastní SESSION světa' ;
-
-
-#----------------------------------------------
-
-
 CREATE TABLE `[mpx]ai` (
   `appid` int(11) NOT NULL COMMENT 'ID aplikace z objects',
   `userid` int(11) NOT NULL COMMENT 'ID hráče z objects',

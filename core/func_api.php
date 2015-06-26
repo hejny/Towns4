@@ -581,7 +581,7 @@ function block1test($type,$x,$y){
 
 		$cc=sql_1data("SELECT res FROM [mpx]pos_obj WHERE `type`='terrain' AND `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 		//e($cc);			
-		if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
+		if($cc=='t0' or $cc=='t1' or $cc=='t11' or $cc=='t5' or $cc=='t10')return($cc);
 
 	}
 
@@ -645,7 +645,7 @@ while($i<=$distx){
 
 			$cc=sql_1data("SELECT res FROM [mpx]objects WHERE `type`='terrain' AND `ww`=".$GLOBALS['ss']["ww"]." AND `x`=$x AND `y`=$y LIMIT 1",1);
 			//e($cc);			
-			if($cc=='t0' or $cc=='t1' or $cc=='t11')return($cc);
+			if($cc=='t0' or $cc=='t1' or $cc=='t11' or $cc=='t5' or $cc=='t10')return($cc);
 
  		}
 

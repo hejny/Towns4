@@ -26,7 +26,7 @@ br();
 
 <?php
     br();
-    tee(nbsp.lr('register_ok').nbsp,13,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"',NULL,'input')
+    tee(nbsp.lr('register_ok').nbsp,13,3,'style="background: rgba(30,30,30,0.9);border: 2px solid #222222;border-radius: 2px;"',NULL,'input');
 
 ?>
 
@@ -40,3 +40,8 @@ $("#reg_form").submit(function() {
     return(false);
 });
 </script>
+
+
+<?php
+    success(lr('register_noneed'));
+?>
