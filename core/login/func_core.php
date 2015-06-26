@@ -19,7 +19,7 @@ function register_position($test=0){
     $px=$x=round($x);
     $py=$y=round($y);
 
-    $limit=10000;
+    $limit=90000;
 
 
     while($limit>0){$limit--;
@@ -36,7 +36,7 @@ function register_position($test=0){
             $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
             if($test)e(" - $buildingcount");
-            if($treerockcount<=2 and $buildingcount==0){
+            if($treerockcount<=0 and $buildingcount==0){
 
 
                 if($test)e(" - <b>OK</b><hr>");
