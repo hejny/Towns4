@@ -84,7 +84,7 @@ if ($GLOBALS['isie']/** or 1/**/) {
     <div id="lshp_log" style="position:relative; left:33px; top:-200px; width:230px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
     <?php
-		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_log\').css(\'display\',\'none\');')),-115,2);
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',15,15),js2('$(\'#hydepark_log\').css(\'display\',\'none\');')),-115,2);
 		eval(subpage('login-log_form'));
 
 	?>
@@ -107,7 +107,7 @@ if ($GLOBALS['isie']/** or 1/**/) {
     <div id="lshp_reg" style="position:relative; left:0px; top:-150px; width:300px;background: rgb(10,10,10);border: 3px solid rgba(30,150,250,0.9);padding: 3px;">
     
     <?php
-		moveby(ahrefr(imgr('icons/cancel.png','{close}',20,20),js2('$(\'#hydepark_reg\').css(\'display\',\'none\');')),-150,2);
+		moveby(ahrefr(imgr('icons/cancel.png','{close}',15,15),js2('$(\'#hydepark_reg\').css(\'display\',\'none\');')),-150,2);
 		eval(subpage('login-reg_form'));
 	?>
     
