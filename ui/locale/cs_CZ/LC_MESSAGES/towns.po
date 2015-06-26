@@ -2805,10 +2805,6 @@ msgid "register_error_username_none"
 msgstr "Zadej prosím Tvé hráčské jméno."
 
 # register
-msgid "register_finish"
-msgstr "Začít hrát"
-
-# register
 msgid "register_change_success"
 msgstr "Změna registračních údajů proběhla úspěšně."
 
