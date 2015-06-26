@@ -25,7 +25,7 @@ function register_position($test=0){
     $px>mapsize or
     $py>mapsize){
         $px=rand(1,mapsize);
-        $px=rand(1,mapsize);
+        $py=rand(1,mapsize);
     }
 
 
