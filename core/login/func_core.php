@@ -19,6 +19,16 @@ function register_position($test=0){
     $px=$x=round($x);
     $py=$y=round($y);
 
+
+    if($px<1 or
+    $py<1 or
+    $px>mapsize or
+    $py>mapsize){
+        $px=rand(1,mapsize);
+        $px=rand(1,mapsize);
+    }
+
+
     $limit=10000;
 
 
