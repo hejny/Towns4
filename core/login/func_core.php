@@ -19,7 +19,7 @@ function register_position($test=0){
     $px=$x=round($x);
     $py=$y=round($y);
 
-    $limit=90000;
+    $limit=10000;
 
 
     while($limit>0){$limit--;
@@ -31,12 +31,12 @@ function register_position($test=0){
         if($test)e(" - $terrain");
         if(in_array($terrain,$terrains)){
 
-            $treerockcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (`id`=1005 OR `id`=1010) AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
+            $treerockcount=sql_1number('SELECT count(id) FROM [mpx]positions WHERE (`id`=1005 OR `id`=1010) AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
-            $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
+            $buildingcount=sql_1number('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
-            if($test)e(" - $buildingcount");
-            if($treerockcount<=0 and $buildingcount==0){
+            if($test)e("($treerockcount,$buildingcount)");
+            if($treerockcount==0 and $buildingcount==0){
 
 
                 if($test)e(" - <b>OK</b><hr>");
@@ -62,7 +62,7 @@ function register_position($test=0){
 
 
         if($way==1){
-            $x+=$q*($border);
+            $x+=$q*($border)*2;
             $y+=rand(-$border*2,$border*2);
         }else{
             $y+=$q*($border);
@@ -85,6 +85,9 @@ function register_position($test=0){
 	return(array(0,0,0));
 
 }
+
+register_position(1);
+die();
 
 
 //======================================================================================REGISTER WORLD 
