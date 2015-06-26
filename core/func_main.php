@@ -860,7 +860,7 @@ function check_email($email) {
 
 function htmljscss(){
 
-    $filejs = tmpfile2(array('js',7,$GLOBALS['inc']['url'],url,$GLOBALS['ss']['useid'],$_GET['token']), 'min.js', 'page');
+    $filejs = tmpfile2(array('js',8,$GLOBALS['inc']['url'],url,$GLOBALS['ss']['useid'],$_GET['token']), 'min.js', 'page');
     $filecss = tmpfile2(array('css',1,$GLOBALS['inc']['url'],url), 'css', 'page');
     //-------------------------------------------------
     if (!file_exists($filejs) or newpage/** or 1/**/) {

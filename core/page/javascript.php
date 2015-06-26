@@ -1011,7 +1011,7 @@ $(document).ready(function(){
                 ion.sound.play('water_droplet');
 
 
-                /*$('#map_context').css('left',hovno.pageX-10);
+                /*$('#map_context').css('left',hovno.pageX-10);x
                 $('#map_context').css('top',hovno.pageY-10);
                 $('#map_context').css('border-color','#22222');
                 $('#map_context').css('display','block');*/
