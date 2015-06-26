@@ -31,7 +31,7 @@ function register_position($test=0){
         if($test)e(" - $terrain");
         if(in_array($terrain,$terrains)){
 
-            $treerockcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (type=\'rock\' OR type=\'tree\') AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
+            $treerockcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE (`id`=1005 OR `id`=1010) AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
             $buildingcount=sql_1data('SELECT count(id) FROM [mpx]pos_obj WHERE type=\'building\' AND  ww='.$GLOBALS['ss']['ww'].' AND x>'.($x-$border).' AND y>'.($y-$border).' AND x<'.($x+$border).' AND y<'.($y+$border).' AND '.objt());
 
@@ -383,6 +383,8 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
     
     //success("$username,$password,$email,$sendmail,$fbdata");
     //var_dump($email);
+
+
     if($GLOBALS['ss']["userid"] and $GLOBALS['ss']["logid"]){
         $wu=' AND id!='.$GLOBALS['ss']["userid"];
         if($username==='' or $username===' ' or $username===NULL)$username=sql_1data("SELECT name FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
@@ -409,33 +411,38 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
 
     }else{
             $passwordx=$password;
-            $password=$password?md5($password):$password;
+            //$password=$password?md5($password):$password;
+            $password=md5($password);
     }
 	   
 	
     if(!$fbdata and (!$email or $email=='@')){
-        $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_none')));
-		return(lr('register_error_email_none'));
-    }elseif(!$fbdata and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `email`='".sql($email)."' AND aac=1 ".$wu)){
+        //$GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_none')));
+		//return(lr('register_error_email_none'));
+        $email='';
+
+    }
+
+    if(!$fbdata and $email and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `email`='".sql($email)."' AND aac=1 ".$wu)){
         $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_you')));
 		return(lr('register_error_email_you'));
-    }elseif(!$username){
+    }/*elseif(!$username){
         $GLOBALS['ss']['query_output']->add('error',(lr('register_error_username_none')));
 		return(lr('register_error_username_none'));
-    }elseif(!$fbdata and /*$username!='new' and*/ $error=name_error($username)){
+    }*/elseif(!$fbdata and /*$username!='new' and*/ $username and $error=name_error($username)){
         $GLOBALS['ss']['query_output']->add('error',($error));
 		return($error);
-    }elseif(!$fbdata and /*$username!='new' and*/ sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `name`='".sql($username)."' AND aac=1 ".$wu)){
+    }elseif(!$fbdata and /*$username!='new' and*/ $username and sql_1data("SELECT count(1) FROM `[mpx]users` WHERE `name`='".sql($username)."' AND aac=1 ".$wu)){
         $GLOBALS['ss']['query_output']->add('error',(lr('register_error_username_blocked')));
 		return(lr('register_error_username_blocked'));
-    }elseif(!$fbdata and !check_email($email)){
+    }elseif(!$fbdata and $email and !check_email($email)){
         $GLOBALS['ss']['query_output']->add('error',(lr('register_error_email_wtf')));
 		return(lr('register_error_email_wtf'));
-    }elseif(!$fbdata and $password==md5('')){
-		print_r($fbdata);br(3);
+    }/*elseif(!$fbdata and $username and $password==md5('')){
+		//print_r($fbdata);br(3);
         $GLOBALS['ss']['query_output']->add('error',(lr('register_error_password_empty')));
 		return(lr('register_error_password_empty'));
-    }else{
+    }*/else{
         
         //-------------------------------------------------------------------------BACKUP OLD USER
         if($GLOBALS['ss']["userid"] and $GLOBALS['ss']["logid"]){
@@ -461,7 +468,7 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
            
         }else{
             $onlychanging=false;
-            $GLOBALS['ss']["userid"]=sql_1data("SELECT MAX(id) FROM `[mpx]users`")-1+2;
+            $GLOBALS['ss']["userid"]=sql_1number("SELECT MAX(id) FROM `[mpx]users`")+1;
         }
         
         //--------------------------
@@ -470,7 +477,9 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
         }*/
         if($sendmail=='checked')$sendmail=1;
         //-------------------------------------------------------------------------NEW 
-        //
+
+
+        if(!$username)$username=$GLOBALS['ss']["userid"];//Pokud Hráč nemá přihlašovací jméno
         
         
         sql_query("INSERT INTO `[mpx]users` ( ".($GLOBALS['ss']["userid"]?'`id`,':'')." `aac`, `name`, `password`, `email`, `sendmail`, `fbid`, `fbdata`, `created`)

@@ -66,51 +66,39 @@ if($_GET['token']){
 //e($ssid);
 define('ssid',$ssid);
 //$GLOBALS['ss']=$_SESSION['ss'];
-$GLOBALS['ss']=array();
-foreach(sql_array('SELECT `key`, `value` FROM [mpx]memory WHERE id=\''.ssid.'\'') as $row){
-    list($key,$value)=$row;
-    $GLOBALS['ss'][$key]=unserialize($value);
+
+
+
+
+if(!file_exists(root.'userdata/session')){
+
+    mkdir2(root.'userdata/session');
+    fpc(root.'userdata/session/.htaccess','deny from all');
+
 }
+
+$sessionfile=root . 'userdata/session/'.ssid;
+//ebr($sessionfile);
+
+if(file_exists($sessionfile)) {
+    $GLOBALS['ss']=unserialize(fgc($sessionfile));
+    //print_r($GLOBALS['ss']);
+}else{
+    $GLOBALS['ss']=array();
+}
+
+
 t("memory_load");
-$GLOBALS['ss_']=$GLOBALS['ss'];
-//unset($_SESSION['ss']);
-//print_r($GLOBALS['ss']);
+
 //---------------------------------
 function exit2($e=false){
     //echo('exit2');
     if($e)echo($e);
-    //print_r($GLOBALS['ss']);
-    $values='';$tmp='';
-    foreach($GLOBALS['ss'] as $key=>$value){
 
-        if($GLOBALS['ss_'][$key]!=$value){
-            if(!is_object($value)){
-                $value=addslashes(serialize($value));
-                //if(strlen($value)>7000)$value=serialize('');
-                if($value)$values.=$tmp."('".ssid."','$key','".($value)."','".time()."')";
-                $tmp=',';
-            }
-        }
-    }
-    $deletes='';$tmp='';
-    foreach($GLOBALS['ss_'] as $key=>$value){
-        if($GLOBALS['ss'][$key]!=$value){
-            $deletes=$deletes.$tmp." `key`='$key' ";
-            $tmp='OR';
-        }
-    }
-    //echo($values);
-
-    sql_query(create_sql('memory'));
+    $sessionfile=root . 'userdata/session/'.ssid;
+    fpc($sessionfile,serialize($GLOBALS['ss']));
 
 
-
-
-    if($deletes)sql_query('DELETE FROM [mpx]memory WHERE (`id`=\''.ssid.'\' AND ('.$deletes.'))'/*.' OR `time`<'.(time()-memory_time)*/);
-    if($values)sql_query('INSERT INTO [mpx]memory (`id`, `key`, `value`, `time`) VALUES '.$values.';');
-    //e($values);
-    //mysql_close();
-    //$_SESSION['ss']=$GLOBALS['ss'];
     t("memory_save");
     //---------------------------------------------------------------------------------------------------timeplan
     //if(timeplan){

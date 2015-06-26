@@ -2170,7 +2170,7 @@ msgid "messages_chatinfo"
 msgstr "Pokud chceš napsat zprávu, napiště ji do okna chatu."
 
 msgid "messages_new"
-msgstr "Nová zpráva"
+msgstr "Nová zpráva"
 
 msgid "messages_none"
 msgstr "Žádné zprávy"
@@ -2206,7 +2206,7 @@ msgid "name_error_maxchars"
 msgstr "Jméno nesmí mít víc než [0] znaků."
 
 msgid "name_error_minchars"
-msgstr "Jméno musí mít alespo&#328; [0] znaky."
+msgstr "Jméno musí mít alespoň [0] znaky."
 
 msgid "name_error_noname"
 msgstr "Musíš zadat jméno."
@@ -2776,6 +2776,11 @@ msgstr "Registrace"
 
 msgid "register_block_error"
 msgstr "Registrace je zablokovaná, zkus obnovit stránku pomocí F5."
+
+# register
+msgid "register_noneed"
+msgstr "Údaje vyplňovat nemusíš, můžeš rovnou začít hrát a vyplnit je až se ti bude chtít."
+
 
 # register
 msgid "register_error_email_none"
