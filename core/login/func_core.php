@@ -86,6 +86,7 @@ function register_position($test=0){
 
 }
 
+if(debug)
 register_position(1);
 die();
 
