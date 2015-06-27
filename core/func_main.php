@@ -153,7 +153,9 @@ function fpc($file,$contents){
     //echo($file)url;
     //if(file_exists($file)){file_put_contents($file,"");}
     $fh = fopen($file, 'w');
+    flock($fh, LOCK_EX);
     fwrite($fh, $contents);
+    flock($fh, LOCK_UN);
     fclose($fh);
     chmod($file,0777);
 }
