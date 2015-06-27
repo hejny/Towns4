@@ -785,6 +785,11 @@ if(!$_GLOBALS['noxmap']) {
                 var rx=Math.round((('.$px.'*xx)-('.$px.'*yy)+'.$rxp.'-(ww/2))/'.$GLOBALS['mapzoom'].');
                 var ry=Math.round((('.$py.'*xx)+('.$py.'*yy)+'.$ryp.'-(hh/1.41))/'.$GLOBALS['mapzoom'].');
 
+                var k=0.6;
+                var q=(Math.abs(Math.sin(x*x)*Math.cos(y*y)*k)+1);
+                var ww_=ww*q;
+                var hh_=hh*q;
+
 
                 //console.log(rx+","+ry+","+ww+","+hh);
 
@@ -793,7 +798,7 @@ if(!$_GLOBALS['noxmap']) {
                 //console.log(seed);
 
 
-                ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.maxseed.'+seed], rx, ry, ww,hh);';
+                ctx_bg.drawImage(all_images_bg[maparray[i][2]*'.maxseed.'+seed], rx, ry, ww_,hh_);';
 
     //--------------------------------------------------------
 
@@ -801,55 +806,62 @@ if(!$_GLOBALS['noxmap']) {
         $var = 'maxseed_' . $treerock;
         $canvasjs .= '
                 if(maparray[i][2]==' . ($treerock == 'tree' ? 10 : 5) . '){
-                    //console.log(rx+","+ry+","+ww+","+hh);
-                    //ctx.drawImage(all_images_' . $treerock . '[0], rx, ry-100, ww_' . $treerock . ',hh_' . $treerock . ');
-                                            all_images[imgs_count] = new Image();
 
-                    var seed=((Math.pow(x,2)+Math.pow(y,3))%' . ($treerock=='tree'?maxseed_tree:maxseed_rock) . ');
+                    var maxmulti=' . ($treerock == 'tree' ? '(Math.pow(x,2)+Math.pow(y,2))%2' : 0) . ';
 
-                    //console.log(seed);
-                    all_images[imgs_count].src=all_images_' . $treerock . '[seed].src;
+                    for(var multi = 0; multi < maxmulti+1; multi++){
 
+                        //console.log(rx+","+ry+","+ww+","+hh);
+                        //ctx.drawImage(all_images_' . $treerock . '[0], rx, ry-100, ww_' . $treerock . ',hh_' . $treerock . ');
+                                                all_images[imgs_count] = new Image();
 
-                    k=' . ($treerock == 'tree' ? 0.1 : 0.5) . ';
-                    q=((Math.sin(x/2)*Math.cos(y)*k)+(1*(1-k)))*' . ($treerock == 'tree' ? 1 : 2) . ';
-                    ww_'.$treerock.'_=ww_'.$treerock.'*q;
-                    hh_'.$treerock.'_=hh_'.$treerock.'*q;
+                        var seed=((Math.pow(x,2)+Math.pow(y,3)+multi)%' . ($treerock=='tree'?maxseed_tree:maxseed_rock) . ');
 
-
-                    var rx_' . $treerock . '=((' . $px . '*xx)-(' . $px . '*yy)+' . $rxp . '-(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
-                    var ry_' . $treerock . '=((' . $py . '*xx)+(' . $py . '*yy)+' . $ryp . '-(hh/4)-(hh_' . $treerock . '_))/' . $GLOBALS['mapzoom'] . ';
+                        //console.log(seed);
+                        all_images[imgs_count].src=all_images_' . $treerock . '[seed].src;
 
 
-                    rx_' . $treerock . '+=Math.sin(x)*(ww/3);
-                    ry_' . $treerock . '+=Math.cos(y)*(hh/3);
-
-                    //rx_' . $treerock . '+=Math.random()*(ww/2);
-                    //ry_' . $treerock . '+=Math.random()*(hh/2);
-
+                        var k=' . ($treerock == 'tree' ? 0.1 : 0.5) . ';
+                        var q=((Math.sin(x/(2+multi))*Math.cos(y)*k)+(1*(1-k)))*' . ($treerock == 'tree' ? 1 : 2) . ';
+                        var ww_'.$treerock.'_=ww_'.$treerock.'*q;
+                        var hh_'.$treerock.'_=hh_'.$treerock.'*q;
 
 
-                    all_images[imgs_count].setAttribute(\'x\',Math.round(rx_' . $treerock . '));
-                    all_images[imgs_count].setAttribute(\'y\',Math.round(ry_' . $treerock . '));
+                        var rx_' . $treerock . '=((' . $px . '*xx)-(' . $px . '*yy)+' . $rxp . '-(ww_' . $treerock . '_/2))/' . $GLOBALS['mapzoom'] . ';
+                        var ry_' . $treerock . '=((' . $py . '*xx)+(' . $py . '*yy)+' . $ryp . '-(hh/4)-(hh_' . $treerock . '_))/' . $GLOBALS['mapzoom'] . ';
 
 
-                    //console.log(all_images[0].width+\',\'+all_images[0].height);
-                    all_images[imgs_count].width=ww_' . $treerock . '_;
-                    all_images[imgs_count].height=hh_' . $treerock . '_;
+                        rx_' . $treerock . '+=Math.sin(x+y*y+multi)*(ww/3);
+                        ry_' . $treerock . '+=Math.cos(x*x-y+multi)*(hh/3);
+
+                        //rx_' . $treerock . '+=Math.random()*(ww/2);
+                        //ry_' . $treerock . '+=Math.random()*(hh/2);
 
 
-                    all_images[imgs_count].setAttribute(\'ll\',\'' . $treerock . '\');
-                    all_images[imgs_count].setAttribute(\'starttime\',timestamp());
-                    all_images[imgs_count].setAttribute(\'readytime\',timestamp());
-                    all_images[imgs_count].setAttribute(\'stoptime\',0);
+
+                        all_images[imgs_count].setAttribute(\'x\',Math.round(rx_' . $treerock . '));
+                        all_images[imgs_count].setAttribute(\'y\',Math.round(ry_' . $treerock . '));
 
 
-                    all_images[imgs_count].ll=\'' . $treerock . '\';
-                    all_images[imgs_count].starttime=timestamp();
-                    all_images[imgs_count].readytime=timestamp();
-                    all_images[imgs_count].stoptime=0;
+                        //console.log(all_images[0].width+\',\'+all_images[0].height);
+                        all_images[imgs_count].width=ww_' . $treerock . '_;
+                        all_images[imgs_count].height=hh_' . $treerock . '_;
 
-                    imgs_count++;
+
+                        all_images[imgs_count].setAttribute(\'ll\',\'' . $treerock . '\');
+                        all_images[imgs_count].setAttribute(\'starttime\',timestamp());
+                        all_images[imgs_count].setAttribute(\'readytime\',timestamp());
+                        all_images[imgs_count].setAttribute(\'stoptime\',0);
+
+
+                        all_images[imgs_count].ll=\'' . $treerock . '\';
+                        all_images[imgs_count].starttime=timestamp();
+                        all_images[imgs_count].readytime=timestamp();
+                        all_images[imgs_count].stoptime=0;
+
+                        imgs_count++;
+
+                    }
 
 
                 }';
