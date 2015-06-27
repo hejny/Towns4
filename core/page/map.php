@@ -822,7 +822,7 @@ if(!$_GLOBALS['noxmap']) {
 
 
                         var k=' . ($treerock == 'tree' ? 0.1 : 0.5) . ';
-                        var q=((Math.sin(x/(2+multi))*Math.cos(y)*k)+(1*(1-k)))*' . ($treerock == 'tree' ? 1 : 2) . ';
+                        var q=((Math.sin(x/(2+multi))*Math.cos(y)*k)+(1*(1-k)))*' . ($treerock == 'tree' ? 1 : gr) . ';
                         var ww_'.$treerock.'_=ww_'.$treerock.'*q;
                         var hh_'.$treerock.'_=hh_'.$treerock.'*q;
 
@@ -878,7 +878,12 @@ if(!$_GLOBALS['noxmap']) {
 
 
 
-            all_images.sort(function(a, b){return parseInt(a.getAttribute(\'y\'))-parseInt(b.getAttribute(\'y\'));});
+            all_images.sort(function(a, b){
+
+                return parseInt(a.getAttribute(\'y\'))+parseInt(a.getAttribute(\'height\')-(parseInt(a.getAttribute(\'width\')/4))
+                        -( parseInt(b.getAttribute(\'y\'))+parseInt(b.getAttribute(\'height\'))-(parseInt(b.getAttribute(\'width\'))/4)) );
+
+                });
             drawmap();
 
         };

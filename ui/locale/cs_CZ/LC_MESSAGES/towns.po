@@ -3878,3 +3878,6 @@ msgstr "Smazat moje data"
 
 msgid "app_delete_my_data_prompt"
 msgstr "Smazat všechna Tvá nastavení a data v rámci této aplikace?"
+
+msgid "finish_registration"
+msgstr "Dokončit registraci"
