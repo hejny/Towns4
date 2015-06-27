@@ -193,7 +193,10 @@ if($q==1){
 
         //---------------------------------------------------------------------------------------------Email
 	//print_r($_POST);
-	if($_POST["email"]){
+
+
+
+	if($_POST["email"] or $_POST["username"]){
 		    //e(111);
 		    //$GLOBALS['ss']['log_object']->profile->add('mail',$_POST["mail"]);
 		    //$GLOBALS['ss']['log_object']->profile->add('sendmail',$_POST["sendmail"]);
@@ -205,8 +208,14 @@ if($q==1){
 		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail4",$_POST["sendmail4"]?'1':'0');
 		    xquery("profile_edit",$GLOBALS['ss']['logid'],"sendmail5",$_POST["sendmail5"]?'1':'0');
 		    //$GLOBALS['ss']['log_object']->update();
-		   //success(lr('namecreated')); 
-		}      
+		   //success(lr('namecreated'));
+            $username=$_POST["username"];
+            $email=$_POST["email"];
+
+		}else{
+            $username=sql_1data("SELECT name FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
+            $email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
+        }
 
 		//xquery("profile_edit",$GLOBALS['ss']['useid'],"name",$_POST["name"]);
 		//xquery("profile_edit",$GLOBALS['ss']['logid'],"name",$_POST["name"]);
@@ -215,13 +224,12 @@ if($q==1){
 	//print_r($array);
         //---------------------------------------------------------------------------------------------Load
                 
-        $username=sql_1data("SELECT name FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1"); 
-        $email=sql_1data("SELECT email FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");        
-        $sendmail=sql_1data("SELECT sendmail FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");       
+         $sendmail=sql_1data("SELECT sendmail FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
         
         //---------------------------------------------------------------------------------------------Form
 	?>
 	<form id="changepass" name="changepass" method="POST" action="" onsubmit="return false">
+        <?php /*input_hidden("send",1);*/ ?>
 	<table>
 
 

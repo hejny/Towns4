@@ -398,7 +398,7 @@ function a_register($username,$password,$email,$sendmail,$fbdata='',$oldpass=fal
     //success("$username,$password,$email,$sendmail,$fbdata");
     //var_dump($email);
 
-
+    //r($GLOBALS['ss']["userid"]);
     if($GLOBALS['ss']["userid"] and $GLOBALS['ss']["logid"]){
         $wu=' AND id!='.$GLOBALS['ss']["userid"];
         if($username==='' or $username===' ' or $username===NULL)$username=sql_1data("SELECT name FROM `[mpx]users` WHERE id=".$GLOBALS['ss']["userid"]." AND aac=1 LIMIT 1");
