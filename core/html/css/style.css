@@ -1,0 +1,488 @@
+* {
+    outline: none;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+html {
+    background: url("../img/map.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.cleaner {
+    clear: both;
+}
+
+iframe {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* MENU --------------------------------------------------------------------------------------------------------------*/
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    width: 100%;
+    background-color: black;
+    background-color: rgba(0,0,0,0.85);
+    /*border-bottom: 1px solid black;*/
+}
+
+.menu-logo {
+    float: left;
+    width: auto;
+    height: 60px;
+    margin: 0;
+}
+
+.menu-logo > img {
+    height: 60px;
+    width: auto;
+}
+
+.menu-list {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-list-left {
+    float: left;
+}
+
+.menu-list-right {
+    float: right;
+    margin-right: 5px;
+}
+
+.menu-list-item {
+    float: left;
+    display: block;
+    list-style: none;
+    position: relative;
+}
+
+.menu-list-item > a {
+    display: block;
+    width: auto;
+    padding: 0 10px;
+    margin: 0;
+    text-decoration: none;
+    border-right: 1px solid rgba(84, 84, 84, 0.51);
+    height: 60px;
+    line-height: 60px;
+    color: lightgray;
+    text-transform: capitalize;
+}
+
+.menu-list-item > a:after {
+    content: "";
+    display: inline-block;
+    margin-left: 5px;
+    padding-top: 2px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(186, 186, 186, 0.80);
+}
+
+.menu-list-item:hover > a {
+    color: white;
+    background-color: black;
+}
+
+.menu-list-item:last-of-type > a {
+    border: none;
+}
+
+.menu-list-item-registration > a,
+.menu-list-item-registration:hover > a  {
+    display: block;
+    color: white;
+    background-color: #0098ff;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    margin: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.menu-list-item-registration > a:after {
+    display: none;
+}
+
+.menu-list-item-registration > a:hover {
+    background-color: #007fe6;
+}
+
+.menu-list-item-icon {
+    display: block;
+    padding: 0;
+    margin: 10px 5px;
+    text-decoration: none;
+    height: 40px;
+    width: 40px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+
+    border-radius: 50%;
+}
+
+.menu-list-item-icon > img {
+    vertical-align: bottom;
+    width: 20px;
+    height: auto;
+}
+
+.menu-list-item-icon:hover {
+    background-color: black;
+}
+
+
+.menu-dlist {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: black;
+    background-color: rgba(0,0,0,0.85);
+}
+
+.menu-list-item:hover .menu-dlist {
+    display: block;
+}
+
+.menu-dlist-item {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(84, 84, 84, 0.51);
+}
+
+.menu-dlist-item > a {
+    display: block;
+    margin: 0;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    width: 150px;
+    text-decoration: none;
+    color: lightgrey;
+}
+
+.menu-dlist-item:hover > a {
+    color: white;
+    background-color: black;
+}
+
+
+/* SIDEBAR -----------------------------------------------------------------------------------------------------------*/
+
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    background-color: black;
+    background-color: rgba(0,0,0,0.8);
+    /*overflow-y: scroll;*/
+}
+
+.action-wrapper {
+    position: relative;
+}
+
+.action {
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 3px;
+    background-color: blueviolet;
+    box-shadow: black 0 0 3px 0;
+    cursor: pointer;
+}
+
+.action-wrapper:nth-child(even) .action {
+    background-color: teal;
+}
+
+.action:hover {
+    box-shadow: #0098ff 0 0 3px 0;
+}
+
+.action-wrapper.active .action {
+    box-shadow: #0098ff 0 0 3px 0; /* todo: nedať .active radšej na .action ??? */
+}
+
+/* POPUP ACTION ------------------------------------------------------------------------------------------------------*/
+
+.js-popup-action-open,
+.js-popup-action-close {}
+
+.popup-action {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 65px;
+    width: 310px;
+}
+
+.action-wrapper.active .popup-action {
+    display: block; /* todo: nespraviť to radšej cez javascript ??? */
+}
+
+.popup-action .arrow {
+    float: left;
+    margin-top: 20px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    /*border-right: 10px solid rgba(0,0,0,0.85);*/
+    border-right: 10px solid rgba(255, 255, 255,0.85);
+}
+
+.popup-action .content {
+    float: left;
+    /*background-color: black;*/
+    /*background-color: rgba(0,0,0,0.85);*/
+    /*color: lightgray;*/
+    background-color: white;
+    background-color: rgba(255, 255, 255,0.85);
+    color: black;
+    border-radius: 3px;
+    width: 300px;
+}
+
+
+.popup-action .content h2,
+.popup-action .content p,
+.popup-action .content button {
+    padding: 10px;
+    margin: 0;
+}
+
+.popup-action .content h2 {
+    font-size: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.popup-action .content button {
+    border: none;
+    display: block;
+    padding: 0 10px;
+    margin: 10px auto;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    border-radius: 3px;
+    background-color: #0098ff;
+    color: white;
+    cursor: pointer;
+
+}
+
+.popup-action .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    /*background: url("../img/close-white.png") no-repeat center center /contain;*/
+    background: url("../img/close-black.png") no-repeat center center /contain;
+}
+
+/* OVERLAY -----------------------------------------------------------------------------------------------------------*/
+
+.overlay {
+    display: none;
+    z-index: 5;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000000;
+    background-color: rgba(0,0,0,0.70);
+}
+
+/* POPUP STORY -------------------------------------------------------------------------------------------------------*/
+
+.js-popup-story-open,
+.js-popup-story-close {}
+
+.popup-story {
+    display: none;
+    z-index: 10;
+    position: fixed;
+    top: 80px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    /*box-shadow: #000000 0 0 15px 0;*/
+    max-width: 800px;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+.popup-story .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 10px;
+    margin: 0;
+    height: 39px;
+    line-height: 39px;
+    font-size: 18px;
+    /*color: white;*/
+    /*background-color: black;*/
+    /*background-color: rgba(0, 0, 0, 0.85);*/
+    color: black;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    border-bottom: 1px solid #bababa;
+}
+
+.popup-story .content {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: white;
+}
+
+.popup-story .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    background: url("../img/close-black.png") no-repeat center center /contain;
+}
+
+/* POPUP NOTIFICATION ------------------------------------------------------------------------------------------------*/
+
+.js-popup-notification-open,
+.js-popup-notification-close {}
+
+.popup-notification {
+    display: none;
+    z-index: 3;
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    width: 400px;
+    height: 500px;
+    color: black;
+    overflow: hidden;
+}
+
+.popup-notification .arrow {
+    margin-left: 275px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom-width: 10px;
+    border-bottom-style: solid;
+    border-bottom-color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.85);
+}
+
+.popup-notification .header {
+    height: 9px;
+    line-height: 9px;
+    text-align: center;
+    color: #000000;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid #bababa;
+
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.popup-notification .content {
+    width: auto;
+    height: 440px;
+    box-sizing: border-box;
+    padding: 0;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.85);
+    overflow-y: auto;
+}
+
+.popup-notification .content p { /* todo: nespraviť z toho a ??? */
+    padding: 10px;
+    margin: 0 auto;
+    cursor: pointer;
+    border-bottom: 1px solid #bababa;
+}
+
+.popup-notification .content p:last-of-type {
+    border: none;
+}
+
+
+.popup-notification .content p:hover {
+    background-color: #fff;
+}
+
+.popup-notification .footer {
+    height: 29px;
+    line-height: 29px;
+    text-align: center;
+    color: #000000;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-top: 1px solid #bababa;
+
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.popup-notification .footer a {
+    color: black;
+    text-decoration: none;
+}
+
+.popup-notification .footer a:hover {
+    text-decoration: underline;
+}
