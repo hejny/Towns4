@@ -16,17 +16,18 @@ echo($tmp);br(2);*/
     //$GLOBALS['js']=true;
     //echo("alert('aac');");
 	if(!logged()){
-		e(/*'window.location.replace(\'?q=logout\');'*/'reloc();logged=false;');
+
+		e(/*'window.location.replace(\'?q=logout\');'*/'alert(\'Chyba!!!!\');logged=false;');//reloc();
 	}else{
 
 		//------------------- statistika, playtime
-		$tdiff=time()-$GLOBALS['ss']['log_object']->t;
+		$tdiff=time()-$_SESSION['log_object']->t;
 		
 		if($tdiff<=60*4){
-		    $GLOBALS['ss']['log_object']->pt+=$tdiff;
+		    $_SESSION['log_object']->pt+=$tdiff;
 		}
 		
-	    $GLOBALS['ss']['log_object']->t=time();
+	    $_SESSION['log_object']->t=time();
 
 
 
@@ -43,27 +44,21 @@ if(apptime!=<?php e(filemtime(core.'/page/aac.php')); ?>){
 
 apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 
-<?php if(chat){
-    subjs('chat_text'); ?>
-    $('#form_chat').submit(document.chatsubmit);
-    
-<?php } ?>
-
 
 <?php
 
 //subjs('dockbuttons',false,false,true);
 //-------------------obnovení mapy
 
-    $xc_=$GLOBALS['ss']['use_object']->set->ifnot("map_xc",false);
-	$yc_=$GLOBALS['ss']['use_object']->set->ifnot("map_yc",false);
+    $xc_=$_SESSION['use_object']->set->ifnot("map_xc",false);
+	$yc_=$_SESSION['use_object']->set->ifnot("map_yc",false);
 	
     //----
     
     $xcu=0;
     $ycu=0;
-    if($GLOBALS['ss']["map_xc"])$xcu=$GLOBALS['ss']["map_xc"];
-    if($GLOBALS['ss']["map_yc"])$ycu=$GLOBALS['ss']["map_yc"];
+    if($_SESSION["map_xc"])$xcu=$_SESSION["map_xc"];
+    if($_SESSION["map_yc"])$ycu=$_SESSION["map_yc"];
     //echo($xcu.','.$ycu);
     
     $xu=($ycu+$xcu)*5+1;
@@ -77,32 +72,34 @@ apptime=<?php e(filemtime(core.'/page/aac.php')); ?>;
 	//}
     //----
     
-	/*if($_GET['map_units_time']!=-1){
+	if($_GET['map_units_time']!=-1){
 
 		if($_GET['map_units_time'])$map_units_time=sql($_GET['map_units_time']);
 		
 		//mainname()
-		$count=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE (ww=".$GLOBALS['ss']["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
+		$count=sql_1data("SELECT count(1) FROM `[mpx]pos_obj` WHERE (ww=".$_SESSION["ww"]." OR ww=-4) AND `type`='building' AND t>$map_units_time AND ".$range);
 		if($count){
 		    //e('alert(123);');
 		    e('map_units_time='.time().';');
 		    
-				subexec('map_units');		
+				/*subexec('map_units');		
 				subjs('units_stream',$GLOBALS['units_stream']);
 				subjs('expandarea',$GLOBALS['area_stream']);
 				subjs('attackarea',$GLOBALS['attack_stream']);
 				echo('$(\'#units_new\').html("");');
-				subjs('dockbuttons');
+				subjs('dockbuttons');*/
+				e('refreshMap();');
 			
 			
 		}
-	}*/
+	}/**/
+	
 
 //-----------------------------
 ?>
 
 
-<?php /*if(!$_GET['onlyc'])*/subjs('surkey');/*$GLOBALS['ss']['use_object']->hold->showjs();*/ ?>
+<?php /*if(!$_GET['onlyc'])*/subjs('surkey');/*$_SESSION['use_object']->hold->showjs();*/ ?>
 
 
 <?php
@@ -161,7 +158,7 @@ if($_GET['q'] and !$_GET['onlyc']){
                     e('alert("'.object_hybrid.'");');
                 }*/
                 if(defined('object_build')){
-                    e('build('.$GLOBALS['ss']['master'].','.$GLOBALS['ss']['object_build_id'].',\''.$GLOBALS['ss']['object_build_func'].'\');');
+                    e('build('.$_SESSION['master'].','.$_SESSION['object_build_id'].',\''.$_SESSION['object_build_func'].'\');');
                 }
                 if(defined('create_error')){
                     e('alert("'.create_error.'");');
