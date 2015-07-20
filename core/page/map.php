@@ -789,6 +789,8 @@ if(!$_GLOBALS['noxmap']) {
                 var q=(Math.abs(Math.sin(x*x)*Math.cos(y*y)*k)+1);
                 var ww_=ww*q;
                 var hh_=hh*q;
+				var rx=rx-Math.round((ww_-ww)/2);
+				var ry=ry-Math.round((hh_-hh)/2);
 
 
                 //console.log(rx+","+ry+","+ww+","+hh);
