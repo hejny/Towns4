@@ -83,9 +83,20 @@ if($response['1']=='1'){//@todo udělat přímo v interním API
 $response = json_encode($response,$options);
 
 
+if($_GET['output']=='jsonp'){
 
-echo($response);
+    if($_GET['callback'])
+        $callback=$_GET['callback'];
+    else
+        $callback='callback';
 
+
+    echo("$callback($response);");
+
+
+}else{
+    echo($response);
+}
 
 if(logged()){
 
