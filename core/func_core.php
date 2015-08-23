@@ -235,7 +235,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
                  $where[]="y<=$maxy";
             //----------------------------------------------------------------radius
 
-        }elseif(substr($wher,0,4)=='radius('){//Ohraničení
+        }elseif(substr($wher,0,7)=='radius('){//Ohraničení
             $wher=str_replace(array('radius(',')'),'',$wher);
 
             list($midx,$midy,$radius)=explode(',',$wher);
