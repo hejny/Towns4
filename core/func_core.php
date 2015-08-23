@@ -248,7 +248,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
             $where[]='x<='.($midx+$radius);
             $where[]='y<='.($midy+$radius);
 
-            $where[]='POW(x,2)+POW(y,2)<='.($radius*$radius);
+            $where[]='POW(x-'.$midx.',2)+POW(y-'.$midy.',2)<='.($radius*$radius);
 
             //----------------
                  //----------------
