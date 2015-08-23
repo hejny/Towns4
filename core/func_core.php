@@ -219,7 +219,7 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
             $where[]="type='building'";
             $where[]="name='".mainname()."'";
 
-            //----------------------------------------------------------------Funkce
+            //----------------------------------------------------------------box
 
         }elseif(substr($wher,0,4)=='box('){//Ohraničení
                 $wher=str_replace(array('box(',')'),'',$wher);
@@ -233,6 +233,24 @@ function a_list($cols,$where=0,$order=false,$limit=0,$imagewidth=0){
                  $where[]="y>=$miny";
                  $where[]="x<=$maxx";
                  $where[]="y<=$maxy";
+            //----------------------------------------------------------------radius
+
+        }elseif(substr($wher,0,4)=='radius('){//Ohraničení
+            $wher=str_replace(array('radius(',')'),'',$wher);
+
+            list($midx,$midy,$radius)=explode(',',$wher);
+            $midx=intval($midx);
+            $midy=intval($midy);
+            $radius=intval($radius);
+
+            $where[]='x>='.($midx-$radius);
+            $where[]='y>='.($midy-$radius);
+            $where[]='x<='.($midx+$radius);
+            $where[]='y<='.($midy+$radius);
+
+            $where[]='POW(x,2)+POW(y,2)<='.($radius*$radius);
+
+            //----------------
                  //----------------
         }elseif($wher){
             $where[]=$wher;
