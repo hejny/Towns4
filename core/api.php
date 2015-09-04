@@ -78,7 +78,7 @@ if(is_array($query)){
 
     $response=array();
     foreach($query as $query1){
-        $respons[]=TownsApi($query1);
+        $response[]=TownsApi($query1);
     }
 }else{
     $response=TownsApi($query);
