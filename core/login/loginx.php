@@ -65,7 +65,11 @@ if ($GLOBALS['isie']/** or 1/**/) {
     $GLOBALS['ss']["helppage"]='about';
     $GLOBALS['nowidth']=true;
     eval(subpage('help'));
-    error('Právě měníme celý systém, jak hra funguje, proto mohou některé věci ve hře blbnout nebo úplně nefungovat. Omlouvám se za všechny nefunkčnosti. Vše by mělo být doladěné cca do týdne.');
+    error('V současné době vyvýjíme zcela novou verzi hry. Proto se není dočasně možné registrovat. Aktuální informace o spuštění napíšeme na:
+    <a href="http://forum.towns.cz/" target="_blank">forum.towns.cz</a> nebo
+    <a href="https://www.facebook.com/townsgame" target="_blank">www.facebook.com/townsgame</a>
+
+    ');
     br(1);
 ?></div></td></tr>
 

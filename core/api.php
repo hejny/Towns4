@@ -23,7 +23,18 @@ if($_GET['token'] and $_GET['token']!='y') {
 
 //die(json_encode($_POST));
 
-if($_POST['q']) {
+
+if($_POST['q1']) {
+
+    $query=array();
+    $qi=1;
+    while(isset($_POST['q'.$qi])){
+
+        $query[]=$_POST['q'.$qi];
+        $qi++;
+    }
+
+}if($_POST['q']) {
     $query=$_POST['q'];
 }elseif($_GET['q']) {
     $query=$_GET['q'];
@@ -53,8 +64,16 @@ require(core."/quest/func_core.php");
 require(core."/model/func_map.php");
 //--------------------------------------------
 
+if(is_array($query)){
 
-$response=TownsApi($query);
+    $response=array();
+    foreach($query as $query1){
+        $respons[]=TownsApi($query1);
+    }
+}else{
+    $response=TownsApi($query);
+}
+
 
 
 if(isset($response['url']) and $_GET['output']!='json'){
