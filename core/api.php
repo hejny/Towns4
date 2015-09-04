@@ -34,7 +34,17 @@ if($_POST['q1']) {
         $qi++;
     }
 
-}if($_POST['q']) {
+}elseif($_GET['q1']) {
+
+    $query=array();
+    $qi=1;
+    while(isset($_GET['q'.$qi])){
+
+        $query[]=$_GET['q'.$qi];
+        $qi++;
+    }
+
+}elseif($_POST['q']) {
     $query=$_POST['q'];
 }elseif($_GET['q']) {
     $query=$_GET['q'];
