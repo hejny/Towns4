@@ -2,9 +2,9 @@
 
 # `This project is very old and not maintained for a long time. So expect a very pure code quality, outdated dependencies and security issues.`
 
-# 🌆 Towns 4
+# 🌆 Towns4
 
- Verze Towns 4
+ Verze Towns4
 
 * * *
 ### Kontakt
